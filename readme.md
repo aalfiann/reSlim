@@ -4,7 +4,7 @@ reSlim
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 Made application [reSlim] with use of powerful rest api.
-reSlim is based on [Slim Framework](http://www.slimframework.com/).<br>
+reSlim is based on [Slim Framework version 3.6](http://www.slimframework.com/).<br>
 
 
 Getting Started
@@ -29,33 +29,16 @@ Here is the place for slim framework
 
 ### classes/
 
-Here is the place for your application classes
-
-### logs/
-
-Here is the place your custom log.
-You can add your custom log in your any container or router.
-
-Example adding custom log in a router post
-```php
-$app->post('/user/new', function (Request $request, Response $response) {
-    echo 'This is a POST route';
-    $this->logger->addInfo("Response post is succesfully complete!!!");
-});
-```
-
-### models/
-
-Add the model classes here.
+Add the classes here.
 We are using PDO MySQL for the Database.
 
-Example of models class:
+Example of class:
 
 Starter.php
 
 ```php
 
-namespace models;
+namespace classes;
 
 class Starter {
 
@@ -90,22 +73,21 @@ class Starter {
         $stmt->Close();
 	}
 
-    public function setHello() {
-        return array(
-			'hello' => "Hello World!!!",
-			'description1' => "Use this document as a way to quickly start any new project.",
-			'description2' => "All you get is this text and a mostly barebones HTML document.",
-			'author' => "iSlim3 is forged by M ABD AZIZ ALFIAN"
-			);
-    }
 }
 ```
 
-### public/
+### logs/
 
-All the public files:
-* Images, CSS and JS files which is inside a theme folder.
-* index.php (this is required to run the core of Slim Framework)
+Here is the place your custom log.
+You can add your custom log in your any container or router.
+
+Example adding custom log in a router post
+```php
+$app->post('/user/new', function (Request $request, Response $response) {
+    echo 'This is a POST route';
+    $this->logger->addInfo("Response post is succesfully complete!!!");
+});
+```
 
 ### routers/
 
@@ -120,48 +102,26 @@ index.router.php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-    //Hello Word
-    $app->get('/', function (Request $request, Response $response) {
-        $oStuff = new models\Starter();
-        $hello = $oStuff->setHello();
-
-        $response = $this->viewfrontend->render($response, "index.html", [
-            "hello" => $hello['hello'],
-            "description1" => $hello['description1'],
-            "description2" => $hello['description2'],
-            "author" => $hello['author'],
-            "router" => $this->router]);
-        return $response;
-    })->setName("/");
-
-//POST route
-$app->post('/user/new', function (Request $request, Response $response) {
-    echo 'This is a POST route';
-});
-
-// PUT route
-$app->put('/user/update', function (Request $request, Response $response) {
-    echo 'This is a PUT route';
-});
-
-// DELETE route
-$app->delete('/user/delete', function (Request $request, Response $response) {
-    echo 'This is a DELETE route';
-});
+    // GET example api loop route directly from database
+    $app->get('/api/loop', function (Request $request, Response $response) {
+        $oStuff = new classes\User($this->db);
+        $results = $oStuff->getAll();
+        $body = $response->getBody();
+        if ($results != 0){
+            $body->write(json_encode(array("result" => $results, "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
+        } else {
+            $body->write(json_encode(array("result" => 'no records found!', "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
+        }
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
 ```
 
-### templates/
-
-There are already 2 default themes in iSlim3:
-* default (using twig way)
-* defaultPHP (using render PHP)
-
-iSlim3 have two type of templates:
-
-1. Render as PHP
-2. Use Twig
-
-Default templates type is using twig, You can find change this configuration in config.php that placed in root folder.
+### reSlim Configuration
 
 Example Config.php
 ```php
@@ -174,19 +134,6 @@ Example Config.php
  */
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
-
-/**
- * Configuration Templates
- *
- * @var $config['templateRender'] is how slim3 to render a template. There are two options 'twig' or 'php'
- * @var $config['twigcache'] is cache options in twig only (won't work if you use it on php render)
- * @var $config['theme'] is options to choose which one theme will be use.
- *
- * Note: if You choose theme defaultPHP, make sure you have set templateRender to 'php'
- */
-$config['templateRender']           = 'twig';
-$config['twigcache']                = false;
-$config['theme']                    = 'default';
 
 /** 
  * Configuration PDO MySQL Database
@@ -206,6 +153,6 @@ How to Contribute
 -----------------
 ### Pull Requests
 
-1. Fork the iSlim3 repository
+1. Fork the reSlim repository
 2. Create a new branch for each feature or improvement
 3. Send a pull request from each feature branch to the develop branch
