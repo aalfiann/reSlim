@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <?php include 'layout.global.meta.html';?>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="iSlim3 with Bootstrap 4">
+    <meta name="author" content="M ABD AZIZ ALFIAN">
+
+    <title>iSlim3 with Bootstrap 4</title>
+    <?php include 'layout.global.css.html';?>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+      <a class="navbar-brand" href="<?=$router->pathFor('/')?>">iSlim3</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>hello/iSlim3+User">User</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>loop">Loop <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>api/loop">API</span></a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1>Example loop data from database</h1>
+        <hr>
+        <?php if (is_array($items)) { ?>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Username</th>
+              <th>Created</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php $n=1; foreach($items as $value): ?>
+              <tr>
+              <th scope="row"><?=$n++?></th>
+              <td><?=$value['username']?></td>
+              <td><?=$value['created']?></td>
+              <td><?=$value['status']?></td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+        <?php } else { 
+        // items is probably a string ?>
+          <p><?php $items ?></p>
+        <?php } ?>
+      </div>
+
+    </div><!-- /.container -->
+    <?php include 'layout.global.js.html';?>
+  </body>
+</html>

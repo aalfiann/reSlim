@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <?php include 'layout.global.meta.html';?>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="iSlim3 with Bootstrap 4">
+    <meta name="author" content="M ABD AZIZ ALFIAN">
+
+    <title>404 - iSlim3 with Bootstrap 4</title>
+    <?php include 'layout.global.css.html';?>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+      <a class="navbar-brand" href="<?=$router->pathFor('/')?>">iSlim3</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>hello/iSlim3+User">User</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>loop">Loop</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="<?=$router->pathFor('/')?>api/loop">API</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container">
+
+      <div class="starter-template">
+        <h1><?=$code;?></h1>
+        <p class="lead"><?=$notfound;?></p>
+        <p><a href="<?=$router->pathFor('/');?>">Go to homepage</a></p>
+      </div>
+
+    </div><!-- /.container -->
+    <?php include 'layout.global.js.html';?>
+  </body>
+</html>
