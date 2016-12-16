@@ -20,7 +20,7 @@ $container = $app->getContainer();
 
 // Register component Monolog
 $container['logger'] = function($c) {
-    $logger = new \Monolog\Logger('my_logger');
+    $logger = new \Monolog\Logger('reSlim_logger');
     $file_handler = new \Monolog\Handler\StreamHandler("../logs/app.log");
     $logger->pushHandler($file_handler);
     return $logger;
@@ -45,7 +45,7 @@ $container['notFoundHandler'] = function ($container) {
             ->withHeader('Content-type', 'application/json;charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->write($custom->prettyPrint('{ "status": "error", "code": "404", "message": "Request not found!" }'));
+            ->write($custom->prettyPrint('{ "status": "error", "code": "404", "message": "Bad request!" }'));
     };
 };
 
@@ -62,6 +62,35 @@ $container['notAllowedHandler'] = function ($container) {
             ->write($custom->prettyPrint('{ "status": "error", "code": "405", "message": "Method must be one of: ' . implode(', ', $methods).'" }'));
     };
 };
+
+// Override the slim error handler
+$container['errorHandler'] = function ($container) {
+    return function ($request, $response, $exception) use ($container) {
+        // retrieve logger from $container here and log the error
+        $container->logger->addInfo($exception->getMessage());
+        $custom = new classes\Custom();
+        $response->getBody()->rewind();
+        return $response
+            ->withStatus(500)
+            ->withHeader('Content-type', 'application/json;charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->write($custom->prettyPrint('{ "status": "error", "code": "500", "message": "'.$exception->getMessage().'" }'));
+    };
+};
+
+// Override PHP error handler
+$container['phpErrorHandler'] = function ($container) {
+    return $container['errorHandler'];
+};
+
+//PHP Error Handler
+set_error_handler(function ($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) {
+        return;
+    }
+    throw new \ErrorException($message, 0, $severity, $file, $line);
+});
 
 // Load all router files before run
 $routers = glob('../routers/*.router.php');
