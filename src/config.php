@@ -10,19 +10,6 @@
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
 
-/**
- * Configuration Templates
- *
- * @var $config['templateRender'] is how slim3 to render a template. There are two options 'twig' or 'php'
- * @var $config['twigcache'] is cache options in twig only (won't work if you use it on php render)
- * @var $config['theme'] is options to choose which one theme will be use.
- *
- * Note: if You choose theme defaultPHP, make sure you have set templateRender to 'php'
- */
-$config['templateRender']           = 'twig';
-$config['twigcache']                = false;
-$config['theme']                    = 'default';
-
 /** 
  * Configuration PDO MySQL Database
  *
@@ -34,4 +21,9 @@ $config['theme']                    = 'default';
 $config['db']['host']   = 'localhost';
 $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
-$config['db']['dbname'] = 'iSlim';
+$config['db']['dbname'] = 'reSlim';
+
+// Autoload all classes
+spl_autoload_register(function ($classname) {
+    require ( $classname . ".php");
+});

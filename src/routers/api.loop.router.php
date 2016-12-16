@@ -4,7 +4,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
     // GET example api loop route directly from database
     $app->put('/api/loop', function (Request $request, Response $response) {
-        $oStuff = new models\Starter($this->db);
+        $oStuff = new classes\User($this->db);
         $results = $oStuff->getAll();
         $body = $response->getBody();
         if ($results != 0){
@@ -16,6 +16,5 @@ use \Psr\Http\Message\ResponseInterface as Response;
             ->withHeader('Content-Type','application/json; charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             ->withBody($body);
     });

@@ -1,9 +1,9 @@
 {
-    "name":"aalfiann/iSlim3",
+    "name":"aalfiann/reSlim",
     "type":"framework",
-    "description":"PSR + Twig for the PHP microframework Slim v3.x which look alike MVC",
-    "keywords":["microframework", "rest", "router", "mvc", "PSR"],
-    "homepage":"https://github.com/aalfiann/iSlim3",
+    "description":"Made application reSlim with use of powerful rest api",
+    "keywords":["microframework", "rest", "router", "PSR"],
+    "homepage":"https://github.com/aalfiann/reSlim",
     "license":"MIT",
     "authors":[
         {
@@ -12,8 +12,6 @@
     ],
     "require": {
         "slim/slim": "^3.6",
-        "monolog/monolog": "^1.22",
-        "slim/php-view": "^2.2",
-        "slim/twig-view": "^2.1"
+        "monolog/monolog": "^1.22"
     }
 }

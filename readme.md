@@ -1,11 +1,10 @@
-iSlim3-basic
+reSlim
 =======
-[![Travis branch](https://img.shields.io/travis/rust-lang/rust/master.svg)](https://github.com/aalfiann/iSlim3-basic)
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/iSlim3-basic/blob/master/license.md)
+[![Travis branch](https://img.shields.io/travis/rust-lang/rust/master.svg)](https://github.com/aalfiann/reSlim)
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
-I call this "iSlim" because I heart [Slim Framework](http://www.slimframework.com/).<br>
-iSlim version 3 is the easiest and flexible way to create your PHP application using PSR 7 way,<br>
-which is look alike MVC pattern and Bootstrap 4.
+Made application [reSlim] with use of powerful rest api.
+reSlim is based on [Slim Framework](http://www.slimframework.com/).<br>
 
 
 Getting Started
@@ -15,13 +14,18 @@ Getting Started
 
 Folder System
 ---------------
-* classes/
-* logs/
-* models/
-* public/
-* routers/
-	* name.router.php (routes by functionalities)
-* templates/
+* database
+    * reSlim.sql (example dummy database)
+* src/
+    * api/
+    * classes/
+    * logs/
+    * routers/
+	    * name.router.php (routes by functionalities)
+
+### api/
+
+Here is the place for slim framework
 
 ### classes/
 
