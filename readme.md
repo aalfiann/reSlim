@@ -97,16 +97,16 @@ It is very important that the names of the files inside this folder follow this 
 
 Example of router file:
 
-index.router.php
+user.router.php
 
 ```php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-    // GET example api loop route directly from database
-    $app->get('/api/loop', function (Request $request, Response $response) {
-        $oStuff = new classes\User($this->db);
-        $results = $oStuff->getAll();
+    // GET example api user route directly from database
+    $app->get('/user', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $results = $users->getAll();
         $body = $response->getBody();
         if ($results != 0){
             $body->write(json_encode(array("result" => $results, "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
