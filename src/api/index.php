@@ -97,12 +97,12 @@ $container['errorHandler'] = function ($container) {
     };
 };
 
-// Override PHP error handler
+// Override PHP 7 error handler
 $container['phpErrorHandler'] = function ($container) {
     return $container['errorHandler'];
 };
 
-//PHP Error Handler
+//PHP 5 Error Handler
 set_error_handler(function ($severity, $message, $file, $line) {
     if (!(error_reporting() & $severity)) {
         return;
