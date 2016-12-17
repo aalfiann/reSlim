@@ -3,7 +3,7 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
     // GET example api loop route directly from database
-    $app->get('/api/loop', function (Request $request, Response $response, Exception $exception) {
+    $app->get('/api/loop', function (Request $request, Response $response) {
         $oStuff = new classes\User($this->db);
         $results = $oStuff->getAll();
         $body = $response->getBody();
