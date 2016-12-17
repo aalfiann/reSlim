@@ -8,9 +8,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $results = $users->getAll();
         $body = $response->getBody();
         if ($results != 0){
-            $body->write(json_encode(array("result" => $results, "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
+            $body->write(json_encode([
+                'result' => $results, 
+                'status' => 'success', 
+                'code' => $response->getStatusCode(),
+                'message' => 'Data records found!'], JSON_PRETTY_PRINT));
         } else {
-            $body->write(json_encode(array("result" => 'no records found!', "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
+            $body->write(json_encode([
+                'status' => 'error',
+                'code' => '404',
+                'message' => 'Records not found!'], JSON_PRETTY_PRINT));
         }
         return $response
             ->withStatus(200)
@@ -22,6 +29,26 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
     // POST example api register user
     $app->post('/user/register', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->Fullname = $datapost['Fullname'];
+        $users->Address = $datapost['Address'];
+        $users->Phone = $datapost['Phone'];
+        $users->Email = $datapost['Email'];
+        $users->Aboutme = $datapost['Aboutme'];
+        $users->Avatar = $datapost['Avatar'];
+        $users->Role = $datapost['Role'];
+
+        $body = $response->getBody();
+        $body->write($users->register());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
     });
 
     // POST example api login user
