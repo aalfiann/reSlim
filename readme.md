@@ -39,6 +39,7 @@ Starter.php
 ```php
 
 namespace classes;
+use PDO;
 
 class Starter {
 
@@ -146,7 +147,7 @@ $config['addContentLengthHeader']   = false;
 $config['db']['host']   = 'localhost';
 $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
-$config['db']['dbname'] = 'iSlim';
+$config['db']['dbname'] = 'reSlim';
 ```
 
 How to Contribute
