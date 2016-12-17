@@ -1,8 +1,8 @@
 reSlim
 =======
-[![Travis branch](https://img.shields.io/travis/rust-lang/rust/master.svg)](https://github.com/aalfiann/reSlim)
+[![Build](https://img.shields.io/travis/rust-lang/rust/master.svg)](https://github.com/aalfiann/reSlim)
 [![Version](https://img.shields.io/badge/version-1.0.0-red.svg)](https://github.com/aalfiann/reSlim)
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
+[![License](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3.6](http://www.slimframework.com/).<br>
