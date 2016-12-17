@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Travis branch](https://img.shields.io/travis/rust-lang/rust/master.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/version-1.0.0-red.svg)](https://github.com/aalfiann/reSlim)
 [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
