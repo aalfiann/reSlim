@@ -36,4 +36,33 @@ class User {
         $stmt->Close();
 	}
 
+	// Regiter new user
+	public function register(){
+
+	}
+
+	// Login user
+	public function login(){
+		
+	}
+
+	// Logout user
+	public function logout(){
+		
+	}
+
+	// Auth User
+	private function auth(){
+		
+	}
+
+	// Update User
+	public function update(){
+		
+	}
+
+	// Delete User
+	public function delete(){
+		
+	}
 }
