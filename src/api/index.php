@@ -1,8 +1,8 @@
 <?php
 /**
- * iSlim3 is based on Slim Framework (http://slimframework.com)
+ * reSlim is based on Slim Framework version 3.6 (http://slimframework.com)
  *
- * @link      https://github.com/aalfiann/iSlim3
+ * @link      https://github.com/aalfiann/reSlim
  * @copyright Copyright (c) 2016 M ABD AZIZ ALFIAN
  * @license   https://github.com/iSlim3/license.md (MIT License)
  */
@@ -39,43 +39,61 @@ $container['db'] = function ($c) {
 // Override the default Not Found Handler
 $container['notFoundHandler'] = function ($container) {
     return function ($request, $response) use ($container) {
-        $custom = new classes\Custom();
-        return $container['response']
+        $data = [
+            'status' => 'error',
+            'code' => '404',
+            'message' => $response->withStatus(404)->getReasonPhrase()
+        ];
+        return $container->get('response')
             ->withStatus(404)
             ->withHeader('Content-type', 'application/json;charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->write($custom->prettyPrint('{ "status": "error", "code": "404", "message": "Bad request!" }'));
+            ->write(json_encode($data, JSON_PRETTY_PRINT));
     };
 };
 
 // Override the default Not Allowed Handler
 $container['notAllowedHandler'] = function ($container) {
     return function ($request, $response, $methods) use ($container) {
-        $custom = new classes\Custom();
+        $data = [
+            'status' => 'error',
+            'code' => '405',
+            'message' => $response->withStatus(405)->getReasonPhrase().', method must be one of: ' . implode(', ', $methods)
+        ];
         return $container['response']
             ->withStatus(405)
             ->withHeader('Allow', implode(', ', $methods))
             ->withHeader('Content-type', 'application/json;charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->write($custom->prettyPrint('{ "status": "error", "code": "405", "message": "Method must be one of: ' . implode(', ', $methods).'" }'));
+            ->write(json_encode($data, JSON_PRETTY_PRINT));
     };
 };
 
 // Override the slim error handler
 $container['errorHandler'] = function ($container) {
     return function ($request, $response, $exception) use ($container) {
-        // retrieve logger from $container here and log the error
-        $container->logger->addInfo($exception->getMessage());
-        $custom = new classes\Custom();
+        $container->logger->addInfo('{ 
+"code": "'.$exception->getCode().'", 
+"message": "'.$exception->getMessage().'",
+"file": "'.$exception->getFile().'",
+"line": "'.$exception->getLine().'"}');
         $response->getBody()->rewind();
+        $data = [
+            'status' => 'error',
+            'code' => $exception->getCode(),
+            'message' => $exception->getMessage(),
+            'file' => $exception->getFile(),
+            'line' => $exception->getLine(),
+            'trace' => explode("\n", $exception->getTraceAsString())
+        ];
         return $response
             ->withStatus(500)
             ->withHeader('Content-type', 'application/json;charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->write($custom->prettyPrint('{ "status": "error", "code": "500", "message": "'.$exception->getMessage().'" }'));
+            ->write(json_encode($data, JSON_PRETTY_PRINT));
     };
 };
 

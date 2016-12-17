@@ -1,1 +1,1 @@
-[2016-12-14 07:08:31] my_logger.INFO: Something interesting happened [] []
+[2016-12-17 03:55:27] reSlim_logger.INFO: {  "code": "0",  "message": "Argument 3 passed to Closure::{closure}() must be an instance of Exception, array given", "file": "D:\PRIVATE\PortableApps\XAMPP\App\xampp\htdocs\reSlim\src\routers\api.loop.router.php", "line": "6"} [] []
