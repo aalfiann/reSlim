@@ -3,7 +3,7 @@
 namespace classes;
 use PDO;
 
-class User extends reSlimHandlers {
+class User {
 
 	protected $db;
 
@@ -66,13 +66,13 @@ class User extends reSlimHandlers {
 			$data = [
 				'status' => 'success',
 				'code' => 'RS101',
-				'message' => $this->getreSlimMessage('RS101')
+				'message' => CustomHandlers::getreSlimMessage('RS101')
 			];	
 		} else {
 			$data = [
 				'status' => 'error',
-				'code' => '0',
-				'message' => 'Failed to register!'
+				'code' => 'RS901',
+				'message' => CustomHandlers::getreSlimMessage('RS901')
 			];
 		}
 		return json_encode($data,JSON_PRETTY_PRINT);
