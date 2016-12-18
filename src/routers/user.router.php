@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\CustomHandlers as CustomHandler;
 
     // GET example api user
     $app->get('/user', function (Request $request, Response $response) {
@@ -11,13 +12,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
             $body->write(json_encode([
                 'result' => $results, 
                 'status' => 'success', 
-                'code' => $response->getStatusCode(),
-                'message' => 'Data records found!'], JSON_PRETTY_PRINT));
+                'code' => 'RS501',
+                'message' => CustomHandler::getreSlimMessage('RS501')], JSON_PRETTY_PRINT));
         } else {
             $body->write(json_encode([
                 'status' => 'error',
-                'code' => '404',
-                'message' => 'Records not found!'], JSON_PRETTY_PRINT));
+                'code' => 'RS601',
+                'message' => CustomHandler::getreSlimMessage('RS601')], JSON_PRETTY_PRINT));
         }
         return $response
             ->withStatus(200)
@@ -33,6 +34,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $datapost = $request->getParsedBody();
         
         $users->Username = $datapost['Username'];
+        $users->Password = $datapost['Password'];
         $users->Fullname = $datapost['Fullname'];
         $users->Address = $datapost['Address'];
         $users->Phone = $datapost['Phone'];

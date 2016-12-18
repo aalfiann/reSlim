@@ -1,4 +1,8 @@
 <?php
+/**
+ * CustomHandlers is to show Your custom own message handler
+ *
+ */
 
     namespace classes;
 
@@ -110,8 +114,10 @@
             'RS801' => 'The parameter is not valid!',
             'RS802' => 'The parameter is not authorized!',
             'RS803' => 'The parameter is deprecated!',
+            'RS804' => 'The parameter is contains not allowed character!',
             // Any error messages 9xx
-            'RS901' => 'Failed to register user!'
+            'RS901' => 'Failed to register user!',
+            'RS902' => 'Username is not available!'
         ];
 
         public static function getreSlimMessage($code){
