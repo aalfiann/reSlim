@@ -1,13 +1,26 @@
 <?php
 /**
- * CustomHandlers is to show Your custom own message handler
+ * This class is a part of reSlim project
+ * @author M ABD AZIZ ALFIAN <github.com/aalfiann>
+ *
+ * Don't remove this class unless You know what to do
  *
  */
-
     namespace classes;
-
+    /**
+     * CustomHandlers is to show Your custom own message handler
+     *
+     * @package    Core reSlim
+     * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
+     * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
+     * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+     */
     class CustomHandlers {
 
+        /**
+         * @param $responseMessages is data array to handler the status message of response
+         *
+         */
         public static $responseMessages = [
             //Informational 1xx
             100 => 'Continue',
@@ -80,50 +93,64 @@
             599 => 'Network Connect Timeout Error'
         ];
 
+        /**
+         * @param $reSlimMessages is data array to handler the status message in reSlim
+         *
+         */
         public static $reSlimMessages = [
             // User process success 1xx    
-            'RS101' => 'Request process is successfully created!',
-            'RS102' => 'Request process is successfully get!',
-            'RS103' => 'Request process is successfully updated!',
-            'RS104' => 'Request process is successfully deleted!',
+            'RS101' => 'Request process is successfully created.',
+            'RS102' => 'Request process is successfully get.',
+            'RS103' => 'Request process is successfully updated.',
+            'RS104' => 'Request process is successfully deleted.',
             // User process error 2xx
-            'RS201' => 'Request process is failed to create!',
-            'RS202' => 'Request process is failed to get!',
-            'RS203' => 'Request process is failed to update!',
-            'RS204' => 'Request process is failed to delete!',
+            'RS201' => 'Request process is failed to create.',
+            'RS202' => 'Request process is failed to get.',
+            'RS203' => 'Request process is failed to update.',
+            'RS204' => 'Request process is failed to delete.',
             // User authority success 3xx
-            'RS301' => 'Your token is actived!',
-            'RS302' => 'Your token is match!',
-            'RS303' => 'Your token is pass!',
-            'RS304' => 'Your token is authorized',
+            'RS301' => 'Your token is actived.',
+            'RS302' => 'Your token is match.',
+            'RS303' => 'Your token is passed.',
+            'RS304' => 'Your token is authorized.',
+            'RS305' => 'Your token hasbeen revoked.',
             // User authority error 4xx
-            'RS401' => 'Your token is expired, so You have to generate new token!',
-            'RS402' => 'Your token is not match!',
-            'RS403' => 'Your Token is wrong!',
-            'RS404' => 'Your token is not authorized',
-            'RS405' => 'You don\'t have any token!',
+            'RS401' => 'Your token is not authorized, so You have to generate new token!',
+            'RS402' => 'Your token is not match.',
+            'RS403' => 'Your token is wrong.',
+            'RS404' => 'Your token is not authorized.',
+            'RS405' => 'You don\'t have any token.',
             // User data success 5xx
-            'RS501' => 'Data records is found!',
+            'RS501' => 'Data records is found.',
             // User data error 6xx
-            'RS601' => 'There is no any data records!',
-            'RS602' => 'Data records is exceed the limit!',
+            'RS601' => 'There is no any data records.',
+            'RS602' => 'Data records is exceed the limit.',
             // Parameter success 7xx
-            'RS701' => 'The parameter is valid!',
-            'RS702' => 'The parameter is authorized!',
+            'RS701' => 'The parameter is valid.',
+            'RS702' => 'The parameter is authorized.',
             // Parameter error 8xx
-            'RS801' => 'The parameter is not valid!',
-            'RS802' => 'The parameter is not authorized!',
-            'RS803' => 'The parameter is deprecated!',
-            'RS804' => 'The parameter is contains not allowed character!',
+            'RS801' => 'The parameter is not valid.',
+            'RS802' => 'The parameter is not authorized.',
+            'RS803' => 'The parameter is deprecated.',
+            'RS804' => 'The parameter is contains not allowed character.',
             // Any error messages 9xx
-            'RS901' => 'Failed to register user!',
-            'RS902' => 'Username is not available!'
+            'RS901' => 'Failed to register user.',
+            'RS902' => 'Username is not available.',
+            'RS903' => 'Username or Password is not match! {case sensitive}'
         ];
 
+        /**
+         * @param $code : input the code of status message in reSlim
+         * @return string status message
+         */
         public static function getreSlimMessage($code){
             return self::$reSlimMessages[$code];
         }
 
+        /**
+         * @param $code : input the code of status message in response
+         * @return string status message
+         */
         public static function getResponseMessage($code){
             return self::$responseMessages[$code];
         }

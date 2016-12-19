@@ -1,16 +1,8 @@
 <?php
 /**
- * A Utility class for converting between raw binary strings and a given
- * list of characters
+ * This class is a part of reSlim project
+ * Don't remove this class unless You know what to do
  *
- * PHP version 5.3
- *
- * @category   PHPCryptLib
- * @package    Core
- * @author     Anthony Ferrara <ircmaxell@ircmaxell.com>
- * @copyright  2011 The Authors
- * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
- * @version    Build @@version@@
  */
 namespace classes;
 /**
