@@ -3,10 +3,25 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \classes\CustomHandlers as CustomHandler;
 
-    // GET example api user
+    // GET example api to show all data user
     $app->get('/user/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->Token = $request->getAttribute('token');
+        $body = $response->getBody();
+        $body->write($users->showAll());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // POST example api to show all data user
+    $app->post('/user', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->Token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
         return $response
@@ -79,9 +94,9 @@ use \classes\CustomHandlers as CustomHandler;
     });
 
     // PUT example api update user
-    $app->put('/user/update/{rs_token}', function (Request $request, Response $response) {
+    $app->put('/user/update', function (Request $request, Response $response) {
     });
 
     // DELETE example api logout user
-    $app->delete('/user/delete/{rs_token}', function (Request $request, Response $response) {
+    $app->delete('/user/delete', function (Request $request, Response $response) {
     });
