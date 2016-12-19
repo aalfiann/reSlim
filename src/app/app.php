@@ -12,6 +12,9 @@ require '../vendor/autoload.php';
 // Load config
 require '../config.php';
 
+// Set time zone
+date_default_timezone_set($config['reslim']['timezone']);
+
 // Set up dependencies
 require __DIR__.'/dependencies.php';
 

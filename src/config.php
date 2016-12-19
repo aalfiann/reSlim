@@ -23,6 +23,8 @@ $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
 
+$config['reslim']['timezone'] = 'Asia/Jakarta';
+
 // Autoload all classes
 spl_autoload_register(function ($classname) {
     require ( $classname . ".php");
