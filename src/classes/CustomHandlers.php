@@ -136,7 +136,9 @@
             // Any error messages 9xx
             'RS901' => 'Failed to register user.',
             'RS902' => 'Username is not available.',
-            'RS903' => 'Username or Password is not match! {case sensitive}'
+            'RS903' => 'Username or Password is not match! {case sensitive}',
+            'RS904' => 'Failed to update user.',
+            'RS905' => 'Failed to delete user.'
         ];
 
         /**

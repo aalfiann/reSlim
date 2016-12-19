@@ -85,6 +85,99 @@ use PDO;
 		}
 
 		/**
+		 * Update user
+		 * @return result process in json encoded data
+		 */
+		private function doUpdate(){
+			if (strtolower($this->Role) == 'admin'){
+				$newRole = '1';
+			}else{
+				$newRole = '2';
+			}
+			
+			$newusername = strtolower($this->Username);
+			
+			try {
+				$this->db->beginTransaction();
+				$sql = "UPDATE user_data 
+					SET Fullname=:fullname,Address=:address,Phone=:phone,Email=:email,Aboutme=:aboutme,Avatar=:avatar,
+					RoleID=:role,StatusID=:status  
+					WHERE Username=:username;";
+					$stmt = $this->db->prepare($sql);
+					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+					$stmt->bindParam(':fullname', $this->Fullname, PDO::PARAM_STR);
+					$stmt->bindParam(':address', $this->Address, PDO::PARAM_STR);
+					$stmt->bindParam(':phone', $this->Phone, PDO::PARAM_STR);
+					$stmt->bindParam(':email', $this->Email, PDO::PARAM_STR);
+					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
+					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $newRole, PDO::PARAM_STR);
+					$stmt->bindParam(':status', $this->Status, PDO::PARAM_STR);
+					if ($stmt->execute()) {
+						$data = [
+							'status' => 'success',
+							'code' => 'RS101',
+							'message' => CustomHandlers::getreSlimMessage('RS101')
+						];	
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS904',
+							'message' => CustomHandlers::getreSlimMessage('RS904')
+						];
+					}
+				$this->db->commit();
+			} catch (PDOException $e) {
+				$data = [
+					'status' => 'error',
+					'code' => $e->getCode(),
+					'message' => $e->getMessage()
+				];
+				$this->db->rollBack();
+			}
+			return $data;
+			$this->db = null;
+		}
+
+		/**
+		 * Delete user
+		 * @return result process in json encoded data
+		 */
+		private function doDelete(){
+			$newusername = strtolower($this->Username);
+			
+			try {
+				$this->db->beginTransaction();
+				$sql = "DELETE FROM user_data WHERE Username=:username;";
+					$stmt = $this->db->prepare($sql);
+					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+					if ($stmt->execute()) {
+						$data = [
+							'status' => 'success',
+							'code' => 'RS104',
+							'message' => CustomHandlers::getreSlimMessage('RS104')
+						];	
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS905',
+							'message' => CustomHandlers::getreSlimMessage('RS905')
+						];
+					}
+				$this->db->commit();
+			} catch (PDOException $e) {
+				$data = [
+					'status' => 'error',
+					'code' => $e->getCode(),
+					'message' => $e->getMessage()
+				];
+				$this->db->rollBack();
+			}
+			return $data;
+			$this->db = null;
+		}
+
+		/**
 		 * Determine if user is already registered or not
 		 * @return boolean true / false
 		 */
@@ -125,6 +218,14 @@ use PDO;
 			}
 			return $match;
 			$this->db = null;
+		}
+
+		public function showOptionRole() {
+
+		}
+
+		public function showOptionStatus() {
+
 		}
 	
 		/** 
@@ -251,7 +352,16 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function update(){
-		
+			if (Auth::ValidToken($this->db,$this->Token)){
+				$data = doUpdate();
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 
 		/** 
@@ -259,6 +369,15 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function delete(){
-		
+			if (Auth::ValidToken($this->db,$this->Token)){
+				$data = doDelete();
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 	}
