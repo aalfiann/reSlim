@@ -1,6 +1,6 @@
 <?php 
 /**
- * This class is a part of reSlim project
+ * This class is a part of reSlim project for authentication generated token
  * @author M ABD AZIZ ALFIAN <github.com/aalfiann>
  *
  * Don't remove this class unless You know what to do
@@ -10,7 +10,7 @@ namespace classes;
 use PDO;
 use \classes\BaseConverter as BaseConverter;
     /**
-     * A class for authentication user in rest api way
+     * A class for secure authentication user in rest api way
      *
      * @package    Core reSlim
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>

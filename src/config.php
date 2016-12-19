@@ -23,6 +23,7 @@ $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
 
+// Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
 
 // Autoload all classes
