@@ -4,22 +4,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \classes\CustomHandlers as CustomHandler;
 
     // GET example api user
-    $app->get('/user', function (Request $request, Response $response) {
+    $app->get('/user/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $results = $users->getAll();
+        $users->Token = $request->getAttribute('token');
         $body = $response->getBody();
-        if ($results != 0){
-            $body->write(json_encode([
-                'result' => $results, 
-                'status' => 'success', 
-                'code' => 'RS501',
-                'message' => CustomHandler::getreSlimMessage('RS501')], JSON_PRETTY_PRINT));
-        } else {
-            $body->write(json_encode([
-                'status' => 'error',
-                'code' => 'RS601',
-                'message' => CustomHandler::getreSlimMessage('RS601')], JSON_PRETTY_PRINT));
-        }
+        $body->write($users->showAll());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -55,10 +44,38 @@ use \classes\CustomHandlers as CustomHandler;
 
     // POST example api login user
     $app->post('/user/login', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->Password = $datapost['Password'];
+        $body = $response->getBody();
+        $body->write($users->login());
+
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
     });
 
     // POST example api logout user
     $app->post('/user/logout', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->Token = $datapost['Token'];
+
+        $body = $response->getBody();
+        $body->write($users->logout());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
     });
 
     // PUT example api update user
