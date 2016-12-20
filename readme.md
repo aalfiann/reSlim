@@ -145,6 +145,10 @@ I recommend you to use PostMan an add ons in Google Chrome to get Started with t
 1. Import file reSlim User.postman_collection.json in your PostMan.
 2. Then you can do the test by yourself.
 
+The path to run reSlim is inside folder api.<br> 
+Example for my case is: http://localhost:1337/reSlim/src/api/<br><br>
+
+In short, It's depend on your server configuration.
 
 The concept authentication in reSlim
 -----------------
