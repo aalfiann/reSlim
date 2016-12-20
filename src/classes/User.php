@@ -21,7 +21,7 @@ use PDO;
 
 		protected $db;
 
-		var $Username,$Password,$Fullname,$Address,$Phone,$Email,$Aboutme,$Avatar,$Role,$Status,$Token;
+		var $Username,$Password,$Fullname,$Address,$Phone,$Email,$Aboutme,$Avatar,$Role,$Status,$Token,$NewPassword;
 
 		function __construct($db=null) {
 			if (!empty($db)) 
@@ -37,6 +37,7 @@ use PDO;
 		private function doRegister(){
 			
 			$newusername = strtolower($this->Username);
+			$newemail = strtolower($this->Email);
 			$hash = Auth::HashPassword($newusername, $this->Password);
 			
 			try {
@@ -49,7 +50,7 @@ use PDO;
 					$stmt->bindParam(':fullname', $this->Fullname, PDO::PARAM_STR);
 					$stmt->bindParam(':address', $this->Address, PDO::PARAM_STR);
 					$stmt->bindParam(':phone', $this->Phone, PDO::PARAM_STR);
-					$stmt->bindParam(':email', $this->Email, PDO::PARAM_STR);
+					$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
 					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
 					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
@@ -86,7 +87,8 @@ use PDO;
 		private function doUpdate(){
 			
 			$newusername = strtolower($this->Username);
-			
+			$newemail = strtolower($this->Email);
+
 			try {
 				$this->db->beginTransaction();
 				$sql = "UPDATE user_data 
@@ -98,7 +100,7 @@ use PDO;
 					$stmt->bindParam(':fullname', $this->Fullname, PDO::PARAM_STR);
 					$stmt->bindParam(':address', $this->Address, PDO::PARAM_STR);
 					$stmt->bindParam(':phone', $this->Phone, PDO::PARAM_STR);
-					$stmt->bindParam(':email', $this->Email, PDO::PARAM_STR);
+					$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
 					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
 					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
@@ -146,6 +148,46 @@ use PDO;
 							'status' => 'success',
 							'code' => 'RS104',
 							'message' => CustomHandlers::getreSlimMessage('RS104')
+						];	
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS905',
+							'message' => CustomHandlers::getreSlimMessage('RS905')
+						];
+					}
+				$this->db->commit();
+			} catch (PDOException $e) {
+				$data = [
+					'status' => 'error',
+					'code' => $e->getCode(),
+					'message' => $e->getMessage()
+				];
+				$this->db->rollBack();
+			}
+			return $data;
+			$this->db = null;
+		}
+
+		/**
+		 * Change Password
+		 * @return result process in json encoded data
+		 */
+		private function doChangePassword(){
+			$newusername = strtolower($this->Username);
+			$hash = Auth::HashPassword($newusername, $this->NewPassword);
+			
+			try {
+				$this->db->beginTransaction();
+				$sql = "UPDATE user_data a SET a.Password=:newpassword WHERE Username=:username;";
+					$stmt = $this->db->prepare($sql);
+					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+					$stmt->bindParam(':newpassword', $hash, PDO::PARAM_STR);
+					if ($stmt->execute()) {
+						$data = [
+							'status' => 'success',
+							'code' => 'RS103',
+							'message' => CustomHandlers::getreSlimMessage('RS103')
 						];	
 					} else {
 						$data = [
@@ -221,7 +263,7 @@ use PDO;
 			if ($stmt->execute()){
 				if ($stmt->rowCount() > 0){
 					$single = $stmt->fetch();
-					if ($single['Password'] == Auth::HashPassword($this->Username, $this->Password)){
+					if (Auth::VerifyPassword($this->Username, $this->Password, $single['Password'])){
 						$match = true;
 					}
 				}
@@ -404,6 +446,49 @@ use PDO;
 		}
 
 		/** 
+		 * Get data single user
+		 * @return result process in json encoded data
+		 */
+		public function showUser() {
+			$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+						a.Created_at, a.Updated_at
+					FROM user_data a 
+					INNER JOIN user_role b ON a.RoleID = b.RoleID
+					INNER JOIN core_status c ON a.StatusID = c.StatusID
+					WHERE a.Username = :username;";
+				
+			$stmt = $this->db->prepare($sql);		
+			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+
+			if ($stmt->execute()) {	
+    	    	if ($stmt->rowCount() > 0){
+        		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$data = [
+		   	            'result' => $results, 
+	    		        'status' => 'success', 
+			           	'code' => 'RS501',
+        		        'message' => CustomHandlers::getreSlimMessage('RS501')
+					];
+			    } else {
+        			$data = [
+            		   	'status' => 'error',
+		        	    'code' => 'RS601',
+        		        'message' => CustomHandlers::getreSlimMessage('RS601')
+					];
+	    	    }          	   	
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS202',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS202')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
+		}
+
+		/** 
 		 * Regiter new user
 		 * @return result process in json encoded data
 		 */
@@ -521,4 +606,31 @@ use PDO;
 			}
 			return json_encode($data, JSON_PRETTY_PRINT);
 		}
+
+		/** 
+		 * Change Password
+		 * @return result process in json encoded data
+		 */
+		public function changePassword(){
+			if (Auth::ValidToken($this->db,$this->Token)){
+				if ($this->isRegistered()){
+					$data = $this->doChangePassword();
+					Auth::ClearUserToken($this->db,$this->Username);
+				} else {
+					$data = [
+	    				'status' => 'error',
+						'code' => 'RS907',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS907')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
+		}
+
 	}

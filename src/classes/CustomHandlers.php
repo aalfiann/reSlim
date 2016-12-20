@@ -139,7 +139,8 @@
             'RS903' => 'Username or Password is not match! {case sensitive}',
             'RS904' => 'Failed to update user.',
             'RS905' => 'Failed to delete user.',
-            'RS906' => 'Sorry, Your account is suspended.'
+            'RS906' => 'Sorry, Your account is suspended.',
+            'RS907' => 'Failed to change password.'
         ];
 
         /**

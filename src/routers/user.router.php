@@ -60,6 +60,20 @@ use \classes\CustomHandlers as CustomHandler;
             ->withBody($body);
     });
 
+    // GET example api to show profile user (doesn't need a authentication)
+    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->Username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($users->showUser());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
     // POST example api register user
     $app->post('/user/register', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
@@ -157,6 +171,25 @@ use \classes\CustomHandlers as CustomHandler;
 
         $body = $response->getBody();
         $body->write($users->delete());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // POST example api change password
+    $app->post('/user/changepassword', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->NewPassword = $datapost['NewPassword'];
+        $users->Token = $datapost['Token'];
+
+        $body = $response->getBody();
+        $body->write($users->changePassword());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
