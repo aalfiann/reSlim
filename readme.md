@@ -75,7 +75,6 @@ user.router.php
 ```php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use \classes\CustomHandlers as CustomHandler;
 
     // POST example api to show all data user
     $app->post('/user', function (Request $request, Response $response) {
