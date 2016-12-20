@@ -13,7 +13,7 @@
      * @package    Core reSlim
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
      * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
-     * @license    http://www.opensource.org/licenses/mit-license.html  MIT License
+     * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
      */
     class CustomHandlers {
 

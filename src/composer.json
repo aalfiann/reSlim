@@ -4,7 +4,7 @@
     "description":"Made application reSlim with use of powerful rest api",
     "keywords":["microframework", "rest", "router", "PSR"],
     "homepage":"https://github.com/aalfiann/reSlim",
-    "license":"MIT",
+    "license":"https://github.com/aalfiann/reSlim/blob/master/license.md MIT",
     "authors":[
         {
             "name":"M ABD AZIZ ALFIAN (aalfiann@gmail.com)"

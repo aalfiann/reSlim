@@ -4,7 +4,7 @@
  *
  * @link      https://github.com/aalfiann/reSlim
  * @copyright Copyright (c) 2016 M ABD AZIZ ALFIAN
- * @license   https://github.com/reSlim/blob/license.md (MIT License)
+ * @license   https://github.com/aalfiann/reSlim/blob/master/license.md (MIT License)
  */
 
 // Load all class libraries
