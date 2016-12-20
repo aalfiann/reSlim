@@ -43,7 +43,7 @@ use \classes\BaseConverter as BaseConverter;
          *
          * @param $username : input username
          * @param $password : input password
-         * @param $hash : your password hash from database
+         * @param $hash : your password hash saved in database
          * @return boolean true / false
          */
         public static function VerifyPassword($username,$password,$hash)
