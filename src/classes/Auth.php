@@ -114,7 +114,8 @@ use \classes\BaseConverter as BaseConverter;
             $r = false;
 		    $sql = "SELECT a.RS_Token
 			    FROM user_auth a 
-    			WHERE a.RS_Token = :token AND a.Expired > current_timestamp;";
+                INNER JOIN user_data b ON a.Username = b.Username
+    			WHERE b.StatusID = '1' AND a.RS_Token = :token AND a.Expired > current_timestamp;";
 	    	$stmt = $db->prepare($sql);
 		    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
     		if ($stmt->execute()) {	
@@ -168,6 +169,69 @@ use \classes\BaseConverter as BaseConverter;
             }
             return $data;
             $db = null;
+        }
+
+        /** 
+         * To clear any token after user change password
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $username : input the registered username
+         * @param $token : input the token
+         * @return json encoded data 
+         */
+        public static function ClearUserToken($db, $username){
+            try{
+                $db->beginTransaction();
+
+                $sql = "DELETE FROM user_auth 
+                    WHERE Username = :username;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        		$stmt->execute();
+                
+                $db->commit();
+                
+                $data = [
+			   		'status' => 'success',
+			    	'code' => 'RS305',
+				    'message' => CustomHandlers::getreSlimMessage('RS305')
+				];
+            } catch (PDOException $e){
+                $data = [
+		    		'status' => 'error',
+				    'code' => $e->getCode(),
+				    'message' => $e->getMessage()
+    			];
+                $db->rollBack();
+            }
+            return $data;
+            $db = null;
+        }
+
+        /** 
+         * Get informasi role user by token
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $token : input the token
+         * @return string RoleID 
+         */
+        public static function GetRoleID($db, $token){
+			$roles = 0;
+			$sql = "SELECT b.RoleID
+				FROM user_auth a 
+				INNER JOIN user_data b ON a.Username = b.Username
+				WHERE a.RS_Token=:token;";
+			$stmt = $db->prepare($sql);
+			$stmt->bindParam(':token', $token, PDO::PARAM_STR);
+			if ($stmt->execute()){
+				if ($stmt->rowCount() > 0){
+					$single = $stmt->fetch();
+					$roles = $single['RoleID'];
+				}
+			}
+			return $roles;
+			$db = null;
         }
 
     }

@@ -35,11 +35,6 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		private function doRegister(){
-			if (strtolower($this->Role) == 'admin'){
-				$newRole = '1';
-			}else{
-				$newRole = '2';
-			}
 			
 			$newusername = strtolower($this->Username);
 			$hash = Auth::HashPassword($newusername, $this->Password);
@@ -57,7 +52,7 @@ use PDO;
 					$stmt->bindParam(':email', $this->Email, PDO::PARAM_STR);
 					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
 					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':role', $newRole, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						$data = [
 							'status' => 'success',
@@ -89,11 +84,6 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		private function doUpdate(){
-			if (strtolower($this->Role) == 'admin'){
-				$newRole = '1';
-			}else{
-				$newRole = '2';
-			}
 			
 			$newusername = strtolower($this->Username);
 			
@@ -111,13 +101,13 @@ use PDO;
 					$stmt->bindParam(':email', $this->Email, PDO::PARAM_STR);
 					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
 					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':role', $newRole, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
 					$stmt->bindParam(':status', $this->Status, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						$data = [
 							'status' => 'success',
-							'code' => 'RS101',
-							'message' => CustomHandlers::getreSlimMessage('RS101')
+							'code' => 'RS103',
+							'message' => CustomHandlers::getreSlimMessage('RS103')
 						];	
 					} else {
 						$data = [
@@ -198,6 +188,26 @@ use PDO;
 		}
 
 		/**
+		 * Determine if user is active or not
+		 * @return boolean true / false
+		 */
+		private function isActivated(){
+			$r = false;
+			$sql = "SELECT a.StatusID
+				FROM user_data a 
+				WHERE a.StatusID = '1' AND a.Username = :username;";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+			if ($stmt->execute()) {	
+            	if ($stmt->rowCount() > 0){
+	                $r = true;
+    	        }          	   	
+			} 		
+			return $r;
+			$this->db = null;
+		}
+
+		/**
 		 * Determine if password is match
 		 * @return boolean true / false
 		 */
@@ -220,12 +230,108 @@ use PDO;
 			$this->db = null;
 		}
 
+		/** 
+		 * Get all data Role User
+		 * @return result process in json encoded data
+		 */
 		public function showOptionRole() {
+			if (Auth::ValidToken($this->db,$this->Token)){
+				if (Auth::GetRoleID($this->db,$this->Token) == '1'){
+					$sql = "SELECT a.RoleID,a.Role
+					FROM user_role a
+					ORDER BY a.Role ASC;";
+				} else {
+					$sql = "SELECT a.RoleID,a.Role
+					FROM user_role a
+					WHERE a.RoleID <> '1'
+					ORDER BY a.Role ASC;";
+				}
+				
+				$stmt = $this->db->prepare($sql);		
+				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
 
+				if ($stmt->execute()) {	
+    	    	    if ($stmt->rowCount() > 0){
+        	   		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+    	    		        'status' => 'success', 
+			           	    'code' => 'RS501',
+        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+			        } else {
+        			    $data = [
+            		    	'status' => 'error',
+		        		    'code' => 'RS601',
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+	    	        }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
 		}
 
+		/** 
+		 * Get all data Status User
+		 * @return result process in json encoded data
+		 */
 		public function showOptionStatus() {
+			if (Auth::ValidToken($this->db,$this->Token)){
+				$sql = "SELECT a.StatusID,a.Status
+					FROM core_status a
+					WHERE a.StatusID = '1' OR a.StatusID = '42'
+					ORDER BY a.Status ASC";
+				
+				$stmt = $this->db->prepare($sql);		
+				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
 
+				if ($stmt->execute()) {	
+    	    	    if ($stmt->rowCount() > 0){
+        	   		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+    	    		        'status' => 'success', 
+			           	    'code' => 'RS501',
+        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+			        } else {
+        			    $data = [
+            		    	'status' => 'error',
+		        		    'code' => 'RS601',
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+	    	        }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
 		}
 	
 		/** 
@@ -234,31 +340,50 @@ use PDO;
 		 */
 		public function showAll() {
 			if (Auth::ValidToken($this->db,$this->Token)){
-				$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
-					a.Created_at, a.Updated_at
-					FROM user_data a 
-					INNER JOIN user_role b ON a.RoleID = b.RoleID
-					INNER JOIN core_status c ON a.StatusID = c.StatusID
-					ORDER BY a.Fullname ASC;";
+				if (Auth::GetRoleID($this->db,$this->Token) == '1'){
+					$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+							a.Created_at, a.Updated_at
+						FROM user_data a 
+						INNER JOIN user_role b ON a.RoleID = b.RoleID
+						INNER JOIN core_status c ON a.StatusID = c.StatusID
+						ORDER BY a.Fullname ASC;";
+				} else {
+					$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+							a.Created_at, a.Updated_at
+						FROM user_data a 
+						INNER JOIN user_role b ON a.RoleID = b.RoleID
+						INNER JOIN core_status c ON a.StatusID = c.StatusID
+						WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+						UNION
+						SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
+							b.Created_at, b.Updated_at
+						FROM user_auth a 
+						INNER JOIN user_data b ON a.Username = b.Username
+						INNER JOIN user_role c ON b.RoleID = c.RoleID
+						INNER JOIN core_status d ON b.StatusID = d.StatusID
+						WHERE a.RS_Token=:token
+						ORDER BY Fullname ASC;";
+				}
+				
 				$stmt = $this->db->prepare($sql);		
+				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
 
 				if ($stmt->execute()) {	
-        		    if ($stmt->rowCount() > 0){
-            		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    	    	    if ($stmt->rowCount() > 0){
+        	   		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 						$data = [
-			                'result' => $results, 
+			   	            'result' => $results, 
     	    		        'status' => 'success', 
-			                'code' => 'RS501',
-        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+			           	    'code' => 'RS501',
+        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
 						];
-		            }
-    		        else{
-        		        $data = [
-            	    		'status' => 'error',
-		        	        'code' => 'RS601',
+			        } else {
+        			    $data = [
+            		    	'status' => 'error',
+		        		    'code' => 'RS601',
         		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
 						];
-    	        	}          	   	
+	    	        }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
@@ -317,13 +442,21 @@ use PDO;
 				];
 			} else {
 				if ($this->isRegistered()){
-					if ($this->isPasswordMatch()){
-						$data = Auth::GenerateToken($this->db,$this->Username);
+					if ($this->isActivated()) {
+						if ($this->isPasswordMatch()){
+							$data = Auth::GenerateToken($this->db,$this->Username);
+						} else {
+							$data = [
+								'status' => 'error',
+								'code' => 'RS903',
+								'message' => CustomHandlers::getreSlimMessage('RS903')
+							];
+						}
 					} else {
 						$data = [
 							'status' => 'error',
-							'code' => 'RS903',
-							'message' => CustomHandlers::getreSlimMessage('RS903')
+							'code' => 'RS906',
+							'message' => CustomHandlers::getreSlimMessage('RS906')
 						];
 					}
 				} else {
@@ -353,7 +486,7 @@ use PDO;
 		 */
 		public function update(){
 			if (Auth::ValidToken($this->db,$this->Token)){
-				$data = doUpdate();
+				$data = $this->doUpdate();
 			} else {
 				$data = [
 	    			'status' => 'error',
@@ -370,7 +503,15 @@ use PDO;
 		 */
 		public function delete(){
 			if (Auth::ValidToken($this->db,$this->Token)){
-				$data = doDelete();
+				if ($this->isRegistered()){
+					$data = $this->doDelete();
+				} else {
+					$data = [
+	    				'status' => 'error',
+						'code' => 'RS902',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS902')
+					];
+				}
 			} else {
 				$data = [
 	    			'status' => 'error',

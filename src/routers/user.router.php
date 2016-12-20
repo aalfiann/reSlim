@@ -3,6 +3,34 @@ use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \classes\CustomHandlers as CustomHandler;
 
+    // GET example api to show all data role
+    $app->get('/user/role/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->Token = $request->getAttribute('token');
+        $body = $response->getBody();
+        $body->write($users->showOptionRole());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // GET example api to show all data status
+    $app->get('/user/status/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->Token = $request->getAttribute('token');
+        $body = $response->getBody();
+        $body->write($users->showOptionStatus());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
     // GET example api to show all data user
     $app->get('/user/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
@@ -93,10 +121,46 @@ use \classes\CustomHandlers as CustomHandler;
             ->withBody($body);
     });
 
-    // PUT example api update user
-    $app->put('/user/update', function (Request $request, Response $response) {
+    // POST example api update user
+    $app->post('/user/update', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->Fullname = $datapost['Fullname'];
+        $users->Address = $datapost['Address'];
+        $users->Phone = $datapost['Phone'];
+        $users->Email = $datapost['Email'];
+        $users->Aboutme = $datapost['Aboutme'];
+        $users->Avatar = $datapost['Avatar'];
+        $users->Role = $datapost['Role'];
+        $users->Status = $datapost['Status'];
+        $users->Token = $datapost['Token'];
+
+        $body = $response->getBody();
+        $body->write($users->update());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
     });
 
-    // DELETE example api logout user
-    $app->delete('/user/delete', function (Request $request, Response $response) {
+    // POST example api delete user
+    $app->post('/user/delete', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->Username = $datapost['Username'];
+        $users->Token = $datapost['Token'];
+
+        $body = $response->getBody();
+        $body->write($users->delete());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
     });
