@@ -7,9 +7,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $data = [
 		    'status' => 'success',
 			'code' => '0',
-			'welcome' => 'Here is default index reSlim',
+			'welcome' => 'Hello world, Here is the default index reSlim',
             'author' => [
-                'name'=>'M ABD AZIZ ALFIAN (aalfiann@gmail.com)',
+                'name' => 'M ABD AZIZ ALFIAN (aalfiann@gmail.com)',
                 'github' => 'https://github.com/aalfian/reSlim',
                 'license' => 'https://github.com/aalfiann/reSlim/blob/master/license.md'
             ],
