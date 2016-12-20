@@ -21,18 +21,20 @@ Getting Started
 Folder System
 ---------------
 * database
-    * reSlim.sql (example dummy database)
+    * reSlim.sql (Structure database in reSlim to work with default example)
 * src/
     * api/
     * app/
     * classes/
-        * Auth.php (default classes for handling authentication in reSlim way)
+        * Auth.php (Default classes for handling authentication in reSlim way)
         * BaseConverter.php (Core for encryption that used in reSlim)
         * CustomHandlers.php (Default handle message in reSlim)
         * User.php (Default classes for user management in reSlim)
     * logs/
     * routers/
 	    * name.router.php (routes by functionalities)
+* test/
+    * reSlim User.postman_collection.json (Is the file to run example test in PostMan)
 
 ### api/
     
@@ -135,6 +137,23 @@ $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
 ```
+
+Working with default example for testing
+-----------------
+I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
+
+1. Import file reSlim User.postman_collection.json in your PostMan.
+2. Then you can do the test by yourself.
+
+
+The concept authentication in reSlim
+-----------------
+
+1. Register account first
+2. Then You have to login to get the generated new token
+
+The token is always generated new when You relogin and the token is will expired in 7 days as default.<br>
+If You logout or change password or delete user, the token will be clear automatically.
 
 How to Contribute
 -----------------
