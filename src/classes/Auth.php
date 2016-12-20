@@ -19,9 +19,6 @@ use \classes\BaseConverter as BaseConverter;
      */
     Class Auth {
 
-        // $secret_key is only to obfuscated the generated hash password
-    	public static $secret_key = "1L0V3R3SL1M";
-
         // $characters is variable char to use in encryption. Default is base62 (char and number only)
         public static $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -34,10 +31,28 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function HashPassword($username,$password)
         {
-        	$secret1 = self::$secret_key;
-        	$password = md5($secret1.md5($password));
-        	$hash = base64_encode($username.$password);
-        	return $hash;
+        	$options = [
+                'cost' => 11,
+                'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+            ];
+            return password_hash($username.$password, PASSWORD_BCRYPT, $options);
+        }
+
+        /** 
+         * Verify Password is to verify your login and password is match or not
+         *
+         * @param $username : input username
+         * @param $password : input password
+         * @param $hash : your password hash from database
+         * @return boolean true / false
+         */
+        public static function VerifyPassword($username,$password,$hash)
+        {
+            $result = false;
+        	if (password_verify($username.$password, $hash)) {
+              $result = true;  
+            }
+            return $result;
         }
 
         /** 
@@ -187,7 +202,6 @@ use \classes\BaseConverter as BaseConverter;
                     WHERE Username = :username;";
 	        	$stmt = $db->prepare($sql);
 		        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
-                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
         		$stmt->execute();
                 
                 $db->commit();
