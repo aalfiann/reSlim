@@ -1,7 +1,6 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use \classes\CustomHandlers as CustomHandler;
 
     // GET example api to show all data role
     $app->get('/user/role/{token}', function (Request $request, Response $response) {
