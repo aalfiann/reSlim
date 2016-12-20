@@ -7,6 +7,11 @@ reSlim
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3.6](http://www.slimframework.com/).<br>
 
+System Requirements
+---------------
+1. Web server with URL rewriting
+2. PHP 5.5 or newer
+
 
 Getting Started
 ---------------
@@ -19,71 +24,36 @@ Folder System
     * reSlim.sql (example dummy database)
 * src/
     * api/
+    * app/
     * classes/
+        * Auth.php (default classes for handling authentication in reSlim way)
+        * BaseConverter.php (Core for encryption that used in reSlim)
+        * CustomHandlers.php (Default handle message in reSlim)
+        * User.php (Default classes for user management in reSlim)
     * logs/
     * routers/
 	    * name.router.php (routes by functionalities)
 
 ### api/
+    
+Here is the place to run your application
+
+### app/
 
 Here is the place for slim framework
 
 ### classes/
 
-Add the classes here.
+Add your in classes here.
 We are using PDO MySQL for the Database.
 
-Example of class:
-
-Starter.php
-
-```php
-
-namespace classes;
-use PDO;
-
-class Starter {
-
-	protected $db;
-
-	function __construct($db=null) {
-		if (!empty($db)) 
-        {
-            $this->db = $db;
-        }
-	}
-	
-	// Get all data from database mysql
-	public function getAll() {
-		$r = array();		
-
-		$sql = "SELECT * FROM user a order by a.created;";
-		$stmt = $this->db->prepare($sql);		
-
-		if ($stmt->execute()) {	
-            if ($stmt->rowCount() > 0){
-                $r = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            else{
-                $r = 0;
-            }          	   	
-		} else {
-			$r = 0;
-		}		
-        
-		return $r;
-        $stmt->Close();
-	}
-
-}
-```
 
 ### logs/
 
-Here is the place your custom log.
+Your custom log will be place in here as default.
 You can add your custom log in your any container or router.
 
-Example adding custom log in a router post
+Example adding custom log in a router
 ```php
 $app->post('/user/new', function (Request $request, Response $response) {
     echo 'This is a POST route';
@@ -103,17 +73,29 @@ user.router.php
 ```php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\CustomHandlers as CustomHandler;
 
-    // GET example api user route directly from database
-    $app->get('/user', function (Request $request, Response $response) {
+    // POST example api to show all data user
+    $app->post('/user', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $results = $users->getAll();
+        $datapost = $request->getParsedBody();
+        $users->Token = $datapost['Token'];
         $body = $response->getBody();
-        if ($results != 0){
-            $body->write(json_encode(array("result" => $results, "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
-        } else {
-            $body->write(json_encode(array("result" => 'no records found!', "status" => "success", "code" => $response->getStatusCode()), JSON_PRETTY_PRINT));
-        }
+        $body->write($users->showAll());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // GET example api to show profile user (doesn't need a authentication)
+    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->Username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($users->showUser());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -136,6 +118,9 @@ Example Config.php
  */
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
+
+// Configuration timezone
+$config['reslim']['timezone'] = 'Asia/Jakarta';
 
 /** 
  * Configuration PDO MySQL Database
