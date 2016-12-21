@@ -9,8 +9,10 @@ reSlim is based on [Slim Framework version 3.7](http://www.slimframework.com/).<
 
 System Requirements
 ---------------
+
 1. Web server with URL rewriting
-2. PHP 5.5 or newer
+2. Web server with mcrypt extension
+3. PHP 5.5 or newer
 
 
 Getting Started
