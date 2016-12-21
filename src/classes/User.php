@@ -489,6 +489,12 @@ use PDO;
 				if ($stmt->execute()) {	
     	    	    if ($stmt->rowCount() > 0){
 						$single = $stmt->fetch();
+						
+						// Paginate won't work if page and items per page is negative or zero.
+						// So make sure that page and items per page is always return minimum absolut 1.
+						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
+						$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
+
 						// Query Data
 						if (Auth::getRoleID($this->db,$this->token) == '1'){
 							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
@@ -496,7 +502,10 @@ use PDO;
 							FROM user_data a 
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
-							ORDER BY a.Fullname ASC LIMIT :lim,:offs;";
+							ORDER BY a.Fullname ASC LIMIT :limpage , :offpage;";
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
 						} else {
 							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 								a.Created_at, a.Updated_at
@@ -511,19 +520,14 @@ use PDO;
 							INNER JOIN user_data b ON a.Username = b.Username
 							INNER JOIN user_role c ON b.RoleID = c.RoleID
 							INNER JOIN core_status d ON b.StatusID = d.StatusID
-							WHERE a.RS_Token=:token
-							ORDER BY Fullname ASC LIMIT :lims,:offs;";
+							WHERE a.RS_Token = :token
+							ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
 						}
-
-						// Paginate won't work if page and items per page is negative or zero.
-						// So make sure that page and items per page is always return minimum absolut 1.
-						$limits = (((($this->page-1)*$this->itemsPerPage)<=0)?1:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <=0)?1:$this->itemsPerPage);
-
-						$stmt2 = $this->db->prepare($sql);		
-						$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
-						$stmt2->bindValue(':lims', (int)$limits, PDO::PARAM_INT);
-						$stmt2->bindValue(':offs', (int)$offsets, PDO::PARAM_INT);
+						
 						if ($stmt2->execute()){
 							$pagination = new \classes\Pagination();
 							$pagination->totalRow = $single['TotalRow'];
@@ -531,7 +535,7 @@ use PDO;
 							$pagination->itemsPerPage = $this->itemsPerPage;
 							$pagination->limitData = $this->limitData;
 							$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-							$data = $pagination->toJSON();
+							$data = $pagination->toDataArray();
 						} else {
 							$data = [
             		    		'status' => 'error',
