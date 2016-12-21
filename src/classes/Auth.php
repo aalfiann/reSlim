@@ -29,7 +29,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $password : input password
          * @return string Hashed Password
          */
-        public static function HashPassword($username,$password)
+        public static function hashPassword($username,$password)
         {
         	$options = [
                 'cost' => 11,
@@ -46,7 +46,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $hash : your password hash saved in database
          * @return boolean true / false
          */
-        public static function VerifyPassword($username,$password,$hash)
+        public static function verifyPassword($username,$password,$hash)
         {
             $result = false;
         	if (password_verify($username.$password, $hash)) {
@@ -61,7 +61,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $data : source to encode
          * @return string base62
          */
-        public static function EncodeAPIKey($data){            
+        public static function encodeAPIKey($data){            
             return BaseConverter::convertFromBinary($data, self::$characters);
         }
 
@@ -71,7 +71,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $encoded : encoded data
          * @return string the decoded data
          */
-        public static function DecodeAPIKey($encoded){
+        public static function decodeAPIKey($encoded){
             return BaseConverter::convertToBinary($data, self::$characters);
         }
 
@@ -82,7 +82,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $username : input the registered username
          * @return json encoded data
          */
-        public static function GenerateToken($db, $username){
+        public static function generateToken($db, $username){
             try {
                 $hash = self::EncodeAPIKey($username.'::'.date("Y-m-d H:i:s"));
                 $db->beginTransaction();
@@ -125,7 +125,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $token : input the token
          * @return boolean true / false 
          */
-        public static function ValidToken($db, $token){
+        public static function validToken($db, $token){
             $r = false;
 		    $sql = "SELECT a.RS_Token
 			    FROM user_auth a 
@@ -150,7 +150,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $token : input the token
          * @return json encoded data 
          */
-        public static function ClearToken($db, $username, $token){
+        public static function clearToken($db, $username, $token){
             try{
                 $db->beginTransaction();
 
@@ -194,7 +194,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $token : input the token
          * @return json encoded data 
          */
-        public static function ClearUserToken($db, $username){
+        public static function clearUserToken($db, $username){
             try{
                 $db->beginTransaction();
 
@@ -230,7 +230,7 @@ use \classes\BaseConverter as BaseConverter;
          * @param $token : input the token
          * @return string RoleID 
          */
-        public static function GetRoleID($db, $token){
+        public static function getRoleID($db, $token){
 			$roles = 0;
 			$sql = "SELECT b.RoleID
 				FROM user_auth a 
