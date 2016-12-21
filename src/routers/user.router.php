@@ -33,11 +33,42 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // GET example api to show all data user with pagination
     $app->get('/user/{page}/{itemsperpage}/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->token = $request->getAttribute('token');
         $users->page = $request->getAttribute('page');
         $users->itemsPerPage = $request->getAttribute('itemsperpage');
+        $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showAllAsPagination());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // GET example api to search data user with pagination
+    $app->get('/user/search/{query}/{page}/{itemsperpage}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->search = $request->getAttribute('query');
+        $users->page = $request->getAttribute('page');
+        $users->itemsPerPage = $request->getAttribute('itemsperpage');
+        $users->token = $request->getAttribute('token');
+        $body = $response->getBody();
+        $body->write($users->searchAllAsPagination());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // GET example api to show profile user (doesn't need a authentication)
+    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($users->showUser());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -67,20 +98,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
-    });
-
-    // GET example api to show profile user (doesn't need a authentication)
-    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
-        $users = new classes\User($this->db);
-        $users->username = $request->getAttribute('username');
-        $body = $response->getBody();
-        $body->write($users->showUser());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')

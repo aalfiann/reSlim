@@ -30,6 +30,9 @@ use PDO;
 		// for pagination
 		var $page,$itemsPerPage,$limitData=1000;
 
+		// for search
+		var $search;
+
 		function __construct($db=null) {
 			if (!empty($db)) 
 	        {
@@ -453,7 +456,7 @@ use PDO;
 		}
 
 		/** 
-		 * Get all data user
+		 * Get all data user paginated
 		 * @return result process in json encoded data
 		 */
 		public function showAllAsPagination() {
@@ -465,6 +468,7 @@ use PDO;
 						INNER JOIN user_role b ON a.RoleID = b.RoleID
 						INNER JOIN core_status c ON a.StatusID = c.StatusID
 						ORDER BY a.Fullname ASC;";
+					$stmt = $this->db->prepare($sqlcountrow);		
 				} else {
 					$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
 						(
@@ -481,11 +485,10 @@ use PDO;
 							INNER JOIN core_status d ON b.StatusID = d.StatusID
 							WHERE a.RS_Token=:token
 						) x";
+					$stmt = $this->db->prepare($sqlcountrow);		
+					$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
 				}
 				
-				$stmt = $this->db->prepare($sqlcountrow);		
-				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
-
 				if ($stmt->execute()) {	
     	    	    if ($stmt->rowCount() > 0){
 						$single = $stmt->fetch();
@@ -523,6 +526,132 @@ use PDO;
 							WHERE a.RS_Token = :token
 							ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
 							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+						}
+						
+						if ($stmt2->execute()){
+							$pagination = new \classes\Pagination();
+							$pagination->totalRow = $single['TotalRow'];
+							$pagination->page = $this->page;
+							$pagination->itemsPerPage = $this->itemsPerPage;
+							$pagination->limitData = $this->limitData;
+							$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+							$data = $pagination->toDataArray();
+						} else {
+							$data = [
+            		    		'status' => 'error',
+		        		    	'code' => 'RS202',
+	        		    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+							];	
+						}			
+			        } else {
+        			    $data = [
+            		    	'status' => 'error',
+		        		    'code' => 'RS601',
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+	    	        }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Search all data user paginated
+		 * @return result process in json encoded data
+		 */
+		public function searchAllAsPagination() {
+			if (Auth::validToken($this->db,$this->token)){
+				$search = "%$this->search%";
+				//Query to count row for superuser and admin
+				if (Auth::getRoleID($this->db,$this->token) == '1'){
+					$sqlcountrow = "SELECT count(a.Username) AS TotalRow
+						FROM user_data a 
+						INNER JOIN user_role b ON a.RoleID = b.RoleID
+						INNER JOIN core_status c ON a.StatusID = c.StatusID
+						WHERE a.Fullname like :search
+						ORDER BY a.Fullname ASC;";
+					$stmt = $this->db->prepare($sqlcountrow);		
+					$stmt->bindParam(':search', $search, PDO::PARAM_STR);
+				} else {
+					$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
+						(
+							SELECT count(a.Username) as TotalRow
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+							AND a.Fullname like :search
+							UNION
+							SELECT count(b.Username) as TotalRow
+							FROM user_auth a 
+							INNER JOIN user_data b ON a.Username = b.Username
+							INNER JOIN user_role c ON b.RoleID = c.RoleID
+							INNER JOIN core_status d ON b.StatusID = d.StatusID
+							WHERE a.RS_Token=:token AND b.Fullname like :search
+						) x";
+					$stmt = $this->db->prepare($sqlcountrow);		
+					$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
+					$stmt->bindParam(':search', $search, PDO::PARAM_STR);
+				}			
+
+				if ($stmt->execute()) {	
+    	    	    if ($stmt->rowCount() > 0){
+						$single = $stmt->fetch();
+						
+						// Paginate won't work if page and items per page is negative or zero.
+						// So make sure that page and items per page is always return minimum absolut 1.
+						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
+						$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
+
+						// Query Data
+						if (Auth::getRoleID($this->db,$this->token) == '1'){
+							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.Fullname like :search
+							ORDER BY a.Fullname ASC LIMIT :limpage , :offpage;";
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+						} else {
+							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+							AND a.Fullname like :search
+							UNION
+							SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
+								b.Created_at, b.Updated_at
+							FROM user_auth a 
+							INNER JOIN user_data b ON a.Username = b.Username
+							INNER JOIN user_role c ON b.RoleID = c.RoleID
+							INNER JOIN core_status d ON b.StatusID = d.StatusID
+							WHERE a.RS_Token = :token AND b.Fullname like :search
+							ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
 							$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
 							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
