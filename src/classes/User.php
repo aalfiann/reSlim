@@ -585,7 +585,7 @@ use PDO;
 						FROM user_data a 
 						INNER JOIN user_role b ON a.RoleID = b.RoleID
 						INNER JOIN core_status c ON a.StatusID = c.StatusID
-						WHERE a.Fullname like :search
+						WHERE a.Fullname like :search OR a.Username like :search
 						ORDER BY a.Fullname ASC;";
 					$stmt = $this->db->prepare($sqlcountrow);		
 					$stmt->bindParam(':search', $search, PDO::PARAM_STR);
@@ -597,14 +597,19 @@ use PDO;
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
 							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
-							AND a.Fullname like :search
+							AND a.Fullname like :search 
+							OR a.RoleID <> '1' AND a.RoleID <> '2'
+							AND a.Username like :search
 							UNION
 							SELECT count(b.Username) as TotalRow
 							FROM user_auth a 
 							INNER JOIN user_data b ON a.Username = b.Username
 							INNER JOIN user_role c ON b.RoleID = c.RoleID
 							INNER JOIN core_status d ON b.StatusID = d.StatusID
-							WHERE a.RS_Token=:token AND b.Fullname like :search
+							WHERE a.RS_Token=:token 
+							AND b.Fullname like :search 
+							OR a.RS_Token=:token
+							AND b.Username like :search
 						) x";
 					$stmt = $this->db->prepare($sqlcountrow);		
 					$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
@@ -627,7 +632,7 @@ use PDO;
 							FROM user_data a 
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
-							WHERE a.Fullname like :search
+							WHERE a.Fullname like :search OR a.Username like :search
 							ORDER BY a.Fullname ASC LIMIT :limpage , :offpage;";
 							$stmt2 = $this->db->prepare($sql);
 							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
@@ -640,7 +645,9 @@ use PDO;
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
 							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
-							AND a.Fullname like :search
+							AND a.Fullname like :search 
+							OR a.RoleID <> '1' AND a.RoleID <> '2'
+							AND a.Username like :search
 							UNION
 							SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
 								b.Created_at, b.Updated_at
@@ -648,7 +655,10 @@ use PDO;
 							INNER JOIN user_data b ON a.Username = b.Username
 							INNER JOIN user_role c ON b.RoleID = c.RoleID
 							INNER JOIN core_status d ON b.StatusID = d.StatusID
-							WHERE a.RS_Token = :token AND b.Fullname like :search
+							WHERE a.RS_Token = :token 
+							AND b.Fullname like :search 
+							OR a.RS_Token = :token
+							AND b.Username like :search
 							ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
 							$stmt2 = $this->db->prepare($sql);
 							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
