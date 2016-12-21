@@ -20,8 +20,15 @@ use PDO;
 	class User {
 
 		protected $db;
+		
+		// model data user
+		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token;
+		
+		// for change password
+		var $newPassword;
 
-		var $Username,$Password,$Fullname,$Address,$Phone,$Email,$Aboutme,$Avatar,$Role,$Status,$Token,$NewPassword;
+		// for pagination
+		var $page,$itemsPerPage,$limitData=1000;
 
 		function __construct($db=null) {
 			if (!empty($db)) 
@@ -36,9 +43,9 @@ use PDO;
 		 */
 		private function doRegister(){
 			
-			$newusername = strtolower($this->Username);
-			$newemail = strtolower($this->Email);
-			$hash = Auth::HashPassword($newusername, $this->Password);
+			$newusername = strtolower($this->username);
+			$newemail = strtolower($this->email);
+			$hash = Auth::hashPassword($newusername, $this->password);
 			
 			try {
 				$this->db->beginTransaction();
@@ -47,13 +54,13 @@ use PDO;
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 					$stmt->bindParam(':password', $hash, PDO::PARAM_STR);
-					$stmt->bindParam(':fullname', $this->Fullname, PDO::PARAM_STR);
-					$stmt->bindParam(':address', $this->Address, PDO::PARAM_STR);
-					$stmt->bindParam(':phone', $this->Phone, PDO::PARAM_STR);
+					$stmt->bindParam(':fullname', $this->fullname, PDO::PARAM_STR);
+					$stmt->bindParam(':address', $this->address, PDO::PARAM_STR);
+					$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
 					$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
-					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
-					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
+					$stmt->bindParam(':aboutme', $this->aboutme, PDO::PARAM_STR);
+					$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $this->role, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						$data = [
 							'status' => 'success',
@@ -86,8 +93,8 @@ use PDO;
 		 */
 		private function doUpdate(){
 			
-			$newusername = strtolower($this->Username);
-			$newemail = strtolower($this->Email);
+			$newusername = strtolower($this->username);
+			$newemail = strtolower($this->email);
 
 			try {
 				$this->db->beginTransaction();
@@ -97,14 +104,14 @@ use PDO;
 					WHERE Username=:username;";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
-					$stmt->bindParam(':fullname', $this->Fullname, PDO::PARAM_STR);
-					$stmt->bindParam(':address', $this->Address, PDO::PARAM_STR);
-					$stmt->bindParam(':phone', $this->Phone, PDO::PARAM_STR);
+					$stmt->bindParam(':fullname', $this->fullname, PDO::PARAM_STR);
+					$stmt->bindParam(':address', $this->address, PDO::PARAM_STR);
+					$stmt->bindParam(':phone', $this->phone, PDO::PARAM_STR);
 					$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
-					$stmt->bindParam(':aboutme', $this->Aboutme, PDO::PARAM_STR);
-					$stmt->bindParam(':avatar', $this->Avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':role', $this->Role, PDO::PARAM_STR);
-					$stmt->bindParam(':status', $this->Status, PDO::PARAM_STR);
+					$stmt->bindParam(':aboutme', $this->aboutme, PDO::PARAM_STR);
+					$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $this->role, PDO::PARAM_STR);
+					$stmt->bindParam(':status', $this->status, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						$data = [
 							'status' => 'success',
@@ -136,7 +143,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		private function doDelete(){
-			$newusername = strtolower($this->Username);
+			$newusername = strtolower($this->username);
 			
 			try {
 				$this->db->beginTransaction();
@@ -174,8 +181,8 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		private function doChangePassword(){
-			$newusername = strtolower($this->Username);
-			$hash = Auth::HashPassword($newusername, $this->NewPassword);
+			$newusername = strtolower($this->username);
+			$hash = Auth::hashPassword($newusername, $this->newPassword);
 			
 			try {
 				$this->db->beginTransaction();
@@ -219,7 +226,7 @@ use PDO;
 				FROM user_data a 
 				WHERE a.Username = :username;";
 			$stmt = $this->db->prepare($sql);
-			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
 	                $r = true;
@@ -239,7 +246,7 @@ use PDO;
 				FROM user_data a 
 				WHERE a.StatusID = '1' AND a.Username = :username;";
 			$stmt = $this->db->prepare($sql);
-			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
 	                $r = true;
@@ -259,11 +266,11 @@ use PDO;
 				FROM user_data a 
 				WHERE a.Username = :username;";
 			$stmt = $this->db->prepare($sql);
-			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 			if ($stmt->execute()){
 				if ($stmt->rowCount() > 0){
 					$single = $stmt->fetch();
-					if (Auth::VerifyPassword($this->Username, $this->Password, $single['Password'])){
+					if (Auth::verifyPassword($this->username, $this->password, $single['Password'])){
 						$match = true;
 					}
 				}
@@ -277,8 +284,8 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showOptionRole() {
-			if (Auth::ValidToken($this->db,$this->Token)){
-				if (Auth::GetRoleID($this->db,$this->Token) == '1'){
+			if (Auth::validToken($this->db,$this->token)){
+				if (Auth::getRoleID($this->db,$this->token) == '1'){
 					$sql = "SELECT a.RoleID,a.Role
 					FROM user_role a
 					ORDER BY a.Role ASC;";
@@ -290,7 +297,7 @@ use PDO;
 				}
 				
 				$stmt = $this->db->prepare($sql);		
-				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
+				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
 
 				if ($stmt->execute()) {	
     	    	    if ($stmt->rowCount() > 0){
@@ -332,14 +339,14 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showOptionStatus() {
-			if (Auth::ValidToken($this->db,$this->Token)){
+			if (Auth::validToken($this->db,$this->token)){
 				$sql = "SELECT a.StatusID,a.Status
 					FROM core_status a
 					WHERE a.StatusID = '1' OR a.StatusID = '42'
 					ORDER BY a.Status ASC";
 				
 				$stmt = $this->db->prepare($sql);		
-				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
+				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
 
 				if ($stmt->execute()) {	
     	    	    if ($stmt->rowCount() > 0){
@@ -381,8 +388,8 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showAll() {
-			if (Auth::ValidToken($this->db,$this->Token)){
-				if (Auth::GetRoleID($this->db,$this->Token) == '1'){
+			if (Auth::validToken($this->db,$this->token)){
+				if (Auth::getRoleID($this->db,$this->token) == '1'){
 					$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 							a.Created_at, a.Updated_at
 						FROM user_data a 
@@ -408,7 +415,7 @@ use PDO;
 				}
 				
 				$stmt = $this->db->prepare($sql);		
-				$stmt->bindParam(':token', $this->Token, PDO::PARAM_STR);
+				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
 
 				if ($stmt->execute()) {	
     	    	    if ($stmt->rowCount() > 0){
@@ -446,6 +453,120 @@ use PDO;
 		}
 
 		/** 
+		 * Get all data user
+		 * @return result process in json encoded data
+		 */
+		public function showAllAsPagination() {
+			if (Auth::validToken($this->db,$this->token)){
+				//Query to count row for superuser and admin
+				if (Auth::getRoleID($this->db,$this->token) == '1'){
+					$sqlcountrow = "SELECT count(a.Username) AS TotalRow
+						FROM user_data a 
+						INNER JOIN user_role b ON a.RoleID = b.RoleID
+						INNER JOIN core_status c ON a.StatusID = c.StatusID
+						ORDER BY a.Fullname ASC;";
+				} else {
+					$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
+						(
+							SELECT count(a.Username) as TotalRow
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+							UNION
+							SELECT count(b.Username) as TotalRow
+							FROM user_auth a 
+							INNER JOIN user_data b ON a.Username = b.Username
+							INNER JOIN user_role c ON b.RoleID = c.RoleID
+							INNER JOIN core_status d ON b.StatusID = d.StatusID
+							WHERE a.RS_Token=:token
+						) x";
+				}
+				
+				$stmt = $this->db->prepare($sqlcountrow);		
+				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
+
+				if ($stmt->execute()) {	
+    	    	    if ($stmt->rowCount() > 0){
+						$single = $stmt->fetch();
+						// Query Data
+						if (Auth::getRoleID($this->db,$this->token) == '1'){
+							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							ORDER BY a.Fullname ASC LIMIT :lim,:offs;";
+						} else {
+							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+							UNION
+							SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
+								b.Created_at, b.Updated_at
+							FROM user_auth a 
+							INNER JOIN user_data b ON a.Username = b.Username
+							INNER JOIN user_role c ON b.RoleID = c.RoleID
+							INNER JOIN core_status d ON b.StatusID = d.StatusID
+							WHERE a.RS_Token=:token
+							ORDER BY Fullname ASC LIMIT :lims,:offs;";
+						}
+
+						// Paginate won't work if page and items per page is negative or zero.
+						// So make sure that page and items per page is always return minimum absolut 1.
+						$limits = (((($this->page-1)*$this->itemsPerPage)<=0)?1:(($this->page-1)*$this->itemsPerPage));
+						$offsets = (($this->itemsPerPage <=0)?1:$this->itemsPerPage);
+
+						$stmt2 = $this->db->prepare($sql);		
+						$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
+						$stmt2->bindValue(':lims', (int)$limits, PDO::PARAM_INT);
+						$stmt2->bindValue(':offs', (int)$offsets, PDO::PARAM_INT);
+						if ($stmt2->execute()){
+							$pagination = new \classes\Pagination();
+							$pagination->totalRow = $single['TotalRow'];
+							$pagination->page = $this->page;
+							$pagination->itemsPerPage = $this->itemsPerPage;
+							$pagination->limitData = $this->limitData;
+							$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+							$data = $pagination->toJSON();
+						} else {
+							$data = [
+            		    		'status' => 'error',
+		        		    	'code' => 'RS202',
+	        		    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+							];	
+						}			
+			        } else {
+        			    $data = [
+            		    	'status' => 'error',
+		        		    'code' => 'RS601',
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+	    	        }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
+		}
+
+
+		/** 
 		 * Get data single user
 		 * @return result process in json encoded data
 		 */
@@ -458,7 +579,7 @@ use PDO;
 					WHERE a.Username = :username;";
 				
 			$stmt = $this->db->prepare($sql);		
-			$stmt->bindParam(':username', $this->Username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
 
 			if ($stmt->execute()) {	
     	    	if ($stmt->rowCount() > 0){
@@ -488,12 +609,14 @@ use PDO;
 	        $this->db= null;
 		}
 
+		
+
 		/** 
 		 * Regiter new user
 		 * @return result process in json encoded data
 		 */
 		public function register(){
-			if ( preg_match('/[A-Za-z0-9]+/',$this->Username) == false ){
+			if ( preg_match('/[A-Za-z0-9]+/',$this->username) == false ){
 				$data = [
 					'status' => 'error',
 					'code' => 'RS804',
@@ -519,7 +642,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function login(){
-			if ( preg_match('/[A-Za-z0-9]+/',$this->Username) == false ){
+			if ( preg_match('/[A-Za-z0-9]+/',$this->username) == false ){
 				$data = [
 					'status' => 'error',
 					'code' => 'RS804',
@@ -529,7 +652,7 @@ use PDO;
 				if ($this->isRegistered()){
 					if ($this->isActivated()) {
 						if ($this->isPasswordMatch()){
-							$data = Auth::GenerateToken($this->db,$this->Username);
+							$data = Auth::generateToken($this->db,$this->username);
 						} else {
 							$data = [
 								'status' => 'error',
@@ -561,7 +684,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function logout(){
-			$data = Auth::ClearToken($this->db,$this->Username,$this->Token);
+			$data = Auth::clearToken($this->db,$this->username,$this->token);
 			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 
@@ -570,7 +693,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function update(){
-			if (Auth::ValidToken($this->db,$this->Token)){
+			if (Auth::validToken($this->db,$this->token)){
 				$data = $this->doUpdate();
 			} else {
 				$data = [
@@ -587,7 +710,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function delete(){
-			if (Auth::ValidToken($this->db,$this->Token)){
+			if (Auth::validToken($this->db,$this->token)){
 				if ($this->isRegistered()){
 					$data = $this->doDelete();
 				} else {
@@ -612,10 +735,10 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function changePassword(){
-			if (Auth::ValidToken($this->db,$this->Token)){
+			if (Auth::validToken($this->db,$this->token)){
 				if ($this->isRegistered()){
 					$data = $this->doChangePassword();
-					Auth::ClearUserToken($this->db,$this->Username);
+					Auth::clearUserToken($this->db,$this->username);
 				} else {
 					$data = [
 	    				'status' => 'error',

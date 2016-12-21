@@ -5,7 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // GET example api to show all data role
     $app->get('/user/role/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->Token = $request->getAttribute('token');
+        $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showOptionRole());
         return $response
@@ -19,9 +19,25 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // GET example api to show all data status
     $app->get('/user/status/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->Token = $request->getAttribute('token');
+        $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showOptionStatus());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // GET example api to show all data user with pagination
+    $app->get('/user/{page}/{itemsperpage}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->page = $request->getAttribute('page');
+        $users->itemsPerPage = $request->getAttribute('itemsperpage');
+        $body = $response->getBody();
+        $body->write($users->showAllAsPagination());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -33,7 +49,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // GET example api to show all data user
     $app->get('/user/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->Token = $request->getAttribute('token');
+        $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showAll());
         return $response
@@ -48,7 +64,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     $app->post('/user', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
-        $users->Token = $datapost['Token'];
+        $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
         return $response
@@ -62,7 +78,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // GET example api to show profile user (doesn't need a authentication)
     $app->get('/user/profile/{username}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->Username = $request->getAttribute('username');
+        $users->username = $request->getAttribute('username');
         $body = $response->getBody();
         $body->write($users->showUser());
         return $response
@@ -78,15 +94,15 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->Password = $datapost['Password'];
-        $users->Fullname = $datapost['Fullname'];
-        $users->Address = $datapost['Address'];
-        $users->Phone = $datapost['Phone'];
-        $users->Email = $datapost['Email'];
-        $users->Aboutme = $datapost['Aboutme'];
-        $users->Avatar = $datapost['Avatar'];
-        $users->Role = $datapost['Role'];
+        $users->username = $datapost['Username'];
+        $users->password = $datapost['Password'];
+        $users->fullname = $datapost['Fullname'];
+        $users->address = $datapost['Address'];
+        $users->phone = $datapost['Phone'];
+        $users->email = $datapost['Email'];
+        $users->aboutme = $datapost['Aboutme'];
+        $users->avatar = $datapost['Avatar'];
+        $users->role = $datapost['Role'];
 
         $body = $response->getBody();
         $body->write($users->register());
@@ -103,8 +119,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->Password = $datapost['Password'];
+        $users->username = $datapost['Username'];
+        $users->password = $datapost['Password'];
         $body = $response->getBody();
         $body->write($users->login());
 
@@ -121,8 +137,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->Token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->token = $datapost['Token'];
 
         $body = $response->getBody();
         $body->write($users->logout());
@@ -139,16 +155,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->Fullname = $datapost['Fullname'];
-        $users->Address = $datapost['Address'];
-        $users->Phone = $datapost['Phone'];
-        $users->Email = $datapost['Email'];
-        $users->Aboutme = $datapost['Aboutme'];
-        $users->Avatar = $datapost['Avatar'];
-        $users->Role = $datapost['Role'];
-        $users->Status = $datapost['Status'];
-        $users->Token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->fullname = $datapost['Fullname'];
+        $users->address = $datapost['Address'];
+        $users->phone = $datapost['Phone'];
+        $users->email = $datapost['Email'];
+        $users->aboutme = $datapost['Aboutme'];
+        $users->avatar = $datapost['Avatar'];
+        $users->role = $datapost['Role'];
+        $users->status = $datapost['Status'];
+        $users->token = $datapost['Token'];
 
         $body = $response->getBody();
         $body->write($users->update());
@@ -165,8 +181,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->Token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->token = $datapost['Token'];
 
         $body = $response->getBody();
         $body->write($users->delete());
@@ -183,9 +199,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         
-        $users->Username = $datapost['Username'];
-        $users->NewPassword = $datapost['NewPassword'];
-        $users->Token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->newPassword = $datapost['NewPassword'];
+        $users->token = $datapost['Token'];
 
         $body = $response->getBody();
         $body->write($users->changePassword());
