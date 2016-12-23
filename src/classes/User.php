@@ -899,4 +899,21 @@ use PDO;
 			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 
+		public function verifyToken(){
+			if (Auth::validToken($this->db,$this->token)){
+				$data = [
+	    			'status' => 'success',
+					'code' => 'RS304',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS304')
+				];
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS404',
+	            	'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
+		}
+
 	}

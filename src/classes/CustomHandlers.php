@@ -118,7 +118,7 @@
             'RS401' => 'Your token is not authorized, so You have to generate new token!',
             'RS402' => 'Your token is not match.',
             'RS403' => 'Your token is wrong.',
-            'RS404' => 'Your token is not authorized.',
+            'RS404' => 'Your token is expired or not authorized.',
             'RS405' => 'You don\'t have any token.',
             // User data success 5xx
             'RS501' => 'Data records is found.',
