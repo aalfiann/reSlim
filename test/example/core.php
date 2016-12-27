@@ -99,18 +99,18 @@
                 if ($data->{'status'} == "success"){
                     echo '<div class="alert alert-success" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Proses Register Successfully!</strong> 
+                            <strong>Process Register Successfully!</strong> 
                         </div>';
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Proses Register Failed!</strong> '.$data->{'message'}.' 
+                            <strong>Process Register Failed!</strong> '.$data->{'message'}.' 
                         </div>';    
                 }
             } else {
                 echo '<div class="alert alert-danger" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Proses Register Failed!</strong> Can not connected to the server! 
+                            <strong>Process Register Failed!</strong> Can not connected to the server! 
                         </div>';
             }
 	    }
@@ -155,13 +155,13 @@
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Proses Login Failed!</strong> '.$data->{'message'}.' 
+                            <strong>Process Login Failed!</strong> '.$data->{'message'}.' 
                         </div>';    
                 }
             } else {
                 echo '<div class="alert alert-danger" role="alert">
                             <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Proses Login Failed!</strong> Can not connected to the server! 
+                            <strong>Process Login Failed!</strong> Can not connected to the server! 
                         </div>';
             }
 	    }
@@ -195,11 +195,11 @@
         // Check SESSION, COOKIE and Verify Token
         public static function checkSessions()
         {
-            //Jika tidak ada cookie maka check session
+            // If cookie is not found then check session
             if (!isset($_COOKIE['username']) && !isset($_COOKIE['token'])) 
             {
                 session_start();
-                //jika tidak menggunakan session maka lempar ke login
+                // if session is not found then redirect to login page
                 if (!isset($_SESSION['username']) && !isset($_SESSION['token']))
                 {
                     $out['username'] = null;
@@ -218,7 +218,7 @@
                     }                     
                 }
             }
-            else //jika ada cookie maka return array
+            else // If there is a cookie then return array
             {
                 if (self::verifyToken($_COOKIE['token'])) {
                     $out['username'] = $_COOKIE['username'];
@@ -235,7 +235,7 @@
         // Redirect Page Location Header
         public static function goToPage($page,$timeout=0)
         {
-            header("Refresh:".$timeout.";url= ".self::$basepath."/".$page."");
+           return header("Refresh:".$timeout.";url= ".self::$basepath."/".$page."");
         }
 
         // Redirect Page Location by meta header

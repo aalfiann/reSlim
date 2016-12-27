@@ -9,27 +9,41 @@
             <ul class="nav">
             <?php if (!empty($datalogin['username'])) 
             { ?>
-                <li <?php if (!empty($_GET['m'])) if($_GET['m']==3) echo 'class="active"';?> >
-                    <a href="modul-dashboard.php?m=3">
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
+                <?php // SuperUser and Admin Menu 
+                    if (Core::getRole($datalogin['token']) != 3) { ?>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==3) echo 'class="active"';?> >
+                        <a href="modul-dashboard.php?m=3">
+                            <i class="ti-panel"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
                         <a href="modul-user-profile.php?m=4">
                             <i class="ti-user"></i>
                             <p>My Profile</p>
                         </a>
                     </li>
-
-                <?php if (Core::getRole($datalogin['token']) != 3) { ?>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==5) echo 'class="active"';?> >
                         <a href="modul-data-user.php?m=5&page=1&itemsperpage=10">
                             <i class="ti-pencil"></i>
                             <p>Data User</p>
                         </a>
                     </li>
+                <?php } else {  // Member Menu ?>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
+                        <a href="modul-user-profile.php?m=4">
+                            <i class="ti-user"></i>
+                            <p>My Profile</p>
+                        </a>
+                    </li>
                 <?php } ?>
+        <?php } else if (pathinfo(basename($_SERVER['REQUEST_URI']), PATHINFO_FILENAME) == "modul-view-profile") { // Guest ?>
+                    <li class="active">
+                        <a href="<?php basename($_SERVER['REQUEST_URI'])?>">
+                            <i class="ti-search"></i>
+                            <p>View Profile</p>
+                        </a>
+                    </li>
         <?php } else { ?>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==1) echo 'class="active"';?> >
                     <a href="modul-login.php?m=1">
