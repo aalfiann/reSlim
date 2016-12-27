@@ -15,10 +15,16 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
+                        <a href="modul-user-profile.php?m=4">
+                            <i class="ti-user"></i>
+                            <p>My Profile</p>
+                        </a>
+                    </li>
 
                 <?php if (Core::getRole($datalogin['token']) != 3) { ?>
-                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
-                        <a href="modul-data-user.php?m=4&page=1&itemsperpage=10">
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==5) echo 'class="active"';?> >
+                        <a href="modul-data-user.php?m=5&page=1&itemsperpage=10">
                             <i class="ti-pencil"></i>
                             <p>Data User</p>
                         </a>

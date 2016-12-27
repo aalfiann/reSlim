@@ -23,15 +23,15 @@
                                     <div class="content">
                                         <div class="form-group">
                                             <label>Username</label>
-                                            <input name="username" type="username" placeholder="Username Mind Anda" class="form-control border-input text-uppercase" required>
+                                            <input name="username" type="username" placeholder="Your Username" class="form-control border-input" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
-                                            <input name="password" type="password" placeholder="Password Anda" class="form-control border-input" required>
+                                            <input name="password" type="password" placeholder="Your Password" class="form-control border-input" required>
                                         </div>
                                         <label class="checkbox" for="checkbox1">
 	                                	<input name="remember" type="checkbox" id="checkbox1" data-toggle="checkbox">
-	                                	Selalu ingat Saya
+	                                	Remember Me
 	                            	</label>
                                         <hr>
                                         <div class="form-group text-center">

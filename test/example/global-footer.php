@@ -2,10 +2,9 @@
             <div class="container-fluid">
                 <nav class="pull-left">
                     <ul>
-
                         <li>
                             <a href="<?=Core::$basepath;?>">
-                                Main
+                                Home
                             </a>
                         </li>
                     </ul>

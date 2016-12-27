@@ -115,6 +115,29 @@
             }
 	    }
 
+        // Process Update
+	    public static function update($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Successfully!</strong> 
+                        </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Failed!</strong> '.$data->{'message'}.' 
+                        </div>';    
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Failed!</strong> Can not connected to the server! 
+                        </div>';
+            }
+	    }
+
         // Process Login
 	    public static function login($url,$post_array){
             $data = json_decode(self::execPostRequest($url,$post_array));
