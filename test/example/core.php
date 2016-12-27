@@ -63,6 +63,18 @@
             return $result;
         }
 
+        // Get Role by API Token
+        public static function getRole($token){
+            $result = 0;
+            $data = json_decode(self::execGetRequest(self::$api.'/user/scope/'.$token));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    $result = $data->{'role'};
+                }
+            }
+            return $result;
+        }
+
         // Revoke API Token
         public static function revokeToken($username,$token){
             $result = false;
@@ -80,12 +92,35 @@
             return $result;
         }
 
-        // Process Login
-	    public static function login($url,$post_array,$useCookies){
+        // Process Register
+	    public static function register($url,$post_array){
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    if ($post_array['remember'] == 0){
+                    echo '<div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Proses Register Successfully!</strong> 
+                        </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Proses Register Failed!</strong> '.$data->{'message'}.' 
+                        </div>';    
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Proses Register Failed!</strong> Can not connected to the server! 
+                        </div>';
+            }
+	    }
+
+        // Process Login
+	    public static function login($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    if ($post_array['Rememberme'] == "on"){
 						session_start();
                         $_SESSION['username'] = $post_array['Username'];
 						$_SESSION['token'] = $data->{'token'};

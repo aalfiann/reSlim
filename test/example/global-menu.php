@@ -10,11 +10,20 @@
             <?php if (!empty($datalogin['username'])) 
             { ?>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==3) echo 'class="active"';?> >
-                    <a href="modul-data-user.php?m=3">
-                        <i class="ti-pencil"></i>
-                        <p>Data User</p>
+                    <a href="modul-dashboard.php?m=3">
+                        <i class="ti-panel"></i>
+                        <p>Dashboard</p>
                     </a>
                 </li>
+
+                <?php if (Core::getRole($datalogin['token']) != 3) { ?>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
+                        <a href="modul-data-user.php?m=4&page=1&itemsperpage=10">
+                            <i class="ti-pencil"></i>
+                            <p>Data User</p>
+                        </a>
+                    </li>
+                <?php } ?>
         <?php } else { ?>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==1) echo 'class="active"';?> >
                     <a href="modul-login.php?m=1">

@@ -7,10 +7,11 @@
                                 if (isset($_POST['submitlogin']))
                                 {
                                     $post_array = array(
-                                    	'Username' => urlencode($_POST['username']),
-                                    	'Password' => urlencode($_POST['password'])
+                                    	'Username' => $_POST['username'],
+                                    	'Password' => $_POST['password'],
+                                        'Rememberme' => (!empty($_POST['remember'])?$_POST['remember']:'')
                                     );
-                                    Core::login(Core::$api.'/user/login',$post_array,$_POST['remember']);
+                                    Core::login(Core::$api.'/user/login',$post_array);
                                 }
                             ?>
                             <form method="post" action="<?php $_SERVER['PHP_SELF']?>">

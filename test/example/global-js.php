@@ -7,3 +7,6 @@
 
 	<!-- Paper Dashboard Core javascript and methods for Demo purpose -->
 	<script src="assets/js/paper-dashboard.min.js"></script>
+
+	<!-- Export -->
+	<script type="text/javascript" src="assets/js/package.export.js"></script>

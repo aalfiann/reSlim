@@ -4,29 +4,14 @@
                     <ul>
 
                         <li>
-                            <a href="http://tkd.co.id/">
+                            <a href="<?=Core::$basepath;?>">
                                 Main
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://blog.tkd.co.id/?p=post">
-                               Post
-                            </a>
-                        </li>
-                        <li>
-                            <a href="http://blog.tkd.co.id/?p=forum">
-                                Forum
-                            </a>
-                        </li>
-                        <li>
-                            <a href="sitemap.xml">
-                                Sitemap
                             </a>
                         </li>
                     </ul>
                 </nav>
 				<div class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, made using <a href="http://blog.tkd.co.id/tag/API.html">API</a> by <a href="http://tkd.co.id">TKD Express</a>
+                    &copy; <script>document.write(new Date().getFullYear())</script>, template made with<i class="fa fa-heart heart"></i> by <a href="http://www.creative-tim.com">Creative Tim</a>
                 </div>
             </div>
         </footer>
