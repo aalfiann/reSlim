@@ -101,14 +101,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Avatar</label>
-                                                <input type="text" name="avatar" class="form-control border-input" placeholder="Please input url image for Your Avatar." value="'.$data->result[0]->{'Avatar'}.'">
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="clearfix"></div>
                                 </form>
                             </div>
