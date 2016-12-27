@@ -91,6 +91,20 @@ use \Psr\Http\Message\ResponseInterface as Response;
             ->withBody($body);
     });
 
+    // GET example api to get role user token (doesn't need a authentication)
+    $app->get('/user/scope/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $body = $response->getBody();
+        $body->write($users->getRole());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
     // GET example api to show all data user
     $app->get('/user/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);

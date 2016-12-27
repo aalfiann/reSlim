@@ -392,57 +392,66 @@ use PDO;
 		 */
 		public function showAll() {
 			if (Auth::validToken($this->db,$this->token)){
-				if (Auth::getRoleID($this->db,$this->token) == '1'){
-					$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
-							a.Created_at, a.Updated_at
-						FROM user_data a 
-						INNER JOIN user_role b ON a.RoleID = b.RoleID
-						INNER JOIN core_status c ON a.StatusID = c.StatusID
-						ORDER BY a.Fullname ASC;";
-				} else {
-					$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
-							a.Created_at, a.Updated_at
-						FROM user_data a 
-						INNER JOIN user_role b ON a.RoleID = b.RoleID
-						INNER JOIN core_status c ON a.StatusID = c.StatusID
-						WHERE a.RoleID <> '1' AND a.RoleID <> '2'
-						UNION
-						SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
-							b.Created_at, b.Updated_at
-						FROM user_auth a 
-						INNER JOIN user_data b ON a.Username = b.Username
-						INNER JOIN user_role c ON b.RoleID = c.RoleID
-						INNER JOIN core_status d ON b.StatusID = d.StatusID
-						WHERE a.RS_Token=:token
-						ORDER BY Fullname ASC;";
-				}
-				
-				$stmt = $this->db->prepare($sql);		
-				$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
-
-				if ($stmt->execute()) {	
-    	    	    if ($stmt->rowCount() > 0){
-        	   		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-						$data = [
-			   	            'result' => $results, 
-    	    		        'status' => 'success', 
-			           	    'code' => 'RS501',
-        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
-						];
-			        } else {
-        			    $data = [
-            		    	'status' => 'error',
-		        		    'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
-						];
-	    	        }          	   	
-				} else {
+				if (Auth::getRoleID($this->db,$this->token) == '3'){
 					$data = [
     	    			'status' => 'error',
-						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+						'code' => 'RS404',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS404')
 					];
+				} else {
+					if (Auth::getRoleID($this->db,$this->token) == '1'){
+						$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							ORDER BY a.Fullname ASC;";
+					} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+						$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+								a.Created_at, a.Updated_at
+							FROM user_data a 
+							INNER JOIN user_role b ON a.RoleID = b.RoleID
+							INNER JOIN core_status c ON a.StatusID = c.StatusID
+							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+							UNION
+							SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
+								b.Created_at, b.Updated_at
+							FROM user_auth a 
+							INNER JOIN user_data b ON a.Username = b.Username
+							INNER JOIN user_role c ON b.RoleID = c.RoleID
+							INNER JOIN core_status d ON b.StatusID = d.StatusID
+							WHERE a.RS_Token=:token
+							ORDER BY Fullname ASC;";
+					}
+				
+					$stmt = $this->db->prepare($sql);		
+					$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
+
+					if ($stmt->execute()) {	
+    		    	    if ($stmt->rowCount() > 0){
+        		   		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+							$data = [
+			   	    	        'result' => $results, 
+    	    		    	    'status' => 'success', 
+			           	    	'code' => 'RS501',
+	        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+							];
+				        } else {
+        				    $data = [
+            			    	'status' => 'error',
+		        			    'code' => 'RS601',
+        		    		    'message' => CustomHandlers::getreSlimMessage('RS601')
+							];
+		    	        }          	   	
+					} else {
+						$data = [
+    	    				'status' => 'error',
+							'code' => 'RS202',
+	        		    	'message' => CustomHandlers::getreSlimMessage('RS202')
+						];
+					}
 				}
+				
 			} else {
 				$data = [
 	    			'status' => 'error',
@@ -461,105 +470,114 @@ use PDO;
 		 */
 		public function showAllAsPagination() {
 			if (Auth::validToken($this->db,$this->token)){
-				//Query to count row for superuser and admin
-				if (Auth::getRoleID($this->db,$this->token) == '1'){
-					$sqlcountrow = "SELECT count(a.Username) AS TotalRow
-						FROM user_data a 
-						INNER JOIN user_role b ON a.RoleID = b.RoleID
-						INNER JOIN core_status c ON a.StatusID = c.StatusID
-						ORDER BY a.Fullname ASC;";
-					$stmt = $this->db->prepare($sqlcountrow);		
+				if (Auth::getRoleID($this->db,$this->token) == '3'){
+					$data = [
+		    			'status' => 'error',
+						'code' => 'RS404',
+        		    	'message' => CustomHandlers::getreSlimMessage('RS404')
+					];
 				} else {
-					$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
-						(
-							SELECT count(a.Username) as TotalRow
+					//Query to count row for superuser and admin
+					if (Auth::getRoleID($this->db,$this->token) == '1'){
+						$sqlcountrow = "SELECT count(a.Username) AS TotalRow
 							FROM user_data a 
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
-							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
-							UNION
-							SELECT count(b.Username) as TotalRow
-							FROM user_auth a 
-							INNER JOIN user_data b ON a.Username = b.Username
-							INNER JOIN user_role c ON b.RoleID = c.RoleID
-							INNER JOIN core_status d ON b.StatusID = d.StatusID
-							WHERE a.RS_Token=:token
-						) x";
-					$stmt = $this->db->prepare($sqlcountrow);		
-					$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
+							ORDER BY a.Fullname ASC;";
+						$stmt = $this->db->prepare($sqlcountrow);		
+					} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+						$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
+							(
+								SELECT count(a.Username) as TotalRow
+								FROM user_data a 
+								INNER JOIN user_role b ON a.RoleID = b.RoleID
+								INNER JOIN core_status c ON a.StatusID = c.StatusID
+								WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+								UNION
+								SELECT count(b.Username) as TotalRow
+								FROM user_auth a 
+								INNER JOIN user_data b ON a.Username = b.Username
+								INNER JOIN user_role c ON b.RoleID = c.RoleID
+								INNER JOIN core_status d ON b.StatusID = d.StatusID
+								WHERE a.RS_Token=:token
+							) x";
+						$stmt = $this->db->prepare($sqlcountrow);		
+						$stmt->bindParam(':token', $this->token, PDO::PARAM_STR);
+					}
+				
+					if ($stmt->execute()) {	
+    	    	    	if ($stmt->rowCount() > 0){
+							$single = $stmt->fetch();
+						
+							// Paginate won't work if page and items per page is negative or zero.
+							// So make sure that page and items per page is always return minimum absolut 1.
+							$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
+							$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
+
+							// Query Data
+							if (Auth::getRoleID($this->db,$this->token) == '1'){
+								$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+									a.Created_at, a.Updated_at
+								FROM user_data a 
+								INNER JOIN user_role b ON a.RoleID = b.RoleID
+								INNER JOIN core_status c ON a.StatusID = c.StatusID
+								ORDER BY a.Fullname ASC LIMIT :limpage , :offpage;";
+								$stmt2 = $this->db->prepare($sql);
+								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+							} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+								$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+									a.Created_at, a.Updated_at
+								FROM user_data a 
+								INNER JOIN user_role b ON a.RoleID = b.RoleID
+								INNER JOIN core_status c ON a.StatusID = c.StatusID
+								WHERE a.RoleID <> '1' AND a.RoleID <> '2'
+								UNION
+								SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
+									b.Created_at, b.Updated_at
+								FROM user_auth a 
+								INNER JOIN user_data b ON a.Username = b.Username
+								INNER JOIN user_role c ON b.RoleID = c.RoleID
+								INNER JOIN core_status d ON b.StatusID = d.StatusID
+								WHERE a.RS_Token = :token
+								ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
+								$stmt2 = $this->db->prepare($sql);
+								$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
+								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+							}
+						
+							if ($stmt2->execute()){
+								$pagination = new \classes\Pagination();
+								$pagination->totalRow = $single['TotalRow'];
+								$pagination->page = $this->page;
+								$pagination->itemsPerPage = $this->itemsPerPage;
+								$pagination->limitData = $this->limitData;
+								$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+								$data = $pagination->toDataArray();
+							} else {
+								$data = [
+        	    		    		'status' => 'error',
+		    	    		    	'code' => 'RS202',
+	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+								];	
+							}			
+				        } else {
+    	    			    $data = [
+        	    		    	'status' => 'error',
+		    	    		    'code' => 'RS601',
+        			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+							];
+		    	        }          	   	
+					} else {
+						$data = [
+    	    				'status' => 'error',
+							'code' => 'RS202',
+	        			    'message' => CustomHandlers::getreSlimMessage('RS202')
+						];
+					}	
 				}
 				
-				if ($stmt->execute()) {	
-    	    	    if ($stmt->rowCount() > 0){
-						$single = $stmt->fetch();
-						
-						// Paginate won't work if page and items per page is negative or zero.
-						// So make sure that page and items per page is always return minimum absolut 1.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
-
-						// Query Data
-						if (Auth::getRoleID($this->db,$this->token) == '1'){
-							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
-								a.Created_at, a.Updated_at
-							FROM user_data a 
-							INNER JOIN user_role b ON a.RoleID = b.RoleID
-							INNER JOIN core_status c ON a.StatusID = c.StatusID
-							ORDER BY a.Fullname ASC LIMIT :limpage , :offpage;";
-							$stmt2 = $this->db->prepare($sql);
-							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
-							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
-						} else {
-							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
-								a.Created_at, a.Updated_at
-							FROM user_data a 
-							INNER JOIN user_role b ON a.RoleID = b.RoleID
-							INNER JOIN core_status c ON a.StatusID = c.StatusID
-							WHERE a.RoleID <> '1' AND a.RoleID <> '2'
-							UNION
-							SELECT b.Username, b.Fullname, b.Address, b.Phone, b.Email, b.Aboutme,b.Avatar, c.Role , d.Status,
-								b.Created_at, b.Updated_at
-							FROM user_auth a 
-							INNER JOIN user_data b ON a.Username = b.Username
-							INNER JOIN user_role c ON b.RoleID = c.RoleID
-							INNER JOIN core_status d ON b.StatusID = d.StatusID
-							WHERE a.RS_Token = :token
-							ORDER BY Fullname ASC LIMIT :limpage , :offpage;";
-							$stmt2 = $this->db->prepare($sql);
-							$stmt2->bindParam(':token', $this->token, PDO::PARAM_STR);
-							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
-							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
-						}
-						
-						if ($stmt2->execute()){
-							$pagination = new \classes\Pagination();
-							$pagination->totalRow = $single['TotalRow'];
-							$pagination->page = $this->page;
-							$pagination->itemsPerPage = $this->itemsPerPage;
-							$pagination->limitData = $this->limitData;
-							$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-							$data = $pagination->toDataArray();
-						} else {
-							$data = [
-            		    		'status' => 'error',
-		        		    	'code' => 'RS202',
-	        		    	    'message' => CustomHandlers::getreSlimMessage('RS202')
-							];	
-						}			
-			        } else {
-        			    $data = [
-            		    	'status' => 'error',
-		        		    'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
-						];
-	    	        }          	   	
-				} else {
-					$data = [
-    	    			'status' => 'error',
-						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
-					];
-				}
 			} else {
 				$data = [
 	    			'status' => 'error',
@@ -899,6 +917,10 @@ use PDO;
 			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 
+		/** 
+		 * Verify Token
+		 * @return result process in json encoded data
+		 */
 		public function verifyToken(){
 			if (Auth::validToken($this->db,$this->token)){
 				$data = [
@@ -911,6 +933,28 @@ use PDO;
 	    			'status' => 'error',
 					'code' => 'RS404',
 	            	'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
+		}
+
+		/** 
+		 * Get Role User by Token
+		 * @return result process in json encoded data
+		 */
+		public function getRole(){
+			if (!empty(Auth::getRoleID($this->db,$this->token))){
+				$data = [
+	    			'status' => 'success',
+					'role' => Auth::getRoleID($this->db,$this->token),
+					'code' => 'RS304',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS304')
+				];
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
 				];
 			}
 			return json_encode($data, JSON_PRETTY_PRINT);
