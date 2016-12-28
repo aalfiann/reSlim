@@ -47,6 +47,7 @@
                                         <th>Status</th>
                                         <th>Created</th>
                                         <th>Updated</th>
+                                        <th>Manage</th>
                                     </thead>
                                     <tbody>';
                 $n=$data->metadata->{'number_item_first'};
@@ -65,6 +66,7 @@
                     echo '<td>' . $value->{'Status'} .'</td>';
                     echo '<td>' . $value->{'Created_at'} .'</td>';
                     echo '<td>' . $value->{'Updated_at'} .'</td>';
+                    echo '<td><a href="modul-user-profile-edit.php?m=5&username=' . $value->{'Username'} .'"><i class="ti-pencil"></i> Edit</a></td>';
 	    	    	echo '</tr>';              
                 }
                 echo '</tbody>
