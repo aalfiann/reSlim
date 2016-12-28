@@ -509,10 +509,10 @@ use PDO;
     	    	    	if ($stmt->rowCount() > 0){
 							$single = $stmt->fetch();
 						
-							// Paginate won't work if page and items per page is negative or zero.
-							// So make sure that page and items per page is always return minimum absolut 1.
-							$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
-							$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
+							// Paginate won't work if page and items per page is negative.
+							// So make sure that page and items per page is always return minimum zero number.
+							$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
+							$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
 							if (Auth::getRoleID($this->db,$this->token) == '1'){
@@ -638,10 +638,10 @@ use PDO;
     	    	    if ($stmt->rowCount() > 0){
 						$single = $stmt->fetch();
 						
-						// Paginate won't work if page and items per page is negative or zero.
-						// So make sure that page and items per page is always return minimum absolut 1.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?1:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?1:$this->itemsPerPage);
+						// Paginate won't work if page and items per page is negative.
+						// So make sure that page and items per page is always return minimum zero number.
+						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
+						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 						// Query Data
 						if (Auth::getRoleID($this->db,$this->token) == '1'){
