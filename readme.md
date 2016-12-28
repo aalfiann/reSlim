@@ -155,13 +155,13 @@ Working with gui example for testing
 -----------------
 
 1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
-2. Edit the core.php inside folder "reSlim/test/example"
-    $basepath = 'url location of base path example';
+2. Edit the core.php inside folder "reSlim/test/example"<br>
+    $basepath = 'url location of base path example';<br>
     $api = 'url location of base path of api';
-3. Visit yourserver/reSlim/test/example 
+3. Visit yourserver/reSlim/test/example<br>
     For my case is http://localhost:1337/reSlim/test/example
-4. You can login with default superuser account:
-    Username : reslim
+4. You can login with default superuser account:<br>
+    Username : reslim<br>
     Password : reslim
 5. All is done
 
