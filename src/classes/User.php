@@ -737,7 +737,7 @@ use PDO;
 					FROM user_data a 
 					INNER JOIN user_role b ON a.RoleID = b.RoleID
 					INNER JOIN core_status c ON a.StatusID = c.StatusID
-					WHERE a.Username = :username;";
+					WHERE a.Username = :username AND a.StatusID = '1';";
 				
 			$stmt = $this->db->prepare($sql);		
 			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
