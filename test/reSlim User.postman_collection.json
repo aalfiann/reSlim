@@ -1,19 +1,22 @@
 {
-	"id": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+	"id": "659e30a2-74dd-3013-e608-2c93c776d823",
 	"name": "reSlim User",
 	"description": "",
 	"order": [
-		"6076c01f-1da7-69f5-9f59-f0a071b20f24",
-		"78efd072-6000-2f1d-a338-82cb7b58c8fd",
-		"2235723d-c808-bbf0-7376-6eddbb1840f9",
-		"3d62caab-7005-272f-10ed-7cda4435bc0f",
-		"9862d157-1dba-d83a-ca94-3baad70574a6",
-		"0984d429-0fe4-b660-d36d-4dc5cb731e3d",
-		"13336844-dc22-036a-9728-6c8d0e4abee3",
-		"6bbe40e1-cb22-67aa-dd5a-7476519207e9",
-		"11a5d9c4-1dd4-3ad5-601e-e4a78be945c8",
-		"c539567d-968e-3e96-b145-19013ab5dbb2",
-		"74855e89-6fed-1b9f-702f-123dc5773cce"
+		"b88b90c3-5b26-4a9b-36d3-4774e5069d53",
+		"0ea5b1f0-b69f-0788-7dbc-a553b09e9a1e",
+		"e7b59c79-30ed-4667-2018-3cab46b54366",
+		"898e67de-8eb1-d175-aec8-b5280861a8d1",
+		"2148d8a0-b362-081e-6a4c-002222052158",
+		"5cf033f6-bc95-d6ec-06fe-e7700b83b931",
+		"e48076e0-fa35-54a4-2f3d-ff44f20f5dcc",
+		"7a18033a-5792-1f31-6ce0-374ed80df808",
+		"bf848b62-61bc-71fa-e2da-2dd5a6d74b18",
+		"e7e15d60-17b0-02a2-6b8f-c1f888e4a134",
+		"9b6b9e59-f0fc-a24f-9f57-9291a0c4d9ad",
+		"e892cea9-705a-2232-eae3-45aa804e4a68",
+		"ca9b2e94-e380-8d56-e1c3-06e87ccffa76",
+		"0ca75790-e9b1-7371-c285-3414035862d5"
 	],
 	"folders": [],
 	"timestamp": 1482059204643,
@@ -21,111 +24,9 @@
 	"public": false,
 	"requests": [
 		{
-			"id": "0984d429-0fe4-b660-d36d-4dc5cb731e3d",
+			"id": "0ca75790-e9b1-7371-c285-3414035862d5",
 			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/role/5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDUdnjkLc5z",
-			"pathVariables": {},
-			"preRequestScript": null,
-			"method": "GET",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"data": null,
-			"dataMode": "params",
-			"name": "Show Role User",
-			"description": "Show Role User",
-			"descriptionFormat": "html",
-			"time": 1482209183204,
-			"version": 2,
-			"responses": [],
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {}
-		},
-		{
-			"id": "11a5d9c4-1dd4-3ad5-601e-e4a78be945c8",
-			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/delete",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [
-				{
-					"key": "Username",
-					"value": "azizalfian",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Token",
-					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQepvlrA3aL1SwBW",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "params",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1482215621647,
-			"name": "User Delete",
-			"description": "User Delete",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"responses": []
-		},
-		{
-			"id": "13336844-dc22-036a-9728-6c8d0e4abee3",
-			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/status/5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDUdnjkLc5z",
-			"pathVariables": {},
-			"preRequestScript": null,
-			"method": "GET",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"data": null,
-			"dataMode": "params",
-			"name": "Show Status User",
-			"description": "Show Status User",
-			"descriptionFormat": "html",
-			"time": 1482209218341,
-			"version": 2,
-			"responses": [],
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {}
-		},
-		{
-			"id": "2235723d-c808-bbf0-7376-6eddbb1840f9",
-			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/logout",
-			"preRequestScript": null,
-			"pathVariables": {},
-			"method": "POST",
-			"data": [
-				{
-					"key": "Username",
-					"value": "azizalfian",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Token",
-					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDNLJGCKWMV",
-					"type": "text",
-					"enabled": true
-				}
-			],
-			"dataMode": "params",
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1482135273905,
-			"name": "Logout User",
-			"description": "Logout user\t",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"responses": []
-		},
-		{
-			"id": "3d62caab-7005-272f-10ed-7cda4435bc0f",
-			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/{yourtoken}",
+			"url": "http://localhost:1337/reSlim/src/api/user/scope/{yourtoken}",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
@@ -135,16 +36,16 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482231061763,
-			"name": "Show All User",
-			"description": "Show All User",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+			"time": 1482931935036,
+			"name": "Get User Role by Token",
+			"description": "Get User Role by Token",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
 			"responses": []
 		},
 		{
-			"id": "6076c01f-1da7-69f5-9f59-f0a071b20f24",
+			"id": "0ea5b1f0-b69f-0788-7dbc-a553b09e9a1e",
 			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/register",
+			"url": "http://localhost:1337/reSlim/src/api/user/login",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "POST",
@@ -160,62 +61,67 @@
 					"value": "yourpassword",
 					"type": "text",
 					"enabled": true
-				},
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482230972307,
+			"name": "User Login",
+			"description": "Login User",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "2148d8a0-b362-081e-6a4c-002222052158",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "POST",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"data": [
 				{
-					"key": "Fullname",
-					"value": "M ABD AZIZ ALFIAN",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Address",
-					"value": "Your address here...",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Phone",
-					"value": "123456789",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Email",
-					"value": "aalfiann@gmail.com",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Aboutme",
-					"value": "I'm programmer and have no life",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Avatar",
-					"value": "",
-					"type": "text",
-					"enabled": true
-				},
-				{
-					"key": "Role",
-					"value": "2",
+					"key": "Token",
+					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDUdnjkLc5z",
 					"type": "text",
 					"enabled": true
 				}
 			],
 			"dataMode": "params",
+			"name": "Show All User",
+			"description": "Show All User",
+			"descriptionFormat": "html",
+			"time": 1482151755122,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "5cf033f6-bc95-d6ec-06fe-e7700b83b931",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/role/{yourtoken}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482230964035,
-			"name": "User Register",
-			"description": "Register user",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+			"time": 1482931989977,
+			"name": "Show Role User",
+			"description": "Show Role User",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
 			"responses": []
 		},
 		{
-			"id": "6bbe40e1-cb22-67aa-dd5a-7476519207e9",
+			"id": "7a18033a-5792-1f31-6ce0-374ed80df808",
 			"headers": "",
 			"url": "http://localhost:1337/reSlim/src/api/user/update",
 			"preRequestScript": null,
@@ -290,13 +196,13 @@
 			"time": 1482215612268,
 			"name": "User Update",
 			"description": "User Update",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
 			"responses": []
 		},
 		{
-			"id": "74855e89-6fed-1b9f-702f-123dc5773cce",
+			"id": "898e67de-8eb1-d175-aec8-b5280861a8d1",
 			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/profile/azizalfian",
+			"url": "http://localhost:1337/reSlim/src/api/user/{yourtoken}",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
@@ -306,16 +212,35 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1482231206803,
-			"name": "Show Profile User",
-			"description": "Show Profile User",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+			"time": 1482231061763,
+			"name": "Show All User",
+			"description": "Show All User",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
 			"responses": []
 		},
 		{
-			"id": "78efd072-6000-2f1d-a338-82cb7b58c8fd",
+			"id": "9b6b9e59-f0fc-a24f-9f57-9291a0c4d9ad",
 			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user/login",
+			"url": "http://localhost:1337/reSlim/src/api/user/profile/reslim",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482931959198,
+			"name": "Show Profile User",
+			"description": "Show Profile User",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "b88b90c3-5b26-4a9b-36d3-4774e5069d53",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/register",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "POST",
@@ -331,48 +256,162 @@
 					"value": "yourpassword",
 					"type": "text",
 					"enabled": true
-				}
-			],
-			"dataMode": "params",
-			"version": 2,
-			"tests": null,
-			"currentHelper": "normal",
-			"helperAttributes": {},
-			"time": 1482230972307,
-			"name": "User Login",
-			"description": "Login User",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"responses": []
-		},
-		{
-			"id": "9862d157-1dba-d83a-ca94-3baad70574a6",
-			"headers": "",
-			"url": "http://localhost:1337/reSlim/src/api/user",
-			"pathVariables": {},
-			"preRequestScript": null,
-			"method": "POST",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
-			"data": [
+				},
 				{
-					"key": "Token",
-					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDUdnjkLc5z",
+					"key": "Fullname",
+					"value": "M ABD AZIZ ALFIAN",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Address",
+					"value": "Your address here...",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Phone",
+					"value": "123456789",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Email",
+					"value": "aalfiann@gmail.com",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Aboutme",
+					"value": "I'm programmer and have no life",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Avatar",
+					"value": "",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Role",
+					"value": "2",
 					"type": "text",
 					"enabled": true
 				}
 			],
 			"dataMode": "params",
-			"name": "Show All User",
-			"description": "Show All User",
-			"descriptionFormat": "html",
-			"time": 1482151755122,
-			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
-			"helperAttributes": {}
+			"helperAttributes": {},
+			"time": 1482230964035,
+			"name": "User Register",
+			"description": "Register user",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
 		},
 		{
-			"id": "c539567d-968e-3e96-b145-19013ab5dbb2",
+			"id": "bf848b62-61bc-71fa-e2da-2dd5a6d74b18",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/delete",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "Username",
+					"value": "azizalfian",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Token",
+					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQepvlrA3aL1SwBW",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482215621647,
+			"name": "User Delete",
+			"description": "User Delete",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "ca9b2e94-e380-8d56-e1c3-06e87ccffa76",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/verify/{yourtoken}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482931944608,
+			"name": "Verify Token",
+			"description": "Verify Token",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "e48076e0-fa35-54a4-2f3d-ff44f20f5dcc",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/status/{yourtoken}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482931979238,
+			"name": "Show Status User",
+			"description": "Show Status User",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "e7b59c79-30ed-4667-2018-3cab46b54366",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/logout",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "Username",
+					"value": "azizalfian",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "Token",
+					"value": "5B5pGevb7eGm4CoAefbN28fgz8NQ8zXRDNLJGCKWMV",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1482135273905,
+			"name": "Logout User",
+			"description": "Logout user\t",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"responses": []
+		},
+		{
+			"id": "e7e15d60-17b0-02a2-6b8f-c1f888e4a134",
 			"headers": "",
 			"url": "http://localhost:1337/reSlim/src/api/user/changepassword",
 			"preRequestScript": null,
@@ -406,8 +445,28 @@
 			"time": 1482231186362,
 			"name": "Change Password User",
 			"description": "Change Password User",
-			"collectionId": "06bca8f7-43fb-8056-98e4-c05e675bd1f0",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
 			"responses": []
+		},
+		{
+			"id": "e892cea9-705a-2232-eae3-45aa804e4a68",
+			"headers": "",
+			"url": "http://localhost:1337/reSlim/src/api/user/{page}/{itemsperpage}/{yourtoken}",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "659e30a2-74dd-3013-e608-2c93c776d823",
+			"data": null,
+			"dataMode": "params",
+			"name": "Show All User Pagination",
+			"description": "Show All User Pagination",
+			"descriptionFormat": "html",
+			"time": 1482323974592,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
 		}
 	]
 }

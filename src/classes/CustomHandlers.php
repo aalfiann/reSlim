@@ -115,7 +115,7 @@
             'RS304' => 'Your token is authorized.',
             'RS305' => 'Your token hasbeen revoked.',
             // User authority error 4xx
-            'RS401' => 'Your token is not authorized, so You have to generate new token!',
+            'RS401' => 'Your token is expired or not authorized, so You have to generate new token!',
             'RS402' => 'Your token is not match.',
             'RS403' => 'Your token is wrong.',
             'RS404' => 'Your token is not authorized.',
@@ -123,7 +123,7 @@
             // User data success 5xx
             'RS501' => 'Data records is found.',
             // User data error 6xx
-            'RS601' => 'There is no any data records.',
+            'RS601' => 'There is no any data records found.',
             'RS602' => 'Data records is exceed the limit.',
             // Parameter success 7xx
             'RS701' => 'The parameter is valid.',

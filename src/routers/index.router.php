@@ -6,7 +6,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     $app->get('/', function (Request $request, Response $response) {
         $data = [
 		    'status' => 'success',
-			'code' => '0',
+			'code' => '200',
 			'welcome' => 'Hello World, here is the default index reSlim',
             'author' => [
                 'name' => 'M ABD AZIZ ALFIAN (aalfiann@gmail.com)',

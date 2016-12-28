@@ -9,8 +9,10 @@ reSlim is based on [Slim Framework version 3.7](http://www.slimframework.com/).<
 
 System Requirements
 ---------------
+
 1. Web server with URL rewriting
-2. PHP 5.5 or newer
+2. Web server with mcrypt extension
+3. PHP 5.5 or newer
 
 
 Getting Started
@@ -141,13 +143,27 @@ Working with default example for testing
 -----------------
 I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
 
-1. Import reSlim.sql in your database then config your database connection in config.php
+1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
 2. Import file reSlim User.postman_collection.json in your PostMan.
 3. Edit the path in PostMan. Because the example test is using my path server which is my server is run in http://localhost:1337 
     The path to run reSlim is inside folder api.<br> 
     Example for my case is: http://localhost:1337/reSlim/src/api/<br><br>
     In short, It's depend on your server configuration.
 4. Then you can do the test by yourself
+
+Working with gui example for testing
+-----------------
+
+1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
+2. Edit the core.php inside folder "reSlim/test/example"<br>
+    $basepath = 'url location of base path example';<br>
+    $api = 'url location of base path of api';
+3. Visit yourserver/reSlim/test/example<br>
+    For my case is http://localhost:1337/reSlim/test/example
+4. You can login with default superuser account:<br>
+    Username : reslim<br>
+    Password : reslim
+5. All is done
 
 The concept authentication in reSlim
 -----------------
