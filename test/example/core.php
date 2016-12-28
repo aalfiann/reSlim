@@ -1,12 +1,30 @@
 <?php 
-
+    /**
+     * A class for core example reSlim project
+     *
+     * @package    Core reSlim
+     * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
+     * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
+     * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
+     */
     class Core {
+        
+        // Set base path example project
         public static $basepath = 'http://localhost:1337/reSlim/test/example';
+
+        // Set base api reslim
         public static $api = 'http://localhost:1337/reSlim/src/api';
+        
         
         // LIBRARY USER MANAGEMENT AND AUTHENTICATION======================================================================
 
-        // CURL Post Request
+        /**
+		 * CURL Post Request
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
 	    public static function execPostRequest($url,$post_array){
         
             if(empty($url)){ return false;}
@@ -31,7 +49,12 @@
             return $result;
         }
 
-        // CURL Get Request
+        /**
+		 * CURL Get Request
+         *
+         * @param $url = The url api to get the request
+		 * @return result json encoded data
+		 */
         public static function execGetRequest($url){
             //open connection
 	    	$ch = curl_init($url);
@@ -51,7 +74,12 @@
 	    	return $data;
     	}
 
-        // Verify API Token
+        /**
+		 * Verify API Token
+         *
+         * @param $token = Your token that generated from api server after login
+		 * @return boolean true / false
+		 */
         public static function verifyToken($token){
             $result = false;
             $data = json_decode(self::execGetRequest(self::$api.'/user/verify/'.$token));
@@ -63,7 +91,12 @@
             return $result;
         }
 
-        // Get Role by API Token
+        /**
+		 * Get Role by API Token
+         *
+         * @param $token = Your token that generated from api server after login
+		 * @return integer
+		 */
         public static function getRole($token){
             $result = 0;
             $data = json_decode(self::execGetRequest(self::$api.'/user/scope/'.$token));
@@ -75,7 +108,13 @@
             return $result;
         }
 
-        // Revoke API Token
+        /**
+		 * Revoke API Token
+         *
+         * @param $username = Your username
+         * @param $token = Your token that generated from api server after login
+		 * @return boolean true / false
+		 */
         public static function revokeToken($username,$token){
             $result = false;
             $post_array = array(
@@ -92,7 +131,13 @@
             return $result;
         }
 
-        // Process Register
+        /**
+		 * Process Register
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
 	    public static function register($url,$post_array){
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
@@ -115,7 +160,13 @@
             }
 	    }
 
-        // Process Update
+        /**
+		 * Process Update
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
 	    public static function update($url,$post_array){
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
@@ -138,7 +189,13 @@
             }
 	    }
 
-        // Process Login
+        /**
+		 * Process Login
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
 	    public static function login($url,$post_array){
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
@@ -166,7 +223,11 @@
             }
 	    }
 
-        // Process Logout
+        /**
+		 * Process Logout
+         *
+         * @return redirect to login page
+		 */
         public static function logout()
         {
             //Unset SESSION
@@ -192,7 +253,11 @@
         	header("Location: ".self::$basepath."/modul-login.php?m=1");
         }
 
-        // Check SESSION, COOKIE and Verify Token
+        /**
+		 * Check SESSION, COOKIE and Verify Token
+         *
+         * @return data array, but if null will be redirect to login page
+		 */
         public static function checkSessions()
         {
             // If cookie is not found then check session
@@ -232,13 +297,25 @@
 	        return $out;
         }
 
-        // Redirect Page Location Header
+        /**
+		 * Redirect Page Location Header
+         *
+         * @param $page = The page to redirect
+         * @param $timeout = The page will be redirected when time is out. Default is zero 
+         * @return redirect page
+		 */
         public static function goToPage($page,$timeout=0)
         {
            return header("Refresh:".$timeout.";url= ".self::$basepath."/".$page."");
         }
 
-        // Redirect Page Location by meta header
+        /**
+		 * Redirect Page Location by meta header
+         *
+         * @param $url = The url to redirect
+         * @param $timeout = The page will be redirected when time is out. Default is zero 
+         * @return redirect url
+		 */
         public static function goToPageMeta($url,$timeout=0)
         {
             return '<meta http-equiv="refresh" content="'.$timeout.';url='.$url.'">';

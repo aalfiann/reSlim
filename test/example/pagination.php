@@ -1,6 +1,21 @@
 <?php
-
+    /**
+     * A class for pagination data for example reSlim project
+     *
+     * @package    Core reSlim
+     * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
+     * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
+     * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
+     */
     class Pagination {
+
+        /**
+		 * Make Pagination
+         *
+         * @param $data = Input the data decoded json which is included metadata for pagination
+         * @param $links = Input the current base url of page
+		 * @return string html pagination
+		 */
         public function makePagination($data,$links){
             echo '<ul class="pagination">'; // Start Pagination
                 $itemsperpage = $data->metadata->{'items_per_page'};
