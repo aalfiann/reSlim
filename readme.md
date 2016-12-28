@@ -1,7 +1,7 @@
 reSlim
 =======
-[![Build](https://img.shields.io/badge/build-on process-red.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.1.0-red.svg)](https://github.com/aalfiann/reSlim)
+[![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.1.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
@@ -143,13 +143,27 @@ Working with default example for testing
 -----------------
 I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
 
-1. Import reSlim.sql in your database then config your database connection in config.php
+1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
 2. Import file reSlim User.postman_collection.json in your PostMan.
 3. Edit the path in PostMan. Because the example test is using my path server which is my server is run in http://localhost:1337 
     The path to run reSlim is inside folder api.<br> 
     Example for my case is: http://localhost:1337/reSlim/src/api/<br><br>
     In short, It's depend on your server configuration.
 4. Then you can do the test by yourself
+
+Working with gui example for testing
+-----------------
+
+1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
+2. Edit the core.php inside folder "reSlim/test/example"
+    $basepath = 'url location of base path example';
+    $api = 'url location of base path of api';
+3. Visit yourserver/reSlim/test/example 
+    For my case is http://localhost:1337/reSlim/test/example
+4. You can login with default superuser account:
+    Username : reslim
+    Password : reslim
+5. All is done
 
 The concept authentication in reSlim
 -----------------
