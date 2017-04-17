@@ -3,7 +3,7 @@
                 <div class="row">
                
 <?php 
-    $url = Core::$api.'/user/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'];
+    $url = Core::$api.'/user/data/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'];
     $data = json_decode(Core::execGetRequest($url));
 
     if (!empty($data))
