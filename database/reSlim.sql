@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 28, 2016 at 02:19 PM
+-- Generation Time: Apr 17, 2017 at 03:33 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -16,6 +16,10 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+--
+-- Database: `reslim`
+--
+
 -- --------------------------------------------------------
 
 --
@@ -25,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `core_status` (
 `StatusID` int(11) NOT NULL,
   `Status` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `core_status`
@@ -79,7 +83,11 @@ INSERT INTO `core_status` (`StatusID`, `Status`) VALUES
 (45, 'uploaded'),
 (46, 'viewed'),
 (47, 'void'),
-(48, 'waiting');
+(48, 'waiting'),
+(49, 'public'),
+(50, 'private'),
+(51, 'publish'),
+(52, 'draft');
 
 -- --------------------------------------------------------
 
@@ -143,6 +151,28 @@ INSERT INTO `user_role` (`RoleID`, `Role`) VALUES
 (2, 'admin'),
 (3, 'member');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_upload`
+--
+
+CREATE TABLE IF NOT EXISTS `user_upload` (
+`ItemID` int(11) NOT NULL,
+  `Date_Upload` datetime NOT NULL,
+  `Title` varchar(255) DEFAULT NULL,
+  `Alternate` varchar(255) DEFAULT NULL,
+  `External_link` varchar(255) DEFAULT NULL,
+  `Filename` varchar(255) NOT NULL,
+  `Filepath` varchar(255) NOT NULL,
+  `Filetype` varchar(255) NOT NULL,
+  `Filesize` double NOT NULL,
+  `Username` varchar(50) NOT NULL,
+  `Updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `Updated_by` varchar(50) DEFAULT NULL,
+  `StatusID` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -172,6 +202,12 @@ ALTER TABLE `user_role`
  ADD PRIMARY KEY (`RoleID`), ADD KEY `ID` (`RoleID`);
 
 --
+-- Indexes for table `user_upload`
+--
+ALTER TABLE `user_upload`
+ ADD PRIMARY KEY (`ItemID`), ADD KEY `ItemID` (`ItemID`), ADD KEY `Date_Upload` (`Date_Upload`), ADD KEY `Filename` (`Filename`), ADD KEY `Filetype` (`Filetype`), ADD KEY `Username` (`Username`) USING BTREE, ADD KEY `StatusID` (`StatusID`) USING BTREE;
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -179,7 +215,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT for table `core_status`
 --
 ALTER TABLE `core_status`
-MODIFY `StatusID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
+MODIFY `StatusID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `user_data`
 --
@@ -190,6 +226,11 @@ MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 ALTER TABLE `user_role`
 MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `user_upload`
+--
+ALTER TABLE `user_upload`
+MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
@@ -206,6 +247,13 @@ ADD CONSTRAINT `user_token` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Us
 ALTER TABLE `user_data`
 ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `user_data_ibfk_2` FOREIGN KEY (`RoleID`) REFERENCES `user_role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_upload`
+--
+ALTER TABLE `user_upload`
+ADD CONSTRAINT `user_upload_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `user_upload_ibfk_2` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
