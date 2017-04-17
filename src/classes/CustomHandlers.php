@@ -115,7 +115,7 @@
             'RS304' => 'Your token is authorized.',
             'RS305' => 'Your token hasbeen revoked.',
             // User authority error 4xx
-            'RS401' => 'Your token is expired or not authorized, so You have to generate new token!',
+            'RS401' => 'Your token is expired or not authorized, so You have to generate the new authorized token!',
             'RS402' => 'Your token is not match.',
             'RS403' => 'Your token is wrong.',
             'RS404' => 'Your token is not authorized.',
@@ -140,7 +140,13 @@
             'RS904' => 'Failed to update user.',
             'RS905' => 'Failed to delete user.',
             'RS906' => 'Sorry, Your account is suspended.',
-            'RS907' => 'Failed to change password.'
+            'RS907' => 'Failed to change password.',
+            'RS908' => 'Failed to upload, file type is not allowed.',
+            'RS909' => 'Upload success, but failed to insert data into database.',
+            'RS910' => 'Upload failed. Connection lost, please try again.',
+            'RS911' => 'Upload failed, File is too large.',
+            'RS912' => 'Upload canceled, The filename is already on server. Please use another filename.',
+            'RS913' => 'Request process is successfully deleted only in database server but failed to delete the data file on server.'
         ];
 
         /**
