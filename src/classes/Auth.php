@@ -123,11 +123,12 @@ use \classes\BaseConverter as BaseConverter;
          *
          * @param $db : Dabatase connection (PDO)
          * @param $token : input the token
+         * @param $username : input for more secure identify. Default is null.
          * @return boolean true / false 
          */
-        public static function validToken($db, $token){
+        public static function validToken($db, $token,$username=null){
             $r = false;
-		    $sql = "SELECT a.RS_Token
+		    $sql = "SELECT a.Username
 			    FROM user_auth a 
                 INNER JOIN user_data b ON a.Username = b.Username
     			WHERE b.StatusID = '1' AND a.RS_Token = :token AND a.Expired > current_timestamp;";
@@ -135,7 +136,14 @@ use \classes\BaseConverter as BaseConverter;
 		    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
     		if ($stmt->execute()) {	
                 if ($stmt->rowCount() > 0){
-                    $r = true;
+                    if ($username == null){
+                        $r = true;
+                    } else {
+                        $single = $stmt->fetch();
+					    if ($single['Username'] == $username){
+                            $r = true;
+                        }
+                    }                    
                 }          	   	
 	    	} 		
 		    return $r;
