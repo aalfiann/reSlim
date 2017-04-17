@@ -28,12 +28,19 @@ use PDO;
 		 * @property $totalRow 		: Set the total row of your data to be paginated
 		 * @property $page 			: Set the page to be show in paginated data
 		 * @property $itemsPerPage 	: Set the items per page to be show in paginated data
-		 * @property $limitData 	: Set the limit data for paginate. Default is 1000.
-		 *							  The paginate won't work if more than 1000.
+		 * @property $limitData 	: Set the limit data for paginate. Default is depend on the $config['limitLoadData'].
+		 *							  If $config['limitLoadData'] = 0, then default paginate is 1000, so the paginate won't work if more than 1000.
 		 *  
 		 * This property is required or paginate won't work
 		 */
 		var $totalRow,$page,$itemsPerPage,$limitData=1000;
+
+		function __construct() {
+			require '../config.php';
+    	    if ($config['limitLoadData']!=0){
+				$this->limitData=$config['limitLoadData'];
+			}
+		}
 
 		/**
 		 * Sanitizer string and only accept integer
@@ -126,7 +133,7 @@ use PDO;
                     $alldata = [
                         'status' => 'error',
                         'code' => 'RS602',
-			    		'message' => CustomHandlers::getreSlimMessage('RS602').' Max items per page : '.$this->LimitData.'.'
+			    		'message' => CustomHandlers::getreSlimMessage('RS602').' Max items per page : '.$this->limitData.'.'
                     ];
 	    		}
 		    }
