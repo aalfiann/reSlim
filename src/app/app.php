@@ -12,6 +12,11 @@ require '../vendor/autoload.php';
 // Load config
 require '../config.php';
 
+// Autoload all external classes
+spl_autoload_register(function ($classname) {
+    require ( '../'.$classname . ".php");
+});
+
 // Set time zone
 date_default_timezone_set($config['reslim']['timezone']);
 
