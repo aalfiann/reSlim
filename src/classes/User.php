@@ -28,7 +28,7 @@ use PDO;
 		var $newPassword;
 
 		// for pagination
-		var $page,$itemsPerPage,$limitData=1000;
+		var $page,$itemsPerPage;
 
 		// for search
 		var $search;
@@ -552,7 +552,6 @@ use PDO;
 								$pagination->totalRow = $single['TotalRow'];
 								$pagination->page = $this->page;
 								$pagination->itemsPerPage = $this->itemsPerPage;
-								$pagination->limitData = $this->limitData;
 								$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 								$data = $pagination->toDataArray();
 							} else {
@@ -690,7 +689,6 @@ use PDO;
 							$pagination->totalRow = $single['TotalRow'];
 							$pagination->page = $this->page;
 							$pagination->itemsPerPage = $this->itemsPerPage;
-							$pagination->limitData = $this->limitData;
 							$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 							$data = $pagination->toDataArray();
 						} else {
@@ -769,8 +767,6 @@ use PDO;
 			return json_encode($data, JSON_PRETTY_PRINT);
 	        $this->db= null;
 		}
-
-		
 
 		/** 
 		 * Regiter new user
@@ -854,7 +850,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function update(){
-			if (Auth::validToken($this->db,$this->token)){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
 				$data = $this->doUpdate();
 			} else {
 				$data = [
@@ -871,7 +867,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function delete(){
-			if (Auth::validToken($this->db,$this->token)){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
 				if ($this->isRegistered()){
 					$data = $this->doDelete();
 				} else {
@@ -896,7 +892,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function changePassword(){
-			if (Auth::validToken($this->db,$this->token)){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
 				if ($this->isRegistered()){
 					$data = $this->doChangePassword();
 					Auth::clearUserToken($this->db,$this->username);
