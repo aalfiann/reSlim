@@ -5,7 +5,7 @@ reSlim
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
-reSlim is based on [Slim Framework version 3.7](http://www.slimframework.com/).<br>
+reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
 System Requirements
 ---------------
@@ -117,10 +117,12 @@ Example Config.php
  *
  * @var $config['displayErrorDetails'] to display error details on slim
  * @var $config['addContentLengthHeader'] to set the Content-Length header which makes Slim behave more predictably
+ * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
  * 
  */
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
+$config['limitLoadData'] = 1000;
 
 // Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
