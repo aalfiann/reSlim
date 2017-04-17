@@ -1,6 +1,6 @@
 <?php
 /**
- * reSlim is based on Slim Framework version 3.7 (http://slimframework.com)
+ * reSlim is based on Slim Framework version 3 (http://slimframework.com)
  *
  * @link      https://github.com/aalfiann/reSlim
  * @copyright Copyright (c) 2016 M ABD AZIZ ALFIAN
