@@ -12,6 +12,7 @@
     ],
     "require": {
         "slim/slim": "^3.0",
-        "monolog/monolog": "^1.22"
+        "monolog/monolog": "^1.22",
+        "phpmailer/phpmailer": "~5.2"
     }
 }

@@ -124,9 +124,6 @@ $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
 $config['limitLoadData'] = 1000;
 
-// Configuration timezone
-$config['reslim']['timezone'] = 'Asia/Jakarta';
-
 /** 
  * Configuration PDO MySQL Database
  *
@@ -139,6 +136,30 @@ $config['db']['host']   = 'localhost';
 $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
+
+/**
+ * Configuration SMTP for Mailer
+ *
+ * @var $config['smtp']['host'] is smtp host. example smtp.gmail.com
+ * @var $config['smtp']['autotls'] is make smtp will send using tls protocol as default
+ * @var $config['smtp']['auth'] will connect to smtp using authentication
+ * @var $config['smtp']['secure'] this is type of smtp security. You can use tls or ssl
+ * @var $config['smtp']['port'] this is port smtp
+ * @var $config['smtp']['username'] your username to login into smtp server
+ * @var $config['smtp']['password'] the password to login into smtp server
+ * @var $config['smtp']['debug'] you can set debug to 1,2 or 3
+ */
+$config['smtp']['host'] = 'smtp.gmail.com';
+$config['smtp']['autotls'] = false;
+$config['smtp']['auth'] = true;
+$config['smtp']['secure'] = 'ssl';
+$config['smtp']['port'] = 465;
+$config['smtp']['username'] = 'aalfiann@gmail.com';
+$config['smtp']['password'] = 'secret';
+$config['smtp']['debug'] = 2;
+
+// Configuration timezone
+$config['reslim']['timezone'] = 'Asia/Jakarta';
 ```
 
 Working with default example for testing
