@@ -313,6 +313,45 @@
 							"enabled": true
 						},
 						{
+							"key": "Password",
+							"value": "{youroldpassword}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "NewPassword",
+							"value": "{yournewpassword}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/resetpassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"enabled": true
+						},
+						{
 							"key": "NewPassword",
 							"value": "{password}",
 							"type": "text",
@@ -555,6 +594,69 @@
 				"method": "GET",
 				"header": [],
 				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Send Mail",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/mail/send",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "To",
+							"value": "{email recipient}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Subject",
+							"value": "",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Message",
+							"value": "",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Html",
+							"value": "{true or false}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "From",
+							"value": "{youremail}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "FromName",
+							"value": "{yourname}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "ReplyTo",
+							"value": "{your email to received email}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "ReplyToName",
+							"value": "{yout name to received email}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
 				"description": ""
 			},
 			"response": []
