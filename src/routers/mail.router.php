@@ -15,6 +15,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $mail->setFromName = $datapost['FromName'];
         $mail->addReplyTo = $datapost['ReplyTo'];
         $mail->addReplyToName = $datapost['ReplyToName'];
+        $mail->addCC = $datapost['CC'];
+        $mail->addBCC = $datapost['BCC'];
+        $mail->addAttachment = $datapost['Attachment'];
         
         $body = $response->getBody();
         $body->write($mail->send());
