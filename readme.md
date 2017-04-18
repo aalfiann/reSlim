@@ -154,7 +154,7 @@ $config['smtp']['autotls'] = false;
 $config['smtp']['auth'] = true;
 $config['smtp']['secure'] = 'ssl';
 $config['smtp']['port'] = 465;
-$config['smtp']['username'] = 'aalfiann@gmail.com';
+$config['smtp']['username'] = 'youremail@gmail.com';
 $config['smtp']['password'] = 'secret';
 $config['smtp']['debug'] = 2;
 
