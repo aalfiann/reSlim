@@ -37,13 +37,13 @@ $config['db']['dbname'] = 'reSlim';
  * @var $config['smtp']['password'] the password to login into smtp server
  * @var $config['smtp']['debug'] you can set debug to 1,2 or 3
  */
-$config['smtp']['host'] = 'tkd.co.id';
+$config['smtp']['host'] = 'smtp.gmail.com';
 $config['smtp']['autotls'] = true;
 $config['smtp']['auth'] = true;
-$config['smtp']['secure'] = 'tls';
-$config['smtp']['port'] = 587;
-$config['smtp']['username'] = 'div.it@tkd.co.id';
-$config['smtp']['password'] = 'tkd171819';
+$config['smtp']['secure'] = 'ssl';
+$config['smtp']['port'] = 465;
+$config['smtp']['username'] = 'youremail@gmail.com';
+$config['smtp']['password'] = 'secret';
 $config['smtp']['debug'] = 2;
 
 // Configuration timezone
