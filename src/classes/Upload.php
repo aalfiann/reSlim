@@ -71,8 +71,18 @@ use PDO;
 			
 	        if (!is_dir($fileFolder)) 
         	{
+				$newcontent = '<?php header(\'Content-type:application/json; charset=utf-8\');header("Access-Control-Allow-Origin: *");header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");header(\'HTTP/1.0 403 Forbidden\');echo \'{
+  "status": "error",
+  "code": "403",
+  "message": "This page is forbidden."
+}\';?>';
             	mkdir($fileFolder,0775,true);
-				$handle = fopen($fileFolder.'index.html','w+'); 
+				if(!$this->isFileOnServer($this->baseurl.'/upload/index.php')){
+					$ihandle = fopen('upload/index.php','w+'); 
+					fwrite($ihandle,$newcontent); 
+					fclose($ihandle);
+				}
+				$handle = fopen($fileFolder.'index.php','w+'); 
 				fwrite($handle,$newcontent); 
 				fclose($handle);       
         	}
