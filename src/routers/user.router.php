@@ -245,11 +245,31 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $datapost = $request->getParsedBody();
         
         $users->username = $datapost['Username'];
+        $users->password = $datapost['Password'];
         $users->newPassword = $datapost['NewPassword'];
         $users->token = $datapost['Token'];
 
         $body = $response->getBody();
         $body->write($users->changePassword());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // POST example api reset password
+    $app->post('/user/resetpassword', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->username = $datapost['Username'];
+        $users->newPassword = $datapost['NewPassword'];
+        $users->token = $datapost['Token'];
+
+        $body = $response->getBody();
+        $body->write($users->resetPassword());
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -391,5 +411,3 @@ use \Psr\Http\Message\ResponseInterface as Response;
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withBody($body);
     });
-
-    

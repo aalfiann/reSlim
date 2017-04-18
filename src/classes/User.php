@@ -180,10 +180,10 @@ use PDO;
 		}
 
 		/**
-		 * Change Password
+		 * Reset Password
 		 * @return result process in json encoded data
 		 */
-		private function doChangePassword(){
+		private function doResetPassword(){
 			$newusername = strtolower($this->username);
 			$hash = Auth::hashPassword($newusername, $this->newPassword);
 			
@@ -215,6 +215,54 @@ use PDO;
 				];
 				$this->db->rollBack();
 			}
+			return $data;
+			$this->db = null;
+		}
+
+		/**
+		 * Change Password
+		 * @return result process in json encoded data
+		 */
+		private function doChangePassword(){
+			$newusername = strtolower($this->username);
+			$hash = Auth::hashPassword($newusername, $this->newPassword);
+			if ($this->isPasswordMatch()){
+				try {
+					$this->db->beginTransaction();
+					$sql = "UPDATE user_data a SET a.Password=:newpassword WHERE Username=:username;";
+					$stmt = $this->db->prepare($sql);
+					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+					$stmt->bindParam(':newpassword', $hash, PDO::PARAM_STR);
+					if ($stmt->execute()) {
+						$data = [
+							'status' => 'success',
+							'code' => 'RS103',
+							'message' => CustomHandlers::getreSlimMessage('RS103')
+						];	
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS905',
+							'message' => CustomHandlers::getreSlimMessage('RS905')
+						];
+					}
+					$this->db->commit();
+				} catch (PDOException $e) {
+					$data = [
+						'status' => 'error',
+						'code' => $e->getCode(),
+						'message' => $e->getMessage()
+					];
+					$this->db->rollBack();
+				}
+			} else {
+				$data = [
+					'status' => 'error',
+					'code' => 'RS903',
+					'message' => CustomHandlers::getreSlimMessage('RS903')
+				];
+			}
+			
 			return $data;
 			$this->db = null;
 		}
@@ -850,7 +898,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function update(){
-			if (Auth::validToken($this->db,$this->token,$this->username)){
+			if (Auth::validToken($this->db,$this->token)){
 				$data = $this->doUpdate();
 			} else {
 				$data = [
@@ -867,7 +915,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function delete(){
-			if (Auth::validToken($this->db,$this->token,$this->username)){
+			if (Auth::validToken($this->db,$this->token)){
 				if ($this->isRegistered()){
 					$data = $this->doDelete();
 				} else {
@@ -895,6 +943,32 @@ use PDO;
 			if (Auth::validToken($this->db,$this->token,$this->username)){
 				if ($this->isRegistered()){
 					$data = $this->doChangePassword();
+					Auth::clearUserToken($this->db,$this->username);
+				} else {
+					$data = [
+	    				'status' => 'error',
+						'code' => 'RS907',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS907')
+					];
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}
+			return json_encode($data, JSON_PRETTY_PRINT);
+		}
+
+		/** 
+		 * Reset Password
+		 * @return result process in json encoded data
+		 */
+		public function resetPassword(){
+			if (Auth::validToken($this->db,$this->token)){
+				if ($this->isRegistered()){
+					$data = $this->doResetPassword();
 					Auth::clearUserToken($this->db,$this->username);
 				} else {
 					$data = [
