@@ -22,6 +22,9 @@ $container['db'] = function ($c) {
     return $pdo;
 };
 
+// Register component phpmailer on container
+$container['mail'] = function ($c) { return new PHPMailer; };
+
 // Override the default Not Found Handler
 $container['notFoundHandler'] = function ($container) {
     return function ($request, $response) use ($container) {

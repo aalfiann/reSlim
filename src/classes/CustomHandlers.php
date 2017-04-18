@@ -103,6 +103,7 @@
             'RS102' => 'Request process is successfully get.',
             'RS103' => 'Request process is successfully updated.',
             'RS104' => 'Request process is successfully deleted.',
+            'RS105' => 'Mail hasbeen sent.',
             // User process error 2xx
             'RS201' => 'Request process is failed to create.',
             'RS202' => 'Request process is failed to get.',

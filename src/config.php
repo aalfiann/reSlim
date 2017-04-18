@@ -25,5 +25,26 @@ $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
 
+/**
+ * Configuration SMTP for Mailer
+ *
+ * @var $config['smtp']['host'] is smtp host. example smtp.gmail.com
+ * @var $config['smtp']['autotls'] is make smtp will send using tls protocol as default
+ * @var $config['smtp']['auth'] will connect to smtp using authentication
+ * @var $config['smtp']['secure'] this is type of smtp security. You can use tls or ssl
+ * @var $config['smtp']['port'] this is port smtp
+ * @var $config['smtp']['username'] your username to login into smtp server
+ * @var $config['smtp']['password'] the password to login into smtp server
+ * @var $config['smtp']['debug'] you can set debug to 1,2 or 3
+ */
+$config['smtp']['host'] = 'tkd.co.id';
+$config['smtp']['autotls'] = true;
+$config['smtp']['auth'] = true;
+$config['smtp']['secure'] = 'tls';
+$config['smtp']['port'] = 587;
+$config['smtp']['username'] = 'div.it@tkd.co.id';
+$config['smtp']['password'] = 'tkd171819';
+$config['smtp']['debug'] = 2;
+
 // Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
