@@ -654,6 +654,24 @@
 							"value": "{yout name to received email}",
 							"type": "text",
 							"enabled": true
+						},
+						{
+							"key": "CC",
+							"value": "",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "BCC",
+							"value": "",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Attachment",
+							"value": "",
+							"type": "text",
+							"enabled": true
 						}
 					]
 				},
