@@ -42,7 +42,7 @@ $config['smtp']['autotls'] = false;
 $config['smtp']['auth'] = true;
 $config['smtp']['secure'] = 'tls';
 $config['smtp']['port'] = 587;
-$config['smtp']['username'] = 'aalfiann@gmail.com';
+$config['smtp']['username'] = 'youremail@gmail.com';
 $config['smtp']['password'] = 'secret';
 $config['smtp']['debug'] = 1;
 
