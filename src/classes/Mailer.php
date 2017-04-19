@@ -56,9 +56,6 @@ use PDO;
             $this->mailer->isHTML($this->isHtml);                         // Set email format to HTML
             $this->mailer->SMTPAutoTLS = $this->smtpAutoTLS;              // Set TLS encryption automatically
             $this->mailer->SMTPDebug = $this->smtpDebug;                  // Show debug information
-            $this->mailer->WordWrap = $this->wordWrap;
-            $this->mailer->setFrom($this->setFrom, $this->setFromName);
-            $this->mailer->addReplyTo($this->setFrom, $this->setFromName);
             $this->mailer->SMTPOptions = array(
   								  	'ssl' => array(
 									'verify_peer' => false,
@@ -67,11 +64,15 @@ use PDO;
 								    )
 								);
 
+            $this->mailer->WordWrap = $this->wordWrap;
+            $this->mailer->setFrom(filter_var($this->setFrom, FILTER_SANITIZE_EMAIL), filter_var($this->setFromName, FILTER_SANITIZE_STRING));
+            $this->mailer->addReplyTo(filter_var($this->setFrom, FILTER_SANITIZE_EMAIL), filter_var($this->setFromName, FILTER_SANITIZE_STRING));
+            
             if (!empty($this->addAddress)){
                 $address = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addAddress) );
                 foreach ($address as $value) {
                     if(!empty($value)){
-                        $this->mailer->addAddress($value);
+                        $this->mailer->addAddress(filter_var($value, FILTER_SANITIZE_EMAIL));
                     }
                 }
             }
@@ -80,7 +81,7 @@ use PDO;
                 $cc = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addCC) );
                 foreach ($cc as $value) {
                     if(!empty($value)){
-                        $this->mailer->addCC($value);
+                        $this->mailer->addCC(filter_var($value, FILTER_SANITIZE_EMAIL));
                     }
                 }
             }
@@ -89,7 +90,7 @@ use PDO;
                 $bcc = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addBCC) );
                 foreach ($bcc as $value) {
                     if(!empty($value)){
-                        $this->mailer->addBCC($value);
+                        $this->mailer->addBCC(filter_var($value, FILTER_SANITIZE_EMAIL));
                     }
                 }
             }
@@ -98,14 +99,14 @@ use PDO;
                 $attachment = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addAttachment) );
                 foreach ($attachment as $value) {
                     if(!empty($value)){
-                        $this->mailer->addAttachment($value);
+                        $this->mailer->addAttachment(filter_var($value, FILTER_SANITIZE_STRING));
                     }
                 }
             }
 
-            $this->mailer->Subject = $this->subject;
-            $this->mailer->Body = $this->body;
-            $this->mailer->AltBody = $this->body;
+            $this->mailer->Subject = filter_var($this->subject, FILTER_SANITIZE_STRING);
+            $this->mailer->Body = filter_var($this->body, FILTER_SANITIZE_STRING);
+            $this->mailer->AltBody = filter_var($this->body, FILTER_SANITIZE_STRING);
 
             if(!$this->mailer->send()) {
                 $data = [
