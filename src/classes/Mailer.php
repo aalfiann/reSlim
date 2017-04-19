@@ -21,7 +21,7 @@ use PDO;
 		
 		protected $mailer,$db,$host,$smtpDebug,$smtpAutoTLS,$smtpAuth,$smtpSecure,$smtpPort,$username,$password;
 
-        var $setFrom,$setFromName,$addReplyTo,$addReplyToName,$addAddress,$addCC,$addBCC,$addAttachment,$subject,$body,$isHtml;
+        var $setFrom,$setFromName,$wordWrap=50,$addAddress,$addCC,$addBCC,$addAttachment,$subject,$body,$isHtml;
 
         function __construct($mailer,$db=null) {
             require '../config.php';
@@ -56,14 +56,16 @@ use PDO;
             $this->mailer->isHTML($this->isHtml);                         // Set email format to HTML
             $this->mailer->SMTPAutoTLS = $this->smtpAutoTLS;              // Set TLS encryption automatically
             $this->mailer->SMTPDebug = $this->smtpDebug;                  // Show debug information
-
-            if (!empty($this->setFrom)){
-                $this->mailer->setFrom($this->setFrom, $this->setFromName);
-            }
-
-            if (!empty($this->addReplyTo)){
-                $this->mailer->addReplyTo($this->addReplyTo, $this->addReplyToName);
-            }
+            $this->mailer->WordWrap = $this->wordWrap;
+            $this->mailer->setFrom($this->setFrom, $this->setFromName);
+            $this->mailer->addReplyTo($this->setFrom, $this->setFromName);
+            $this->mailer->SMTPOptions = array(
+  								  	'ssl' => array(
+									'verify_peer' => false,
+									'verify_peer_name' => false,
+									'allow_self_signed' => true
+								    )
+								);
 
             if (!empty($this->addAddress)){
                 $address = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addAddress) );
@@ -102,13 +104,8 @@ use PDO;
             }
 
             $this->mailer->Subject = $this->subject;
-
-            if ($this->isHtml){
-                $this->mailer->Body = $this->body;
-            } else {
-                $this->mailer->Body = $this->body;
-                $this->mailer->AltBody = $this->body;
-            }
+            $this->mailer->Body = $this->body;
+            $this->mailer->AltBody = $this->body;
 
             if(!$this->mailer->send()) {
                 $data = [
