@@ -35,16 +35,16 @@ $config['db']['dbname'] = 'reSlim';
  * @var $config['smtp']['port'] this is port smtp
  * @var $config['smtp']['username'] your username to login into smtp server
  * @var $config['smtp']['password'] the password to login into smtp server
- * @var $config['smtp']['debug'] you can set debug to 1,2 or 3
+ * @var $config['smtp']['debug'] get more information by set debug
  */
 $config['smtp']['host'] = 'smtp.gmail.com';
-$config['smtp']['autotls'] = true;
+$config['smtp']['autotls'] = false;
 $config['smtp']['auth'] = true;
-$config['smtp']['secure'] = 'ssl';
-$config['smtp']['port'] = 465;
-$config['smtp']['username'] = 'youremail@gmail.com';
+$config['smtp']['secure'] = 'tls';
+$config['smtp']['port'] = 587;
+$config['smtp']['username'] = 'aalfiann@gmail.com';
 $config['smtp']['password'] = 'secret';
-$config['smtp']['debug'] = 2;
+$config['smtp']['debug'] = 1;
 
 // Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
