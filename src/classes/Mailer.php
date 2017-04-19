@@ -21,7 +21,19 @@ use PDO;
 		
 		protected $mailer,$db,$host,$smtpDebug,$smtpAutoTLS,$smtpAuth,$smtpSecure,$smtpPort,$username,$password;
 
-        var $setFrom,$setFromName,$wordWrap=50,$addAddress,$addCC,$addBCC,$addAttachment,$subject,$body,$isHtml;
+        /**
+         * @var $setFrom = The email address of sender. Example: youremail@gmail.com
+         * @var $setFromName = The name of sender. Example: Your name here
+         * @var $wordWrap = Auto wrap the email body. Default is 50.
+         * @var $addAddress = The email address of destination. Example: someone1@gmail.com,someone2@gmail.com,someone3@gmail.com
+         * @var $addCC = Add more cc email address. Example: someone1@gmail.com,someone2@gmail.com,someone3@gmail.com
+         * @var $addBCC = Add more bcc email address. Example: someone1@gmail.com,someone2@gmail.com,someone3@gmail.com
+         * @var $addAttachment = Add more attachment in email. Example: C:\book.doc,C:\image.jpg,C:\video.mp4
+         * @var $subject = The subject of email
+         * @var $body = The body of email
+         * @var $isHtml = Email will using plain text or html. Default is true.
+         */
+        var $setFrom,$setFromName,$wordWrap=50,$addAddress,$addCC,$addBCC,$addAttachment,$subject,$body,$isHtml=true;
 
         function __construct($mailer,$db=null) {
             require '../config.php';
