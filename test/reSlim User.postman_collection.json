@@ -644,18 +644,6 @@
 							"enabled": true
 						},
 						{
-							"key": "ReplyTo",
-							"value": "{your email to received email}",
-							"type": "text",
-							"enabled": true
-						},
-						{
-							"key": "ReplyToName",
-							"value": "{yout name to received email}",
-							"type": "text",
-							"enabled": true
-						},
-						{
 							"key": "CC",
 							"value": "",
 							"type": "text",
