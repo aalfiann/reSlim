@@ -29,15 +29,16 @@ Folder System
     * app/
     * classes/
         * Auth.php (Default classes for handling authentication in reSlim way)
-        * BaseConverter.php (Core for encryption that used in reSlim)
-        * CustomHandlers.php (Default handle message in reSlim)
-        * Mailer.php (For sending mail in reSlim)
+        * BaseConverter.php (Default classes for encryption that used in reSlim)
+        * CustomHandlers.php (Default classes for handle message in reSlim)
+        * Mailer.php (Default classes for sending mail in reSlim)
         * Upload.php (Default classes for user upload management in reSlim)
         * User.php (Default classes for user management in reSlim)
     * logs/
     * routers/
 	    * name.router.php (routes by functionalities)
 * test/
+    * example/ (This is a GUI for test)
     * reSlim User.postman_collection.json (Is the file to run example test in PostMan)
 
 ### api/
