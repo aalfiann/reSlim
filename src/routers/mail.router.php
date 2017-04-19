@@ -13,8 +13,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $mail->isHtml = $datapost['Html'];
         $mail->setFrom = $datapost['From'];
         $mail->setFromName = $datapost['FromName'];
-        $mail->addReplyTo = $datapost['ReplyTo'];
-        $mail->addReplyToName = $datapost['ReplyToName'];
         $mail->addCC = $datapost['CC'];
         $mail->addBCC = $datapost['BCC'];
         $mail->addAttachment = $datapost['Attachment'];
