@@ -7,6 +7,10 @@ reSlim
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
+Feature:
+---------------
+Reslim is 
+
 System Requirements
 ---------------
 
