@@ -433,7 +433,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
         $users->passKey = $datapost['PassKey'];
-        $users->newPassword = $datapost['Newpassword'];
+        $users->newPassword = $datapost['NewPassword'];
         $body = $response->getBody();
         $body->write($users->verifyPassKey());
         return $response
