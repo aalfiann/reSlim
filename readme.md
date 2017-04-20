@@ -150,7 +150,9 @@ $config['db']['dbname'] = 'reSlim';
  * @var $config['smtp']['port'] this is port smtp
  * @var $config['smtp']['username'] your username to login into smtp server
  * @var $config['smtp']['password'] the password to login into smtp server
- * @var $config['smtp']['debug'] get more information by set debug
+ * @var $config['smtp']['debug'] get more information by set debug.
+ *                               To work using rest api, You should set debug 1,
+ *                               because other than 1, there is special characters that will broke json format. 
  */
 $config['smtp']['host'] = 'smtp.gmail.com';
 $config['smtp']['autotls'] = false;
