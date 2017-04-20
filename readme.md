@@ -9,7 +9,7 @@ reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br
 
 Feature:
 ---------------
-Reslim is already build with essentials of user management system.
+Reslim is already build with essentials of user management system in rest api way.
 
 1. User Register, Login and Logout
 2. Auto generated token every login
@@ -17,7 +17,8 @@ Reslim is already build with essentials of user management system.
 4. Revoke all active token
 5. Change, Reset, Forgot password is very secure
 6. Upload file management
-7. Etc.
+7. Mailer for sending email
+8. Etc.
 
 System Requirements
 ---------------
