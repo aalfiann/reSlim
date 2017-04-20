@@ -22,7 +22,7 @@ use PDO;
 		protected $db;
 		
 		// model data user
-		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token;
+		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token,$passKey;
 		
 		// for change password
 		var $newPassword;
@@ -266,6 +266,101 @@ use PDO;
 			return $data;
 			$this->db = null;
 		}
+
+		/** 
+         * Generate encoded pass key when user forgot password
+         *
+         * @return json encoded data
+         */
+        public function generatePassKey(){
+			if ($this->isEmailRegistered() == true){
+				try {
+					$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
+	                $hash = Auth::EncodeAPIKey($newemail.'::'.date("Y-m-d H:i:s"));
+    	            $this->db->beginTransaction();
+			    	$sql = "INSERT INTO user_forgot (Email,Verifylink,Created,Expired) 
+    					VALUES (:email,:verifylink,current_timestamp,date_add(current_timestamp, interval 3 day));";
+	    			$stmt = $this->db->prepare($sql);
+			   		$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
+		    		$stmt->bindParam(':verifylink', $hash, PDO::PARAM_STR);
+			    	if ($stmt->execute()) {
+						$data = [
+		    				'status' => 'success',
+			   				'code' => 'RS101',
+			    			'passkey' => $hash,
+							'message' => CustomHandlers::getreSlimMessage('RS101')
+				    	];
+    				} else {
+	    				$data = [
+		    				'status' => 'error',
+			   				'code' => 'RS201',
+			    			'message' => CustomHandlers::getreSlimMessage('RS201')
+				    	];
+				    }
+    				$this->db->commit();
+		    	} catch (PDOException $e) {
+			    	$data = [
+						'status' => 'error',
+					    'code' => $e->getCode(),
+					    'message' => $e->getMessage()
+					];
+		    		$this->db->rollBack();
+		    	}
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS914',
+					'message' => CustomHandlers::getreSlimMessage('RS914')
+    			];
+			}
+		    return $data;
+    		$this->db = null;
+        }
+
+		/** 
+         * Verify pass key and reset password
+         *
+         * @return json encoded data
+         */
+        public function verifyPassKey(){
+			try {
+					$hashpass = Auth::EncodeAPIKey($this->newPassword);
+	                $hash = Auth::DecodeAPIKey($this->passKey);
+					$hashed = explode('::',$hash); 
+    	            $this->db->beginTransaction();
+			    	$sql = "update user_forgot a 
+						inner join user_data b on a.Email = b.Email
+						set b.`Password` = :password,a.Expired=current_timestamp
+						where b.Email=:email;";
+	    			$stmt = $this->db->prepare($sql);
+			   		$stmt->bindParam(':email', $hashed[0], PDO::PARAM_STR);
+		    		$stmt->bindParam(':password', $hashpass, PDO::PARAM_STR);
+			    	if ($stmt->execute()) {
+						$data = [
+		    				'status' => 'success',
+			   				'code' => 'RS103',
+			    			'passkey' => $hash,
+							'message' => CustomHandlers::getreSlimMessage('RS103')
+				    	];
+    				} else {
+	    				$data = [
+		    				'status' => 'error',
+			   				'code' => 'RS201',
+			    			'message' => CustomHandlers::getreSlimMessage('RS201')
+				    	];
+				    }
+    				$this->db->commit();
+		    	} catch (PDOException $e) {
+			    	$data = [
+						'status' => 'error',
+					    'code' => $e->getCode(),
+					    'message' => $e->getMessage()
+					];
+		    		$this->db->rollBack();
+		    	}
+		    return $data;
+    		$this->db = null;
+        }
 
 		/**
 		 * Determine if user is already registered or not
