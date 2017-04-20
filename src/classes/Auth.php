@@ -72,7 +72,7 @@ use \classes\BaseConverter as BaseConverter;
          * @return string the decoded data
          */
         public static function decodeAPIKey($encoded){
-            return BaseConverter::convertToBinary($data, self::$characters);
+            return BaseConverter::convertToBinary($encoded, self::$characters);
         }
 
         /** 
