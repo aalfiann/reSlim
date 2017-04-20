@@ -302,7 +302,10 @@ use PDO;
 			$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
-	                $r = true;
+					$single = $stmt->fetch();
+					    if ((!empty($single['Email'])) || $single['Email'] != null ){
+                            $r = true;
+                        }
     	        }          	   	
 			} 		
 			return $r;
@@ -325,7 +328,10 @@ use PDO;
 			$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
-	                $r = true;
+	                $single = $stmt->fetch();
+					if ((!empty($single['Email'])) || $single['Email'] != null ){
+                        $r = true;
+                    }
     	        }          	   	
 			} 		
 			return $r;
