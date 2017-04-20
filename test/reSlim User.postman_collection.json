@@ -609,19 +609,19 @@
 					"formdata": [
 						{
 							"key": "To",
-							"value": "{email recipient}",
+							"value": "{destination email address}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "Subject",
-							"value": "",
+							"value": "{subject email}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "Message",
-							"value": "",
+							"value": "{message of email}",
 							"type": "text",
 							"enabled": true
 						},
@@ -633,31 +633,79 @@
 						},
 						{
 							"key": "From",
-							"value": "{youremail}",
+							"value": "{your email address}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "FromName",
-							"value": "{yourname}",
+							"value": "{your name or website name}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "CC",
-							"value": "",
+							"value": "{you can leave this blank}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "BCC",
-							"value": "",
+							"value": "{you can leave this blank}",
 							"type": "text",
 							"enabled": true
 						},
 						{
 							"key": "Attachment",
-							"value": "",
+							"value": "{you can leave this blank}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User Forgot Password",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/forgotpassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "{youremail}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Pass Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verifypasskey",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "PassKey",
+							"value": "{yourpasskey}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "NewPassword",
+							"value": "{yournewpassword}",
 							"type": "text",
 							"enabled": true
 						}
