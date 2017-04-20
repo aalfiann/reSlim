@@ -411,3 +411,35 @@ use \Psr\Http\Message\ResponseInterface as Response;
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
             ->withBody($body);
     });
+
+    // POST example api user forgot password
+    $app->post('/user/forgotpassword', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        
+        $users->email = $datapost['Email'];
+        $body = $response->getBody();
+        $body->write($users->generatePassKey());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
+
+    // POST example api verify passkey to reset password
+    $app->post('/user/verifypasskey', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->passKey = $datapost['PassKey'];
+        $users->newPassword = $datapost['Newpassword'];
+        $body = $response->getBody();
+        $body->write($users->verifyPassKey());
+        return $response
+            ->withStatus(200)
+            ->withHeader('Content-Type','application/json; charset=utf-8')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withBody($body);
+    });
