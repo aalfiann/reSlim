@@ -288,7 +288,8 @@ use PDO;
 		    				'status' => 'success',
 			   				'code' => 'RS101',
 			    			'passkey' => $hash,
-							'message' => CustomHandlers::getreSlimMessage('RS101')
+							'message' => CustomHandlers::getreSlimMessage('RS101'),
+							'info' => 'Keep secret and better to send this pass key via email. This pass key will expired 3 days from now.'
 				    	];
     				} else {
 	    				$data = [
@@ -313,7 +314,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS914')
     			];
 			}
-		    return $data;
+		    return json_encode($data, JSON_PRETTY_PRINT);
     		$this->db = null;
         }
 
@@ -323,42 +324,73 @@ use PDO;
          * @return json encoded data
          */
         public function verifyPassKey(){
-			try {
-					$hashpass = Auth::EncodeAPIKey($this->newPassword);
-	                $hash = Auth::DecodeAPIKey($this->passKey);
-					$hashed = explode('::',$hash); 
-    	            $this->db->beginTransaction();
-			    	$sql = "update user_forgot a 
-						inner join user_data b on a.Email = b.Email
-						set b.`Password` = :password,a.Expired=current_timestamp
-						where b.Email=:email;";
-	    			$stmt = $this->db->prepare($sql);
-			   		$stmt->bindParam(':email', $hashed[0], PDO::PARAM_STR);
-		    		$stmt->bindParam(':password', $hashpass, PDO::PARAM_STR);
-			    	if ($stmt->execute()) {
-						$data = [
-		    				'status' => 'success',
-			   				'code' => 'RS103',
-			    			'passkey' => $hash,
-							'message' => CustomHandlers::getreSlimMessage('RS103')
-				    	];
-    				} else {
-	    				$data = [
-		    				'status' => 'error',
-			   				'code' => 'RS201',
-			    			'message' => CustomHandlers::getreSlimMessage('RS201')
-				    	];
-				    }
-    				$this->db->commit();
-		    	} catch (PDOException $e) {
-			    	$data = [
-						'status' => 'error',
-					    'code' => $e->getCode(),
-					    'message' => $e->getMessage()
-					];
-		    		$this->db->rollBack();
-		    	}
-		    return $data;
+			$hash = Auth::decodeAPIKey($this->passKey);
+			$hashed = explode('::',$hash);
+			$sqluser = "SELECT b.Username from user_forgot a inner join user_data b on a.Email=b.Email where a.Email=:email;";
+			$stmtuser = $this->db->prepare($sqluser);
+			$stmtuser->bindParam(':email', $hashed[0], PDO::PARAM_STR);
+			if ($stmtuser->execute()){
+				if ($stmtuser->rowCount() > 0){
+					$single = $stmtuser->fetch();
+					$user = $single['Username'];
+					try {
+						$hashpass = Auth::hashPassword($user,$this->newPassword);
+	    	            $this->db->beginTransaction();
+				    	$sql = "update user_forgot a 
+							inner join user_data b on a.Email = b.Email
+							set b.`Password` = :password,a.Expired=current_timestamp
+							where b.Email=:email and a.Verifylink=:verifylink and a.Expired > current_timestamp;";
+	    				$stmt = $this->db->prepare($sql);
+				   		$stmt->bindParam(':email', $hashed[0], PDO::PARAM_STR);
+			    		$stmt->bindParam(':password', $hashpass, PDO::PARAM_STR);
+						$stmt->bindParam(':verifylink', $this->passKey, PDO::PARAM_STR);
+				    	if ($stmt->execute()) {
+							if ($stmt->rowCount() > 0){
+								$data = [
+		    						'status' => 'success',
+			   						'code' => 'RS103',
+									'message' => CustomHandlers::getreSlimMessage('RS103')
+						    	];
+							} else {
+								$data = [
+		    						'status' => 'error',
+			   						'code' => 'RS915',
+									'message' => CustomHandlers::getreSlimMessage('RS915')
+					    		];
+							}
+							
+    					} else {
+	    					$data = [
+		    					'status' => 'error',
+			   					'code' => 'RS201',
+			    				'message' => CustomHandlers::getreSlimMessage('RS201')
+				    		];
+					    }
+    					$this->db->commit();
+						Auth::clearUserToken($this->db,$user);
+			    	} catch (PDOException $e) {
+				    	$data = [
+							'status' => 'error',
+						    'code' => $e->getCode(),
+					    	'message' => $e->getMessage()
+						];
+			    		$this->db->rollBack();
+			    	}
+				} else {
+					$data = [
+		    					'status' => 'error',
+			   					'code' => 'RS601',
+			    				'message' => CustomHandlers::getreSlimMessage('RS601')
+				    		];
+				}
+			} else {
+				$data = [
+		    		'status' => 'error',
+			   		'code' => 'RS202',
+			    	'message' => CustomHandlers::getreSlimMessage('RS202')
+				];
+			}	
+		    return json_encode($data, JSON_PRETTY_PRINT);
     		$this->db = null;
         }
 
