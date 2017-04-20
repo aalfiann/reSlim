@@ -128,10 +128,13 @@ use PDO;
             							'status' => 'success',
 	            						'code' => 'RS101',
     	    							'message' => CustomHandlers::getreSlimMessage('RS101'),
-										'datafile' => [ 'filename' => $fileName,
-											'filepath' => $this->baseurl.'/'.$filePath,
-											'filetype' => $fileType,
-											'filesize' => $fileSize]
+										'datafile' => [ 'Title' => $this->title,
+											'Alternate' => $this->alternate,
+											'External_link' => $this->externallink,
+											'Filename' => $fileName,
+											'Filepath' => $this->baseurl.'/'.$filePath,
+											'Filetype' => $fileType,
+											'Filesize' => $fileSize]
 	        						];	
 			            		} else {
     	        					$data = [
@@ -254,13 +257,14 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showAllAsPagination() {
+			$newusername = strtolower($this->username);
 			if (Auth::validToken($this->db,$this->token)){
 				//count total row
 				$sqlcountrow = "SELECT count(a.ItemID) as TotalRow 
 					from user_upload a 
 					where a.StatusID = '49' or a.Username=:username;";
 				$stmt = $this->db->prepare($sqlcountrow);		
-				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+				$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				
 				if ($stmt->execute()) {	
     	    		if ($stmt->rowCount() > 0){
@@ -278,7 +282,7 @@ use PDO;
 								where a.StatusID = '49' or a.Username=:username
 								order by a.Date_Upload desc LIMIT :limpage , :offpage;";
 								$stmt2 = $this->db->prepare($sql);
-								$stmt2->bindParam(':username', $this->username, PDO::PARAM_STR);
+								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
 						
@@ -329,6 +333,7 @@ use PDO;
 		 */
 		public function searchAllAsPagination() {
 			if (Auth::validToken($this->db,$this->token)){
+				$newusername = strtolower($this->username);
 				$search = "%$this->search%";
 				//count total row
 				$sqlcountrow = "SELECT count(a.ItemID) as TotalRow 
@@ -336,7 +341,7 @@ use PDO;
 					where a.StatusID = '49' and a.Filename like :search 
 					or a.Username=:username and a.Filename like :search;";
 				$stmt = $this->db->prepare($sqlcountrow);		
-				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+				$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				$stmt->bindParam(':search', $search, PDO::PARAM_STR);
 				
 				if ($stmt->execute()) {	
@@ -356,7 +361,7 @@ use PDO;
 								or a.Username=:username and a.Filename like :search
 								order by a.Date_Upload desc LIMIT :limpage , :offpage;";
 								$stmt2 = $this->db->prepare($sql);
-								$stmt2->bindParam(':username', $this->username, PDO::PARAM_STR);
+								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 								$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
 								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
@@ -411,9 +416,9 @@ use PDO;
 				from user_upload a 
 				inner join core_status b on a.StatusID=b.StatusID
 				where a.StatusID = '49' and a.ItemID=:itemid or a.Username=:username and a.ItemID=:itemid;";
-				
+			$newusername = strtolower($this->username);
 			$stmt = $this->db->prepare($sql);		
-			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 			$stmt->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
 
 			if ($stmt->execute()) {	
@@ -464,14 +469,14 @@ use PDO;
 					SET Title=:title,Alternate=:alternate,External_link=:external,StatusID=:status,Updated_by=:username 
 					WHERE ItemID=:itemid and Username=:username;";
 				}
-				
+					$newusername = strtolower($this->username);
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
 					$stmt->bindParam(':alternate', $this->alternate, PDO::PARAM_STR);
 					$stmt->bindParam(':external', $this->externallink, PDO::PARAM_STR);
 					$stmt->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
 					$stmt->bindParam(':status', $this->status, PDO::PARAM_STR);
-					$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						if ($stmt->rowCount() > 0){
 							$data = [
@@ -529,9 +534,10 @@ use PDO;
 							$sql = "DELETE from user_upload  
 							WHERE ItemID=:itemid and Username=:username;";
 						}
+						$newusername = strtolower($this->username);
 						$stmt2 = $this->db->prepare($sql);
 						$stmt2->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
-						$stmt2->bindParam(':username', $this->username, PDO::PARAM_STR);
+						$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 						if ($stmt2->execute()) {
 							if ($stmt2->rowCount() > 0){
 								if(unlink($filepath)){
