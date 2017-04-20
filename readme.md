@@ -1,24 +1,26 @@
 reSlim
 =======
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.1.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.2.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
-Feature:
+Features:
 ---------------
 Reslim is already build with essentials of user management system in rest api way.
 
-1. User Register, Login and Logout
+1. User register, login and logout
 2. Auto generated token every login
-3. Auto clear current token when logout or password is changed
-4. Change, Reset, Forgot password concept is very secure
-5. Revoke all active token
-6. Mailer for sending email
-7. Upload file management
-8. Etc.
+3. User can revoke all active token
+4. Every user can upload file to server
+5. There is a role for superuser, admin and member
+6. Auto clear current token when logout,user deleted or password was changed
+7. Change, reset, forgot password concept is very secure
+8. Mailer for sending email or contact form
+9. Pagination json response
+10. Etc.
 
 System Requirements
 ---------------
