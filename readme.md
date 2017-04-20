@@ -14,10 +14,10 @@ Reslim is already build with essentials of user management system in rest api wa
 1. User Register, Login and Logout
 2. Auto generated token every login
 3. Auto clear current token when logout or password is changed
-4. Revoke all active token
-5. Change, Reset, Forgot password is very secure
-6. Upload file management
-7. Mailer for sending email
+4. Change, Reset, Forgot password concept is very secure
+5. Revoke all active token
+6. Mailer for sending email
+7. Upload file management
 8. Etc.
 
 System Requirements
