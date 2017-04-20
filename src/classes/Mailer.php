@@ -19,7 +19,7 @@ use PDO;
      */
 	class Mailer {
 		
-		protected $mailer,$db,$host,$smtpDebug,$smtpAutoTLS,$smtpAuth,$smtpSecure,$smtpPort,$username,$password;
+		protected $mailer,$db,$host,$smtpDebug,$smtpAutoTLS,$smtpAuth,$smtpSecure,$smtpPort,$username,$password,$defaultNameFrom;
 
         /**
          * @var $setFrom = The email address of sender. Example: youremail@gmail.com
@@ -46,6 +46,7 @@ use PDO;
             $this->smtpPort = $c['port'];
             $this->smtpAutoTLS = $c['autotls'];
             $this->smtpDebug = $c['debug'];
+            $this->defaultNameFrom = $c['defaultnamefrom'];
             $this->mailer = $mailer;
             if (!empty($db)) 
 	        {
@@ -77,8 +78,8 @@ use PDO;
 								);
 
             $this->mailer->WordWrap = $this->wordWrap;
-            $this->mailer->setFrom(filter_var($this->setFrom, FILTER_SANITIZE_EMAIL), filter_var($this->setFromName, FILTER_SANITIZE_STRING));
-            $this->mailer->addReplyTo(filter_var($this->setFrom, FILTER_SANITIZE_EMAIL), filter_var($this->setFromName, FILTER_SANITIZE_STRING));
+            $this->mailer->setFrom(filter_var((empty($this->setFrom)?$this->username:$this->setFrom), FILTER_SANITIZE_EMAIL), filter_var((empty($this->setFromName)?$this->defaultNameFrom:$this->setFromName), FILTER_SANITIZE_STRING));
+            $this->mailer->addReplyTo(filter_var((empty($this->setFrom)?$this->username:$this->setFrom), FILTER_SANITIZE_EMAIL), filter_var((empty($this->setFromName)?$this->defaultNameFrom:$this->setFromName), FILTER_SANITIZE_STRING));
             
             if (!empty($this->addAddress)){
                 $address = preg_split( "/[;,#]/", preg_replace('/\s+/', '', $this->addAddress) );
