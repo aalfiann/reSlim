@@ -137,8 +137,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api register user
     $app->post('/user/register', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();    
         $users->username = $datapost['Username'];
         $users->password = $datapost['Password'];
         $users->fullname = $datapost['Fullname'];
@@ -148,7 +147,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->aboutme = $datapost['Aboutme'];
         $users->avatar = $datapost['Avatar'];
         $users->role = $datapost['Role'];
-
         $body = $response->getBody();
         $body->write($users->register());
         return $response
@@ -162,13 +160,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api login user
     $app->post('/user/login', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();       
         $users->username = $datapost['Username'];
         $users->password = $datapost['Password'];
         $body = $response->getBody();
         $body->write($users->login());
-
         return $response
             ->withStatus(200)
             ->withHeader('Content-Type','application/json; charset=utf-8')
@@ -180,11 +176,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api logout user
     $app->post('/user/logout', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();    
         $users->username = $datapost['Username'];
         $users->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($users->logout());
         return $response
@@ -198,8 +192,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api update user
     $app->post('/user/update', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody(); 
         $users->username = $datapost['Username'];
         $users->fullname = $datapost['Fullname'];
         $users->address = $datapost['Address'];
@@ -210,7 +203,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->role = $datapost['Role'];
         $users->status = $datapost['Status'];
         $users->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($users->update());
         return $response
@@ -225,10 +217,8 @@ use \Psr\Http\Message\ResponseInterface as Response;
     $app->post('/user/delete', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $datapost = $request->getParsedBody();
-        
         $users->username = $datapost['Username'];
         $users->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($users->delete());
         return $response
@@ -242,13 +232,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api change password
     $app->post('/user/changepassword', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();  
         $users->username = $datapost['Username'];
         $users->password = $datapost['Password'];
         $users->newPassword = $datapost['NewPassword'];
         $users->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($users->changePassword());
         return $response
@@ -262,12 +250,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api reset password
     $app->post('/user/resetpassword', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();     
         $users->username = $datapost['Username'];
         $users->newPassword = $datapost['NewPassword'];
         $users->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($users->resetPassword());
         return $response
@@ -281,13 +267,11 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api upload
     $app->post('/user/upload', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
-        
         $datapost = $request->getParsedBody();
         $files = $request->getUploadedFiles();
         if (empty($files['Datafile'])) {
             throw new Exception('Expected a newfile');
         }
-        
         $upload->username = $datapost['Username'];
         $upload->title = $datapost['Title'];
         $upload->alternate = $datapost['Alternate'];
@@ -295,7 +279,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->datafile = $files['Datafile'];
         $upload->token = $datapost['Token'];
         $upload->baseurl = $request->getUri()->getBaseUrl();
-        
         $body = $response->getBody();
         $body->write($upload->process());
         return $response
@@ -310,7 +293,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
     $app->post('/user/upload/update', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
         $datapost = $request->getParsedBody();
-        
         $upload->username = $datapost['Username'];
         $upload->title = $datapost['Title'];
         $upload->alternate = $datapost['Alternate'];
@@ -318,7 +300,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->status = $datapost['Status'];
         $upload->itemid = $datapost['ItemID'];
         $upload->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($upload->update());
         return $response
@@ -333,11 +314,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
     $app->post('/user/upload/delete', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
         $datapost = $request->getParsedBody();
-        
         $upload->username = $datapost['Username'];
         $upload->itemid = $datapost['ItemID'];
         $upload->token = $datapost['Token'];
-
         $body = $response->getBody();
         $body->write($upload->delete());
         return $response
@@ -415,8 +394,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
     // POST example api user forgot password
     $app->post('/user/forgotpassword', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $datapost = $request->getParsedBody();
-        
+        $datapost = $request->getParsedBody();    
         $users->email = $datapost['Email'];
         $body = $response->getBody();
         $body->write($users->generatePassKey());
