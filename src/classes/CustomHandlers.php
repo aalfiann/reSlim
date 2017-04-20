@@ -148,7 +148,8 @@
             'RS911' => 'Upload failed, File is too large.',
             'RS912' => 'Upload canceled, The filename is already on server. Please use another filename.',
             'RS913' => 'Request process is successfully deleted only in database server but failed to delete the data file on server.',
-            'RS914' => 'Email is not available.'
+            'RS914' => 'Email is not available.',
+            'RS915' => 'Failed to verify pass key maybe it was expired.'
         ];
 
         /**
