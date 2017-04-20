@@ -140,7 +140,7 @@ use \classes\BaseConverter as BaseConverter;
                         $r = true;
                     } else {
                         $single = $stmt->fetch();
-					    if ($single['Username'] == $username){
+					    if ($single['Username'] == strtolower($username)){
                             $r = true;
                         }
                     }                    
