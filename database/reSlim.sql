@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2017 at 03:33 PM
+-- Generation Time: Apr 20, 2017 at 07:01 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -134,6 +134,19 @@ INSERT INTO `user_data` (`UserID`, `Username`, `Password`, `Fullname`, `Address`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `user_forgot`
+--
+
+CREATE TABLE IF NOT EXISTS `user_forgot` (
+  `Email` varchar(50) NOT NULL,
+  `Verifylink` varchar(255) NOT NULL,
+  `Created` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `Expired` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_role`
 --
 
@@ -193,7 +206,13 @@ ALTER TABLE `user_auth`
 -- Indexes for table `user_data`
 --
 ALTER TABLE `user_data`
- ADD PRIMARY KEY (`UserID`,`Username`), ADD KEY `user_data_ibfk_1` (`StatusID`), ADD KEY `user_data_ibfk_2` (`RoleID`), ADD KEY `Username` (`Username`), ADD KEY `Fullname` (`Fullname`) USING BTREE, ADD KEY `Password` (`Password`);
+ ADD PRIMARY KEY (`UserID`,`Username`), ADD KEY `user_data_ibfk_1` (`StatusID`), ADD KEY `user_data_ibfk_2` (`RoleID`), ADD KEY `Username` (`Username`), ADD KEY `Fullname` (`Fullname`) USING BTREE, ADD KEY `Password` (`Password`), ADD KEY `Email` (`Email`);
+
+--
+-- Indexes for table `user_forgot`
+--
+ALTER TABLE `user_forgot`
+ ADD PRIMARY KEY (`Email`,`Verifylink`), ADD KEY `Email` (`Email`), ADD KEY `Verifylink` (`Verifylink`);
 
 --
 -- Indexes for table `user_role`
@@ -247,6 +266,12 @@ ADD CONSTRAINT `user_token` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Us
 ALTER TABLE `user_data`
 ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
 ADD CONSTRAINT `user_data_ibfk_2` FOREIGN KEY (`RoleID`) REFERENCES `user_role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user_forgot`
+--
+ALTER TABLE `user_forgot`
+ADD CONSTRAINT `user_forgot_ibfk_1` FOREIGN KEY (`Email`) REFERENCES `user_data` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_upload`
