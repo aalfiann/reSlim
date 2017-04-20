@@ -47,7 +47,7 @@ use PDO;
 		private function doRegister(){
 			
 			$newusername = strtolower($this->username);
-			$newemail = strtolower($this->email);
+			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
 			$hash = Auth::hashPassword($newusername, $this->password);
 			
 			try {
@@ -97,7 +97,7 @@ use PDO;
 		private function doUpdate(){
 			
 			$newusername = strtolower($this->username);
-			$newemail = strtolower($this->email);
+			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
 
 			try {
 				$this->db->beginTransaction();
@@ -272,12 +272,57 @@ use PDO;
 		 * @return boolean true / false
 		 */
 		private function isRegistered(){
+			$newusername = strtolower($this->username);
 			$r = false;
 			$sql = "SELECT a.Username
 				FROM user_data a 
 				WHERE a.Username = :username;";
 			$stmt = $this->db->prepare($sql);
-			$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+			$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+			if ($stmt->execute()) {	
+            	if ($stmt->rowCount() > 0){
+	                $r = true;
+    	        }          	   	
+			} 		
+			return $r;
+			$this->db = null;
+		}
+
+		/**
+		 * Determine if email is already registered or not
+		 * @return boolean true / false
+		 */
+		private function isEmailRegistered(){
+			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
+			$r = false;
+			$sql = "SELECT a.Email
+				FROM user_data a 
+				WHERE a.Email = :email;";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
+			if ($stmt->execute()) {	
+            	if ($stmt->rowCount() > 0){
+	                $r = true;
+    	        }          	   	
+			} 		
+			return $r;
+			$this->db = null;
+		}
+
+		/**
+		 * Determine if email is old or not
+		 * @return boolean true / false
+		 */
+		private function isOldEmail(){
+			$newusername = strtolower($this->username);
+			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
+			$r = false;
+			$sql = "SELECT a.Username,a.Email
+				FROM user_data a 
+				WHERE a.Email = :email and a.Username = :username;";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+			$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
 	                $r = true;
@@ -829,7 +874,15 @@ use PDO;
 				];
 			} else {
 				if ($this->isRegistered() == false){
-					$data = $this->doRegister();
+					if ($this->isEmailRegistered() == false){
+						$data = $this->doRegister();
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS914',
+							'message' => CustomHandlers::getreSlimMessage('RS914')
+						];
+					}
 				} else {
 					$data = [
 						'status' => 'error',
@@ -899,7 +952,19 @@ use PDO;
 		 */
 		public function update(){
 			if (Auth::validToken($this->db,$this->token)){
-				$data = $this->doUpdate();
+				if ($this->isOldEmail() == true){
+					$data = $this->doUpdate();
+				} else {
+					if ($this->isEmailRegistered() == false) {
+						$data = $this->doUpdate();
+					} else {
+						$data = [
+	    					'status' => 'error',
+							'code' => 'RS914',
+        	    			'message' => CustomHandlers::getreSlimMessage('RS914')
+				];
+					}
+				}
 			} else {
 				$data = [
 	    			'status' => 'error',
