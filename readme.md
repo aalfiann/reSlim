@@ -43,12 +43,13 @@ Folder System
     * api/
     * app/
     * classes/
-        * Auth.php (Default classes for handling authentication in reSlim way)
-        * BaseConverter.php (Default classes for encryption that used in reSlim)
-        * CustomHandlers.php (Default classes for handle message in reSlim)
-        * Mailer.php (Default classes for sending mail in reSlim)
-        * Upload.php (Default classes for user upload management in reSlim)
-        * User.php (Default classes for user management in reSlim)
+        * Auth.php (For handling authentication)
+        * BaseConverter.php (For encryption)
+        * CustomHandlers.php (For handle message)
+        * Mailer.php (For sending mail)
+        * Pagination.php (For pagination json response)
+        * Upload.php (For user upload and management file)
+        * User.php (For user management)
     * logs/
     * routers/
 	    * name.router.php (routes by functionalities)
