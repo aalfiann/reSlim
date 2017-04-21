@@ -8,6 +8,9 @@
      * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
      */
     class Core {
+
+        // Set title website
+        public static $title = 'reSlim';
         
         // Set base path example project
         public static $basepath = 'http://localhost:1337/reSlim/test/example';
@@ -252,6 +255,81 @@
 	        }
         	header("Location: ".self::$basepath."/modul-login.php?m=1");
         }
+
+        /**
+		 * Process Forgot Password
+         *
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function forgotPassword($post_array){
+            $data = json_decode(self::execPostRequest(self::$api.'/user/forgotpassword',$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    $linkverify = self::$basepath.'/modul-verify.php?passkey='.$data->{'passkey'};
+                    $email_array = array(
+                        'To' => $post_array['Email'],
+                        'Subject' => 'Request reset password',
+                        'Message' => '<html><body><p>You have already requested to reset password.<br /><br />
+                        Here is the link to reset: <a href="'.$linkverify.'" target="_blank"><b>'.$linkverify.'</b></a>.<br /><br />
+                        
+                        Just ignore this email if You don\'t want to reset password. Link will be expired 3days from now.<br /><br /><br />
+                        Thank You<br />
+                        '.self::$title.'</p></body></html>',
+                        'Html' => 'true',
+                        'From' => '',
+                        'FromName' => '',
+                        'CC' => '',
+                        'BCC' => '',
+                        'Attachment' => ''
+                    );
+                    $sendemail = json_decode(self::execPostRequest(self::$api.'/mail/send',$email_array));
+                    echo '<div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Request reset password hasbeen sent to your email!</strong> If not, try to resend again later
+                    </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Process Forgot Password Failed!</strong> '.$data->{'message'}.' 
+                    </div>';    
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Process Forgot Password Failed!</strong> Can not connected to the server! 
+                </div>';
+            }
+	    }
+
+        /**
+		 * Process Verify Pass Key
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function verifyPassKey($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="alert alert-success" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Process Change Password Successfully!</strong> 
+                    </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Process Change Password Failed!</strong> '.$data->{'message'}.' 
+                    </div>';    
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>Process Change Password Failed!</strong> Can not connected to the server! 
+                </div>';
+            }
+	    }
 
         /**
 		 * Check SESSION, COOKIE and Verify Token
