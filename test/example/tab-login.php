@@ -36,6 +36,7 @@
                                         <hr>
                                         <div class="form-group text-center">
                                             <button name="submitlogin" type="submit" class="btn btn-fill btn-wd ">Login</button>
+                                            <br><br><label><a href="modul-forgot-password.php">Forgot password?</a></label>
                                         </div>
                                     </div>
                                 </div>
