@@ -66,7 +66,6 @@ use PDO;
             $this->mailer->Password = $this->password;                    // SMTP password
             $this->mailer->SMTPSecure = $this->smtpSecure;                // Enable TLS encryption, `ssl` also accepted
             $this->mailer->Port = $this->smtpPort;                        // TCP port to connect to
-            $this->mailer->isHTML($this->isHtml);                         // Set email format to HTML
             $this->mailer->SMTPAutoTLS = $this->smtpAutoTLS;              // Set TLS encryption automatically
             $this->mailer->SMTPDebug = $this->smtpDebug;                  // Show debug information
             $this->mailer->SMTPOptions = array(
@@ -118,9 +117,10 @@ use PDO;
             }
 
             $this->mailer->Subject = filter_var($this->subject, FILTER_SANITIZE_STRING);
-            $this->mailer->Body = filter_var($this->body, FILTER_SANITIZE_STRING);
+            $this->mailer->Body = $this->body;
             $this->mailer->AltBody = filter_var($this->body, FILTER_SANITIZE_STRING);
-
+            $this->mailer->isHTML($this->isHtml);
+            
             if(!$this->mailer->send()) {
                 $data = [
                     'status' => 'error',
