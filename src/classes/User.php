@@ -379,8 +379,8 @@ use PDO;
 				} else {
 					$data = [
 		    					'status' => 'error',
-			   					'code' => 'RS601',
-			    				'message' => CustomHandlers::getreSlimMessage('RS601')
+			   					'code' => 'RS801',
+			    				'message' => CustomHandlers::getreSlimMessage('RS801')
 				    		];
 				}
 			} else {
