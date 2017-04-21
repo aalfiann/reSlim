@@ -3,7 +3,7 @@
                 <a href="<?=Core::$basepath;?>" class="simple-text">
                     reSlim
                 </a>
-                <div class="text-center">v.1.0.0</div>
+                <div class="text-center">v.1.2.0</div>
             </div>
 
             <ul class="nav">
