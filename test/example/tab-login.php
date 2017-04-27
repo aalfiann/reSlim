@@ -30,9 +30,8 @@
                                             <input name="password" type="password" placeholder="Your Password" class="form-control border-input" required>
                                         </div>
                                         <label class="checkbox" for="checkbox1">
-	                                	<input name="remember" type="checkbox" id="checkbox1" data-toggle="checkbox">
-	                                	Remember Me
-	                            	</label>
+	                                	    <input name="remember" type="checkbox" id="checkbox1" data-toggle="checkbox">Remember Me
+	                                	</label>
                                         <hr>
                                         <div class="form-group text-center">
                                             <button name="submitlogin" type="submit" class="btn btn-fill btn-wd ">Login</button>
