@@ -29,11 +29,23 @@
                             <p>Data User</p>
                         </a>
                     </li>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==6) echo 'class="active"';?> >
+                        <a href="modul-explore.php?m=6&page=1&itemsperpage=12&search=">
+                            <i class="ti-cloud-up"></i>
+                            <p>Explore</p>
+                        </a>
+                    </li>
                 <?php } else {  // Member Menu ?>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
                         <a href="modul-user-profile.php?m=4">
                             <i class="ti-user"></i>
                             <p>My Profile</p>
+                        </a>
+                    </li>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==6) echo 'class="active"';?> >
+                        <a href="modul-explore.php?m=6&page=1&itemsperpage=12&search=">
+                            <i class="ti-cloud-up"></i>
+                            <p>Explore</p>
                         </a>
                     </li>
                 <?php } ?>
@@ -55,6 +67,12 @@
                     <a href="modul-register.php?m=2">
                         <i class="ti-pencil-alt"></i>
                         <p>Register</p>
+                    </a>
+                </li>
+                <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
+                    <a href="modul-contact.php?m=7">
+                        <i class="ti-email"></i>
+                        <p>Contact</p>
                     </a>
                 </li>
             <?php } ?>
