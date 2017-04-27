@@ -276,7 +276,7 @@ use PDO;
 						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
-							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,b.`Status` 
+							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
 								from user_upload a 
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.StatusID = '49' or a.Username=:username
@@ -339,7 +339,9 @@ use PDO;
 				$sqlcountrow = "SELECT count(a.ItemID) as TotalRow 
 					from user_upload a 
 					where a.StatusID = '49' and a.Filename like :search 
-					or a.Username=:username and a.Filename like :search;";
+					or a.Username=:username and a.Filename like :search
+					or a.StatusID = '49' and a.Title like :search
+					or a.Username=:username and a.Title like :search;";
 				$stmt = $this->db->prepare($sqlcountrow);		
 				$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				$stmt->bindParam(':search', $search, PDO::PARAM_STR);
@@ -354,11 +356,13 @@ use PDO;
 						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
-							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,b.`Status` 
+							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
 								from user_upload a 
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.StatusID = '49' and a.Filename like :search 
 								or a.Username=:username and a.Filename like :search
+								or a.StatusID = '49' and a.Title like :search
+								or a.Username=:username and a.Title like :search
 								order by a.Date_Upload desc LIMIT :limpage , :offpage;";
 								$stmt2 = $this->db->prepare($sql);
 								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
@@ -530,14 +534,18 @@ use PDO;
 						if (Auth::getRoleID($this->db,$this->token) == '1'){
 							$sql = "DELETE from user_upload  
 								WHERE ItemID=:itemid;";
+							$newusername = strtolower($this->username);
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
 						} else {
 							$sql = "DELETE from user_upload  
-							WHERE ItemID=:itemid and Username=:username;";
+								WHERE ItemID=:itemid and Username=:username;";
+							$newusername = strtolower($this->username);
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
+							$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 						}
-						$newusername = strtolower($this->username);
-						$stmt2 = $this->db->prepare($sql);
-						$stmt2->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
-						$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
+						
 						if ($stmt2->execute()) {
 							if ($stmt2->rowCount() > 0){
 								if(unlink($filepath)){
