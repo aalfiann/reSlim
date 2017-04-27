@@ -359,13 +359,13 @@ use \Psr\Http\Message\ResponseInterface as Response;
     });
 
     // GET example api to search all data user upload with pagination
-    $app->get('/user/{username}/upload/data/search/{query}/{page}/{itemsperpage}/{token}', function (Request $request, Response $response) {
+    $app->get('/user/{username}/upload/data/search/{page}/{itemsperpage}/{token}/', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
         $upload->page = $request->getAttribute('page');
         $upload->itemsPerPage = $request->getAttribute('itemsperpage');
         $upload->token = $request->getAttribute('token');
         $upload->username = $request->getAttribute('username');
-        $upload->search = $request->getAttribute('query');
+        $upload->search = filter_var($_GET['query'],FILTER_SANITIZE_STRING);
         $body = $response->getBody();
         $body->write($upload->searchAllAsPagination());
         return $response
