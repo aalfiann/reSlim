@@ -20,10 +20,7 @@
                                     );
                                     Core::sendMail(Core::$api.'/mail/send',$post_array);
                                 } else {
-                                    echo '<div class="alert alert-danger" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <strong>Process Send Message Failed,</strong> Wrong security key! 
-                                        </div>';
+                                    echo Core::getMessage('danger','Process Send Message Failed,','Wrong security key!');
                                 }
                             } 
                         ?>

@@ -22,22 +22,13 @@
                                             );
                                             Core::register(Core::$api.'/user/register',$post_array);
                                         } else {
-                                            echo '<div class="alert alert-danger" role="alert">
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                <strong>Process Register Failed,</strong> Your password is not match! 
-                                            </div>';
+                                            echo Core::getMessage('danger','Process Register Failed,','Your password is not match!');
                                         }
                                     } else {
-                                        echo '<div class="alert alert-danger" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <strong>Process Register Failed,</strong> Wrong security key! 
-                                        </div>';
+                                        echo Core::getMessage('danger','Process Register Failed,','Wrong security key!');
                                     }
                                 } else {
-                                    echo '<div class="alert alert-danger" role="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <strong>Process Register Failed,</strong> You are not agree with the terms of service! 
-                                    </div>';
+                                    echo Core::getMessage('danger','Process Register Failed,','You are not agree with the terms of service!');
                                 }
                             } 
                         ?>

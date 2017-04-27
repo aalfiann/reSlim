@@ -25,6 +25,21 @@
         // LIBRARY USER MANAGEMENT AND AUTHENTICATION======================================================================
 
         /**
+		 * Get Message
+         *
+         * @param $type = the tpe of message in bootstrap. Example: success,warning,danger,info,primary,default
+         * @param $primaryMessage = Message to show.
+         * @param $secondaryMessage = Additional message to show. This is not required, so default is null.
+		 * @return string with message data
+		 */
+        public static function getMessage($type,$primaryMessage,$secondaryMessage=null){
+            return '<div class="alert alert-'.$type.'" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>'.$primaryMessage.'</strong> '.$secondaryMessage.'
+                        </div>';
+        }
+
+        /**
 		 * CURL Post Request
          *
          * @param $url = The url api to post the request
@@ -185,21 +200,12 @@
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Register Successfully!</strong> 
-                        </div>';
+                    echo self::getMessage('success','Process Register Successfully!');
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Register Failed!</strong> '.$data->{'message'}.' 
-                        </div>';    
+                    echo self::getMessage('danger','Process Register Failed!',$data->{'message'});    
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Register Failed!</strong> Can not connected to the server! 
-                        </div>';
+                echo self::getMessage('danger','Process Register Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -214,21 +220,12 @@
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Successfully!</strong> 
-                        </div>';
+                    echo self::getMessage('success','Process Update Successfuly!');
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Failed!</strong> '.$data->{'message'}.' 
-                        </div>';    
+                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'});
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Failed!</strong> Can not connected to the server! 
-                        </div>';
+                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -253,16 +250,10 @@
 					}
 					header("Location: ".self::$basepath."/index.php");
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Login Failed!</strong> '.$data->{'message'}.' 
-                        </div>';    
+                    echo self::getMessage('danger','Process Login Failed!',$data->{'message'});
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Login Failed!</strong> Can not connected to the server! 
-                        </div>';
+                echo self::getMessage('danger','Process Login Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -325,27 +316,15 @@
                     );
                     try {
                         $sendemail = json_decode(self::execPostRequest(self::$api.'/mail/send',$email_array));
-                        echo '<div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Request reset password hasbeen sent to your email!</strong> If not, try to resend again later
-                        </div>';
+                        echo self::getMessage('success','Request reset password hasbeen sent to your email!','If not, try to resend again later.');
                     } catch (Exception $e) {
-                        echo '<div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Process Forgot Password Failed!</strong> '.$e->getMessage().' 
-                    </div>'; 
+                        echo self::getMessage('danger','Process Forgot Password Failed!',$e->getMessage());
                     }
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Process Forgot Password Failed!</strong> '.$data->{'message'}.' 
-                    </div>';    
+                    echo self::getMessage('danger','Process Forgot Password Failed!',$data->{'message'});
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Process Forgot Password Failed!</strong> Can not connected to the server! 
-                </div>';
+                echo self::getMessage('danger','Process Forgot Password Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -360,21 +339,12 @@
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="alert alert-success" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Process Change Password Successfully!</strong> 
-                    </div>';
+                    echo self::getMessage('success','Process Change Password Successfully!');
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Process Change Password Failed!</strong> '.$data->{'message'}.' 
-                    </div>';    
+                    echo self::getMessage('danger','Process Change Password Failed!',$data->{'message'});
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Process Change Password Failed!</strong> Can not connected to the server! 
-                </div>';
+                echo self::getMessage('danger','Process Change Password Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -389,21 +359,12 @@
             $data = json_decode(self::execPostUploadRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Upload Successfully!</strong> 
-                        </div>';
+                    echo self::getMessage('success','Process Upload Successfuly!');
                 } else {
-                    echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Upload Failed!</strong> '.$data->{'message'}.' 
-                        </div>';    
+                    echo self::getMessage('danger','Process Upload Failed!',$data->{'message'});
                 }
             } else {
-                echo '<div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Upload Failed!</strong> Can not connected to the server! 
-                        </div>';
+                echo self::getMessage('danger','Process Upload Failed!','Can not connected to the server!');
             }
 	    }
 
@@ -418,21 +379,18 @@
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="col-lg-12"><div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Successfully!</strong> This page will automatically refresh at 2 seconds... 
-                        </div></div>';
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success','Process Update Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
                 } else {
-                    echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Failed!</strong> '.$data->{'message'}.'. This page will automatically refresh at 2 seconds...
-                        </div></div>';    
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
                 }
             } else {
-                echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Update Failed!</strong> Can not connected to the server! This page will automatically refresh at 2 seconds...
-                        </div></div>';
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo '</div>';
             }
 	    }
 
@@ -447,21 +405,18 @@
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    echo '<div class="col-lg-12"><div class="alert alert-success" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Delete Successfully!</strong> This page will automatically refresh at 2 seconds... 
-                        </div></div>';
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success','Process Delete Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
                 } else {
-                    echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Delete Failed!</strong> '.$data->{'message'}.'. This page will automatically refresh at 2 seconds...
-                        </div></div>';    
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'}.'. This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
                 }
             } else {
-                echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <strong>Process Delete Failed!</strong> Can not connected to the server! This page will automatically refresh at 2 seconds...
-                        </div></div>';
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo '</div>';
             }
 	    }
 
@@ -475,15 +430,9 @@
 	    public static function sendMail($url,$post_array){
             try{
                 $data = json_decode(self::execPostRequest($url,$post_array));
-                echo '<div class="alert alert-success" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>The message is successfully sent!</strong> 
-                </div>';
+                echo self::getMessage('success','The message is successfully sent!');
             } catch (Exception $e) {
-                echo '<div class="alert alert-danger" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>The message is failed to sent!</strong> Please try again later! 
-                </div>';
+                echo self::getMessage('danger','The message is failed to sent!','Please try again later!');
             }
 	    }
 

@@ -12,10 +12,7 @@
                                     );
                                     Core::verifyPassKey(Core::$api.'/user/verifypasskey',$post_array);
                                 } else {
-                                    echo '<div class="alert alert-danger" role="alert">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <strong>Process Change Password Failed,</strong> Your password is not match! 
-                                        </div>';
+                                    echo Core::getMessage('danger','Process Change Password Failed,','Your password is not match!');
                                 }
                             } 
                         ?>
