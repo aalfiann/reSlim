@@ -11,6 +11,9 @@
 
         // Set title website
         public static $title = 'reSlim';
+
+        // Set email address website
+        public static $email = 'youremail@gmail.com';
         
         // Set base path example project
         public static $basepath = 'http://localhost:1337/reSlim/test/example';
@@ -45,6 +48,43 @@
         
             //execute post
             $result = curl_exec($ch);
+        
+            //close connection
+            curl_close($ch);
+        
+            return $result;
+        }
+
+        /**
+		 * CURL Post Upload Request Multipart Data
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function execPostUploadRequest($url,$post_array){
+        
+            if(empty($url)){ return false;}
+            
+            //open connection
+            $ch = curl_init();
+        
+            ////curl parameter set the url, number of POST vars, POST data
+            curl_setopt($ch, CURLOPT_URL,$url);
+            curl_setopt($ch, CURLOPT_USERAGENT,'Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15');
+            curl_setopt($ch, CURLOPT_HTTPHEADER,array('User-Agent: Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15','Referer: '.self::$api,'Content-Type: multipart/form-data'));
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // stop verifying certificate
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+            curl_setopt($ch, CURLOPT_POST,1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS,$post_array);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        
+            //execute post
+            $result = curl_exec($ch);
+            if ($result === false){
+                $result = curl_error($ch);
+            };
         
             //close connection
             curl_close($ch);
@@ -283,11 +323,18 @@
                         'BCC' => '',
                         'Attachment' => ''
                     );
-                    $sendemail = json_decode(self::execPostRequest(self::$api.'/mail/send',$email_array));
-                    echo '<div class="alert alert-success" role="alert">
+                    try {
+                        $sendemail = json_decode(self::execPostRequest(self::$api.'/mail/send',$email_array));
+                        echo '<div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Request reset password hasbeen sent to your email!</strong> If not, try to resend again later
+                        </div>';
+                    } catch (Exception $e) {
+                        echo '<div class="alert alert-danger" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong>Request reset password hasbeen sent to your email!</strong> If not, try to resend again later
-                    </div>';
+                        <strong>Process Forgot Password Failed!</strong> '.$e->getMessage().' 
+                    </div>'; 
+                    }
                 } else {
                     echo '<div class="alert alert-danger" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -327,6 +374,115 @@
                 echo '<div class="alert alert-danger" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <strong>Process Change Password Failed!</strong> Can not connected to the server! 
+                </div>';
+            }
+	    }
+
+        /**
+		 * Process Upload File
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function uploadFile($url,$post_array){
+            $data = json_decode(self::execPostUploadRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Upload Successfully!</strong> 
+                        </div>';
+                } else {
+                    echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Upload Failed!</strong> '.$data->{'message'}.' 
+                        </div>';    
+                }
+            } else {
+                echo '<div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Upload Failed!</strong> Can not connected to the server! 
+                        </div>';
+            }
+	    }
+
+        /**
+		 * Process Update File
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function updateFile($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12"><div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Successfully!</strong> This page will automatically refresh at 2 seconds... 
+                        </div></div>';
+                } else {
+                    echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Failed!</strong> '.$data->{'message'}.'. This page will automatically refresh at 2 seconds...
+                        </div></div>';    
+                }
+            } else {
+                echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Update Failed!</strong> Can not connected to the server! This page will automatically refresh at 2 seconds...
+                        </div></div>';
+            }
+	    }
+
+        /**
+		 * Process Delete File
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function deleteFile($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12"><div class="alert alert-success" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Delete Successfully!</strong> This page will automatically refresh at 2 seconds... 
+                        </div></div>';
+                } else {
+                    echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Delete Failed!</strong> '.$data->{'message'}.'. This page will automatically refresh at 2 seconds...
+                        </div></div>';    
+                }
+            } else {
+                echo '<div class="col-lg-12"><div class="alert alert-danger" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <strong>Process Delete Failed!</strong> Can not connected to the server! This page will automatically refresh at 2 seconds...
+                        </div></div>';
+            }
+	    }
+
+        /**
+		 * Process Send Email
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function sendMail($url,$post_array){
+            try{
+                $data = json_decode(self::execPostRequest($url,$post_array));
+                echo '<div class="alert alert-success" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>The message is successfully sent!</strong> 
+                </div>';
+            } catch (Exception $e) {
+                echo '<div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>The message is failed to sent!</strong> Please try again later! 
                 </div>';
             }
 	    }
@@ -397,6 +553,17 @@
         public static function goToPageMeta($url,$timeout=0)
         {
             return '<meta http-equiv="refresh" content="'.$timeout.';url='.$url.'">';
+        }
+
+        /**
+		 * Reload Page
+         *
+         * @param $timeout = The page will be redirected when time is out. Default is 2000 miliseconds. 
+         * @return reload self page
+		 */
+        public static function reloadPage($timeout=2000)
+        {
+            return '<script>setTimeout(function() {window.location.href=window.location.href}, '.$timeout.')</script>';
         }
 
 }
