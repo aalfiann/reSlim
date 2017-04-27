@@ -467,7 +467,7 @@
 		{
 			"name": "Search Data User Upload",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/search/{query}/{page}/{itemsperpage}/{yourtoken}",
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/search/{page}/{itemsperpage}/{yourtoken}/?query={query}",
 				"method": "GET",
 				"header": [],
 				"body": {},
