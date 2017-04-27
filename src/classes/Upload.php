@@ -548,18 +548,26 @@ use PDO;
 						
 						if ($stmt2->execute()) {
 							if ($stmt2->rowCount() > 0){
-								if(unlink($filepath)){
-									$data = [
-										'status' => 'success',
-										'code' => 'RS104',
-										'message' => CustomHandlers::getreSlimMessage('RS104')
-									];
+								if (file_exists($filepath)){
+									if(unlink($filepath)){
+										$data = [
+											'status' => 'success',
+											'code' => 'RS104',
+											'message' => CustomHandlers::getreSlimMessage('RS104')
+										];
+									} else {
+										$data = [
+											'status' => 'error',
+											'code' => 'RS913',
+											'message' => CustomHandlers::getreSlimMessage('RS913')
+										];
+									}
 								} else {
 									$data = [
-										'status' => 'error',
-										'code' => 'RS913',
-										'message' => CustomHandlers::getreSlimMessage('RS913')
-									];
+											'status' => 'success',
+											'code' => 'RS104',
+											'message' => CustomHandlers::getreSlimMessage('RS104')
+										];
 								}
 							} else {
 								$data = [
