@@ -372,9 +372,10 @@ use \classes\BaseConverter as BaseConverter;
          * @param $db : Dabatase connection (PDO)
          * @param $username : input the registered username
          * @param $apikey : input the api key
+         * @param $statusid : input the statusid in number. (1 or 42)
          * @return json encoded data 
          */
-        public static function updateAPIKey($db, $username, $apikey,$statusid){
+        public static function updateAPIKey($db, $username, $apikey, $statusid){
             try{
                 $db->beginTransaction();
 
