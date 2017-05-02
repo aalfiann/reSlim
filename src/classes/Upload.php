@@ -21,7 +21,7 @@ use PDO;
 		
 		protected $db;
         
-        var $username,$datafile,$token,$itemid,$baseurl,$title,$alternate,$externallink,$status;
+        var $username,$datafile,$token,$itemid,$baseurl,$title,$alternate,$externallink,$status,$apikey;
 
         // limit size upload
         var $maxUploadSize = '100000000';
@@ -426,24 +426,24 @@ use PDO;
 			$stmt->bindParam(':itemid', $this->itemid, PDO::PARAM_STR);
 
 			if ($stmt->execute()) {	
-    	    	if ($stmt->rowCount() > 0){
-        		   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    			if ($stmt->rowCount() > 0){
+        			$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 					$data = [
-		   	            'result' => $results, 
-	    		        'status' => 'success', 
+		   	        	'result' => $results, 
+				        'status' => 'success', 
 			           	'code' => 'RS501',
-        		        'message' => CustomHandlers::getreSlimMessage('RS501')
+    			        'message' => CustomHandlers::getreSlimMessage('RS501')
 					];
 			    } else {
-        			$data = [
-            		   	'status' => 'error',
+	        		$data = [
+    	    		   	'status' => 'error',
 		        	    'code' => 'RS601',
-        		        'message' => CustomHandlers::getreSlimMessage('RS601')
+    			        'message' => CustomHandlers::getreSlimMessage('RS601')
 					];
-	    	    }          	   	
+		    	}          	   	
 			} else {
 				$data = [
-    	    		'status' => 'error',
+        			'status' => 'error',
 					'code' => 'RS202',
 	        	    'message' => CustomHandlers::getreSlimMessage('RS202')
 				];
