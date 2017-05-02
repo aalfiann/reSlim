@@ -115,12 +115,15 @@
             'RS303' => 'Your token is passed.',
             'RS304' => 'Your token is authorized.',
             'RS305' => 'Your token hasbeen revoked.',
+            'RS306' => 'Your api key hasbeen revoked.',
             // User authority error 4xx
-            'RS401' => 'Your token is expired or not authorized, so You have to generate the new authorized token!',
+            'RS401' => 'Your token is expired or Unauthorized, so You have to generate the new authorized token!',
             'RS402' => 'Your token is not match.',
             'RS403' => 'Your token is wrong.',
-            'RS404' => 'Your token is not authorized.',
+            'RS404' => 'Your token is Unauthorized.',
             'RS405' => 'You don\'t have any token.',
+            'RS406' => 'Your api key is expired or Unauthorized.',
+            'RS407' => 'Your api key is wrong.',
             // User data success 5xx
             'RS501' => 'Data records is found.',
             // User data error 6xx
@@ -149,7 +152,8 @@
             'RS912' => 'Upload canceled, The filename is already on server. Please use another filename.',
             'RS913' => 'Request process is successfully deleted only in database server but failed to delete the data file on server.',
             'RS914' => 'Email is not available.',
-            'RS915' => 'Failed to verify pass key maybe it was expired.'
+            'RS915' => 'Failed to verify pass key maybe it was expired.',
+            'RS916' => 'Domain hasbeen registered.'
         ];
 
         /**
