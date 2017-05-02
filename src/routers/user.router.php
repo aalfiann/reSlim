@@ -8,12 +8,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showOptionRole());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show all data status
@@ -22,12 +17,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showOptionStatus());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show all data user with pagination
@@ -38,12 +28,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showAllAsPagination());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to search data user with pagination
@@ -55,54 +40,34 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->searchAllAsPagination());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
-    // GET example api to show profile user (doesn't need a authentication)
-    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
+    // GET example api to show profile user (need an api key)
+    $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
         $body->write($users->showUser());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
-    });
+        return classes\Cors::modify($response,$body,200);
+    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
-    // GET example api to verify user token (doesn't need a authentication)
+    // GET example api to verify user token
     $app->get('/user/verify/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->verifyToken());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
-    // GET example api to get role user token (doesn't need a authentication)
+    // GET example api to get role user token
     $app->get('/user/scope/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->getRole());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show all data user
@@ -111,12 +76,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($users->showAll());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api to show all data user
@@ -126,12 +86,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api register user
@@ -149,12 +104,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->role = $datapost['Role'];
         $body = $response->getBody();
         $body->write($users->register());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api login user
@@ -165,12 +115,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->password = $datapost['Password'];
         $body = $response->getBody();
         $body->write($users->login());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api logout user
@@ -181,12 +126,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->logout());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api update user
@@ -205,12 +145,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->update());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api delete user
@@ -221,12 +156,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->delete());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api change password
@@ -239,12 +169,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->changePassword());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api reset password
@@ -256,12 +181,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->resetPassword());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api upload
@@ -281,12 +201,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->baseurl = $request->getUri()->getBaseUrl();
         $body = $response->getBody();
         $body->write($upload->process());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api update user upload item
@@ -302,12 +217,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($upload->update());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api delete user upload item
@@ -319,12 +229,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($upload->delete());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show all data status for upload
@@ -333,12 +238,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($upload->showOptionStatus());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show all data user upload with pagination
@@ -350,12 +250,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->username = $request->getAttribute('username');
         $body = $response->getBody();
         $body->write($upload->showAllAsPagination());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to search all data user upload with pagination
@@ -368,28 +263,18 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->search = filter_var($_GET['query'],FILTER_SANITIZE_STRING);
         $body = $response->getBody();
         $body->write($upload->searchAllAsPagination());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
-    // GET example api to show user upload item (doesn't need a authentication)
-    $app->get('/user/{username}/upload/data/item/{itemid}', function (Request $request, Response $response) {
+    // GET example api to show user upload item (need an api key)
+    $app->get('/user/{username}/upload/data/item/{itemid}/', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
         $upload->username = $request->getAttribute('username');
         $upload->itemid = $request->getAttribute('itemid');
         $body = $response->getBody();
         $body->write($upload->showItem());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
-    });
+        return classes\Cors::modify($response,$body,200);
+    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
     // POST example api user forgot password
     $app->post('/user/forgotpassword', function (Request $request, Response $response) {
@@ -398,12 +283,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->email = $datapost['Email'];
         $body = $response->getBody();
         $body->write($users->generatePassKey());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // POST example api verify passkey to reset password
@@ -414,10 +294,55 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->newPassword = $datapost['NewPassword'];
         $body = $response->getBody();
         $body->write($users->verifyPassKey());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // POST example api create new API Key
+    $app->post('/user/keys/create', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->domain = $datapost['Domain'];
+        $body = $response->getBody();
+        $body->write($users->generateApiKey());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // POST example api update status API Key
+    $app->post('/user/keys/update', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->apikey = $datapost['ApiKey'];
+        $users->status = $datapost['Status'];
+        $body = $response->getBody();
+        $body->write($users->updateApiKey());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // POST example api delete API Key
+    $app->post('/user/keys/delete', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $users->apikey = $datapost['ApiKey'];
+        $body = $response->getBody();
+        $body->write($users->deleteApiKey());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // GET example api to search all data user api keys with pagination
+    $app->get('/user/{username}/keys/data/search/{page}/{itemsperpage}/{token}/', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->page = $request->getAttribute('page');
+        $users->itemsPerPage = $request->getAttribute('itemsperpage');
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $users->search = filter_var($_GET['query'],FILTER_SANITIZE_STRING);
+        $body = $response->getBody();
+        $body->write($users->searchAllApiKeysAsPagination());
+        return classes\Cors::modify($response,$body,200);
     });
