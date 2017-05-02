@@ -372,7 +372,7 @@
 		{
 			"name": "Show Profile User",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/profile/reslim",
+				"url": "http://localhost:1337/reSlim/src/api/user/profile/{username}/?apikey={yourapikeys}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -489,7 +489,7 @@
 		{
 			"name": "Show User Upload Item",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/item/{itemid}",
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/item/{itemid}/?apikey={yourapikeys}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -711,6 +711,122 @@
 						}
 					]
 				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/create",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Domain",
+							"value": "{yourdomain.com}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "ApiKey",
+							"value": "{yourapikey}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Status",
+							"value": "{1 or 42}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "ApiKey",
+							"value": "{yourapikey}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Search Data API Keys User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/keys/data/search/{page}/{itemsperpage}/{yourtoken}/?query={query}",
+				"method": "GET",
+				"header": [],
+				"body": {},
 				"description": ""
 			},
 			"response": []
