@@ -19,8 +19,9 @@ Reslim is already build with essentials of user management system in rest api wa
 6. Auto clear current token when logout,user deleted or password was changed
 7. Change, reset, forgot password concept is very secure
 8. Mailer for sending email or contact form
-9. Pagination json response
-10. Etc.
+9. User can manage their API Keys
+10. Pagination json response
+11. Etc.
 
 System Requirements
 ---------------
@@ -43,6 +44,8 @@ Folder System
     * api/
     * app/
     * classes/
+        * middleware/
+            * ApiKey.php (For handling authentication api key)
         * Auth.php (For handling authentication)
         * BaseConverter.php (For encryption)
         * CustomHandlers.php (For handle message)
@@ -67,7 +70,12 @@ Here is the place for slim framework
 
 ### classes/
 
-Add your in classes here.
+Add your core classes here.
+We are using PDO MySQL for the Database.
+
+### classes/middleware
+
+Add your middleware classes here.
 We are using PDO MySQL for the Database.
 
 
@@ -104,12 +112,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->Token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 
     // GET example api to show profile user (doesn't need a authentication)
@@ -118,12 +121,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->Username = $request->getAttribute('username');
         $body = $response->getBody();
         $body->write($users->showUser());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
 ```
 
@@ -137,11 +135,13 @@ Example Config.php
  * @var $config['displayErrorDetails'] to display error details on slim
  * @var $config['addContentLengthHeader'] to set the Content-Length header which makes Slim behave more predictably
  * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
+ * @var $config['enableApiKeys'] to protect api from guest or anonymous. Guest which don't have api key can not using this service. Default is true.
  * 
  */
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
 $config['limitLoadData'] = 1000;
+$config['enableApiKeys'] = true;
 
 /** 
  * Configuration PDO MySQL Database
