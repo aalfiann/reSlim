@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2017 at 07:01 PM
+-- Generation Time: May 02, 2017 at 01:22 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -88,6 +88,22 @@ INSERT INTO `core_status` (`StatusID`, `Status`) VALUES
 (50, 'private'),
 (51, 'publish'),
 (52, 'draft');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_api`
+--
+
+CREATE TABLE IF NOT EXISTS `user_api` (
+  `Domain` varchar(50) NOT NULL,
+  `ApiKey` varchar(255) NOT NULL,
+  `StatusID` int(11) NOT NULL,
+  `Created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Username` varchar(50) NOT NULL,
+  `Updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `Updated_by` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -197,6 +213,12 @@ ALTER TABLE `core_status`
  ADD PRIMARY KEY (`StatusID`), ADD KEY `StatusID` (`StatusID`) USING BTREE;
 
 --
+-- Indexes for table `user_api`
+--
+ALTER TABLE `user_api`
+ ADD PRIMARY KEY (`Domain`), ADD KEY `Domain` (`Domain`), ADD KEY `StatusID` (`StatusID`), ADD KEY `Username` (`Username`), ADD KEY `ApiKey` (`ApiKey`);
+
+--
 -- Indexes for table `user_auth`
 --
 ALTER TABLE `user_auth`
@@ -253,6 +275,13 @@ MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `user_api`
+--
+ALTER TABLE `user_api`
+ADD CONSTRAINT `user_api_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT `user_api_ibfk_2` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_auth`
