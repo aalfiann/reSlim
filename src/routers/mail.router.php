@@ -19,10 +19,5 @@ use \Psr\Http\Message\ResponseInterface as Response;
         
         $body = $response->getBody();
         $body->write($mail->send());
-        return $response
-            ->withStatus(200)
-            ->withHeader('Content-Type','application/json; charset=utf-8')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-            ->withBody($body);
+        return classes\Cors::modify($response,$body,200);
     });
