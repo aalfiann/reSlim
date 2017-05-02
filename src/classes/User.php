@@ -22,7 +22,7 @@ use PDO;
 		protected $db;
 		
 		// model data user
-		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token,$passKey;
+		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token,$passKey,$domain,$apikey;
 		
 		// for change password
 		var $newPassword;
@@ -506,6 +506,143 @@ use PDO;
 			}
 			return $match;
 			$this->db = null;
+		}
+
+		/** 
+         * Generate api key
+         *
+         * @return json encoded data
+         */
+		public function generateApiKey(){
+			if (Auth::validToken($this->db,$this->token)){
+				$data = Auth::generateApiKey($this->db,$this->domain,$this->username);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
+		}
+
+		/** 
+         * Update api key
+         *
+         * @return json encoded data
+         */
+		public function updateApiKey(){
+			if (Auth::validToken($this->db,$this->token)){
+				$data = Auth::updateApiKey($this->db,$this->username,$this->apikey,$this->status);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
+		}
+
+		/** 
+         * Delete api key
+         *
+         * @return json encoded data
+         */
+		public function deleteApiKey(){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
+				$data = Auth::clearApiKey($this->db,$this->apikey);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
+		}
+
+		/** 
+		 * Search all data user api key paginated
+		 * @return result process in json encoded data
+		 */
+		public function searchAllApiKeysAsPagination() {
+			if (Auth::validToken($this->db,$this->token)){
+				$newusername = strtolower($this->username);
+				$search = "%$this->search%";
+				//count total row
+				$sqlcountrow = "SELECT count(a.Domain) as TotalRow 
+					from user_api a
+					inner join core_status b on a.StatusID=b.StatusID
+					where a.Username=:username and a.Domain like :search
+					order by a.Created_at desc;";
+				$stmt = $this->db->prepare($sqlcountrow);		
+				$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+				$stmt->bindParam(':search', $search, PDO::PARAM_STR);
+				
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+						$single = $stmt->fetch();
+						
+						// Paginate won't work if page and items per page is negative.
+						// So make sure that page and items per page is always return minimum zero number.
+						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
+						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+
+							// Query Data
+							$sql = "SELECT a.Created_at,a.Domain,a.ApiKey,a.StatusID,b.`Status`,a.Username 
+								from user_api a
+								inner join core_status b on a.StatusID=b.StatusID
+								where a.Username=:username and a.Domain like :search
+								order by a.Created_at desc; LIMIT :limpage , :offpage;";
+								$stmt2 = $this->db->prepare($sql);
+								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
+								$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
+								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+						
+							if ($stmt2->execute()){
+								$pagination = new \classes\Pagination();
+								$pagination->totalRow = $single['TotalRow'];
+								$pagination->page = $this->page;
+								$pagination->itemsPerPage = $this->itemsPerPage;
+								$pagination->fetchAllAssoc = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+								$data = $pagination->toDataArray();
+							} else {
+								$data = [
+        	    		    		'status' => 'error',
+		    	    		    	'code' => 'RS202',
+	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+								];	
+							}			
+				        } else {
+    	    			    $data = [
+        	    		    	'status' => 'error',
+		    	    		    'code' => 'RS601',
+        			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+							];
+		    	        }          	   	
+					} else {
+						$data = [
+    	    				'status' => 'error',
+							'code' => 'RS202',
+	        			    'message' => CustomHandlers::getreSlimMessage('RS202')
+						];
+					}
+				
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+			}		
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
 		}
 
 		/** 
