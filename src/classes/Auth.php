@@ -256,4 +256,188 @@ use \classes\BaseConverter as BaseConverter;
 			$db = null;
         }
 
+        /** 
+         * Add and Generate reSlim API Key
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $domain : input the registered domain for origin apikey
+         * @param $username : input the registered username
+         * @return json encoded data
+         */
+        public static function generateAPIKey($db, $domain, $username){
+            if (self::isDomainExist($db,$domain) == false){
+                try {
+                    $hash = self::EncodeAPIKey($domain.'::'.date("Y-m-d H:i:s"));
+                    $db->beginTransaction();
+	    	    	$sql = "INSERT INTO user_api (Domain,ApiKey,StatusID,Created_at,Username) 
+    	    			VALUES (:domain,:apikey,'1',current_timestamp,:username);";
+	    			$stmt = $db->prepare($sql);
+			   		$stmt->bindParam(':username', $username, PDO::PARAM_STR);
+		    		$stmt->bindParam(':apikey', $hash, PDO::PARAM_STR);
+                    $stmt->bindParam(':domain', $domain, PDO::PARAM_STR);
+			    	if ($stmt->execute()) {
+		    			$data = [
+			   				'status' => 'success',
+			    			'code' => 'RS101',
+                            'apikey' => $hash,
+				    		'message' => CustomHandlers::getreSlimMessage('RS101')
+					    ];	
+    				} else {
+	    				$data = [
+		    				'status' => 'error',
+			   				'code' => 'RS201',
+			    			'message' => CustomHandlers::getreSlimMessage('RS201')
+				    	];
+				    }
+    			    $db->commit();
+    	    	} catch (PDOException $e) {
+	        		$data = [
+		        		'status' => 'error',
+			    	    'code' => $e->getCode(),
+				        'message' => $e->getMessage()
+        			];
+	        		$db->rollBack();
+	        	}
+            } else {
+                $data = [
+		    		'status' => 'error',
+					'code' => 'RS916',
+	    			'message' => CustomHandlers::getreSlimMessage('RS916')
+			    ];
+            }
+            
+		    return $data;
+    		$db = null;
+        }
+
+         /** 
+         * Determine the API Key is valid
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $apikey : input the token
+         * @param $domain : input for origin apikey. Default is null.
+         * @return boolean true / false 
+         */
+        public static function validAPIKey($db, $apikey,$domain=null){
+            $r = false;
+		    $sql = "SELECT a.Domain
+			    FROM user_api a 
+                INNER JOIN user_data b ON a.Username = b.Username
+    			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = :apikey;";
+	    	$stmt = $db->prepare($sql);
+		    $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
+    		if ($stmt->execute()) {	
+                if ($stmt->rowCount() > 0){
+                    if ($domain == null){
+                        $r = true;
+                    } else {
+                        $single = $stmt->fetch();
+					    if (strtolower($single['Domain']) == strtolower($domain)){
+                            $r = true;
+                        }
+                    }                    
+                }          	   	
+	    	} 		
+		    return $r;
+    		$this->db = null;
+        }
+
+        /** 
+         * Determine the Domain is exist
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $domain : input for origin apikey.
+         * @return boolean true / false 
+         */
+        public static function isDomainExist($db, $domain){
+            $r = false;
+		    $sql = "SELECT a.Domain
+			    FROM user_api a 
+                INNER JOIN user_data b ON a.Username = b.Username
+    			WHERE a.Domain = :domain;";
+	    	$stmt = $db->prepare($sql);
+		    $stmt->bindParam(':domain', $domain, PDO::PARAM_STR);
+    		if ($stmt->execute()) {	
+                if ($stmt->rowCount() > 0){
+                    $r = true;                   
+                }          	   	
+	    	} 		
+		    return $r;
+    		$this->db = null;
+        }
+
+        /** 
+         * Update API Key
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $username : input the registered username
+         * @param $apikey : input the api key
+         * @return json encoded data 
+         */
+        public static function updateAPIKey($db, $username, $apikey,$statusid){
+            try{
+                $db->beginTransaction();
+
+                $sql = "UPDATE user_api a SET a.StatusID=:statusid,a.Updated_by=:username 
+                    WHERE a.ApiKey = :apikey;";
+	        	$stmt = $db->prepare($sql);
+                $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+		        $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
+                $stmt->bindParam(':statusid', $statusid, PDO::PARAM_STR);
+        		$stmt->execute();
+                
+                $db->commit();
+
+                $data = [
+			   		'status' => 'success',
+			    	'code' => 'RS103',
+				    'message' => CustomHandlers::getreSlimMessage('RS103')
+				];
+            } catch (PDOException $e){
+                $data = [
+		    		'status' => 'error',
+				    'code' => $e->getCode(),
+				    'message' => $e->getMessage()
+    			];
+                $db->rollBack();
+            }
+            return $data;
+            $db = null;
+        }
+
+        /** 
+         * To clear API Key
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $apikey : input the api key
+         * @return json encoded data 
+         */
+        public static function clearAPIKey($db, $apikey){
+            try{
+                $db->beginTransaction();
+
+                $sql = "DELETE FROM user_api WHERE ApiKey = :apikey;";
+	        	$stmt = $db->prepare($sql);
+                $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
+        		$stmt->execute();
+                
+                $db->commit();
+
+                $data = [
+			   		'status' => 'success',
+			    	'code' => 'RS306',
+				    'message' => CustomHandlers::getreSlimMessage('RS306')
+				];
+            } catch (PDOException $e){
+                $data = [
+		    		'status' => 'error',
+				    'code' => $e->getCode(),
+				    'message' => $e->getMessage()
+    			];
+                $db->rollBack();
+            }
+            return $data;
+            $db = null;
+        }
+
     }
