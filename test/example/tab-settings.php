@@ -9,7 +9,8 @@
                                     'Title' => $_POST['title'],
                                     'Email' => $_POST['email'],
                                     'Basepath' => $_POST['basepath'],
-                                    'Api' => $_POST['api']
+                                    'Api' => $_POST['api'],
+                                    'ApiKey' => $_POST['apikey']
                                 );
                                 Core::saveSettings($post_array);
                             } 
@@ -37,6 +38,11 @@
                                             <label>Url API</label>
                                             <input name="api" type="text" placeholder="Please input url folder of Your Rest API." class="form-control border-input" value="<?php echo Core::getInstance()->api?>" required>
                                         </div>
+                                        <div class="form-group">
+                                            <label>API Key</label>
+                                            <input name="apikey" type="text" placeholder="Please input Your API Key here..." class="form-control border-input" value="<?php echo Core::getInstance()->apikey?>" required>
+                                        </div>
+                                        <p class="category"><i class="ti-info-alt"></i> Doesn't have any API Keys? You can create at least one API Key at <a href="modul-data-api.php?m=7&page=1&itemsperpage=10&search=">here</a>.</p>
                                         <hr>
                                         <div class="form-group text-center">
                                             <button name="submitsettings" type="submit" class="btn btn-fill btn-wd ">Save Settings</button>
