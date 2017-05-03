@@ -10,17 +10,37 @@
     class Core {
 
         // Set title website
-        public static $title = 'reSlim';
+        var $title;
 
         // Set email address website
-        public static $email = 'youremail@gmail.com';
+        var $email;
         
         // Set base path example project
-        public static $basepath = 'http://localhost:1337/reSlim/test/example';
+        var $basepath;
 
         // Set base api reslim
-        public static $api = 'http://localhost:1337/reSlim/src/api';
+        var $api;
+
+        var $version = '1.2.0';
+
+        private static $instance;
         
+        function __construct() {
+            require 'config.php';
+            $this->title = $config['title'];
+            $this->email = $config['email'];
+            $this->basepath = $config['basepath'];
+            $this->api = $config['api'];
+		}
+
+        public static function getInstance()
+        {
+            if ( is_null( self::$instance ) )
+            {
+                self::$instance = new self();
+            }
+            return self::$instance;
+        }
         
         // LIBRARY USER MANAGEMENT AND AUTHENTICATION======================================================================
 
@@ -87,7 +107,7 @@
             ////curl parameter set the url, number of POST vars, POST data
             curl_setopt($ch, CURLOPT_URL,$url);
             curl_setopt($ch, CURLOPT_USERAGENT,'Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15');
-            curl_setopt($ch, CURLOPT_HTTPHEADER,array('User-Agent: Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15','Referer: '.self::$api,'Content-Type: multipart/form-data'));
+            curl_setopt($ch, CURLOPT_HTTPHEADER,array('User-Agent: Opera/9.80 (Windows NT 6.2; Win64; x64) Presto/2.12.388 Version/12.15','Referer: '.self::getInstance()->api,'Content-Type: multipart/form-data'));
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // stop verifying certificate
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
             curl_setopt($ch, CURLOPT_POST,1);
@@ -140,7 +160,7 @@
 		 */
         public static function verifyToken($token){
             $result = false;
-            $data = json_decode(self::execGetRequest(self::$api.'/user/verify/'.$token));
+            $data = json_decode(self::execGetRequest(self::getInstance()->api.'/user/verify/'.$token));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     $result = true;
@@ -157,7 +177,7 @@
 		 */
         public static function getRole($token){
             $result = 0;
-            $data = json_decode(self::execGetRequest(self::$api.'/user/scope/'.$token));
+            $data = json_decode(self::execGetRequest(self::getInstance()->api.'/user/scope/'.$token));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     $result = $data->{'role'};
@@ -179,7 +199,7 @@
                 'Username' => urlencode($username),
                 'Token' => urlencode($token)
             );
-            $url = self::$api.'/user/logout';
+            $url = self::getInstance()->api.'/user/logout';
             $data = json_decode(self::execPostRequest($url,$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
@@ -248,7 +268,7 @@
 						setcookie('username', $post_array['Username'], time() + (3600 * 168), "/", NULL); // expired = 7 days
 				  		setcookie('token', $data->{'token'}, time() + (3600 * 168), "/", NULL); // expired = 7 hari
 					}
-					header("Location: ".self::$basepath."/index.php");
+					header("Location: ".self::getInstance()->basepath."/index.php");
                 } else {
                     echo self::getMessage('danger','Process Login Failed!',$data->{'message'});
                 }
@@ -284,7 +304,7 @@
                         setcookie($name, '', time()-1000, '/');
                 	}
 	        }
-        	header("Location: ".self::$basepath."/modul-login.php?m=1");
+        	header("Location: ".self::getInstance()->basepath."/modul-login.php?m=1");
         }
 
         /**
@@ -294,10 +314,10 @@
 		 * @return result json encoded data
 		 */
 	    public static function forgotPassword($post_array){
-            $data = json_decode(self::execPostRequest(self::$api.'/user/forgotpassword',$post_array));
+            $data = json_decode(self::execPostRequest(self::getInstance()->api.'/user/forgotpassword',$post_array));
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
-                    $linkverify = self::$basepath.'/modul-verify.php?passkey='.$data->{'passkey'};
+                    $linkverify = self::getInstance()->basepath.'/modul-verify.php?passkey='.$data->{'passkey'};
                     $email_array = array(
                         'To' => $post_array['Email'],
                         'Subject' => 'Request reset password',
@@ -306,7 +326,7 @@
                         
                         Just ignore this email if You don\'t want to reset password. Link will be expired 3days from now.<br /><br /><br />
                         Thank You<br />
-                        '.self::$title.'</p></body></html>',
+                        '.self::getInstance()->title.'</p></body></html>',
                         'Html' => 'true',
                         'From' => '',
                         'FromName' => '',
@@ -315,7 +335,7 @@
                         'Attachment' => ''
                     );
                     try {
-                        $sendemail = json_decode(self::execPostRequest(self::$api.'/mail/send',$email_array));
+                        $sendemail = json_decode(self::execPostRequest(self::getInstance()->api.'/mail/send',$email_array));
                         echo self::getMessage('success','Request reset password hasbeen sent to your email!','If not, try to resend again later.');
                     } catch (Exception $e) {
                         echo self::getMessage('danger','Process Forgot Password Failed!',$e->getMessage());
@@ -437,6 +457,84 @@
 	    }
 
         /**
+		 * Process Create New API
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function createNewAPI($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success','Process Add new API Keys Successfully!');
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger','Process Add new API Keys Failed!',$data->{'message'});    
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger','Process Add new API Keys Failed!','Can not connected to the server!');
+                echo '</div>';
+            }
+	    }
+
+        /**
+		 * Process Update API
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function updateAPI($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success','Process Update Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo '</div>';
+            }
+	    }
+
+        /**
+		 * Process Delete API
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function deleteAPI($url,$post_array){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success','Process Delete Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo '</div>';
+            }
+	    }
+
+        /**
 		 * Check SESSION, COOKIE and Verify Token
          *
          * @return data array, but if null will be redirect to login page
@@ -452,7 +550,7 @@
                 {
                     $out['username'] = null;
                     $out['token'] = null;
-                    header("Location: ".self::$basepath."/modul-login.php?m=1");
+                    header("Location: ".self::getInstance()->basepath."/modul-login.php?m=1");
                 }
                 else
                 {
@@ -462,7 +560,7 @@
                     } else {
                         $out['username'] = null;
                         $out['token'] = null;
-                        header("Location: ".self::$basepath."/modul-login.php?m=1");
+                        header("Location: ".self::getInstance()->basepath."/modul-login.php?m=1");
                     }                     
                 }
             }
@@ -474,7 +572,7 @@
                 } else {
                     $out['username'] = null;
                     $out['token'] = null;
-                    header("Location: ".self::$basepath."/modul-login.php?m=1");
+                    header("Location: ".self::getInstance()->basepath."/modul-login.php?m=1");
                 }
     	    }
 	        return $out;
@@ -489,7 +587,7 @@
 		 */
         public static function goToPage($page,$timeout=0)
         {
-           return header("Refresh:".$timeout.";url= ".self::$basepath."/".$page."");
+           return header("Refresh:".$timeout.";url= ".self::getInstance()->basepath."/".$page."");
         }
 
         /**
@@ -513,6 +611,27 @@
         public static function reloadPage($timeout=2000)
         {
             return '<script>setTimeout(function() {window.location.href=window.location.href}, '.$timeout.')</script>';
+        }
+
+        /**
+		 * Save Settings
+         *
+         * @param $post_array = Data array to post
+         * @return no return
+		 */
+        public static function saveSettings($post_array)
+        {
+            $newcontent = '<?php 
+            //Configurations
+            $config[\'title\'] = \''.$post_array['Title'].'\'; //Your title website
+            $config[\'email\'] = \''.$post_array['Email'].'\'; //Your default email
+            $config[\'basepath\'] = \''.$post_array['Basepath'].'\'; //Your folder website
+            $config[\'api\'] = \''.$post_array['Api'].'\'; //Your folder rest api';
+            $handle = fopen('config.php','w+'); 
+				fwrite($handle,$newcontent); 
+				fclose($handle); 
+            echo self::getMessage('success','Settings hasbeen changed!','This page will automatically refresh at 2 seconds...');
+            echo self::reloadPage();
         }
 
 }
