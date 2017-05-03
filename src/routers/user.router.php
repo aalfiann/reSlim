@@ -43,14 +43,24 @@ use \Psr\Http\Message\ResponseInterface as Response;
         return classes\Cors::modify($response,$body,200);
     });
 
-    // GET example api to show profile user (need an api key)
+    // GET example api to show profile user (for public is need an api key)
     $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
-        $body->write($users->showUser());
+        $body->write($users->showUserPublic());
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+
+    // GET example api to show profile user (for internal is need an authentication token)
+    $app->get('/user/profile/{username}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($users->showUser());
+        return classes\Cors::modify($response,$body,200);
+    });
 
     // GET example api to verify user token
     $app->get('/user/verify/{token}', function (Request $request, Response $response) {
