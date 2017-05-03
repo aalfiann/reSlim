@@ -40,6 +40,13 @@
                           </div>
                         </div>
                     <!-- End Modal -->
+                    <div class="col-md-12">
+                        <div class="card card-plain">
+                            <div class="header">
+                                <button type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal">Add new API Keys</button>
+                            </div>
+                        </div>
+                    </div>
 <?php 
     $url = Core::getInstance()->api.'/user/'.$datalogin['username'].'/keys/data/search/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'].'/?query='.$_GET['search'];
     $data = json_decode(Core::execGetRequest($url));
@@ -100,8 +107,6 @@
                                             <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'json\',escape:\'false\'});">Export JSON</a></li>
                                         </ul>
                                     </div>
-                                <button type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal">Add new API Keys</button>
-                            
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table id="export" class="table table-striped">
