@@ -370,13 +370,24 @@
 			"response": []
 		},
 		{
-			"name": "Show Profile User",
+			"name": "Show Profile User Public",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/user/profile/{username}/?apikey={yourapikeys}",
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"description": "Show Profile User"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Profile User Internal",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/profile/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
 			},
 			"response": []
 		},
