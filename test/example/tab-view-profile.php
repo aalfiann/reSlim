@@ -2,7 +2,7 @@
             <div class="container-fluid">
                 <div class="row">
 <?php 
-    $url = Core::getInstance()->api.'/user/profile/'.((empty($_GET['username']))?'':$_GET['username']);
+    $url = Core::getInstance()->api.'/user/profile/'.((empty($_GET['username']))?'':$_GET['username']).'/?apikey='.Core::getInstance()->apikey;
     $data = json_decode(Core::execGetRequest($url));
 
     if (!empty($data))
