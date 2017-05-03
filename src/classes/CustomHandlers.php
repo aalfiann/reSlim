@@ -123,7 +123,7 @@
             'RS404' => 'Your token is Unauthorized.',
             'RS405' => 'You don\'t have any token.',
             'RS406' => 'Your api key is expired or Unauthorized.',
-            'RS407' => 'Your api key is wrong.',
+            'RS407' => 'Your api key is not valid.',
             // User data success 5xx
             'RS501' => 'Data records is found.',
             // User data error 6xx
