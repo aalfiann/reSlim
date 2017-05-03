@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2017 at 01:22 PM
+-- Generation Time: May 03, 2017 at 01:38 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `user_api` (
   `Domain` varchar(50) NOT NULL,
   `ApiKey` varchar(255) NOT NULL,
   `StatusID` int(11) NOT NULL,
-  `Created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `Created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Username` varchar(50) NOT NULL,
   `Updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `Updated_by` varchar(50) DEFAULT NULL
