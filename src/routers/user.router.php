@@ -261,6 +261,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $upload->token = $request->getAttribute('token');
         $upload->username = $request->getAttribute('username');
         $upload->search = filter_var($_GET['query'],FILTER_SANITIZE_STRING);
+        $upload->baseurl = $request->getUri()->getBaseUrl();
         $body = $response->getBody();
         $body->write($upload->searchAllAsPagination());
         return classes\Cors::modify($response,$body,200);
