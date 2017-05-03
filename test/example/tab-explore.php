@@ -203,7 +203,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Direct Link</label>
-                                            <input name="link" type="text" placeholder="Direct Link of your file" class="form-control border-input" value="'.Core::$api.'/'.$value->{'Filepath'}.'" readonly>
+                                            <textarea name="link" type="text" rows="3" placeholder="Direct Link of your file" class="form-control border-input" readonly>'.Core::$api.'/'.$value->{'Filepath'}.'</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
