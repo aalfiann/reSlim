@@ -41,7 +41,7 @@
                                     <div class="content">
                                         <div class="form-group">
                                             <label>Username</label>
-                                            <input name="username" type="username" placeholder="Please input Your Username" class="form-control border-input" maxlength="20" required>
+                                            <input name="username" type="text" placeholder="Please input Your Username" class="form-control border-input" maxlength="20" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>

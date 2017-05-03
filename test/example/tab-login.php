@@ -23,7 +23,7 @@
                                     <div class="content">
                                         <div class="form-group">
                                             <label>Username</label>
-                                            <input name="username" type="username" placeholder="Your Username" class="form-control border-input" required>
+                                            <input name="username" type="text" placeholder="Your Username" class="form-control border-input" required>
                                         </div>
                                         <div class="form-group">
                                             <label>Password</label>
