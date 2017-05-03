@@ -631,7 +631,7 @@
             $config[\'email\'] = \''.$post_array['Email'].'\'; //Your default email
             $config[\'basepath\'] = \''.$post_array['Basepath'].'\'; //Your folder website
             $config[\'api\'] = \''.$post_array['Api'].'\'; //Your folder rest api
-            $config[\'apikey\'] = \''.$post_array['ApiKey'].'\'; //Your API Key';
+            $config[\'apikey\'] = \''.$post_array['ApiKey'].'\'; //Your api key';
             $handle = fopen('config.php','w+'); 
 				fwrite($handle,$newcontent); 
 				fclose($handle); 
