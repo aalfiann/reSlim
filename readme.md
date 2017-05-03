@@ -205,7 +205,8 @@ Working with gui example for testing
     $config['title'] = 'your title website';<br>
     $config['email'] = 'your default email address';<br>
     $config['basepath'] = 'url location of base path example';<br>
-    $config['api'] = 'url location of base path of api';
+    $config['api'] = 'url location of base path of api';<br>
+    $config['apikey'] = 'your api key';
 3. Visit yourserver/reSlim/test/example<br>
     For my case is http://localhost:1337/reSlim/test/example
 4. You can login with default superuser account:<br>
