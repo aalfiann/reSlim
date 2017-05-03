@@ -269,19 +269,20 @@ use PDO;
 				if ($stmt->execute()) {	
     	    		if ($stmt->rowCount() > 0){
 						$single = $stmt->fetch();
-						
+						$base = $this->baseurl."/";
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
 						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
 						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
-							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
+							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,concat(:baseurl,a.Filepath) as Fullpath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
 								from user_upload a 
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.StatusID = '49' or a.Username=:username
 								order by a.Date_Upload desc LIMIT :limpage , :offpage;";
 								$stmt2 = $this->db->prepare($sql);
+								$stmt2->bindParam(':baseurl', $base, PDO::PARAM_STR);
 								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
@@ -349,14 +350,14 @@ use PDO;
 				if ($stmt->execute()) {	
     	    		if ($stmt->rowCount() > 0){
 						$single = $stmt->fetch();
-						
+						$base = $this->baseurl."/";
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
 						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
 						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
-							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
+							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,concat(:baseurl,a.Filepath) as Fullpath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
 								from user_upload a 
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.StatusID = '49' and a.Filename like :search 
@@ -365,6 +366,7 @@ use PDO;
 								or a.Username=:username and a.Title like :search
 								order by a.Date_Upload desc LIMIT :limpage , :offpage;";
 								$stmt2 = $this->db->prepare($sql);
+								$stmt2->bindParam(':baseurl', $base, PDO::PARAM_STR);
 								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 								$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
 								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
