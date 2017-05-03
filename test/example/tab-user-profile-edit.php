@@ -114,7 +114,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="text" name="email" class="form-control border-input" placeholder="Input your email address" maxlength="50" value="'.$data->result[0]->{'Email'}.'" required>
+                                                <input type="email" name="email" class="form-control border-input" placeholder="Input your email address" maxlength="50" value="'.$data->result[0]->{'Email'}.'" required>
                                             </div>
                                         </div>
                                     </div>
