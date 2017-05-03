@@ -593,7 +593,7 @@ use PDO;
 						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
 
 							// Query Data
-							$sql = "SELECT a.Created_at,a.Domain,a.ApiKey,a.StatusID,b.`Status`,a.Username 
+							$sql = "SELECT a.Created_at,a.Domain,a.ApiKey,a.StatusID,b.`Status`,a.Username,a.Updated_at,a.Updated_by 
 								from user_api a
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.Username=:username and a.Domain like :search
@@ -1093,6 +1093,58 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showUser() {
+			if (Auth::validToken($this->db,$this->token)){
+				$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
+						a.Created_at, a.Updated_at
+					FROM user_data a 
+					INNER JOIN user_role b ON a.RoleID = b.RoleID
+					INNER JOIN core_status c ON a.StatusID = c.StatusID
+					WHERE a.Username = :username AND a.StatusID = '1';";
+				
+				$stmt = $this->db->prepare($sql);		
+				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
+
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+        			   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+		    		        'status' => 'success', 
+				           	'code' => 'RS501',
+        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+				    } else {
+    	    			$data = [
+        	    		   	'status' => 'error',
+		    	    	    'code' => 'RS601',
+        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}		
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			
+        
+			return json_encode($data, JSON_PRETTY_PRINT);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get data single user
+		 * @return result process in json encoded data
+		 */
+		public function showUserPublic() {
 			$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 						a.Created_at, a.Updated_at
 					FROM user_data a 
