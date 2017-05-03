@@ -4,7 +4,7 @@
                     <form method="get" action="<?php $_SERVER['PHP_SELF'].'?search='.filter_var($_GET['search'],FILTER_SANITIZE_STRING)?>">
                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
                             <div class="form-group">
-                                <input name="search" type="text" placeholder="Search here..." class="form-control border-input" value="<?=$_GET['search']?>">
+                                <input name="search" type="text" placeholder="Search here..." class="form-control border-input" value="<?php echo $_GET['search']?>">
                             </div>
                             <div class="form-group hidden">
                                 <input name="m" type="text" class="form-control border-input" value="6" hidden>
@@ -35,7 +35,7 @@
                                         'Alternate' => filter_var($_POST['alternate'],FILTER_SANITIZE_STRING),
                                         'External' => filter_var($_POST['external'],FILTER_SANITIZE_URL)
                                     );
-                                    Core::uploadFile(Core::$api.'/user/upload',$post_array);
+                                    Core::uploadFile(Core::getInstance()->api.'/user/upload',$post_array);
                                 }
                             ?>
                             <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> Upload files here...</button>
@@ -90,8 +90,12 @@
                 </div><hr>
                 <div class="row">
 <?php 
-    $url = Core::$api.'/user/'.$datalogin['username'].'/upload/data/search/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'].'/?query='.$_GET['search'];
+    $url = Core::getInstance()->api.'/user/'.$datalogin['username'].'/upload/data/search/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'].'/?query='.$_GET['search'];
     $data = json_decode(Core::execGetRequest($url));
+
+    // Data Status
+    $urlstatus = Core::getInstance()->api.'/user/status/'.$datalogin['token'];
+    $datastatus = json_decode(Core::execGetRequest($urlstatus));
 
     if (!empty($data))
         {
@@ -109,7 +113,7 @@
                             'External' => filter_var($_POST['externallink'],FILTER_SANITIZE_URL),
                             'Status' => $_POST['status']
                         );
-                        Core::updateFile(Core::$api.'/user/upload/update',$post_array);
+                        Core::updateFile(Core::getInstance()->api.'/user/upload/update',$post_array);
                         echo Core::reloadPage();
                     }
                 }
@@ -122,7 +126,7 @@
                             'Token' => $datalogin['token'],
                             'ItemID' => $_POST['itemid']
                         );
-                        Core::deleteFile(Core::$api.'/user/upload/delete',$post_array);
+                        Core::deleteFile(Core::getInstance()->api.'/user/upload/delete',$post_array);
                         echo Core::reloadPage();
                     }
                 }
@@ -137,7 +141,7 @@
                                     <div class="col-xs-5">
                                         <div class="icon-big icon-warning text-center">';
                                         if ($value->{'Filetype'} == 'image/png' || $value->{'Filetype'} == 'image/apng' || $value->{'Filetype'} == 'image/bmp' || $value->{'Filetype'} == 'image/jpg' || $value->{'Filetype'} == 'image/jpeg' || $value->{'Filetype'} == 'image/gif') {
-                                            echo '<a href="" data-toggle="modal" data-target="#'.$value->{'ItemID'}.'"><img src="'.Core::$api.'/'.$value->{'Filepath'}.'" height="64" width="100%"></a>';
+                                            echo '<a href="" data-toggle="modal" data-target="#'.$value->{'ItemID'}.'"><img src="'.Core::getInstance()->api.'/'.$value->{'Filepath'}.'" height="64" width="100%"></a>';
                                         } else {
                                             echo '<a href="" data-toggle="modal" data-target="#'.$value->{'ItemID'}.'"><i class="ti-file"></i></a>';
                                         }
@@ -172,7 +176,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">';
                                         if ($value->{'Filetype'} == 'image/png' || $value->{'Filetype'} == 'image/apng' || $value->{'Filetype'} == 'image/bmp' || $value->{'Filetype'} == 'image/jpg' || $value->{'Filetype'} == 'image/jpeg' || $value->{'Filetype'} == 'image/gif') {
-                                            echo '<a href="#"><img src="'.Core::$api.'/'.$value->{'Filepath'}.'" width="100%"></a>';
+                                            echo '<a href="#"><img src="'.Core::getInstance()->api.'/'.$value->{'Filepath'}.'" width="100%"></a>';
                                         } 
                                         echo '</div>
                                     </div>
@@ -203,7 +207,7 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Direct Link</label>
-                                            <textarea name="link" type="text" rows="3" placeholder="Direct Link of your file" class="form-control border-input" readonly>'.Core::$api.'/'.$value->{'Filepath'}.'</textarea>
+                                            <textarea name="link" type="text" rows="3" placeholder="Direct Link of your file" class="form-control border-input" readonly>'.Core::getInstance()->api.'/'.$value->{'Filepath'}.'</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -227,9 +231,13 @@
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Status</label>
-                                            <select name="status" type="text" style=\'max-height:200px; overflow-y:scroll; overflow-x:hidden;\' class="form-control border-input">
-                                                <option value="49" '.(($value->{'StatusID'}=="49")? 'selected':'').'>Public</option>
-                                                <option value="50" '.(($value->{'StatusID'}=="50")? 'selected':'').'>Private</option>
+                                            <select name="status" type="text" style=\'max-height:200px; overflow-y:scroll; overflow-x:hidden;\' class="form-control border-input">';
+                                                if (!empty($datastatus)) {
+                                                            foreach ($datastatus->result as $name => $valuestatus) {
+                                                                echo '<option value="'.$valuestatus->{'StatusID'}.'" '.(($valuestatus->{'StatusID'} == $value->{'StatusID'})?'selected':'').'>'.$valuestatus->{'Status'}.'</option>';
+                                                            }
+                                                        }
+                                                    echo '</select>
                                             </select>
                                         </div>
                                     </div>
