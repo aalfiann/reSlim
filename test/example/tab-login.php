@@ -11,7 +11,7 @@
                                     	'Password' => $_POST['password'],
                                         'Rememberme' => (!empty($_POST['remember'])?$_POST['remember']:'')
                                     );
-                                    Core::login(Core::$api.'/user/login',$post_array);
+                                    Core::login(Core::getInstance()->api.'/user/login',$post_array);
                                 }
                             ?>
                             <form method="post" action="<?php $_SERVER['PHP_SELF']?>">

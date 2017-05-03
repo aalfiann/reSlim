@@ -3,7 +3,7 @@
                 <nav class="pull-left">
                     <ul>
                         <li>
-                            <a href="<?=Core::$basepath;?>">
+                            <a href="<?php echo Core::getInstance()->basepath;?>">
                                 Home
                             </a>
                         </li>

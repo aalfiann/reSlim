@@ -2,7 +2,7 @@
             <div class="container-fluid">
                 <div class="row">
 <?php 
-    $url = Core::$api.'/user/profile/'.((empty($_GET['username']))?'':$_GET['username']);
+    $url = Core::getInstance()->api.'/user/profile/'.((empty($_GET['username']))?'':$_GET['username']);
     $data = json_decode(Core::execGetRequest($url));
 
     if (!empty($data))
@@ -18,7 +18,7 @@
                                 <div class="author">
                                   <img class="avatar border-white" src="'.((empty($data->result[0]->{'Avatar'}))?'assets/img/faces/face-0.jpg':$data->result[0]->{'Avatar'}).'" alt="'.$data->result[0]->{'Username'}.'"/>
                                   <h4 class="title">'.$data->result[0]->{'Fullname'}.'<br />
-                                     <a href="'.Core::$basepath.'/modul-view-profile.php?username='.$data->result[0]->{'Username'}.'"><small>@'.$data->result[0]->{'Username'}.'</small></a>
+                                     <a href="'.Core::getInstance()->basepath.'/modul-view-profile.php?username='.$data->result[0]->{'Username'}.'"><small>@'.$data->result[0]->{'Username'}.'</small></a>
                                   </h4>
                                 </div>
                                 <p class="description text-center">

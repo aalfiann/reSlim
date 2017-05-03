@@ -4,7 +4,7 @@ $datalogin = Core::checkSessions();?>
 <!doctype html>
 <html lang="id">
 <head>
-    <title>Explore File - reSlim</title>
+    <title>Explore File - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

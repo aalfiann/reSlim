@@ -16,20 +16,20 @@
                                 'Status' => $_POST['status'],
                                 'Token' => $datalogin['token']
                             );
-                            Core::update(Core::$api.'/user/update',$post_array);
+                            Core::update(Core::getInstance()->api.'/user/update',$post_array);
                         } 
                     ?>
 <?php 
     // Data User
-    $url = Core::$api.'/user/profile/'.$_GET['username'];
+    $url = Core::getInstance()->api.'/user/profile/'.$_GET['username'].'/'.$datalogin['token'];
     $data = json_decode(Core::execGetRequest($url));
 
     // Data Role
-    $urlrole = Core::$api.'/user/role/'.$datalogin['token'];
+    $urlrole = Core::getInstance()->api.'/user/role/'.$datalogin['token'];
     $datarole = json_decode(Core::execGetRequest($urlrole));
 
     // Data Status
-    $urlstatus = Core::$api.'/user/status/'.$datalogin['token'];
+    $urlstatus = Core::getInstance()->api.'/user/status/'.$datalogin['token'];
     $datastatus = json_decode(Core::execGetRequest($urlstatus));
 
     if (!empty($data))
@@ -45,7 +45,7 @@
                                 <div class="author">
                                   <img class="avatar border-white" src="'.((empty($data->result[0]->{'Avatar'}))?'assets/img/faces/face-0.jpg':$data->result[0]->{'Avatar'}).'" alt="'.$data->result[0]->{'Username'}.'"/>
                                   <h4 class="title">'.$data->result[0]->{'Fullname'}.'<br />
-                                     <a href="'.Core::$basepath.'/modul-view-profile.php?username='.$data->result[0]->{'Username'}.'"><small>@'.$data->result[0]->{'Username'}.'</small></a>
+                                     <a href="'.Core::getInstance()->basepath.'/modul-view-profile.php?username='.$data->result[0]->{'Username'}.'"><small>@'.$data->result[0]->{'Username'}.'</small></a>
                                   </h4>
                                 </div>
                                 <p class="description text-center">

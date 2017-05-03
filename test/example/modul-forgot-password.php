@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="id">
 <head>
-    <title>Forgot Password - reSlim</title>
+    <title>Forgot Password - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

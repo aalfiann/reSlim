@@ -10,7 +10,7 @@
                                     	'PassKey' => (empty($_GET['passkey'])?'':$_GET['passkey']),
                                     	'NewPassword' => $_POST['password2']
                                     );
-                                    Core::verifyPassKey(Core::$api.'/user/verifypasskey',$post_array);
+                                    Core::verifyPassKey(Core::getInstance()->api.'/user/verifypasskey',$post_array);
                                 } else {
                                     echo Core::getMessage('danger','Process Change Password Failed,','Your password is not match!');
                                 }

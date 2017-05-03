@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="id">
 <head>
-    <title>Contact Us - reSlim</title>
+    <title>Contact Us - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

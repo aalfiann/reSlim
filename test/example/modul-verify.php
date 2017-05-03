@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="id">
 <head>
-    <title>Verify New Password - reSlim</title>
+    <title>Verify New Password - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

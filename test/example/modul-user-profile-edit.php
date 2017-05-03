@@ -4,7 +4,7 @@ $datalogin = Core::checkSessions();?>
 <!doctype html>
 <html lang="id">
 <head>
-    <title>Edit User Profile - reSlim</title>
+    <title>Edit User Profile - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

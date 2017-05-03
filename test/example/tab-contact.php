@@ -8,7 +8,7 @@
                             {
                                 if (($_POST['aaa'] + $_POST['bbb']) == $_POST['key']){
                                     $post_array = array(
-                                    	'To' => Core::$email,
+                                    	'To' => Core::getInstance()->email,
                                     	'Subject' => filter_var($_POST['subject'],FILTER_SANITIZE_STRING),
                                         'Message' => $_POST['message'],
                                         'From' => filter_var($_POST['email'],FILTER_SANITIZE_EMAIL),
@@ -18,7 +18,7 @@
                                         'BCC' => '',
                                         'Attachment' => ''
                                     );
-                                    Core::sendMail(Core::$api.'/mail/send',$post_array);
+                                    Core::sendMail(Core::getInstance()->api.'/mail/send',$post_array);
                                 } else {
                                     echo Core::getMessage('danger','Process Send Message Failed,','Wrong security key!');
                                 }
@@ -49,9 +49,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Security Key: </label>
-                                            <b><?=$aaa?> + <?=$bbb?> = ?</b><input name="key" type="text" placeholder="Please answer this question" class="form-control border-input" maxlength="15" required>
-                                            <input type="text" name="aaa" value="<?=$aaa?>" hidden>
-            								<input type="text" name="bbb" value="<?=$bbb?>" hidden>
+                                            <b><?php echo $aaa?> + <?php echo $bbb?> = ?</b><input name="key" type="text" placeholder="Please answer this question" class="form-control border-input" maxlength="15" required>
+                                            <input type="text" name="aaa" value="<?php echo $aaa?>" hidden>
+            								<input type="text" name="bbb" value="<?php echo $bbb?>" hidden>
                                         </div>
                                         <hr>
                                         <div class="form-group text-center">

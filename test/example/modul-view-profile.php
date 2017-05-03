@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="id">
 <head>
-    <title><?=((empty($_GET['username']))?'Not Found':$_GET['username'])?> - reSlim</title>
+    <title><?php echo ((empty($_GET['username']))?'Not Found':$_GET['username'])?> - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>

@@ -20,7 +20,7 @@
                                                 'Avatar' => $_POST['avatar'],
                                                 'Role' => '3'
                                             );
-                                            Core::register(Core::$api.'/user/register',$post_array);
+                                            Core::register(Core::getInstance()->api.'/user/register',$post_array);
                                         } else {
                                             echo Core::getMessage('danger','Process Register Failed,','Your password is not match!');
                                         }
@@ -77,9 +77,9 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Security Key: </label>
-                                            <b><?=$aaa?> + <?=$bbb?> = ?</b><input name="key" type="text" placeholder="Please answer this question" class="form-control border-input" maxlength="15" required>
-                                            <input type="text" name="aaa" value="<?=$aaa?>" hidden>
-            								<input type="text" name="bbb" value="<?=$bbb?>" hidden>
+                                            <b><?php echo $aaa?> + <?php echo $bbb?> = ?</b><input name="key" type="text" placeholder="Please answer this question" class="form-control border-input" maxlength="15" required>
+                                            <input type="text" name="aaa" value="<?php echo $aaa?>" hidden>
+            								<input type="text" name="bbb" value="<?php echo $bbb?>" hidden>
                                         </div>
                                         <label class="checkbox" for="checkbox1">
 	                                	    <input name="agree" type="checkbox" id="checkbox1" data-toggle="checkbox">I agree to the <a href="#" data-toggle="modal" data-target="#termsofservice">terms of service</a>
