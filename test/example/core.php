@@ -21,6 +21,9 @@
         // Set base api reslim
         var $api;
 
+        // Set api keys
+        var $apikey;
+
         var $version = '1.2.0';
 
         private static $instance;
@@ -31,6 +34,7 @@
             $this->email = $config['email'];
             $this->basepath = $config['basepath'];
             $this->api = $config['api'];
+            $this->apikey = $config['apikey'];
 		}
 
         public static function getInstance()
@@ -626,7 +630,8 @@
             $config[\'title\'] = \''.$post_array['Title'].'\'; //Your title website
             $config[\'email\'] = \''.$post_array['Email'].'\'; //Your default email
             $config[\'basepath\'] = \''.$post_array['Basepath'].'\'; //Your folder website
-            $config[\'api\'] = \''.$post_array['Api'].'\'; //Your folder rest api';
+            $config[\'api\'] = \''.$post_array['Api'].'\'; //Your folder rest api
+            $config[\'apikey\'] = \''.$post_array['ApiKey'].'\'; //Your API Key';
             $handle = fopen('config.php','w+'); 
 				fwrite($handle,$newcontent); 
 				fclose($handle); 
