@@ -7,6 +7,7 @@
  *
  */
 namespace classes;
+use \classes\Validation as Validation;
 use PDO;
 	/**
      * A class for pagination data array
@@ -43,27 +44,13 @@ use PDO;
 		}
 
 		/**
-		 * Sanitizer string and only accept integer
-		 *
-		 * @var $string
-		 *
-		 * @return string
-		 */
-        private function integerOnly($string)
-	    {
-		    $nn = preg_replace("/[^0-9]/", "", $string );
-    		return $nn;
-	    }
-
-		/**
 		 * Determine request show data is big or not
 		 *
 		 * @return boolean true / false 
 		 */
-    	private function isBigData()
-	    {
+    	private function isBigData(){
 		    $result = false;
-    		if($this->itemsPerPage > $this->limitData)
+    		if(Validation::integeronly($this->itemsPerPage) > $this->limitData)
 	    	{
 		    	$result = true;
     		}
@@ -76,15 +63,16 @@ use PDO;
 		 * @return string array
 		 */
         public function toDataArray(){
-            if (!empty($this->itemsPerPage) && !empty($this->page))
+			//Convert integer
+    		$itemsperpage = Validation::integerOnly($this->itemsPerPage);
+	    	$page = Validation::integerOnly($this->page);
+
+            if (!empty($itemsperpage) && !empty($page))
     		{
 	    		//Check Big Data 
-		    	if ($this->isBigData($this->itemsPerPage) == false)
+		    	if ($this->isBigData($itemsperpage) == false)
 			    {
-				    //Convert integer
-    				$itemsperpage = $this->integerOnly($this->itemsPerPage);
-	    			$page = $this->integerOnly($this->page);
-
+				    
 		    		//Hitung total page
 			    	$totalpages = ceil($this->totalRow/$itemsperpage);
 			
