@@ -48,11 +48,13 @@ Folder System
             * ApiKey.php (For handling authentication api key)
         * Auth.php (For handling authentication)
         * BaseConverter.php (For encryption)
+        * Cors.php (For accessing web resources)
         * CustomHandlers.php (For handle message)
         * Mailer.php (For sending mail)
         * Pagination.php (For pagination json response)
         * Upload.php (For user upload and management file)
         * User.php (For user management)
+        * Validation.php (For validation)
     * logs/
     * routers/
 	    * name.router.php (routes by functionalities)
