@@ -8,6 +8,7 @@
  */
 namespace classes;
 use \classes\Auth as Auth;
+use \classes\Validation as Validation;
 use PDO;
 	/**
      * A class for user management in reSlim
@@ -589,8 +590,10 @@ use PDO;
 						
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 							// Query Data
 							$sql = "SELECT a.Created_at,a.Domain,a.ApiKey,a.StatusID,b.`Status`,a.Username,a.Updated_at,a.Updated_by 
@@ -598,11 +601,11 @@ use PDO;
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.Username=:username and a.Domain like :search
 								order by a.Created_at desc; LIMIT :limpage , :offpage;";
-								$stmt2 = $this->db->prepare($sql);
-								$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
-								$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
-								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
-								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
+							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
 						
 							if ($stmt2->execute()){
 								$pagination = new \classes\Pagination();
@@ -618,20 +621,20 @@ use PDO;
 	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
 								];	
 							}			
-				        } else {
-    	    			    $data = [
-        	    		    	'status' => 'error',
-		    	    		    'code' => 'RS601',
-        			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
-							];
-		    	        }          	   	
-					} else {
-						$data = [
-    	    				'status' => 'error',
-							'code' => 'RS202',
-	        			    'message' => CustomHandlers::getreSlimMessage('RS202')
+				    } else {
+    	    			$data = [
+        	    			'status' => 'error',
+		    	    		'code' => 'RS601',
+        			    	'message' => CustomHandlers::getreSlimMessage('RS601')
 						];
-					}
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
 				
 			} else {
 				$data = [
@@ -874,8 +877,10 @@ use PDO;
 						
 							// Paginate won't work if page and items per page is negative.
 							// So make sure that page and items per page is always return minimum zero number.
-							$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
-							$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+							$newpage = Validation::integerOnly($this->page);
+							$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+							$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+							$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 							// Query Data
 							if (Auth::getRoleID($this->db,$this->token) == '1'){
@@ -1002,8 +1007,10 @@ use PDO;
 						
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 						// Query Data
 						if (Auth::getRoleID($this->db,$this->token) == '1'){

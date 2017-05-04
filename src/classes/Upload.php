@@ -8,6 +8,7 @@
  */
 namespace classes;
 use \classes\Upload as Upload;
+use \classes\Validation as Validation;
 use PDO;
     /**
      * A class for user upload file in reSlim
@@ -272,8 +273,10 @@ use PDO;
 						$base = $this->baseurl."/";
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 							// Query Data
 							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,concat(:baseurl,a.Filepath) as Fullpath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
@@ -353,8 +356,10 @@ use PDO;
 						$base = $this->baseurl."/";
 						// Paginate won't work if page and items per page is negative.
 						// So make sure that page and items per page is always return minimum zero number.
-						$limits = (((($this->page-1)*$this->itemsPerPage) <= 0)?0:(($this->page-1)*$this->itemsPerPage));
-						$offsets = (($this->itemsPerPage <= 0)?0:$this->itemsPerPage);
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 							// Query Data
 							$sql = "SELECT a.ItemID,a.Date_Upload,a.Title,a.Alternate,a.External_link,a.Filename,a.Filepath,concat(:baseurl,a.Filepath) as Fullpath,a.Filetype,a.Filesize,a.Username as 'Upload_by',a.Updated_at,a.Updated_by,a.StatusID,b.`Status` 
