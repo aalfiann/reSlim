@@ -16,12 +16,6 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
-                        <a href="modul-user-profile.php?m=4">
-                            <i class="ti-user"></i>
-                            <p>My Profile</p>
-                        </a>
-                    </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==5) echo 'class="active"';?> >
                         <a href="modul-data-user.php?m=5&page=1&itemsperpage=10">
                             <i class="ti-id-badge"></i>
@@ -40,26 +34,7 @@
                             <p>API Keys</p>
                         </a>
                     </li>
-                    <?php if (Core::getRole($datalogin['token']) == 1) { // SuperUser Only ?>
-                        <li <?php if (!empty($_GET['m'])) if($_GET['m']==8) echo 'class="active"';?> >
-                            <a href="modul-settings.php?m=8">
-                                <i class="ti-settings"></i>
-                                <p>Settings</p>
-                            </a>
-                        </li><?php } ?>
                 <?php } else {  // Member Menu ?>
-                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
-                        <a href="modul-user-profile.php?m=4">
-                            <i class="ti-user"></i>
-                            <p>My Profile</p>
-                        </a>
-                    </li>
-                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==6) echo 'class="active"';?> >
-                        <a href="modul-explore.php?m=6&page=1&itemsperpage=12&search=">
-                            <i class="ti-cloud-up"></i>
-                            <p>Explore</p>
-                        </a>
-                    </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
                         <a href="modul-data-api.php?m=7&page=1&itemsperpage=10&search=">
                             <i class="ti-lock"></i>

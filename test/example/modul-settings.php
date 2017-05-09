@@ -24,8 +24,7 @@
                     </button>
                     <a class="navbar-brand" href="#">Settings</a>
                 </div>
-                <div class="collapse navbar-collapse">
-                </div>
+                <?php include 'global-nav.php';?>
             </div>
         </nav>
 
