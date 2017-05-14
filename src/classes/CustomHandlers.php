@@ -129,6 +129,7 @@
             // User data error 6xx
             'RS601' => 'There is no any data records found.',
             'RS602' => 'Data records is exceed the limit.',
+            'RS603' => 'Data can\'t be duplicated.',
             // Parameter success 7xx
             'RS701' => 'The parameter is valid.',
             'RS702' => 'The parameter is authorized.',
