@@ -60,6 +60,24 @@ use PDO;
 			return $result;
 		}
 
+		/**
+		 * Check file is allowed or not
+		 *
+         * @param $filename is the filename with extension in the end. Example: tester.txt
+         * @return boolean true|false
+         */
+		function isFileNotAllowed($fileName){
+			$result = false;
+			$allowedExts = array("php","sql","sqlite3","db","dbf","js","json","xml");
+			$temp = explode(".", $fileName);
+			$extension = end($temp);
+
+			if (in_array($extension, $allowedExts)) {
+		    	$result = true;
+			}
+			return $result;
+		}
+
 		/** 
 		 * Process upload to server
 		 * @return result process in json encoded data
@@ -77,6 +95,10 @@ use PDO;
   "code": "403",
   "message": "This page is forbidden."
 }\';?>';
+				$newprotection = '<Files ~ "\.php$">
+   Order allow,deny
+   Deny from all
+</Files>';
             	mkdir($fileFolder,0775,true);
 				if(!$this->isFileOnServer($this->baseurl.'/upload/index.php')){
 					$ihandle = fopen('upload/index.php','w+'); 
@@ -85,7 +107,10 @@ use PDO;
 				}
 				$handle = fopen($fileFolder.'index.php','w+'); 
 				fwrite($handle,$newcontent); 
-				fclose($handle);       
+				fclose($handle);
+				$xhandle = fopen($fileFolder.'.htaccess','w+'); 
+				fwrite($xhandle,$newprotection); 
+				fclose($xhandle);       
         	}
 
             $file = $this->datafile;
@@ -101,87 +126,96 @@ use PDO;
         	// determine error
         	$fileError = $file->getError();
 
-			//Determine if file already exist
-			if(!$this->isFileOnServer($this->baseurl.'/'.$filePath)) {
- 			   	// check if file size is allowed
-				if ($fileSize <= $this->maxUploadSize){
-					//Check proses upload status
-					if ($file->getError() === UPLOAD_ERR_OK){
-						$uploadresult = $file->moveTo($fileFolder.$fileName);
-						if ($uploadresult == null){
-							$newusername = strtolower($this->username);
+			//Determine if file is not allowed
+			if (!$this->isFileNotAllowed($fileName)){
+				//Determine if file already exist
+				if(!$this->isFileOnServer($this->baseurl.'/'.$filePath)) {
+	 			   	// check if file size is allowed
+					if ($fileSize <= $this->maxUploadSize){
+						//Check proses upload status
+						if ($file->getError() === UPLOAD_ERR_OK){
+							$uploadresult = $file->moveTo($fileFolder.$fileName);
+							if ($uploadresult == null){
+								$newusername = strtolower($this->username);
 
-                    	    try{
-                        	    $this->db->beginTransaction();
-                            	$sql = "INSERT INTO user_upload (Date_Upload,Filename,Filepath,Filetype,Filesize,Username,StatusID,Title,Alternate,External_link) 
-				        			VALUES(current_timestamp,:filename,:filepath,:filetype,:filesize,:username,'49',:title,:alternate,:externallink);";
-    	                        $stmt = $this->db->prepare($sql);
-					            $stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
-            	                $stmt->bindparam(':filename', $fileName, PDO::PARAM_STR);
-    					        $stmt->bindparam(':filepath', $filePath, PDO::PARAM_STR);
-        						$stmt->bindparam(':filetype', $fileType, PDO::PARAM_STR);
-		        				$stmt->bindparam(':filesize', $fileSize, PDO::PARAM_STR);
-								$stmt->bindparam(':title', $this->title, PDO::PARAM_STR);
-								$stmt->bindparam(':alternate', $this->alternate, PDO::PARAM_STR);
-								$stmt->bindparam(':externallink', $this->externallink, PDO::PARAM_STR);
-                            	if ($stmt->execute()) {
-					            	$data = [
-            							'status' => 'success',
-	            						'code' => 'RS101',
-    	    							'message' => CustomHandlers::getreSlimMessage('RS101'),
-										'datafile' => [ 'Title' => $this->title,
-											'Alternate' => $this->alternate,
-											'External_link' => $this->externallink,
-											'Filename' => $fileName,
-											'Filepath' => $this->baseurl.'/'.$filePath,
-											'Filetype' => $fileType,
-											'Filesize' => $fileSize]
-	        						];	
-			            		} else {
-    	        					$data = [
-        	    						'status' => 'error',
-				            			'code' => 'RS909',
-						            	'message' => CustomHandlers::getreSlimMessage('RS909')
-            						];
-			        			}
-            					$this->db->commit();
-	                        } catch (PDOException $e) {
-				                $data = [
-        	        				'status' => 'error',
-					            	'code' => $e->getCode(),
-                					'message' => $e->getMessage()
-                				];
-				        	    $this->db->rollBack();
-	            			}
-						} else {
-							$data = [
-            	    			'status' => 'error',
-					        	'code' => '0',
-                				'message' => $uploadresult
-            				];
-						}
-                        
-				    } else {
-        	    		$data = [
+    	                	    try{
+        	                	    $this->db->beginTransaction();
+            	                	$sql = "INSERT INTO user_upload (Date_Upload,Filename,Filepath,Filetype,Filesize,Username,StatusID,Title,Alternate,External_link) 
+					        			VALUES(current_timestamp,:filename,:filepath,:filetype,:filesize,:username,'49',:title,:alternate,:externallink);";
+    	            	            $stmt = $this->db->prepare($sql);
+					    	        $stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+            	            	    $stmt->bindparam(':filename', $fileName, PDO::PARAM_STR);
+    					        	$stmt->bindparam(':filepath', $filePath, PDO::PARAM_STR);
+	        						$stmt->bindparam(':filetype', $fileType, PDO::PARAM_STR);
+			        				$stmt->bindparam(':filesize', $fileSize, PDO::PARAM_STR);
+									$stmt->bindparam(':title', $this->title, PDO::PARAM_STR);
+									$stmt->bindparam(':alternate', $this->alternate, PDO::PARAM_STR);
+									$stmt->bindparam(':externallink', $this->externallink, PDO::PARAM_STR);
+                    	        	if ($stmt->execute()) {
+					    	        	$data = [
+            								'status' => 'success',
+	            							'code' => 'RS101',
+    	    								'message' => CustomHandlers::getreSlimMessage('RS101'),
+											'datafile' => [ 'Title' => $this->title,
+												'Alternate' => $this->alternate,
+												'External_link' => $this->externallink,
+												'Filename' => $fileName,
+												'Filepath' => $this->baseurl.'/'.$filePath,
+												'Filetype' => $fileType,
+												'Filesize' => $fileSize]
+	        							];	
+			            			} else {
+	    	        					$data = [
+    	    	    						'status' => 'error',
+					            			'code' => 'RS909',
+							            	'message' => CustomHandlers::getreSlimMessage('RS909')
+            							];
+			        				}
+            						$this->db->commit();
+	                        	} catch (PDOException $e) {
+					                $data = [
+    	    	        				'status' => 'error',
+						            	'code' => $e->getCode(),
+            	    					'message' => $e->getMessage()
+                					];
+				    	    	    $this->db->rollBack();
+	            				}
+							} else {
+								$data = [
+        	    	    			'status' => 'error',
+						        	'code' => '0',
+                					'message' => $uploadresult
+            					];
+							}
+					    } else {
+    	    	    		$data = [
+        	    				'status' => 'error',
+				    	    	'code' => 'RS910',
+			    	    		'message' => CustomHandlers::getreSlimMessage('RS910')
+	            			];
+				        }
+					}else{
+						$data = [
             				'status' => 'error',
-			    	    	'code' => 'RS910',
-			        		'message' => CustomHandlers::getreSlimMessage('RS910')
-	            		];
-			        }
-				}else{
+			    	    	'code' => 'RS911',
+				        	'message' => CustomHandlers::getreSlimMessage('RS911')
+    	        		];
+					}
+				} else {
 					$data = [
-            			'status' => 'error',
-			        	'code' => 'RS911',
-			        	'message' => CustomHandlers::getreSlimMessage('RS911')
-            		];
+        				'status' => 'error',
+		    	    	'code' => 'RS912',
+			    		'message' => CustomHandlers::getreSlimMessage('RS912')
+	            	];
 				}
 			} else {
 				$data = [
-        			'status' => 'error',
-		        	'code' => 'RS912',
-			    	'message' => CustomHandlers::getreSlimMessage('RS912')
-            	];
+	        		'status' => 'error',
+		        	'code' => 'RS908',
+			    	'message' => CustomHandlers::getreSlimMessage('RS908')
+        		];
 			}
+			
 
         	return $data;
 			$this->db = null;
