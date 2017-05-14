@@ -76,6 +76,52 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /** 
+         * Convert any char into Numeric
+         *
+         * @param $char : source to be converted into numeric
+         * @return string
+         */
+        public static function convertToNumeric($char){
+            if ($char){
+            	$data = '';
+                $result = str_split($char);
+        	    foreach ($result as $key => $value) {
+                    $data .= ord($value);
+                	}
+            	return $data;
+            } else {
+                return 0;
+            }
+        }
+
+        /** 
+         * Generate Tiny Hash
+         *
+         * @param $data : source to generate (should be integer only)
+         * @return string tiny hash
+         */
+        public static function generateTinyHash($data){
+            return base_convert($data, 10, 36);
+        }
+
+        /** 
+         * Generate Unique ID
+         *
+         * @param $lenght : default uniqid gives 13 chars, but you could adjust it to your needs.
+         * @return string tiny hash
+         */
+        public static function generateUniqueID($lenght = 13) {
+            if (function_exists("random_bytes")) {
+                $bytes = random_bytes(ceil($lenght / 2));
+            } elseif (function_exists("openssl_random_pseudo_bytes")) {
+                $bytes = openssl_random_pseudo_bytes(ceil($lenght / 2));
+            } else {
+                throw new Exception("no cryptographically secure random function available");
+            }
+            return substr(bin2hex($bytes), 0, $lenght);
+        }
+        
+        /** 
          * Generate reSlim Token when user logged
          *
          * @param $db : Dabatase connection (PDO)
