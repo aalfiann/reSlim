@@ -97,7 +97,7 @@
                 </div>';
 
                 $pagination = new Pagination;
-                echo $pagination->makePagination($data,$_SERVER['PHP_SELF'].'?m=5');
+                echo $pagination->makePagination($data,$_SERVER['PHP_SELF'].'?m=5&search='.$_GET['search']);
                 
                 echo '</div>';
             }
