@@ -8,6 +8,33 @@
 	},
 	"item": [
 		{
+			"name": "User Login",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/login",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "Password",
+							"value": "{password}",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "Login User"
+			},
+			"response": []
+		},
+		{
 			"name": "User Register",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/user/register",
@@ -77,33 +104,6 @@
 			"response": []
 		},
 		{
-			"name": "User Login",
-			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/login",
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "Username",
-							"value": "{username}",
-							"type": "text",
-							"enabled": true
-						},
-						{
-							"key": "Password",
-							"value": "{password}",
-							"type": "text",
-							"enabled": true
-						}
-					]
-				},
-				"description": "Login User"
-			},
-			"response": []
-		},
-		{
 			"name": "Logout User",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/user/logout",
@@ -165,7 +165,7 @@
 		{
 			"name": "Search Data User",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/data/search/{query}/{page}/{itemsperpage}/{yourtoken}",
+				"url": "http://localhost:1337/reSlim/src/api/user/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -478,7 +478,7 @@
 		{
 			"name": "Search Data User Upload",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/search/{page}/{itemsperpage}/{yourtoken}/?query={query}",
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -834,7 +834,7 @@
 		{
 			"name": "Search Data API Keys User",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/{username}/keys/data/search/{page}/{itemsperpage}/{yourtoken}/?query={query}",
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/keys/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
 				"method": "GET",
 				"header": [],
 				"body": {},
