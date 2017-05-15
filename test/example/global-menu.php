@@ -17,7 +17,7 @@
                         </a>
                     </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==5) echo 'class="active"';?> >
-                        <a href="modul-data-user.php?m=5&page=1&itemsperpage=10">
+                        <a href="modul-data-user.php?m=5&page=1&itemsperpage=10&search=">
                             <i class="ti-id-badge"></i>
                             <p>Data User</p>
                         </a>

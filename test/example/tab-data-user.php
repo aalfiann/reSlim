@@ -1,9 +1,30 @@
 <div class="content">
             <div class="container-fluid">
                 <div class="row">
+                    <form method="get" action="<?php $_SERVER['PHP_SELF'].'?search='.filter_var($_GET['search'],FILTER_SANITIZE_STRING)?>">
+                        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
+                            <div class="form-group">
+                                <input name="search" type="text" placeholder="Search here..." class="form-control border-input" value="<?php echo $_GET['search']?>">
+                            </div>
+                            <div class="form-group hidden">
+                                <input name="m" type="text" class="form-control border-input" value="5" hidden>
+                                <input name="page" type="text" class="form-control border-input" value="1" hidden>
+                                <input name="itemsperpage" type="text" class="form-control border-input" value="10" hidden>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-1 col-xs-2">
+                            <div class="form-group">
+                                <button name="submitsearch" type="submit" class="btn btn-fill btn-wd ">Search</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div><hr>
+            <div class="container-fluid">
+                <div class="row">
                
 <?php 
-    $url = Core::getInstance()->api.'/user/data/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'];
+    $url = Core::getInstance()->api.'/user/data/search/'.$_GET['page'].'/'.$_GET['itemsperpage'].'/'.$datalogin['token'].'/?query='.$_GET['search'];
     $data = json_decode(Core::execGetRequest($url));
 
     if (!empty($data))

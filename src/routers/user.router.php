@@ -32,9 +32,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
     });
 
     // GET example api to search data user with pagination
-    $app->get('/user/data/search/{query}/{page}/{itemsperpage}/{token}', function (Request $request, Response $response) {
+    $app->get('/user/data/search/{page}/{itemsperpage}/{token}/', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
-        $users->search = $request->getAttribute('query');
+        $users->search = filter_var($_GET['query'],FILTER_SANITIZE_STRING);
         $users->page = $request->getAttribute('page');
         $users->itemsPerPage = $request->getAttribute('itemsperpage');
         $users->token = $request->getAttribute('token');
