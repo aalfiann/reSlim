@@ -22,7 +22,7 @@ use PDO;
 		
 		protected $db;
         
-        var $username,$datafile,$token,$itemid,$baseurl,$title,$alternate,$externallink,$status,$apikey;
+        var $username,$datafile,$token,$itemid,$baseurl,$title,$alternate,$externallink,$status,$apikey,$filename;
 
         // limit size upload
         var $maxUploadSize = '100000000';
@@ -68,11 +68,11 @@ use PDO;
          */
 		function isFileNotAllowed($fileName){
 			$result = false;
-			$allowedExts = array("php","sql","sqlite3","db","dbf","js","json","xml");
+			$notAllowedExts = array("php","sql","sqlite3","db","dbf","js","json","xml","html");
 			$temp = explode(".", $fileName);
 			$extension = end($temp);
 
-			if (in_array($extension, $allowedExts)) {
+			if (in_array($extension, $notAllowedExts)) {
 		    	$result = true;
 			}
 			return $result;
@@ -95,7 +95,7 @@ use PDO;
   "code": "403",
   "message": "This page is forbidden."
 }\';?>';
-				$newprotection = '<Files ~ "\.php$">
+				$newprotection = '<Files ~ "\.(php|pdf|js|sql|sqlite3|doc|xls|db|dbf|json|xml|html)$">
    Order allow,deny
    Deny from all
 </Files>';
@@ -679,4 +679,66 @@ use PDO;
 			return json_encode($data, JSON_PRETTY_PRINT);
 		}
 
+		/** 
+		 * Determine is filename exist on our server
+		 * @return string
+		 */
+		private function isFilenameInExplorer(){
+			$newfilename = filter_var($this->filename,FILTER_SANITIZE_STRING);
+			$r = false;
+			$sql = "SELECT a.Filepath
+				FROM user_upload a 
+				WHERE a.Filename=:filename;";
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindParam(':filename', $newfilename, PDO::PARAM_STR);
+			if ($stmt->execute()) {	
+            	if ($stmt->rowCount() > 0){
+					$single = $stmt->fetch();
+					$r = $single['Filepath'];
+    	        }          	   	
+			} 		
+			return $r;
+			$this->db = null;
+		}
+
+		/** 
+		 * Force stream inline or attachment to protect from hotlinking
+		 * @return result stream data or process in json encoded data
+		 */
+		public function forceStream($stream=true){
+			if (Auth::validToken($this->db,$this->token)){
+				$datapath = $this->isFilenameInExplorer();
+				if ( $datapath != false){
+					if ($stream == false){
+						$disposition = 'attachment';
+					} else {
+						$disposition = 'inline';
+					}
+					$path = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..').'/api/'.$datapath;
+					header('Cache-Control: public');
+				    header('Content-Description: File Transfer');
+					header('Content-Transfer-Encoding: binary');
+    				header('Content-Disposition: '.$disposition.'; filename='.$this->filename);
+		    		header('Content-length: '.filesize($path));
+			    	header('Content-type: '.pathinfo($path, PATHINFO_EXTENSION));
+					readfile($path);
+				} else {
+					$data = [
+		    			'status' => 'error',
+						'code' => 'RS601',
+        		    	'message' => CustomHandlers::getreSlimMessage('RS601')
+					];
+					return json_encode($data, JSON_PRETTY_PRINT);
+				}
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+				return json_encode($data, JSON_PRETTY_PRINT);
+			}
+			$this->db= null;
+			exit;
+		}
     }
