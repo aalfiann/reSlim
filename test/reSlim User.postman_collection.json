@@ -610,6 +610,17 @@
 			"response": []
 		},
 		{
+			"name": "Force Download Link",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload/steam/{yourtoken}/{filename with extension}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Send Mail",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/mail/send",
