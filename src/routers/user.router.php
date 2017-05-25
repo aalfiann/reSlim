@@ -287,6 +287,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
+    // GET example api to stream data upload
+    $app->get('/user/upload/stream/{token}/{filename}', function (Request $request, Response $response) {
+        $upload = new classes\Upload($this->db);
+        $upload->token = $request->getAttribute('token');
+        $upload->filename = $request->getAttribute('filename');
+        $body = $response->getBody();
+        $body->write($upload->forceStream());
+        return classes\Cors::modify($response,$body,200);
+    });
+    
     // POST example api user forgot password
     $app->post('/user/forgotpassword', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
