@@ -15,6 +15,7 @@
      * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
      * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
      */
+     include_once( "config.php" ) ;
     class CustomHandlers {
 
         /**
@@ -94,19 +95,19 @@
         ];
 
         /**
-         * @param $reSlimMessages is data array to handler the status message in reSlim
+         * @param $reSlimMessages is data array to handler the status message in reSlim (english)
          *
          */
-        public static $reSlimMessages = [
+        public static $reSlimMessagesEN = [
             // User process success 1xx    
             'RS101' => 'Request process is successfully created.',
-            'RS102' => 'Request process is successfully get.',
+            'RS102' => 'Request process is successfully read.',
             'RS103' => 'Request process is successfully updated.',
             'RS104' => 'Request process is successfully deleted.',
             'RS105' => 'Mail hasbeen sent.',
             // User process error 2xx
             'RS201' => 'Request process is failed to create.',
-            'RS202' => 'Request process is failed to get.',
+            'RS202' => 'Request process is failed to read.',
             'RS203' => 'Request process is failed to update.',
             'RS204' => 'Request process is failed to delete.',
             // User authority success 3xx
@@ -154,7 +155,73 @@
             'RS913' => 'Request process is successfully deleted only in database server but failed to delete the data file on server.',
             'RS914' => 'Email is not available.',
             'RS915' => 'Failed to verify pass key maybe it was expired.',
-            'RS916' => 'Domain hasbeen registered.'
+            'RS916' => 'Domain hasbeen registered.',
+            'RS917' => 'Users can not make a review more than one.'
+        ];
+
+        /**
+         * @param $reSlimMessages is data array to handler the status message in reSlim (Indonesian)
+         *
+         */
+        public static $reSlimMessagesID = [
+            // User process success 1xx    
+            'RS101' => 'Permintaan proses create berhasil.',
+            'RS102' => 'Permintaan proses read berhasil.',
+            'RS103' => 'Permintaan proses update berhasil',
+            'RS104' => 'Permintaan proses delete berhasil.',
+            'RS105' => 'Mail hasbeen sent.',
+            // User process error 2xx
+            'RS201' => 'Permintaan proses create gagal.',
+            'RS202' => 'Permintaan proses read gagal.',
+            'RS203' => 'Permintaan proses update gagal.',
+            'RS204' => 'Permintaan proses delete gagal.',
+            // User authority success 3xx
+            'RS301' => 'Token Anda telah aktif.',
+            'RS302' => 'Token Anda cocok.',
+            'RS303' => 'Token Anda sesuai.',
+            'RS304' => 'Token Anda memiliki wewenang.',
+            'RS305' => 'Token Anda telah dicabut.',
+            'RS306' => 'API Key Anda telah dicabut.',
+            // User authority error 4xx
+            'RS401' => 'Token Anda kadaluarsa atau tidak memiliki wewenang, Jadi Anda harus membuat token baru yang memiliki wewenang!',
+            'RS402' => 'Token Anda tidak cocok.',
+            'RS403' => 'Token Anda salah.',
+            'RS404' => 'Token Anda tidak memiliki wewenang.',
+            'RS405' => 'Anda tidak memiliki token apapun.',
+            'RS406' => 'API Key Anda telah kadaluarsa atau tidak memiliki wewenang.',
+            'RS407' => 'API Key Anda tidak valid.',
+            // User data success 5xx
+            'RS501' => 'Data ditemukan.',
+            // User data error 6xx
+            'RS601' => 'Tidak ada satupun data ditemukan.',
+            'RS602' => 'Data telah melebihi batas penyimpanan.',
+            'RS603' => 'Data tidak dapat di duplikasi.',
+            // Parameter success 7xx
+            'RS701' => 'Parameter valid.',
+            'RS702' => 'Parameter memiliki wewenang.',
+            // Parameter error 8xx
+            'RS801' => 'Parameter tidak valid.',
+            'RS802' => 'Parameter tidak memiliki wewenang.',
+            'RS803' => 'Parameter telah tidak berlaku lagi.',
+            'RS804' => 'Parameter terdapat karakter yang dilarang.',
+            // Any error messages 9xx
+            'RS901' => 'Gagal registrasi pengguna.',
+            'RS902' => 'Nama pengguna tidak tersedia.',
+            'RS903' => 'Nama pengguna atau password tidak cocok! {case sensitive}',
+            'RS904' => 'Gagal memperbaharui pengguna.',
+            'RS905' => 'Gagal menghapus pengguna.',
+            'RS906' => 'Maaf, Akun Anda telah dibekukan.',
+            'RS907' => 'Gagal merubah kata sandi.',
+            'RS908' => 'Gagal mengunggah, jenis berkas tidak di ijinkan.',
+            'RS909' => 'Unggah berhasil, tapi gagal menyimpan data ke dalam database.',
+            'RS910' => 'Unggah gagal. Kehilangan koneksi, silahkan coba lagi.',
+            'RS911' => 'Unggah gagal, Ukuran berkas terlalu besar.',
+            'RS912' => 'Unggah dibatalkan, Nama berkas sudah ada di dalam server. Silahkan gunakan nama berkas yang lain.',
+            'RS913' => 'Permintaan proses delete telah berhasil hanya di database server tapi gagal menghapus berkas yang ada di server.',
+            'RS914' => 'Email tidak tersedia.',
+            'RS915' => 'Gagal verifikasi kata kunci, mungkin sudah kadaluarsa.',
+            'RS916' => 'Domain telah terdaftar.',
+            'RS917' => 'Pengguna tidak dapat membuat ulasan lebih dari satu.'
         ];
 
         /**
@@ -162,7 +229,13 @@
          * @return string status message
          */
         public static function getreSlimMessage($code){
-            return self::$reSlimMessages[$code];
+            global $config;
+            if (strtolower($config['language']) == 'id'){
+                return self::$reSlimMessagesID[$code];
+            } else {
+                return self::$reSlimMessagesEN[$code];
+            }
+            
         }
 
         /**

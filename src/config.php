@@ -6,12 +6,14 @@
  * @var $config['addContentLengthHeader'] to set the Content-Length header which makes Slim behave more predictably
  * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
  * @var $config['enableApiKeys'] to protect api from guest or anonymous. Guest which don't have api key can not using this service. Default is true.
+ * @var $config['language'] is language that we use for delivery message information. Default is en means english.
  * 
  */
 $config['displayErrorDetails']      = true;
 $config['addContentLengthHeader']   = false;
 $config['limitLoadData'] = 1000;
 $config['enableApiKeys'] = true;
+$config['language'] = 'en';
 
 /** 
  * Configuration PDO MySQL Database
