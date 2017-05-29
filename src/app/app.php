@@ -14,7 +14,7 @@ require '../config.php';
 
 // Autoload all external classes
 spl_autoload_register(function ($classname) {
-    require ( '../'.$classname . ".php");
+    require (realpath(__DIR__ . '/..'). '/'.str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php');
 });
 
 // Set time zone

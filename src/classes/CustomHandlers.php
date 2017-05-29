@@ -15,7 +15,7 @@
      * @copyright  Copyright (c) 2016 M ABD AZIZ ALFIAN
      * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
      */
-     include_once( "config.php" ) ;
+     include_once( "../config.php" ) ;
     class CustomHandlers {
 
         /**
