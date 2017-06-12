@@ -715,13 +715,23 @@ use PDO;
 						$disposition = 'inline';
 					}
 					$path = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..').'/api/'.$datapath;
-					header('Cache-Control: public');
+					$fp = fopen($path, "r") ;
+					header('HTTP/1.0 200 OK');
+					header('Cache-Control: public, must-revalidate, max-age=0');
+					header('Pragma: no-cache');
+					header('Accept-Ranges: bytes');
 				    header('Content-Description: File Transfer');
 					header('Content-Transfer-Encoding: binary');
-    				header('Content-Disposition: '.$disposition.'; filename='.$this->filename);
+    				header('Content-Disposition: '.$disposition.'; filename="'.$this->filename.'"');
 		    		header('Content-length: '.filesize($path));
 			    	header('Content-type: '.pathinfo($path, PATHINFO_EXTENSION));
-					readfile($path);
+					ob_clean();
+					flush();
+					while (!feof($fp)) {
+						$buff = fread($fp, 1024);
+						print $buff;
+					}
+					exit;
 				} else {
 					$data = [
 		    			'status' => 'error',
