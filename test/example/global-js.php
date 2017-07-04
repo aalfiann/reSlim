@@ -22,6 +22,44 @@
         }),
         $("#lastdate").datepicker({
             dateFormat:"yy-mm-dd"
-        })
+        }),
+		$('#formUpload').submit(function() {
+			$.ajax({
+				url : $(this).attr("action"),
+				type: "POST",
+				data : new FormData(this),
+				contentType: false,
+				cache: false,
+				processData:false,
+				xhr: function(){
+					//upload Progress
+					var xhr = $.ajaxSettings.xhr();
+					if (xhr.upload) {
+						xhr.upload.addEventListener('progress', function(event) {
+							var percent = 0;
+							var position = event.loaded || event.position;
+							var total = event.total;
+							if (event.lengthComputable) {
+								percent = Math.ceil(position / total * 100);
+							}
+							/*update progressbar for jQuery UI
+							$('#statusprogress').text(percent +"%");
+							$( '#progressbar' ).progressbar({
+								value: percent
+							});*/
+							//update progressbar for Twitter Bootstrap
+							$('#statusprogress').text(percent +"%");
+							$('#progressbar').css('width', percent+'%').attr('aria-valuenow', percent); 
+						}, true);
+					}
+					return xhr;
+				},
+				mimeType:"multipart/form-data"
+			}).done(function(res){ //
+				//$(my_form_id)[0].reset(); //reset form
+				//$(result_output).html(res); //output response from server
+				//submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
+			});
+		});
     });
 	</script>

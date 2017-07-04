@@ -83,6 +83,13 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                             <input name="uploadfile" type="file" placeholder="Choose File" class="form-control border-input" required>
                                         </div>
                                     </div>
+                                    <div class="col-lg-12">
+										<div class="form-group">
+											<div class="progress">
+												<div class="progress-bar progress-bar-success progress-bar-striped" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%"><div id="statusprogress"></div></div>
+											</div>
+										</div>
+									</div>
                                 </div>
                               </div>
                               <div class="modal-footer">
