@@ -56,7 +56,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">Upload file to server</h4>
                               </div>
-                              <form method="post" action="<?php $_SERVER['PHP_SELF']?>" enctype="multipart/form-data">
+                              <form id="formUpload" method="post" action="<?php $_SERVER['PHP_SELF']?>" enctype="multipart/form-data">
                               <div class="modal-body">
                                 <div class="row">
                                     <div class="col-lg-12">
