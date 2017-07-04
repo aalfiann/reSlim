@@ -50,6 +50,7 @@ use PDO;
 			$result = false;
 			$ch = curl_init($url);
 			curl_setopt($ch, CURLOPT_NOBODY, true);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 			curl_exec($ch);
 			$retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 			// $retcode >= 400 -> not found, $retcode = 200, found.
