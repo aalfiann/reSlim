@@ -685,13 +685,12 @@ use PDO;
 		 * @return string
 		 */
 		private function isFilenameInExplorer(){
-			$newfilename = filter_var($this->filename,FILTER_SANITIZE_STRING);
 			$r = false;
 			$sql = "SELECT a.Filepath
 				FROM user_upload a 
 				WHERE a.Filename=:filename;";
 			$stmt = $this->db->prepare($sql);
-			$stmt->bindParam(':filename', $newfilename, PDO::PARAM_STR);
+			$stmt->bindParam(':filename', $this->filename, PDO::PARAM_STR);
 			if ($stmt->execute()) {	
             	if ($stmt->rowCount() > 0){
 					$single = $stmt->fetch();
