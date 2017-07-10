@@ -91,16 +91,20 @@
                                     </div>
                                 </div>
                             </form>
-                            <!-- Start Modal Terms of Service -->
-                            <div class="modal fade" id="termsofservice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title" id="myModalLabel">Terms Of Service</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                        <p>You agree, through your use of this service, that you will not use this
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Start Modal Terms of Service -->
+                <div class="modal fade" id="termsofservice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="myModalLabel">Terms Of Service</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>You agree, through your use of this service, that you will not use this
 application to post any material which is knowingly false and/or defamatory,
 inaccurate, abusive, vulgar, hateful, harassing, obscene, profane, sexually
 oriented, threatening, invasive of a person's privacy, or otherwise violative
@@ -121,15 +125,11 @@ reason at all.</p>
 
 <p>You must be at least 13 years of age to use this service.</p>
 
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- End Modal Terms of Service -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <!-- End Modal Terms of Service -->
