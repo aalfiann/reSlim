@@ -703,9 +703,11 @@ use PDO;
 
 		/** 
 		 * Force stream inline or attachment to protect from hotlinking
+		 * @var $stream = deliver content. Default true means inline
+		 * @var $age = this is the max age for cache control in header
 		 * @return result stream data or process in json encoded data
 		 */
-		public function forceStream($stream=true){
+		public function forceStream($stream=true,$age=86400){
 			if (Auth::validToken($this->db,$this->token)){
 				$datapath = $this->isFilenameInExplorer();
 				if ( $datapath != false){
@@ -717,8 +719,10 @@ use PDO;
 					$path = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..').'/api/'.$datapath;
 					$fp = fopen($path, "r") ;
 					header('HTTP/1.0 200 OK');
-					header('Cache-Control: public, must-revalidate, max-age=0');
-					header('Pragma: no-cache');
+					header('Access-Control-Allow-Origin: *');
+					header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+					header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
+					header('Cache-Control: public, must-revalidate, max-age='.$age.'');
 					header('Accept-Ranges: bytes');
 				    header('Content-Description: File Transfer');
 					header('Content-Transfer-Encoding: binary');
