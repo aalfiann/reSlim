@@ -721,7 +721,7 @@ use PDO;
 					header('HTTP/1.0 200 OK');
 					header('Access-Control-Allow-Origin: *');
 					header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
-					header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization');
+					header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization, Range');
 					header('Cache-Control: public, must-revalidate, max-age='.$age.'');
 					header('Accept-Ranges: bytes');
 				    header('Content-Description: File Transfer');
