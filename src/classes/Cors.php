@@ -1,6 +1,6 @@
 <?php 
 /**
- * This class is a part of middleware reSlim project for authentication registered api key
+ * This class is a part of middleware reSlim project for handle cors in api request
  * @author M ABD AZIZ ALFIAN <github.com/aalfiann>
  *
  * Don't remove this class unless You know what to do
