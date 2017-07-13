@@ -44,6 +44,7 @@ AddDefaultCharset UTF-8
 
 #Cache Control Headers 
 <IfModule mod_headers.c>
+	Header set Connection keep-alive
 	Header append Vary User-Agent env=!dont-vary
 	Header unset ETag
 	FileETag none
