@@ -75,6 +75,25 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                         </div>
                     </div>
 <?php 
+    if (isset($_POST['submitupdateapi'.(empty($_POST['ApiKey'])?'':$_POST['ApiKey'])])){
+        $post_array = array(
+            'Username' => $datalogin['username'],
+            'Token' => $datalogin['token'],
+            'ApiKey' => $_POST['apikey'],
+            'Status' => $_POST['status']
+        );
+        Core::updateAPI(Core::getInstance()->api.'/user/keys/update',$post_array);
+    }
+    
+    if (isset($_POST['submitdeleteapi'.(empty($_POST['ApiKey'])?'':$_POST['ApiKey'])])){
+        $post_array = array(
+            'Username' => $datalogin['username'],
+            'Token' => $datalogin['token'],
+            'ApiKey' => $_POST['apikey']
+        );
+        Core::deleteAPI(Core::getInstance()->api.'/user/keys/delete',$post_array);
+    }
+
     $url = Core::getInstance()->api.'/user/'.$datalogin['username'].'/keys/data/search/'.$page.'/'.$itemsperpage.'/'.$datalogin['token'].'/?query='.rawurlencode($search);
     $data = json_decode(Core::execGetRequest($url));
 
@@ -86,33 +105,6 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
         {
             if ($data->{'status'} == "success")
             {
-                foreach ($data->results as $row => $value) {
-                    if (isset($_POST['submitupdateapi'.$value->{'ApiKey'}]))
-                    {
-                        $post_array = array(
-                            'Username' => $datalogin['username'],
-                            'Token' => $datalogin['token'],
-                            'ApiKey' => $_POST['apikey'],
-                            'Status' => $_POST['status']
-                        );
-                        Core::updateAPI(Core::getInstance()->api.'/user/keys/update',$post_array);
-                        echo Core::reloadPage();
-                    }
-                }
-
-                foreach ($data->results as $row => $value) {
-                    if (isset($_POST['submitdeleteapi'.$value->{'ApiKey'}]))
-                    {
-                        $post_array = array(
-                            'Username' => $datalogin['username'],
-                            'Token' => $datalogin['token'],
-                            'ApiKey' => $_POST['apikey']
-                        );
-                        Core::deleteAPI(Core::getInstance()->api.'/user/keys/delete',$post_array);
-                        echo Core::reloadPage();
-                    }
-                }
-
                 echo '<div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
@@ -216,6 +208,9 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                                                     echo '</select>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <input name="ApiKey" type="text" class="form-control border-input" value="'.$value->{'ApiKey'}.'" hidden>
                                 </div>
                               </div>
                               <div class="modal-footer">
