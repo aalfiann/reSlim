@@ -404,16 +404,16 @@
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('success','Process Update Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('success','Process Update Successfuly!');
                     echo '</div>';
                 } else {
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'});
                     echo '</div>';
                 }
             } else {
                 echo '<div class="col-lg-12">';
-                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server!');
                 echo '</div>';
             }
 	    }
@@ -430,16 +430,16 @@
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('success','Process Delete Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('success','Process Delete Successfuly!');
                     echo '</div>';
                 } else {
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'}.'. This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'});
                     echo '</div>';
                 }
             } else {
                 echo '<div class="col-lg-12">';
-                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server!');
                 echo '</div>';
             }
 	    }
@@ -498,16 +498,16 @@
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('success','Process Update Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('success','Process Update Successfuly!');
                     echo '</div>';
                 } else {
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('danger','Process Update Failed!',$data->{'message'});
                     echo '</div>';
                 }
             } else {
                 echo '<div class="col-lg-12">';
-                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo self::getMessage('danger','Process Update Failed!','Can not connected to the server!');
                 echo '</div>';
             }
 	    }
@@ -524,16 +524,16 @@
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('success','Process Delete Successfuly!','This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('success','Process Delete Successfuly!');
                     echo '</div>';
                 } else {
                     echo '<div class="col-lg-12">';
-                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'}.' This page will automatically refresh at 2 seconds...');
+                    echo self::getMessage('danger','Process Delete Failed!',$data->{'message'});
                     echo '</div>';
                 }
             } else {
                 echo '<div class="col-lg-12">';
-                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server! This page will automatically refresh at 2 seconds...');
+                echo self::getMessage('danger','Process Delete Failed!','Can not connected to the server!');
                 echo '</div>';
             }
 	    }
