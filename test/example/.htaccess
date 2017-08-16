@@ -50,7 +50,7 @@ AddDefaultCharset UTF-8
 	FileETag none
 	
 	# 480 weeks
-	<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$">
+	<FilesMatch "\.(ico|flv|jpg|jpeg|png|gif|js|css|swf)$">
 		Header set Cache-Control "max-age=290304000, public"
 	</FilesMatch>
 	
@@ -59,6 +59,11 @@ AddDefaultCharset UTF-8
 		Header set Cache-Control "max-age=172800, public, must-revalidate"
 	</FilesMatch>
 	
+	# 12 HOURS
+	<FilesMatch "\.(pdf)$">
+		Header set Cache-Control "max-age=43200, public, must-revalidate"
+	</FilesMatch>
+
 	# 2 HOURS
 	<FilesMatch "\.(html|htm)$">
 		Header set Cache-Control "max-age=7200, must-revalidate"
