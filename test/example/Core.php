@@ -25,7 +25,7 @@
         var $apikey;
 
         // Set language
-        var $setlang = 'id';
+        var $setlang = 'en';
         var $datalang;
 
         var $version = '1.6.0';
@@ -34,16 +34,9 @@
         
         function __construct() {
             require 'config.php';
-            if ($this->setlang == 'en') {
-                $langs = glob('language/*.en.php');
-                foreach ($langs as $langname) {
-                    require $langname;
-                }
-            } else if ($this->setlang == 'id') {
-                $langs = glob('language/*.id.php');
-                foreach ($langs as $langname) {
-                    require $langname;
-                }
+            $langs = glob('language/*.'.$this->setlang.'.php');
+            foreach ($langs as $langname) {
+                require $langname;
             }
             $this->datalang = $lang;
             $this->title = $config['title'];
