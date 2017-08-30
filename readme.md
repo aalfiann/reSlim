@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.5.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.6.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
@@ -21,7 +21,8 @@ Reslim is already build with essentials of user management system in rest api wa
 8. Mailer for sending email or contact form
 9. User can manage their API Keys
 10. Pagination json response
-11. Etc.
+11. Support Multi Language
+12. Etc.
 
 System Requirements
 ---------------
