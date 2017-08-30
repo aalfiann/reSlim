@@ -1,7 +1,7 @@
             <div class="content">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-7 col-sm-3 col-md-offset-1 col-sm-offset-2">
+                        <div class="col-md-8 col-sm-8 col-md-offset-1 col-sm-offset-2">
                         <?php
                             if (isset($_POST['submitforgot']))
                             {
@@ -14,17 +14,17 @@
                             <form action="<?php $_SERVER['PHP_SELF']?>" method="post">
                                 <div class="card" data-background="color" data-color="blue">
                                     <div class="header">
-                                        <h3 class="title">Form Request Reset Password</h3>
+                                        <h3 class="title"><?php echo Core::lang('form_reset_password')?></h3>
                                         <hr>
                                     </div>
                                     <div class="content">
                                         <div class="form-group">
-                                            <label>Email</label>
-                                            <input name="email" type="email" placeholder="Please input Your Email" class="form-control border-input" maxlength="50" required>
+                                            <label><?php echo Core::lang('email_address')?></label>
+                                            <input name="email" type="email" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,3}$" placeholder="<?php echo Core::lang('input_email')?>" class="form-control border-input" maxlength="50" required>
                                         </div>
                                         <hr>
                                         <div class="form-group text-center">
-                                            <button name="submitforgot" type="submit" class="btn btn-fill btn-wd ">Reset Password</button>
+                                            <button name="submitforgot" type="submit" class="btn btn-fill btn-wd "><?php echo Core::lang('submit_reset_password')?></button>
                                         </div>
                                     </div>
                                 </div>

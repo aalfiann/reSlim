@@ -13,32 +13,32 @@
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==3) echo 'class="active"';?> >
                         <a href="modul-dashboard.php?m=3">
                             <i class="ti-panel"></i>
-                            <p>Dashboard</p>
+                            <p><?php echo Core::lang('dashboard')?></p>
                         </a>
                     </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==5) echo 'class="active"';?> >
                         <a href="modul-data-user.php?m=5&page=1&itemsperpage=10&search=">
                             <i class="ti-id-badge"></i>
-                            <p>Data User</p>
+                            <p><?php echo Core::lang('data')?> <?php echo Core::lang('user')?></p>
                         </a>
                     </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==6) echo 'class="active"';?> >
                         <a href="modul-explore.php?m=6&page=1&itemsperpage=12&search=">
                             <i class="ti-cloud-up"></i>
-                            <p>Explore</p>
+                            <p><?php echo Core::lang('explore')?></p>
                         </a>
                     </li>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
                         <a href="modul-data-api.php?m=7&page=1&itemsperpage=10&search=">
                             <i class="ti-lock"></i>
-                            <p>API Keys</p>
+                            <p><?php echo Core::lang('api_keys')?></p>
                         </a>
                     </li>
                 <?php } else {  // Member Menu ?>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
                         <a href="modul-data-api.php?m=7&page=1&itemsperpage=10&search=">
                             <i class="ti-lock"></i>
-                            <p>API Keys</p>
+                            <p><?php echo Core::lang('api_keys')?></p>
                         </a>
                     </li>
                 <?php } ?>
@@ -46,26 +46,26 @@
                     <li class="active">
                         <a href="<?php basename($_SERVER['REQUEST_URI'])?>">
                             <i class="ti-search"></i>
-                            <p>View Profile</p>
+                            <p><?php echo Core::lang('view_profile')?></p>
                         </a>
                     </li>
         <?php } else { ?>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==1) echo 'class="active"';?> >
                     <a href="modul-login.php?m=1">
                         <i class="ti-user"></i>
-                        <p>Login</p>
+                        <p><?php echo Core::lang('login')?></p>
                     </a>
                 </li>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==2) echo 'class="active"';?> >
                     <a href="modul-register.php?m=2">
                         <i class="ti-pencil-alt"></i>
-                        <p>Register</p>
+                        <p><?php echo Core::lang('register')?></p>
                     </a>
                 </li>
                 <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
                     <a href="modul-contact.php?m=7">
                         <i class="ti-email"></i>
-                        <p>Contact</p>
+                        <p><?php echo Core::lang('contact_us')?></p>
                     </a>
                 </li>
             <?php } ?>

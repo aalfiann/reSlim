@@ -4,7 +4,7 @@
                             echo '<li>
                                 <a href="modul-settings.php?m=8">
                                     <i class="ti-settings"></i>
-            						<p>Settings</p>
+            						<p>'.Core::lang('settings').'</p>
                                 </a>
                             </li>'; 
                             };?>
@@ -18,8 +18,8 @@
 									<b class="caret"></b>
                               </a>
                               <ul class="dropdown-menu">
-                                <li><a href="modul-user-profile.php?m=4">My Profile</a></li>
-                                <li><a href="logout.php">Logout</a></li>
+                                <li><a href="modul-user-profile.php?m=4">'.Core::lang('my_profile').'</a></li>
+                                <li><a href="logout.php">'.Core::lang('logout').'</a></li>
                               </ul>
                         </li>';
                         }?>

@@ -4,7 +4,7 @@
                     <div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title text-uppercase">Dashboard</h4>
+                                <h4 class="title text-uppercase"><?php echo Core::lang('dashboard')?></h4>
                                 <p class="category">Here is your dashboard</p>
                             </div>
                         </div>

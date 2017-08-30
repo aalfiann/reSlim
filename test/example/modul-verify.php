@@ -1,8 +1,8 @@
 <?php spl_autoload_register(function ($classname) {require ( $classname . ".php");});?>
 <!doctype html>
-<html lang="id">
+<html lang="<?php echo Core::getInstance()->setlang?>">
 <head>
-    <title>Verify New Password - <?php echo Core::getInstance()->title?></title>
+    <title><?php echo Core::lang('verify_password')?> - <?php echo Core::getInstance()->title?></title>
 	<?php include 'global-meta.php';?>
 </head>
 <body>
@@ -22,7 +22,7 @@
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Verify New Password</a>
+                    <a class="navbar-brand" href="#"><?php echo Core::lang('verify_password')?></a>
                 </div>
                 <div class="collapse navbar-collapse">
                 </div>

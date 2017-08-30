@@ -5,7 +5,6 @@
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
     <meta name="format-detection" content="telephone=no"/>
-    <meta name="google-site-verification" content="am5QHf1-NQtCgGoKxDHYaZ3owv-TIk95FLlY4npQrIE" />
 
     <!-- Bootstrap core CSS     -->
     <link href="assets/css/main.min.css" rel="stylesheet" />

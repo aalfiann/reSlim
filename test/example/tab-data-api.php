@@ -10,7 +10,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                     <form method="get" action="<?php $_SERVER['PHP_SELF'].'?search='.filter_var($search,FILTER_SANITIZE_STRING)?>">
                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
                             <div class="form-group">
-                                <input name="search" type="text" placeholder="Search here..." class="form-control border-input" value="<?php echo $search?>">
+                                <input name="search" type="text" placeholder="<?php echo Core::lang('search')?>" class="form-control border-input" value="<?php echo $search?>">
                             </div>
                             <div class="form-group hidden">
                                 <input name="m" type="text" class="form-control border-input" value="7" hidden>
@@ -20,7 +20,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-1 col-xs-2">
                             <div class="form-group">
-                                <button name="submitsearch" type="submit" class="btn btn-fill btn-wd ">Search</button>
+                                <button name="submitsearch" type="submit" class="btn btn-fill btn-wd "><?php echo Core::lang('search')?></button>
                             </div>
                         </div>
                     </form>
@@ -45,22 +45,22 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Add new API Keys</h4>
+                                <h4 class="modal-title" id="myModalLabel"><?php echo Core::lang('add')?> <?php echo Core::lang('api_keys')?></h4>
                               </div>
                               <form method="post" action="<?php $_SERVER['PHP_SELF']?>">
                               <div class="modal-body">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Domain</label>
-                                            <input name="domain" type="text" placeholder="Input your domain here..." class="form-control border-input" required>
+                                            <label><?php echo Core::lang('domain')?></label>
+                                            <input name="domain" type="text" placeholder="<?php echo Core::lang('input_domain')?>" class="form-control border-input" required>
                                         </div>
                                     </div>
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="submit" name="submitnewapi" class="btn btn-primary">Submit</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Core::lang('cancel')?></button>
+                                <button type="submit" name="submitnewapi" class="btn btn-primary"><?php echo Core::lang('submit')?></button>
                               </div>
                               </form>
                             </div>
@@ -70,7 +70,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                     <div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <button type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal">Add new API Keys</button>
+                                <button type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><?php echo Core::lang('add')?> <?php echo Core::lang('api_keys')?></button>
                             </div>
                         </div>
                     </div>
@@ -108,37 +108,37 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                 echo '<div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title text-uppercase">Data API Keys</h4>
-                                <p class="category">Message: '.$data->{'message'}.'<br>
-                                Shows no: '.$data->metadata->{'number_item_first'}.' - '.$data->metadata->{'number_item_last'}.' from total data: '.$data->metadata->{'records_total'}.'</p>
+                                <h4 class="title text-uppercase">'.Core::lang('data').' '.Core::lang('api_keys').'</h4>
+                                <p class="category">'.Core::lang('message').': '.$data->{'message'}.'<br>
+                                '.Core::lang('shows_no').' '.$data->metadata->{'number_item_first'}.' - '.$data->metadata->{'number_item_last'}.' '.Core::lang('from_total_data').' '.$data->metadata->{'records_total'}.'</p>
                                     <div class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-		    				    			<p><i class="ti-zip"></i> Export Data <b class="caret"></b></p>
+		    				    			<p><i class="ti-zip"></i> '.Core::lang('export').' '.Core::lang('data').' <b class="caret"></b></p>
                                         </a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'excel\',escape:\'false\'});">Export XLS</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'doc\',escape:\'false\'});">Export DOC</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'txt\',escape:\'false\'});">Export TXT</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'csv\',escape:\'false\'});">Export CSV</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'pdf\',pdfFontSize:\'7\',escape:\'false\'});">Export PDF</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'sql\'});">Export SQL</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'xml\',escape:\'false\'});">Export XML</a></li>
-                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'json\',escape:\'false\'});">Export JSON</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'excel\',escape:\'false\'});">'.Core::lang('export').' XLS</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'doc\',escape:\'false\'});">'.Core::lang('export').' DOC</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'txt\',escape:\'false\'});">'.Core::lang('export').' TXT</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'csv\',escape:\'false\'});">'.Core::lang('export').' CSV</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'pdf\',pdfFontSize:\'7\',escape:\'false\'});">'.Core::lang('export').' PDF</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'sql\'});">'.Core::lang('export').' SQL</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'xml\',escape:\'false\'});">'.Core::lang('export').' XML</a></li>
+                                            <li><a href="#" onClick ="$(\'#export\').tableExport({type:\'json\',escape:\'false\'});">'.Core::lang('export').' JSON</a></li>
                                         </ul>
                                     </div>
                             </div>
                             <div class="content table-responsive table-full-width">
                                 <table id="export" class="table table-striped">
                                     <thead>
-                                        <th>No</th>
-                                    	<th>Domain</th>
-                                    	<th>API Key</th>
-                                    	<th>Status</th>
-                                        <th>Username</th>
-                                        <th>Created</th>
-                                        <th>Updated at</th>
-                                        <th>Updated by</th>
-                                        <th>Manage</th>
+                                        <th>'.Core::lang('tb_no').'</th>
+                                    	<th>'.Core::lang('domain').'</th>
+                                    	<th>'.Core::lang('api_key').'</th>
+                                    	<th>'.Core::lang('status').'</th>
+                                        <th>'.Core::lang('tb_username').'</th>
+                                        <th>'.Core::lang('tb_created_at').'</th>
+                                        <th>'.Core::lang('tb_updated_at').'</th>
+                                        <th>'.Core::lang('tb_updated_by').'</th>
+                                        <th>'.Core::lang('manage').'</th>
                                     </thead>
                                     <tbody>';
                 $n=$data->metadata->{'number_item_first'};
@@ -153,7 +153,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                 	echo '<td>' . $value->{'Created_at'} .'</td>';
             	    echo '<td>' . $value->{'Updated_at'} .'</td>';
                     echo '<td>' . $value->{'Updated_by'} .'</td>';
-                    echo '<td><a href="#" data-toggle="modal" data-target="#'.$value->{'ApiKey'}.'"><i class="ti-pencil"></i> Edit</a></td>';
+                    echo '<td><a href="#" data-toggle="modal" data-target="#'.$value->{'ApiKey'}.'"><i class="ti-pencil"></i> '.Core::lang('edit').'</a></td>';
 	    	    	echo '</tr>';              
                 }
                 echo '</tbody>
@@ -173,32 +173,32 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Add new API Keys</h4>
+                                <h4 class="modal-title" id="myModalLabel">'.Core::lang('update').' '.Core::lang('api_keys').'</h4>
                               </div>
                               <form method="post" action="'.$_SERVER['PHP_SELF'].'?m=7&page='.$page.'&itemsperpage='.$itemsperpage.'&search='.$search.'">
                               <div class="modal-body">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Created</label>
-                                            <input name="created" type="text" placeholder="Input your domain here..." class="form-control border-input" value="'.$value->{'Created_at'}.'" readonly>
+                                            <label>'.Core::lang('tb_created_at').'</label>
+                                            <input name="created" type="text" class="form-control border-input" value="'.$value->{'Created_at'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Domain</label>
-                                            <input name="domain" type="text" placeholder="Input your domain here..." class="form-control border-input" value="'.$value->{'Domain'}.'" readonly>
+                                            <label>'.Core::lang('domain').'</label>
+                                            <input name="domain" type="text" placeholder="'.Core::lang('input_domain').'" class="form-control border-input" value="'.$value->{'Domain'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>API Key</label>
-                                            <textarea name="apikey" rows="3" type="text" placeholder="Input your domain here..." class="form-control border-input" readonly>'.$value->{'ApiKey'}.'</textarea>
+                                            <label>'.Core::lang('api_key').'</label>
+                                            <textarea name="apikey" rows="3" type="text" placeholder="'.Core::lang('input_api_key').'" class="form-control border-input" readonly>'.$value->{'ApiKey'}.'</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Status</label>
+                                            <label>'.Core::lang('status').'</label>
                                             <select name="status" type="text" style=\'max-height:200px; overflow-y:scroll; overflow-x:hidden;\' class="form-control border-input">';
                                                 if (!empty($datastatus)) {
                                                             foreach ($datastatus->result as $name => $valuestatus) {
@@ -214,9 +214,9 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="submit" name="submitdeleteapi'.$value->{'ApiKey'}.'" class="btn btn-danger pull-left">Delete</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="submit" name="submitupdateapi'.$value->{'ApiKey'}.'" class="btn btn-primary">Update</button>
+                                <button type="submit" name="submitdeleteapi'.$value->{'ApiKey'}.'" class="btn btn-danger pull-left">'.Core::lang('delete').'</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">'.Core::lang('cancel').'</button>
+                                <button type="submit" name="submitupdateapi'.$value->{'ApiKey'}.'" class="btn btn-primary">'.Core::lang('update').'</button>
                               </div>
                               </form>
                             </div>
@@ -230,7 +230,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                 echo '<div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title">Message: '.$data->{'message'}.'</h4>
+                                <h4 class="title">'.Core::lang('message').': '.$data->{'message'}.'</h4>
                             </div>
                         </div>
                     </div>';

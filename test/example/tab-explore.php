@@ -10,7 +10,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                     <form method="get" action="<?php $_SERVER['PHP_SELF'].'?search='.filter_var($search,FILTER_SANITIZE_STRING)?>">
                         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12">
                             <div class="form-group">
-                                <input name="search" type="text" placeholder="Search here..." class="form-control border-input" value="<?php echo $search?>">
+                                <input name="search" type="text" placeholder="<?php echo Core::lang('input_search')?>" class="form-control border-input" value="<?php echo $search?>">
                             </div>
                             <div class="form-group hidden">
                                 <input name="m" type="text" class="form-control border-input" value="6" hidden>
@@ -20,7 +20,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-1 col-xs-2">
                             <div class="form-group">
-                                <button name="submitsearch" type="submit" class="btn btn-fill btn-wd ">Search</button>
+                                <button name="submitsearch" type="submit" class="btn btn-fill btn-wd "><?php echo Core::lang('search')?></button>
                             </div>
                         </div>
                     </form>
@@ -44,7 +44,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                     Core::uploadFile(Core::getInstance()->api.'/user/upload',$post_array);
                                 }
                             ?>
-                            <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> Upload files here...</button>
+                            <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> <?php echo Core::lang('upload_here')?></button>
                         </div>
                     </div>
                 </div><hr>
@@ -54,33 +54,33 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Upload file to server</h4>
+                                <h4 class="modal-title" id="myModalLabel"><?php echo Core::lang('upload_file')?></h4>
                               </div>
                               <form id="formUpload" method="post" action="<?php $_SERVER['PHP_SELF']?>" enctype="multipart/form-data">
                               <div class="modal-body">
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Title</label>
-                                            <input name="title" type="text" placeholder="Title of your file ..." class="form-control border-input" required>
+                                            <label><?php echo Core::lang('title')?></label>
+                                            <input name="title" type="text" placeholder="<?php echo Core::lang('input_title_file')?>" class="form-control border-input" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Alternate</label>
-                                            <input name="alternate" type="text" placeholder="Alternate of your file ..." class="form-control border-input">
+                                            <label><?php echo Core::lang('alternate')?></label>
+                                            <input name="alternate" type="text" placeholder="<?php echo Core::lang('input_alternate_file')?>" class="form-control border-input">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>External Link</label>
-                                            <input name="external" type="text" placeholder="External Link" class="form-control border-input">
+                                            <label><?php echo Core::lang('external_link')?></label>
+                                            <input name="external" type="text" placeholder="<?php echo Core::lang('input_external_link')?>" class="form-control border-input">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Browse File</label>
-                                            <input name="uploadfile" type="file" placeholder="Choose File" class="form-control border-input" required>
+                                            <label><?php echo Core::lang('browse_file')?></label>
+                                            <input name="uploadfile" type="file" placeholder="<?php echo Core::lang('input_choose_file')?>" class="form-control border-input" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -93,8 +93,8 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                                <button type="submit" name="submitupload" class="btn btn-primary">Upload Now</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo Core::lang('cancel')?></button>
+                                <button type="submit" name="submitupload" class="btn btn-primary"><?php echo Core::lang('upload_now')?></button>
                               </div>
                               </form>
                             </div>
@@ -163,7 +163,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                 <div class="footer">
                                     <hr />
                                     <div class="stats">
-                                        <i class="ti-user"></i> '.$value->{'Upload_by'}.' | '.$value->{'Filetype'}.' | <a href="#" data-toggle="modal" data-target="#'.$value->{'ItemID'}.'">show details</a>
+                                        <i class="ti-user"></i> '.$value->{'Upload_by'}.' | '.$value->{'Filetype'}.' | <a href="#" data-toggle="modal" data-target="#'.$value->{'ItemID'}.'">'.Core::lang('show_detail').'</a>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModalLabel">Detail File</h4>
+                                <h4 class="modal-title" id="myModalLabel">'.Core::lang('detail_file').'</h4>
                               </div>
                               <form method="post" action="'.$_SERVER['PHP_SELF'].'?m=6&page='.$page.'&itemsperpage='.$itemsperpage.'&search='.$search.'">
                               <div class="modal-body">
@@ -189,55 +189,55 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Item ID</label>
-                                            <input name="itemid" type="text" placeholder="Item ID of your file" class="form-control border-input" value="'.$value->{'ItemID'}.'" readonly>
+                                            <label>'.Core::lang('tb_item_id').'</label>
+                                            <input name="itemid" type="text" placeholder="'.Core::lang('input_item_id').'" class="form-control border-input" value="'.$value->{'ItemID'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Date Uploaded</label>
-                                            <input name="date" type="text" placeholder="Date uploaded" class="form-control border-input" value="'.$value->{'Date_Upload'}.'" readonly>
+                                            <label>'.Core::lang('tb_date_upload').'</label>
+                                            <input name="date" type="text" placeholder="'.Core::lang('input_date_upload').'" class="form-control border-input" value="'.$value->{'Date_Upload'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Uploaded By</label>
-                                            <input name="uploadedby" type="text" placeholder="Uploaded by" class="form-control border-input" value="'.$value->{'Upload_by'}.'" readonly>
+                                            <label>'.Core::lang('tb_upload_by').'</label>
+                                            <input name="uploadedby" type="text" placeholder="'.Core::lang('input_upload_by').'" class="form-control border-input" value="'.$value->{'Upload_by'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>File Type</label>
-                                            <input name="filetype" type="text" placeholder="Type of your file" class="form-control border-input" value="'.$value->{'Filetype'}.'" readonly>
+                                            <label>'.Core::lang('tb_file_type').'</label>
+                                            <input name="filetype" type="text" placeholder="'.Core::lang('input_file_type').'" class="form-control border-input" value="'.$value->{'Filetype'}.'" readonly>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Direct Link</label>
-                                            <textarea name="link" type="text" rows="3" placeholder="Direct Link of your file" class="form-control border-input" readonly>'.Core::getInstance()->api.'/'.$value->{'Filepath'}.'</textarea>
+                                            <label>'.Core::lang('tb_direct_link').'</label>
+                                            <textarea name="link" type="text" rows="3" placeholder="'.Core::lang('input_direct_link').'" class="form-control border-input" readonly>'.Core::getInstance()->api.'/'.$value->{'Filepath'}.'</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Title</label>
-                                            <input name="title" type="text" placeholder="Title of your file ..." class="form-control border-input" value="'.$value->{'Title'}.'" required>
+                                            <label>'.Core::lang('title').'</label>
+                                            <input name="title" type="text" placeholder="'.Core::lang('input_title_file').'" class="form-control border-input" value="'.$value->{'Title'}.'" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Alternate</label>
-                                            <input name="alternate" type="text" placeholder="Alternate of your file ..." class="form-control border-input" value="'.$value->{'Alternate'}.'">
+                                            <label>'.Core::lang('alternate').'</label>
+                                            <input name="alternate" type="text" placeholder="'.Core::lang('input_alternate_file').'" class="form-control border-input" value="'.$value->{'Alternate'}.'">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>External Link</label>
-                                            <input name="externallink" type="text" placeholder="External Link" class="form-control border-input" value="'.$value->{'External_link'}.'">
+                                            <label>'.Core::lang('external_link').'</label>
+                                            <input name="externallink" type="text" placeholder="'.Core::lang('input_external_link').'" class="form-control border-input" value="'.$value->{'External_link'}.'">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Status</label>
+                                            <label>'.Core::lang('status').'</label>
                                             <select name="status" type="text" style=\'max-height:200px; overflow-y:scroll; overflow-x:hidden;\' class="form-control border-input">';
                                                 if (!empty($datastatus)) {
                                                             foreach ($datastatus->result as $name => $valuestatus) {
@@ -255,12 +255,12 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                               </div>
                               <div class="modal-footer">';
                                 if ($value->{'Upload_by'} == $datalogin['username']){
-                                    echo '<button name="submitdelete'.$value->{'ItemID'}.'" type="submit" class="btn btn-danger pull-left">Delete</button>';
+                                    echo '<button name="submitdelete'.$value->{'ItemID'}.'" type="submit" class="btn btn-danger pull-left">'.Core::lang('delete').'</button>';
                                 }
 
-                                echo '<button type="button" class="btn btn-default text-right" data-dismiss="modal">Cancel</button>';
+                                echo '<button type="button" class="btn btn-default text-right" data-dismiss="modal">'.Core::lang('cancel').'</button>';
                                 if ($value->{'Upload_by'} == $datalogin['username']){
-                                    echo '<button name="submitupdate'.$value->{'ItemID'}.'" type="submit" class="btn btn-success text-right">Update</button>';
+                                    echo '<button name="submitupdate'.$value->{'ItemID'}.'" type="submit" class="btn btn-success text-right">'.Core::lang('update').'</button>';
                                 }
 
                                 echo '                                                            
@@ -291,7 +291,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                 echo '<div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title">Message: '.$data->{'message'}.'</h4>
+                                <h4 class="title">'.Core::lang('message').': '.$data->{'message'}.'</h4>
                             </div>
                         </div>
                     </div>';
@@ -300,7 +300,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
             echo '<div class="col-md-12">
                         <div class="card card-plain">
                             <div class="header">
-                                <h4 class="title">Message: '.$data->{'message'}.'</h4>
+                                <h4 class="title">'.Core::lang('message').': '.$data->{'message'}.'</h4>
                             </div>
                         </div>
                     </div>';
@@ -312,7 +312,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="form-group text-center">
-                            <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> Upload files here...</button>
+                            <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> <?php echo Core::lang('upload_here')?></button>
                         </div>
                     </div>
                 </div>
