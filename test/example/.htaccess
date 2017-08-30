@@ -3,13 +3,17 @@ AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
 	RewriteEngine On
 
-	# Port 80
-	#RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-	#RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+	# Force to non www
+	RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+	RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
 
 	# Force to 443 if use SSL
 	#RewriteCond %{SERVER_PORT} ^80$
 	#RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+
+	# Force to use SSL Flexible if using cloudflare
+	RewriteCond %{HTTP:CF-Visitor} '"scheme":"http"'
+	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L]
 	
 	# Handle not found
 	ErrorDocument 404 "<script>window.location.href='/404.php';</script>"
