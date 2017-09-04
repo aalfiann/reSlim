@@ -52,6 +52,15 @@ AddDefaultCharset UTF-8
 	Header append Vary User-Agent env=!dont-vary
 	Header unset ETag
 	FileETag none
+
+	# Unset Server Signature header
+	ServerSignature Off
+
+	# Unset Server Technology header
+	Header unset X-Powered-By
+
+	# Set XSS Protection header
+	Header set X-XSS-Protection "1; mode=block"
 	
 	# 480 weeks
 	<FilesMatch "\.(ico|flv|jpg|jpeg|png|gif|js|css|swf)$">
