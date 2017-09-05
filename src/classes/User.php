@@ -600,7 +600,7 @@ use PDO;
 								from user_api a
 								inner join core_status b on a.StatusID=b.StatusID
 								where a.Username=:username and a.Domain like :search
-								order by a.Created_at desc; LIMIT :limpage , :offpage;";
+								order by a.Created_at desc LIMIT :limpage , :offpage;";
 							$stmt2 = $this->db->prepare($sql);
 							$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
