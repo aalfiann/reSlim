@@ -38,7 +38,7 @@
             foreach ($langs as $langname) {
                 require $langname;
             }
-            $this->datalang = $lang;
+            $this->datalang = $lang;                // set language
             $this->title = $config['title'];
             $this->email = $config['email'];
             $this->basepath = $config['basepath'];
