@@ -34,7 +34,7 @@
         
         function __construct() {
             require 'config.php';
-            $langs = glob('language/*.'.$this->setlang.'.php');
+            $langs = glob(dirname(__FILE__) .'/language/*.'.$this->setlang.'.php');
             foreach ($langs as $langname) {
                 require $langname;
             }
