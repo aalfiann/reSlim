@@ -8,7 +8,7 @@
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="modul-settings.php">Settings</a></li>
+                                    <li><a href="modul-settings.php">'.Core::lang('settings').'</a></li>
                                     <li><a href="modul-error-log.php">Error Log</a></li>
                                 </ul>
                             </li>';
