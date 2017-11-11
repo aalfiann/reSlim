@@ -19,14 +19,12 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Password",
 							"value": "{password}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -46,56 +44,47 @@
 						{
 							"key": "Username",
 							"value": "your username (no space)",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Password",
 							"value": "your password",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Fullname",
 							"value": "your name",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Address",
 							"value": "your address here...",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Phone",
 							"value": "your phone",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Email",
 							"value": "your email",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Aboutme",
 							"value": "about you",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Avatar",
 							"value": "your url avatar",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Role",
 							"value": "2",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -115,14 +104,12 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -153,8 +140,7 @@
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -207,62 +193,52 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Fullname",
 							"value": "your name",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Address",
 							"value": "your address",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Phone",
 							"value": "your phone",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Email",
 							"value": "your email",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Aboutme",
 							"value": "about your",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Avatar",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Role",
 							"value": "2",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Status",
 							"value": "1",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -282,14 +258,12 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -309,26 +283,22 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Password",
 							"value": "{youroldpassword}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "NewPassword",
 							"value": "{yournewpassword}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -348,20 +318,17 @@
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "NewPassword",
 							"value": "{password}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -436,37 +403,31 @@
 						{
 							"key": "Title",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Alternate",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "External",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Datafile",
 							"type": "file",
-							"enabled": true,
 							"src": "join-tkd-express.jpg"
 						}
 					]
@@ -520,44 +481,37 @@
 						{
 							"key": "ItemID",
 							"value": "{itemid}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Title",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Alternate",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "External",
 							"value": "",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Status",
 							"value": "{49 or 50}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -577,20 +531,17 @@
 						{
 							"key": "ItemID",
 							"value": "{itemid}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{username}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -632,56 +583,47 @@
 						{
 							"key": "To",
 							"value": "{destination email address}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Subject",
 							"value": "{subject email}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Message",
 							"value": "{message of email}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Html",
 							"value": "{true or false}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "From",
 							"value": "{your email address}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "FromName",
 							"value": "{your name or website name}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "CC",
 							"value": "{you can leave this blank}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "BCC",
 							"value": "{you can leave this blank}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Attachment",
 							"value": "{you can leave this blank}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -701,8 +643,7 @@
 						{
 							"key": "Email",
 							"value": "{youremail}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -722,14 +663,12 @@
 						{
 							"key": "PassKey",
 							"value": "{yourpasskey}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "NewPassword",
 							"value": "{yournewpassword}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -749,20 +688,17 @@
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{yourusername}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Domain",
 							"value": "{yourdomain.com}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -782,26 +718,22 @@
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{yourusername}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "ApiKey",
 							"value": "{yourapikey}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Status",
 							"value": "{1 or 42}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -821,20 +753,17 @@
 						{
 							"key": "Token",
 							"value": "{yourtoken}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "Username",
 							"value": "{yourusername}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						},
 						{
 							"key": "ApiKey",
 							"value": "{yourapikey}",
-							"type": "text",
-							"enabled": true
+							"type": "text"
 						}
 					]
 				},
@@ -846,6 +775,50 @@
 			"name": "Search Data API Keys User",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/user/{username}/keys/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/clear/{username}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},

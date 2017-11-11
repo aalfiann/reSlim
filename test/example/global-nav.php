@@ -1,13 +1,18 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <?php if (Core::getRole($datalogin['token']) == 1) { // SuperUser Only
-                            echo '<li>
-                                <a href="modul-settings.php?m=8">
+                            echo '<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="ti-settings"></i>
-            						<p>'.Core::lang('settings').'</p>
+                                    <p>Tools</p>
+                                    <b class="caret"></b>
                                 </a>
-                            </li>'; 
-                            };?>
+                                <ul class="dropdown-menu">
+                                    <li><a href="modul-settings.php">Settings</a></li>
+                                    <li><a href="modul-error-log.php">Error Log</a></li>
+                                </ul>
+                            </li>';
+                        };?>
                         
                         <?php if (!empty($datalogin['username'])) {
                             echo '<li class="dropdown">
