@@ -40,6 +40,7 @@ Getting Started
 Folder System
 ---------------
 * database
+    * event_delete_all_expired_auth_scheduler.sql (An expired token will auto deletion in 7 Days after expired date)
     * reSlim.sql (Structure database in reSlim to work with default example)
 * src/
     * api/
@@ -51,6 +52,7 @@ Folder System
         * BaseConverter.php (For encryption)
         * Cors.php (For accessing web resources)
         * CustomHandlers.php (For handle message)
+        * Logs.php (For handle Log Server)
         * Mailer.php (For sending mail)
         * Pagination.php (For pagination json response)
         * Upload.php (For user upload and management file)
