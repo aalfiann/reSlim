@@ -4,12 +4,12 @@
                             echo '<li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <i class="ti-settings"></i>
-                                    <p>Tools</p>
+                                    <p>'.Core::lang('tools').'</p>
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="modul-settings.php">'.Core::lang('settings').'</a></li>
-                                    <li><a href="modul-error-log.php">Error Log</a></li>
+                                    <li><a href="modul-error-log.php">'.Core::lang('error_log').'</a></li>
                                 </ul>
                             </li>';
                         };?>

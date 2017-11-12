@@ -29,6 +29,11 @@ $lang = [
     'core_try_again' => 'Please try again later!',
     'core_settings_changed' => 'Settings hasbeen changed!',
     'core_auto_refresh' => 'This page will automatically refresh at 2 seconds...',
+    'core_clear_log_success' => 'Process Clear Log Successfuly!',
+    'core_clear_log_failed' => 'Process Clear Log Failed!',
+    'core_process_add' => 'Process Add',
+    'core_process_update' => 'Process Update',
+    'core_process_delete' => 'Process Delete',
     //login
     'login' => 'Login',
     'form_login' => 'Form Login',
@@ -65,8 +70,14 @@ $lang = [
     'detail_file' => 'Detail File',
     'upload_here' => 'Upload files here...',
     //settings
+    'tools' => 'Tools',
     'settings' => 'Settings',
     'no_have_api' => 'Doesn\'t have any API Keys? You can create at least one API Key at',
+    //error log
+    'error_log' => 'Error Log',
+    'error_log_title' => 'Error Log in API Server',
+    'error_log_description' => 'Here is your data log which is recorded from API Server',
+    'clear_log' => 'Clear Log',
     //general
     'home' => 'Home',
     'username' => 'Username',
@@ -123,6 +134,8 @@ $lang = [
     'logout' => 'Logout',
     'explore' => 'Explore',
     'here' => 'here',
+    'status_success' => 'Successfully!',
+    'status_failed' => 'Failed!',
     //general table
     'tb_no' => 'No',
     'tb_item_id' => 'Item ID',

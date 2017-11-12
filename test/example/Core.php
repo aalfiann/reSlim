@@ -549,6 +549,87 @@
                 echo self::getMessage('danger',self::lang('core_delete_failed'),self::lang('core_not_connected'));
                 echo '</div>';
             }
+        }
+        
+        /**
+		 * Process Create
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+         * @param $title = Name of the process itself
+		 * @return result json encoded data
+		 */
+	    public static function processCreate($url,$post_array,$title){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success',self::lang('core_process_add').' '.$title.' '.self::lang('status_success'));
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger',self::lang('core_process_add').' '.$title.' '.self::lang('status_failed'),$data->{'message'});    
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger',self::lang('core_process_add').' '.$title.' '.self::lang('status_failed'),self::lang('core_not_connected'));
+                echo '</div>';
+            }
+	    }
+
+        /**
+		 * Process Update
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+         * @param $title = Name of the process itself
+		 * @return result json encoded data
+		 */
+	    public static function processUpdate($url,$post_array,$title){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success',self::lang('core_process_update').' '.$title.' '.self::lang('status_success'));
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger',self::lang('core_process_update').' '.$title.' '.self::lang('status_failed'),$data->{'message'});
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger',self::lang('core_process_update').' '.$title.' '.self::lang('status_failed'),self::lang('core_not_connected'));
+                echo '</div>';
+            }
+	    }
+
+        /**
+		 * Process Delete
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+         * @param $title = Name of the process itself
+		 * @return result json encoded data
+		 */
+	    public static function processDelete($url,$post_array,$title){
+            $data = json_decode(self::execPostRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('success',self::lang('core_process_delete').' '.$title.' '.self::lang('status_success'));
+                    echo '</div>';
+                } else {
+                    echo '<div class="col-lg-12">';
+                    echo self::getMessage('danger',self::lang('core_process_delete').' '.$title.' '.self::lang('status_failed'),$data->{'message'});
+                    echo '</div>';
+                }
+            } else {
+                echo '<div class="col-lg-12">';
+                echo self::getMessage('danger',self::lang('core_process_delete').' '.$title.' '.self::lang('status_failed'),self::lang('core_not_connected'));
+                echo '</div>';
+            }
 	    }
 
         /**

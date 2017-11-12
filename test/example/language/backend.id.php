@@ -29,6 +29,11 @@ $lang = [
     'core_try_again' => 'Silahkan coba lagi nanti!',
     'core_settings_changed' => 'Pengaturan telah berubah!',
     'core_auto_refresh' => 'Halaman ini akan disegarkan secara otomatis dalam 2 detik...',
+    'core_clear_log_success' => 'Proses Hapus Log Berhasil!',
+    'core_clear_log_failed' => 'Proses Hapus Log Gagal!',
+    'core_process_add' => 'Proses Menambahkan',
+    'core_process_update' => 'Proses Pembaharuan',
+    'core_process_delete' => 'Proses Hapus',
     //login
     'login' => 'Masuk',
     'form_login' => 'Form Masuk',
@@ -65,8 +70,14 @@ $lang = [
     'detail_file' => 'Detil File',
     'upload_here' => 'Unggah file disini...',
     //settings
+    'tools' => 'Perkakas',
     'settings' => 'Pengaturan',
     'no_have_api' => 'Tidak punya API Keys? Anda dapat membuatnya',
+    //error log
+    'error_log' => 'Error Log',
+    'error_log_title' => 'Error Log di API Server',
+    'error_log_description' => 'Ini adalah data log yang terekam di API Server Anda',
+    'clear_log' => 'Hapus Log',
     //general
     'home' => 'Beranda',
     'username' => 'Nama Pengguna (Username)',
@@ -123,6 +134,8 @@ $lang = [
     'logout' => 'Keluar',
     'explore' => 'Jelajah',
     'here' => 'disini',
+    'status_success' => 'Berhasil!',
+    'status_failed' => 'Gagal!',
     //general table
     'tb_no' => 'No',
     'tb_item_id' => 'Item ID',

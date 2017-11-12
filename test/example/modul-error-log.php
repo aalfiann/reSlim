@@ -1,8 +1,8 @@
 <?php spl_autoload_register(function ($classname) {require ( $classname . ".php");});$datalogin = Core::checkSessions();?>
 <!doctype html>
-<html lang="en">
+<html lang="<?php echo Core::getInstance()->setlang?>">
 <head>
-    <title>Error Log - <?php echo Core::getInstance()->title?></title>
+    <title><?php echo Core::lang('error_log')?> - <?php echo Core::getInstance()->title?></title>
     <?php include 'global-meta.php';?>
     <!-- Edit_area -->
 	<script language="javascript" type="text/javascript" src="assets/js/edit_area/edit_area_full.js"></script>
@@ -14,7 +14,7 @@
     	allow_toggle: true,
         word_wrap: false,
         show_line_colors: true,
-	    language: "en",
+	    language: "<?php echo Core::getInstance()->setlang?>",
     	syntax: "html"
     });
  	</script>
@@ -36,7 +36,7 @@
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Error Log</a>
+                    <a class="navbar-brand" href="#"><?php echo Core::lang('error_log')?></a>
                 </div>
                 <?php include 'global-nav.php';?>
             </div>

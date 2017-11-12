@@ -9,36 +9,38 @@
                         if (!empty($data)){
                             if ($data->{'status'} == "success"){
                                 echo '<div class="col-lg-12">';
-                                echo Core::getMessage('success','Process Clear Log Successfuly!');
+                                echo Core::getMessage('success',Core::lang('core_clear_log_success'));
                                 echo '</div>';
                             } else {
                                 echo '<div class="col-lg-12">';
-                                echo Core::getMessage('danger','Process Clear Log Failed!',$data->{'message'});
+                                echo Core::getMessage('danger',Core::lang('core_clear_log_failed'),$data->{'message'});
                                 echo '</div>';
                             }
                         } else {
                             echo '<div class="col-lg-12">';
-                            echo Core::getMessage('danger','Process Clear Log Failed!','Can not connected to the server!');
+                            echo Core::getMessage('danger',Core::lang('core_clear_log_failed'),Core::lang('core_not_connected'));
                             echo '</div>';
                         }
                     } 
                 ?>
                 <div class="header">
-                    <h4 class="title text-uppercase">Error Log in API Server</h4>
-                    <p class="category">Here is your data log which is recorded from API Server</p>
+                    <h4 class="title text-uppercase"><?php echo Core::lang('error_log_title')?></h4>
+                    <p class="category"><?php echo Core::lang('error_log_description')?></p>
                 </div>
                 <div class="content">
                     <form method="post" action="<?php $_SERVER['PHP_SELF']?>">
                         <div class="form-group">
                             <?php 
-                                $api = Core::getInstance()->api;
-                                $url = parse_url($api, PHP_URL_SCHEME).'://'.parse_url($api, PHP_URL_HOST).'/logs/app.log';
+                                $urlarray = explode("/",Core::getInstance()->api);
+                                array_pop($urlarray);
+                                $urlhost = implode('/', $urlarray);
+                                $url = $urlhost.'/logs/app.log';
                                 echo '<textarea id="textarea_1" name="content" class="form-control" rows="20" >'.Core::execGetRequest($url).'</textarea>';
                             ?>
                         </div>
                         <hr>
                         <div class="form-group text-center">
-                            <button name="clearlog" type="submit" class="btn btn-fill btn-wd ">Clear Log</button>
+                            <button name="clearlog" type="submit" class="btn btn-fill btn-wd "><?php echo Core::lang('clear_log')?></button>
                         </div>
                     </form>
                 </div>
