@@ -31,11 +31,13 @@
                     <form method="post" action="<?php $_SERVER['PHP_SELF']?>">
                         <div class="form-group">
                             <?php 
-                                $urlarray = explode("/",Core::getInstance()->api);
-                                array_pop($urlarray);
-                                $urlhost = implode('/', $urlarray);
-                                $url = $urlhost.'/logs/app.log';
-                                echo '<textarea id="textarea_1" name="content" class="form-control" rows="20" >'.Core::execGetRequest($url).'</textarea>';
+                                if (!empty(Core::getInstance()->api)){
+                                    $urlarray = explode("/",Core::getInstance()->api);
+                                    array_pop($urlarray);
+                                    $urlhost = implode('/', $urlarray);
+                                    $url = $urlhost.'/logs/app.log';
+                                }
+                                echo '<textarea id="textarea_1" name="content" class="form-control" rows="20" >'.(!empty($url)?Core::execGetRequest($url):'').'</textarea>';
                             ?>
                         </div>
                         <hr>
