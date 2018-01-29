@@ -278,12 +278,12 @@
             if (!empty($data)){
                 if ($data->{'status'} == "success"){
                     if ($post_array['Rememberme'] == "on"){
-						session_start();
+						setcookie('username', $post_array['Username'], time() + (3600 * 168), "/", NULL); // expired = 7 days
+				  		setcookie('token', $data->{'token'}, time() + (3600 * 168), "/", NULL); // expired = 7 days
+					} else {
+                        session_start();
                         $_SESSION['username'] = $post_array['Username'];
 						$_SESSION['token'] = $data->{'token'};
-					} else {
-						setcookie('username', $post_array['Username'], time() + (3600 * 168), "/", NULL); // expired = 7 days
-				  		setcookie('token', $data->{'token'}, time() + (3600 * 168), "/", NULL); // expired = 7 hari
 					}
 					header("Location: ".self::getInstance()->basepath."/index.php");
                 } else {
