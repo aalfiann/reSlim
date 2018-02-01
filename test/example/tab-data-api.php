@@ -175,7 +175,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'10':$_GET['itemsperpag
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                 <h4 class="modal-title" id="myModalLabel">'.Core::lang('update').' '.Core::lang('api_keys').'</h4>
                               </div>
-                              <form method="post" action="'.$_SERVER['PHP_SELF'].'?m=7&page='.$page.'&itemsperpage='.$itemsperpage.'&search='.$search.'">
+                              <form method="post" action="'.$_SERVER['PHP_SELF'].'?m=7&page='.$page.'&itemsperpage='.$itemsperpage.'&search='.rawurlencode($search).'">
                               <div class="modal-body">
                                 <div class="row">
                                     <div class="col-lg-12">
