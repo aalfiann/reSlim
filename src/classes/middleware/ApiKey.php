@@ -47,19 +47,34 @@ use PDO;
                         $body = $response->getBody();
                         $body->write(json_encode([
 	    	        	    'status' => 'error',
-		    	   	    	'code' => 'RS406',
+                            'code' => 'RS406',
 			        	    'message' => CustomHandlers::getreSlimMessage('RS406')
     				    ], JSON_PRETTY_PRINT));
                         return Cors::modify($response,$body,401);
                     }
                 } else {
-                    $body = $response->getBody();
-                    $body->write(json_encode([
-		        	    'status' => 'error',
-			   	    	'code' => 'RS407',
-			    	    'message' => CustomHandlers::getreSlimMessage('RS407')
-    				], JSON_PRETTY_PRINT));
-                    return Cors::modify($response,$body,400);
+                    if ($request->hasHeader('Authorization')){
+                        if (Auth::validAPIKey($this->pdo,$request->getHeaderLine('Authorization'))){
+                            $response = $next($request, $response);    
+                            return $response;
+                        } else {
+                            $body = $response->getBody();
+                            $body->write(json_encode([
+                                'status' => 'error',
+                                'code' => 'RS406',
+                                'message' => CustomHandlers::getreSlimMessage('RS406')
+                            ], JSON_PRETTY_PRINT));
+                            return Cors::modify($response,$body,401);
+                        }
+                    } else {
+                        $body = $response->getBody();
+                        $body->write(json_encode([
+		        	        'status' => 'error',
+    			   	    	'code' => 'RS407',
+	    		    	    'message' => CustomHandlers::getreSlimMessage('RS407')
+    	    			], JSON_PRETTY_PRINT));
+                        return Cors::modify($response,$body,400);
+                    }
                 }
             } else {
                 $response = $next($request, $response);    

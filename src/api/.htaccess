@@ -3,9 +3,14 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule . index.php [L]
+	SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 </IfModule>
 
 <IfModule mod_headers.c>
+	# Example to add cors for multiple domain
+	#SetEnvIf Origin "http(s)?://(www\.)?(google.com|staging.google.com|development.google.com|yourdomain.com|server.yourdomain.com|otherdomain1.com|otherdomain2.com)$" AccessControlAllowOrigin=$0
+    #Header add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
+
 	# Unset Server Signature header
 	ServerSignature Off
 
@@ -14,4 +19,7 @@
 
 	# Set XSS Protection header
 	Header set X-XSS-Protection "1; mode=block"
+
+	# Set content-sniffing protection
+	Header set X-Content-Type-Options nosniff
 </IfModule>
