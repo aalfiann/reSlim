@@ -65,7 +65,7 @@
 			echo '/* include summernote css/js */
 				$("head").append(\'<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js"><\/script><link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">\');
 				$(document).ready(function() {$("#summernote").summernote({
-					placeholder: "Write the content page here...",
+					placeholder: "'.Core::lang('input_content_page').'",
 					tabsize: 2,
 					height: 100
 				  });
