@@ -177,7 +177,7 @@ use \classes\BaseConverter as BaseConverter;
 		    $sql = "SELECT a.Username
 			    FROM user_auth a 
                 INNER JOIN user_data b ON a.Username = b.Username
-    			WHERE b.StatusID = '1' AND a.RS_Token = BINARY :token AND a.Expired > current_timestamp;";
+    			WHERE b.StatusID = '1' AND a.RS_Token = BINARY :token AND a.Expired > current_timestamp LIMIT 1;";
 	    	$stmt = $db->prepare($sql);
 		    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
     		if ($stmt->execute()) {	
@@ -289,7 +289,7 @@ use \classes\BaseConverter as BaseConverter;
 			$sql = "SELECT b.RoleID
 				FROM user_auth a 
 				INNER JOIN user_data b ON a.Username = b.Username
-				WHERE a.RS_Token = BINARY :token;";
+				WHERE a.RS_Token = BINARY :token LIMIT 1;";
 			$stmt = $db->prepare($sql);
 			$stmt->bindParam(':token', $token, PDO::PARAM_STR);
 			if ($stmt->execute()){
@@ -369,7 +369,7 @@ use \classes\BaseConverter as BaseConverter;
 		    $sql = "SELECT a.Domain
 			    FROM user_api a 
                 INNER JOIN user_data b ON a.Username = b.Username
-    			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = BINARY :apikey;";
+    			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = BINARY :apikey LIMIT 1;";
 	    	$stmt = $db->prepare($sql);
 		    $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
     		if ($stmt->execute()) {	
