@@ -701,13 +701,27 @@
         }
 
         /**
+		 * Redirect Page Location use javascript
+         *
+         * @param $url = The url to redirect
+         * @param $timeout = The page will be redirected when time is out. Default is 2 seconds. 
+         * @return redirect page
+		 */
+        public static function redirectPage($url,$timeout=2)
+        {
+            $timeout = $timeout * 1000;
+            return '<script>setTimeout(function() {window.location.href="'.$url.'"}, '.$timeout.')</script>';
+        }
+
+        /**
 		 * Reload Page
          *
-         * @param $timeout = The page will be redirected when time is out. Default is 2000 miliseconds. 
+         * @param $timeout = The page will be redirected when time is out. Default is 2 seconds. 
          * @return reload self page
 		 */
-        public static function reloadPage($timeout=2000)
+        public static function reloadPage($timeout=2)
         {
+            $timeout = $timeout * 1000;
             return '<script>setTimeout(function() {window.location.href=window.location.href}, '.$timeout.')</script>';
         }
 

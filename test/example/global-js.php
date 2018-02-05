@@ -78,6 +78,18 @@
 					//submit_btn.val("Upload").prop( "disabled", false); //enable submit button once ajax is done
 				});
 			});
+			<?php if (pathinfo(basename($_SERVER['REQUEST_URI']), PATHINFO_FILENAME) == "modul-page-write"){
+				echo '/* include summernote css/js */
+					getScript("https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.js",function(){
+						$("head").append(\'<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.9/summernote.css" rel="stylesheet">\');
+						$(document).ready(function() {$("#summernote").summernote({
+							placeholder: "'.Core::lang('input_content_page').'",
+							tabsize: 2,
+							height: 100
+						  });});
+					});';
+				}
+			?>
 		});
 	});	
 })();

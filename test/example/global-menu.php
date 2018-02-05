@@ -34,6 +34,12 @@
                             <p><?php echo Core::lang('api_keys')?></p>
                         </a>
                     </li>
+                    <li <?php if (!empty($_GET['m'])) if($_GET['m']==8) echo 'class="active"';?> >
+                        <a href="modul-data-page.php?m=8&page=1&itemsperpage=10&search=">
+                            <i class="ti-write"></i>
+                            <p><?php echo Core::lang('data_page')?></p>
+                        </a>
+                    </li>
                 <?php } else {  // Member Menu ?>
                     <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
                         <a href="modul-data-api.php?m=7&page=1&itemsperpage=10&search=">
@@ -62,8 +68,8 @@
                         <p><?php echo Core::lang('register')?></p>
                     </a>
                 </li>
-                <li <?php if (!empty($_GET['m'])) if($_GET['m']==7) echo 'class="active"';?> >
-                    <a href="modul-contact.php?m=7">
+                <li <?php if (!empty($_GET['m'])) if($_GET['m']==4) echo 'class="active"';?> >
+                    <a href="modul-contact.php?m=4">
                         <i class="ti-email"></i>
                         <p><?php echo Core::lang('contact_us')?></p>
                     </a>

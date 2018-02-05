@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.11
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2017 at 01:38 PM
--- Server version: 5.6.21
--- PHP Version: 5.6.3
+-- Generation Time: Feb 05, 2018 at 11:03 AM
+-- Server version: 10.1.13-MariaDB
+-- PHP Version: 5.6.21
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 
 -- --------------------------------------------------------
@@ -23,10 +23,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `core_status`
 --
 
-CREATE TABLE IF NOT EXISTS `core_status` (
-`StatusID` int(11) NOT NULL,
+CREATE TABLE `core_status` (
+  `StatusID` int(11) NOT NULL,
   `Status` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `core_status`
@@ -89,10 +89,32 @@ INSERT INTO `core_status` (`StatusID`, `Status`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `data_page`
+--
+
+CREATE TABLE `data_page` (
+  `PageID` int(11) NOT NULL,
+  `Title` varchar(255) NOT NULL,
+  `Image` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
+  `Content` text NOT NULL,
+  `Tags` varchar(500) DEFAULT NULL,
+  `Viewer` int(11) NOT NULL,
+  `StatusID` int(11) NOT NULL,
+  `Username` varchar(50) NOT NULL,
+  `Created_at` datetime NOT NULL,
+  `Updated_at` datetime DEFAULT NULL,
+  `Updated_by` varchar(50) DEFAULT NULL,
+  `Last_updated` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_api`
 --
 
-CREATE TABLE IF NOT EXISTS `user_api` (
+CREATE TABLE `user_api` (
   `Domain` varchar(50) NOT NULL,
   `ApiKey` varchar(255) NOT NULL,
   `StatusID` int(11) NOT NULL,
@@ -108,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `user_api` (
 -- Table structure for table `user_auth`
 --
 
-CREATE TABLE IF NOT EXISTS `user_auth` (
+CREATE TABLE `user_auth` (
   `Username` varchar(50) NOT NULL,
   `RS_Token` varchar(255) NOT NULL,
   `Created` datetime NOT NULL,
@@ -121,8 +143,8 @@ CREATE TABLE IF NOT EXISTS `user_auth` (
 -- Table structure for table `user_data`
 --
 
-CREATE TABLE IF NOT EXISTS `user_data` (
-`UserID` int(11) NOT NULL,
+CREATE TABLE `user_data` (
+  `UserID` int(11) NOT NULL,
   `Username` varchar(50) NOT NULL,
   `Password` varchar(255) DEFAULT NULL,
   `Fullname` varchar(50) DEFAULT NULL,
@@ -135,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `user_data` (
   `StatusID` int(11) NOT NULL,
   `Created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Updated_at` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_data`
@@ -150,11 +172,11 @@ INSERT INTO `user_data` (`UserID`, `Username`, `Password`, `Fullname`, `Address`
 -- Table structure for table `user_forgot`
 --
 
-CREATE TABLE IF NOT EXISTS `user_forgot` (
+CREATE TABLE `user_forgot` (
   `Email` varchar(50) NOT NULL,
   `Verifylink` varchar(255) NOT NULL,
-  `Created` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
-  `Expired` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP
+  `Created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `Expired` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -163,10 +185,10 @@ CREATE TABLE IF NOT EXISTS `user_forgot` (
 -- Table structure for table `user_role`
 --
 
-CREATE TABLE IF NOT EXISTS `user_role` (
-`RoleID` int(11) NOT NULL,
+CREATE TABLE `user_role` (
+  `RoleID` int(11) NOT NULL,
   `Role` varchar(255) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_role`
@@ -183,8 +205,8 @@ INSERT INTO `user_role` (`RoleID`, `Role`) VALUES
 -- Table structure for table `user_upload`
 --
 
-CREATE TABLE IF NOT EXISTS `user_upload` (
-`ItemID` int(11) NOT NULL,
+CREATE TABLE `user_upload` (
+  `ItemID` int(11) NOT NULL,
   `Date_Upload` datetime NOT NULL,
   `Title` varchar(255) DEFAULT NULL,
   `Alternate` varchar(255) DEFAULT NULL,
@@ -207,43 +229,76 @@ CREATE TABLE IF NOT EXISTS `user_upload` (
 -- Indexes for table `core_status`
 --
 ALTER TABLE `core_status`
- ADD PRIMARY KEY (`StatusID`), ADD KEY `StatusID` (`StatusID`) USING BTREE;
+  ADD PRIMARY KEY (`StatusID`),
+  ADD KEY `StatusID` (`StatusID`) USING BTREE;
+
+--
+-- Indexes for table `data_page`
+--
+ALTER TABLE `data_page`
+  ADD PRIMARY KEY (`PageID`),
+  ADD KEY `PageID` (`PageID`),
+  ADD KEY `Title` (`Title`),
+  ADD KEY `Tags` (`Tags`),
+  ADD KEY `StatusID` (`StatusID`),
+  ADD KEY `Username` (`Username`),
+  ADD KEY `Created_at` (`Created_at`);
 
 --
 -- Indexes for table `user_api`
 --
 ALTER TABLE `user_api`
- ADD PRIMARY KEY (`Domain`), ADD KEY `Domain` (`Domain`), ADD KEY `StatusID` (`StatusID`), ADD KEY `Username` (`Username`), ADD KEY `ApiKey` (`ApiKey`);
+  ADD PRIMARY KEY (`Domain`),
+  ADD KEY `Domain` (`Domain`),
+  ADD KEY `StatusID` (`StatusID`),
+  ADD KEY `Username` (`Username`),
+  ADD KEY `ApiKey` (`ApiKey`);
 
 --
 -- Indexes for table `user_auth`
 --
 ALTER TABLE `user_auth`
- ADD PRIMARY KEY (`Username`,`RS_Token`), ADD KEY `token` (`Username`,`RS_Token`,`Expired`) USING BTREE;
+  ADD PRIMARY KEY (`Username`,`RS_Token`),
+  ADD KEY `token` (`Username`,`RS_Token`,`Expired`) USING BTREE;
 
 --
 -- Indexes for table `user_data`
 --
 ALTER TABLE `user_data`
- ADD PRIMARY KEY (`UserID`,`Username`), ADD KEY `user_data_ibfk_1` (`StatusID`), ADD KEY `user_data_ibfk_2` (`RoleID`), ADD KEY `Username` (`Username`), ADD KEY `Fullname` (`Fullname`) USING BTREE, ADD KEY `Password` (`Password`), ADD KEY `Email` (`Email`);
+  ADD PRIMARY KEY (`UserID`,`Username`),
+  ADD KEY `user_data_ibfk_1` (`StatusID`),
+  ADD KEY `user_data_ibfk_2` (`RoleID`),
+  ADD KEY `Username` (`Username`),
+  ADD KEY `Fullname` (`Fullname`) USING BTREE,
+  ADD KEY `Password` (`Password`),
+  ADD KEY `Email` (`Email`);
 
 --
 -- Indexes for table `user_forgot`
 --
 ALTER TABLE `user_forgot`
- ADD PRIMARY KEY (`Email`,`Verifylink`), ADD KEY `Email` (`Email`), ADD KEY `Verifylink` (`Verifylink`);
+  ADD PRIMARY KEY (`Email`,`Verifylink`),
+  ADD KEY `Email` (`Email`),
+  ADD KEY `Verifylink` (`Verifylink`);
 
 --
 -- Indexes for table `user_role`
 --
 ALTER TABLE `user_role`
- ADD PRIMARY KEY (`RoleID`), ADD KEY `ID` (`RoleID`);
+  ADD PRIMARY KEY (`RoleID`),
+  ADD KEY `ID` (`RoleID`);
 
 --
 -- Indexes for table `user_upload`
 --
 ALTER TABLE `user_upload`
- ADD PRIMARY KEY (`ItemID`), ADD KEY `ItemID` (`ItemID`), ADD KEY `Date_Upload` (`Date_Upload`), ADD KEY `Filename` (`Filename`), ADD KEY `Filetype` (`Filetype`), ADD KEY `Username` (`Username`) USING BTREE, ADD KEY `StatusID` (`StatusID`) USING BTREE;
+  ADD PRIMARY KEY (`ItemID`),
+  ADD KEY `ItemID` (`ItemID`),
+  ADD KEY `Date_Upload` (`Date_Upload`),
+  ADD KEY `Filename` (`Filename`),
+  ADD KEY `Filetype` (`Filetype`),
+  ADD KEY `Username` (`Username`) USING BTREE,
+  ADD KEY `StatusID` (`StatusID`) USING BTREE;
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -253,58 +308,70 @@ ALTER TABLE `user_upload`
 -- AUTO_INCREMENT for table `core_status`
 --
 ALTER TABLE `core_status`
-MODIFY `StatusID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=53;
+  MODIFY `StatusID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+--
+-- AUTO_INCREMENT for table `data_page`
+--
+ALTER TABLE `data_page`
+  MODIFY `PageID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `user_data`
 --
 ALTER TABLE `user_data`
-MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `user_upload`
 --
 ALTER TABLE `user_upload`
-MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ItemID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Constraints for dumped tables
 --
 
 --
+-- Constraints for table `data_page`
+--
+ALTER TABLE `data_page`
+  ADD CONSTRAINT `data_page_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `data_page_ibfk_2` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `user_api`
 --
 ALTER TABLE `user_api`
-ADD CONSTRAINT `user_api_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `user_api_ibfk_2` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_api_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_api_ibfk_2` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_auth`
 --
 ALTER TABLE `user_auth`
-ADD CONSTRAINT `user_token` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_token` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_data`
 --
 ALTER TABLE `user_data`
-ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `user_data_ibfk_2` FOREIGN KEY (`RoleID`) REFERENCES `user_role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_data_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_data_ibfk_2` FOREIGN KEY (`RoleID`) REFERENCES `user_role` (`RoleID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_forgot`
 --
 ALTER TABLE `user_forgot`
-ADD CONSTRAINT `user_forgot_ibfk_1` FOREIGN KEY (`Email`) REFERENCES `user_data` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_forgot_ibfk_1` FOREIGN KEY (`Email`) REFERENCES `user_data` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_upload`
 --
 ALTER TABLE `user_upload`
-ADD CONSTRAINT `user_upload_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD CONSTRAINT `user_upload_ibfk_2` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `user_upload_ibfk_1` FOREIGN KEY (`Username`) REFERENCES `user_data` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_upload_ibfk_2` FOREIGN KEY (`StatusID`) REFERENCES `core_status` (`StatusID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
