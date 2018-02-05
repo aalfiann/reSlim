@@ -502,11 +502,12 @@ use PDO;
 		function doUpdate(){
 			try {
 				$this->db->beginTransaction();
-				if (Auth::getRoleID($this->db,$this->token) == '1'){
+				$roles = Auth::getRoleID($this->db,$this->token); 
+				if ($roles == '1'){
 					$sql = "UPDATE user_upload 
 					SET Title=:title,Alternate=:alternate,External_link=:external,StatusID=:status,Updated_by=:username 
 					WHERE ItemID=:itemid;";
-				} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+				} else if ($roles == '2'){
 					$sql = "UPDATE user_upload 
 					SET Title=:title,Alternate=:alternate,External_link=:external,StatusID=:status,Updated_by=:username 
 					WHERE ItemID=:itemid;";
@@ -573,7 +574,8 @@ use PDO;
 					$filepath = $single['Filepath'];
 					try {
 						$this->db->beginTransaction();
-						if (Auth::getRoleID($this->db,$this->token) == '1'){
+						$roles = Auth::getRoleID($this->db,$this->token); 
+						if ($roles == '1'){
 							$sql = "DELETE from user_upload  
 								WHERE ItemID=:itemid;";
 							$newusername = strtolower($this->username);

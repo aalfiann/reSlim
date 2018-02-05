@@ -758,21 +758,22 @@ use PDO;
 		 */
 		public function showAll() {
 			if (Auth::validToken($this->db,$this->token)){
-				if (Auth::getRoleID($this->db,$this->token) == '3'){
+				$roles = Auth::getRoleID($this->db,$this->token); 
+				if ($roles == '3'){
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS404',
 	        	    	'message' => CustomHandlers::getreSlimMessage('RS404')
 					];
 				} else {
-					if (Auth::getRoleID($this->db,$this->token) == '1'){
+					if ($roles == '1'){
 						$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 								a.Created_at, a.Updated_at
 							FROM user_data a 
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
 							ORDER BY a.Fullname ASC;";
-					} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+					} else if ($roles == '2'){
 						$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 								a.Created_at, a.Updated_at
 							FROM user_data a 
@@ -836,7 +837,8 @@ use PDO;
 		 */
 		public function showAllAsPagination() {
 			if (Auth::validToken($this->db,$this->token)){
-				if (Auth::getRoleID($this->db,$this->token) == '3'){
+				$roles = Auth::getRoleID($this->db,$this->token); 
+				if ($roles == '3'){
 					$data = [
 		    			'status' => 'error',
 						'code' => 'RS404',
@@ -844,14 +846,14 @@ use PDO;
 					];
 				} else {
 					//Query to count row for superuser and admin
-					if (Auth::getRoleID($this->db,$this->token) == '1'){
+					if ($roles == '1'){
 						$sqlcountrow = "SELECT count(a.Username) AS TotalRow
 							FROM user_data a 
 							INNER JOIN user_role b ON a.RoleID = b.RoleID
 							INNER JOIN core_status c ON a.StatusID = c.StatusID
 							ORDER BY a.Fullname ASC;";
 						$stmt = $this->db->prepare($sqlcountrow);		
-					} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+					} else if ($roles == '2'){
 						$sqlcountrow = "SELECT sum(x.TotalRow) as TotalRow FROM
 							(
 								SELECT count(a.Username) as TotalRow
@@ -883,7 +885,7 @@ use PDO;
 							$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 							// Query Data
-							if (Auth::getRoleID($this->db,$this->token) == '1'){
+							if ($roles == '1'){
 								$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 									a.Created_at, a.Updated_at
 								FROM user_data a 
@@ -893,7 +895,7 @@ use PDO;
 								$stmt2 = $this->db->prepare($sql);
 								$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 								$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
-							} else if (Auth::getRoleID($this->db,$this->token) == '2'){
+							} else if ($roles == '2'){
 								$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 									a.Created_at, a.Updated_at
 								FROM user_data a 
@@ -961,11 +963,12 @@ use PDO;
 		 * Search all data user paginated
 		 * @return result process in json encoded data
 		 */
-		public function searchAllAsPagination() {
+		public function searchAllAsPagination() { 
 			if (Auth::validToken($this->db,$this->token)){
 				$search = "%$this->search%";
 				//Query to count row for superuser and admin
-				if (Auth::getRoleID($this->db,$this->token) == '1'){
+				$roles = Auth::getRoleID($this->db,$this->token);
+				if ($roles == '1'){
 					$sqlcountrow = "SELECT count(a.Username) AS TotalRow
 						FROM user_data a 
 						INNER JOIN user_role b ON a.RoleID = b.RoleID
@@ -1013,7 +1016,7 @@ use PDO;
 						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 						// Query Data
-						if (Auth::getRoleID($this->db,$this->token) == '1'){
+						if ($roles == '1'){
 							$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 								a.Created_at, a.Updated_at
 							FROM user_data a 
