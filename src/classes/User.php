@@ -23,7 +23,7 @@ use PDO;
 		protected $db;
 		
 		// model data user
-		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token,$passKey,$domain,$apikey;
+		var $username,$password,$fullname,$address,$phone,$email,$aboutme,$avatar,$role,$status,$token,$tokentodelete,$passKey,$domain,$apikey;
 		
 		// for change password
 		var $newPassword;
@@ -1425,6 +1425,63 @@ use PDO;
 				];
 			}
 			return json_encode($data, JSON_PRETTY_PRINT);
+		}
+
+		/** 
+         * Get all data token user
+         *
+         * @return json encoded data
+         */
+		public function getUserDataToken(){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
+				$data = Auth::getDataToken($this->db,$this->username);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
+		}
+		
+		/** 
+         * Delete single token
+         *
+         * @return json encoded data
+         */
+		public function deleteSingleToken(){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
+				$data = Auth::clearSingleToken($this->db,$this->username,$this->tokentodelete);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
+		}
+
+		/** 
+         * Delete all user token except active one
+         *
+         * @return json encoded data
+         */
+		public function deleteAllUserToken(){
+			if (Auth::validToken($this->db,$this->token,$this->username)){
+				$data = Auth::clearSafeUserToken($this->db,$this->username,$this->token);
+			} else {
+				$data = [
+	    			'status' => 'error',
+				    'code' => 'RS404',
+					'message' => CustomHandlers::getreSlimMessage('RS404')
+    			];
+			}
+		    return json_encode($data, JSON_PRETTY_PRINT);
+    		$this->db = null;
 		}
 
 	}

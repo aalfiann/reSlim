@@ -367,3 +367,36 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $body->write($users->searchAllApiKeysAsPagination());
         return classes\Cors::modify($response,$body,200);
     });
+
+    // GET example api to get all data user token
+    $app->get('/user/token/data/{username}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($users->getUserDataToken());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Post example api to delete single data user token
+    $app->post('/user/token/delete', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->tokentodelete = $datapost['TokenToDelete'];
+        $users->token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $body = $response->getBody();
+        $body->write($users->deleteSingleToken());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Post example api to delete all data user token
+    $app->post('/user/token/delete/all', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $datapost = $request->getParsedBody();
+        $users->token = $datapost['Token'];
+        $users->username = $datapost['Username'];
+        $body = $response->getBody();
+        $body->write($users->deleteAllUserToken());
+        return classes\Cors::modify($response,$body,200);
+    });

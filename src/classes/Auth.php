@@ -197,6 +197,125 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /** 
+         * Get all data user token
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $username : input username to get data token
+         * @return json encoded data
+         */
+        public static function getDataToken($db, $username){
+            $r = false;
+		    $sql = "SELECT a.Username,a.RS_Token,a.Created,a.Expired
+			    FROM user_auth a 
+                INNER JOIN user_data b ON a.Username = b.Username
+    			WHERE a.Username=:username AND b.StatusID = '1' AND a.Expired > current_timestamp
+                ORDER BY a.Expired ASC;";
+	    	$stmt = $db->prepare($sql);
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            if ($stmt->execute()) {	
+                if ($stmt->rowCount() > 0){
+                    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $data = [
+                        'results' => $results, 
+                        'status' => 'success', 
+                        'code' => 'RS501',
+                        'message' => CustomHandlers::getreSlimMessage('RS501')
+                    ];
+                } else {
+                    $data = [
+                        'status' => 'error',
+                        'code' => 'RS601',
+                        'message' => CustomHandlers::getreSlimMessage('RS601')
+                    ];
+                }          	   	
+            } else {
+                $data = [
+                    'status' => 'error',
+                    'code' => 'RS202',
+                    'message' => CustomHandlers::getreSlimMessage('RS202')
+                ];
+            }	
+		    return $data;
+    		$this->db = null;
+        }
+
+        /** 
+         * To clear single token user
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $username : input the registered username
+         * @param $token : input the token
+         * @return json encoded data 
+         */
+        public static function clearSingleToken($db, $username, $token){
+            try{
+                $db->beginTransaction();
+
+                $sql = "DELETE FROM user_auth 
+                    WHERE Username = :username AND RS_Token = :token;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        		$stmt->execute();
+                
+                $db->commit();
+
+                $data = [
+			   		'status' => 'success',
+			    	'code' => 'RS305',
+				    'message' => CustomHandlers::getreSlimMessage('RS305')
+				];
+            } catch (PDOException $e){
+                $data = [
+		    		'status' => 'error',
+				    'code' => $e->getCode(),
+				    'message' => $e->getMessage()
+    			];
+                $db->rollBack();
+            }
+            return $data;
+            $db = null;
+        }
+
+        /** 
+         * To clear all token user except active one
+         *
+         * @param $db : Dabatase connection (PDO)
+         * @param $username : input the registered username
+         * @param $token : input the token
+         * @return json encoded data 
+         */
+        public static function clearSafeUserToken($db, $username, $safetoken){
+            try{
+                $db->beginTransaction();
+
+                $sql = "DELETE FROM user_auth 
+                    WHERE Username = :username AND RS_Token <> :token;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+                $stmt->bindParam(':token', $safetoken, PDO::PARAM_STR);
+        		$stmt->execute();
+                
+                $db->commit();
+
+                $data = [
+			   		'status' => 'success',
+			    	'code' => 'RS305',
+				    'message' => CustomHandlers::getreSlimMessage('RS305')
+				];
+            } catch (PDOException $e){
+                $data = [
+		    		'status' => 'error',
+				    'code' => $e->getCode(),
+				    'message' => $e->getMessage()
+    			];
+                $db->rollBack();
+            }
+            return $data;
+            $db = null;
+        }
+
+        /** 
          * To clear any expired token after user logout
          *
          * @param $db : Dabatase connection (PDO)

@@ -1272,6 +1272,77 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Get User Data Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/data/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Single Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{youractivetoken}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "TokenToDelete",
+							"value": "{yourtokentodelete}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Token except active one",
+			"request": {
+				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/delete/all",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
