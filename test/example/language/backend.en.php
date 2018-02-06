@@ -81,6 +81,18 @@ $lang = [
     'update_page' => 'Update Page',
     'save_page' => 'Publish Page',
     'form_editor' => 'Form Editor',
+    //user access
+    'my_access' => 'My Access',
+    'user_access' => 'User Access',
+    'title_access' => 'Generated Token Access',
+    'info_access' => 'Your token will automatically deleted when you are logout or reach the expired date.',
+    'notice_access' => 'You can revoke the token immediately if you feel someone has stolen it.',
+    'revoke_access' => 'Revoke',
+    'revoke_access_all' => 'Revoke All Token',
+    'active_access' => 'Token is being used now',
+    'token' => 'Token',
+    'date_login' => 'Date Login',
+    'expired' => 'Expired',
     //settings
     'tools' => 'Tools',
     'settings' => 'Settings',

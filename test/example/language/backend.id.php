@@ -81,6 +81,18 @@ $lang = [
     'update_page' => 'Perbaharui Halaman',
     'save_page' => 'Publikasikan Halaman',
     'form_editor' => 'Form Editor',
+    //user access
+    'my_access' => 'Aksesku',
+    'user_access' => 'Akses Pengguna',
+    'title_access' => 'Akses Token Data',
+    'info_access' => 'Token Anda akan otomatis dihapus saat Anda logout atau mencapai tanggal kedaluwarsa.',
+    'notice_access' => 'Anda bisa segera mencabut token tersebut jika Anda merasa seseorang telah mencurinya.',
+    'revoke_access' => 'Cabut',
+    'revoke_access_all' => 'Cabut Semua Token',
+    'active_access' => 'Token sedang dipakai sekarang',
+    'token' => 'Token',
+    'date_login' => 'Tanggal Login',
+    'expired' => 'Kedaluwarsa',
     //settings
     'tools' => 'Perkakas',
     'settings' => 'Pengaturan',
