@@ -28,6 +28,9 @@
         var $setlang = 'en';
         var $datalang;
 
+        // Set Run Cache Files
+        var $runcache = true;
+
         var $version = '1.6.0';
 
         private static $instance;
@@ -745,6 +748,194 @@
 				fclose($handle); 
             echo self::getMessage('success',self::lang('core_settings_changed'),self::lang('core_auto_refresh'));
             echo self::reloadPage();
+        }
+
+        /**
+         * Auto cut off long text
+         *
+         * @param $string = Data text
+         * @param $limitLength = Limit value to be auto cut. Default value is 50 chars
+         * @param $replaceValue = Value to replacing the cutted text. Default value is ...
+         * @return string cutted text
+         */
+        public static function cutLongText($string,$limitLength=50,$replaceValue='...'){
+            return (strlen($string) > $limitLength) ? substr($string, 0, $limitLength) . $replaceValue : $string;
+        }
+
+        /**
+         * Time to seconds converter
+         *
+         * @param $str_time = String value must time only. Example: 00:23:45
+         * @return integer seconds
+         */
+        public static function convertTimeToSeconds($str_time){
+            $str_time = preg_replace("/^([\d]{1,2})\:([\d]{2})$/", "00:$1:$2", $str_time);
+            sscanf($str_time, "%d:%d:%d", $hours, $minutes, $seconds);
+            $time_seconds = $hours * 3600 + $minutes * 60 + $seconds;
+            return $time_seconds;
+        }
+
+        /**
+         * Slug converter
+         *
+         * @param $text = Text value
+         * @return string
+         */
+        public static function convertToSlug($text){
+            // replace non letter or digits by -
+            $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+            // transliterate
+            $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+            // remove unwanted characters
+            $text = preg_replace('~[^-\w]+~', '', $text);
+
+            // trim
+            $text = trim($text, '-');
+
+            // remove duplicate -
+            $text = preg_replace('~-+~', '-', $text);
+
+            // lowercase
+            $text = strtolower($text);
+
+            if (empty($text)) {
+                return 'n-a';
+            }
+
+            return $text;
+        }
+
+        /**
+         * Determine Server is use SSL or not. This support for full ssl and flexible ssl
+         *
+         * @return boolean
+         */
+        public static function isHttpsButtflare() {
+            $whitelist = array(
+                '127.0.0.1',
+                '::1'
+            );
+            
+            if(!in_array($_SERVER['REMOTE_ADDR'], $whitelist)){
+                if (!empty($_SERVER['HTTP_CF_VISITOR'])){
+                    return isset($_SERVER['HTTPS']) ||
+                    ($visitor = json_decode($_SERVER['HTTP_CF_VISITOR'])) &&
+                    $visitor->scheme == 'https';
+                } else {
+                    return isset($_SERVER['HTTPS']);
+                }
+            } else {
+                return 0;
+            }            
+        }
+
+        public static function sanitize_output($buffer) {
+    
+            $search = array(
+                // Minify HTML
+                '/\>[^\S ]+/s',                                 // strip whitespaces after tags, except space [^1]
+                '/[^\S ]+\</s',                                 // strip whitespaces before tags, except space [^2]
+                '/<!--(.|\s)*?-->/',                            // Remove HTML comments [^3]
+                // Minify Javascript
+                '#\s*([!%&*\(\)\-=+\[\]\{|;:,.<>?\/])\s*#',     // Remove white-space(s) around punctuation(s) [^4]
+                '#[;,]([\]\}])#',                               // Remove the last semi-colon and comma [^5]
+                '#\btrue\b#', '#false\b#', '#return\s+#',       // Replace `true` with `!0` and `false` with `!1` [^6]
+                '/\}[^\S ]+/s',                                 // strip whitespaces after tags }, except space [^7]
+                '/[^\S ]+\}/s'                                  // strip whitespaces before tags }, except space [^8]
+            );
+        
+            $replace = array(
+                '>',                    // [^1]
+                '<',                    // [^2]
+                '',                     // [^3]
+                '$1',                   // [^4]
+                '$1',                   // [^5]
+                '!0', '!1', 'return ',  // [^6]
+                '}',                    // [^7]
+                '}'                     // [^8]
+            );
+        
+            $buffer = preg_replace($search, $replace, $buffer);
+        
+            return $buffer;
+        }
+
+        /**
+         * Start to writing cache as files (traditional way of caching)
+         * Please note: 
+         * - This script will not cache for url with parameter
+         * - Do not use this for high size of page, better to use in maximum 50Kb of html page
+         * - PHP Memory limit needed is minimum 1024M
+         * - Better to use Harddisk with SSD feature to write file faster
+         * - Sometimes ob_start will fail and you get blank page
+         * 
+         * @param $age = set how long file to be expired
+         * @param $xmlformat = determine if page is xml formatted. Default is false
+         * @param $path = set where cache files place to be put
+         */
+        public static function startCache($age=18000,$xmlformat=false,$path='cache-files'){
+            if (self::getInstance()->runcache){
+                //Create folder if it doesn't already exist
+                if (!file_exists($path)) {
+                    mkdir($path, 0777, true);
+                }
+                // Detect url file and build path file
+                $url = trim ( $_SERVER['REQUEST_URI'] ,'/' );
+                $link_array = explode('/',$url);
+                $file = "";
+                foreach ($link_array as $key){
+                    $file .= $key.'-';
+                }
+                $file = substr($file, 0, -1);
+                // Dont cache url using parameter           
+                if(!empty($file) && strpos($file,'?') === false ){
+                    // define the path and name of cached file
+    	            $cachefile = $path.'/'.$file.'.cache';
+                    // define how long we want to keep the file in seconds. I set mine to 5 hours.
+                    $cachetime = $age;
+                    // Check if the cached file is still fresh. If it is, serve it up and exit.
+                    if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
+                        readfile($cachefile);
+                        exit;
+                    }
+        	        // if there is either no file OR the file to too old, render the page and capture the HTML.
+                    ob_start();
+                    if ($xmlformat == false){
+                        echo '<!-- This page is cached version created at: '.date('Y-m-d H:i:s').' -->';
+                    }
+                }
+            }
+        }
+
+        /**
+         * This function will write the cache, so put this on very bottom on your script
+         * 
+         * @param $path = set where cache files place to be write
+         */
+        public static function endCache($path='cache-files'){
+            if (self::getInstance()->runcache){
+                // Detect url file and build path file
+                $url = trim ( $_SERVER['REQUEST_URI'] ,'/' );
+                $link_array = explode('/',$url);
+                $file = "";
+                foreach ($link_array as $key){
+                    $file .= $key.'-';
+                }
+                $file = substr($file, 0, -1);
+                // Dont cache url using parameter
+                if(!empty($file) && strpos($file,'?') === false ){
+                    // define the path and name of cached file
+	                $cachefile = $path.'/'.$file.'.cache';
+                    // We're done! Save the cached content to a file
+	                $fp = fopen($cachefile, 'w');
+    	            fwrite($fp, ob_get_contents());
+                    fclose($fp);
+                    // finally send browser output
+                    ob_end_flush();
+                }
+            }
         }
 
 }
