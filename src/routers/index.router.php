@@ -16,7 +16,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
             'how to use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.'
 		];
         $body = $response->getBody();
-        $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
+        $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write(json_encode($data, JSON_PRETTY_PRINT));
         return classes\Cors::modify($response,$body,200);
     });
