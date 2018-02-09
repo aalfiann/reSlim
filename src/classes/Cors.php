@@ -17,6 +17,7 @@
             ->withHeader('Content-Type','application/json; charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
             ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, ETag')
+            ->withHeader('Access-Control-Expose-Headers','ETag')
             ->withBody($body);
         }
 
