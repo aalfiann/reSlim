@@ -3,6 +3,12 @@
 // Create container
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
+$app->add(new \Slim\HttpCache\Cache('public', 7200));
+
+// Register component http-cache 
+$container['cache'] = function () {
+    return new \Slim\HttpCache\CacheProvider();
+};
 
 // Register component Monolog
 $container['logger'] = function($c) {

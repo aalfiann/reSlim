@@ -13,6 +13,7 @@
     "require": {
         "slim/slim": "^3.0",
         "monolog/monolog": "^1.22",
-        "phpmailer/phpmailer": "~5.2"
+        "phpmailer/phpmailer": "~5.2",
+        "slim/http-cache": "^0.4.0"
     }
 }
