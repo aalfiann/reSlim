@@ -48,6 +48,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users = new classes\User($this->db);
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
+        $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write($users->showUserPublic());
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));

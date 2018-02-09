@@ -3,11 +3,53 @@
 // Create container
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
-$app->add(new \Slim\HttpCache\Cache('public', 7200));
+$app->add(new \Slim\HttpCache\Cache('public',7200));
 
-// Register component http-cache 
+// Register component Http-cache
 $container['cache'] = function () {
     return new \Slim\HttpCache\CacheProvider();
+};
+
+// Default generate eTag per 30minutes
+$container['etag30min'] = function(){
+    $fix = date('Y-m-d H:');
+    $rate = date('i');
+    $maxminute = 60;
+    $intervalminute = 30;
+
+    $n=0;
+    for ($i = 0; $i <= $maxminute; $i+=$intervalminute) {
+        if($i<=$rate) {$n++;}
+    }
+    return md5($fix.$n);
+};
+
+// Default generate eTag per every hour
+$container['etag1hour'] = function(){
+    $fix = date('Y-m-d ');
+    $rate = date('H');
+    $maxhour = 24;
+    $intervalhour = 1;
+
+    $n=0;
+    for ($i = 0; $i <= $maxhour; $i+=$intervalhour) {
+        if($i<=$rate) {$n++;}
+    }
+    return md5($fix.$n);
+};
+
+// Default generate eTag per 2hours
+$container['etag2hour'] = function(){
+    $fix = date('Y-m-d ');
+    $rate = date('H');
+    $maxhour = 24;
+    $intervalhour = 2;
+
+    $n=0;
+    for ($i = 0; $i <= $maxhour; $i+=$intervalhour) {
+        if($i<=$rate) {$n++;}
+    }
+    return md5($fix.$n);
 };
 
 // Register component Monolog
