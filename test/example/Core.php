@@ -30,6 +30,8 @@
 
         // Set Run Cache Files
         var $runcache = true;
+        var $pathcache = 'cache-files';
+        var $minifycache = true;
 
         var $version = '1.6.0';
 
@@ -831,6 +833,16 @@
             }            
         }
 
+        /**
+         * This will minify output buffer, using this will minify about 80% of your page
+         * Consider about speed for pregmatch, it require high memory in PHP and little bit slowdown your server, 
+         * so we make not high maximum minify for smallest risk failure in output buffering
+         * 
+         * Please note:
+         * - Only for HTML and Javascript 
+         * - Still not support to strip inline comment javascript like //this is comment string here...
+         * - This is not silver bullet, don't use this if broke your javascript
+         */
         public static function sanitize_output($buffer) {
     
             $search = array(
@@ -839,11 +851,12 @@
                 '/[^\S ]+\</s',                                 // strip whitespaces before tags, except space [^2]
                 '/<!--(.|\s)*?-->/',                            // Remove HTML comments [^3]
                 // Minify Javascript
-                '#\s*([!%&*\(\)\-=+\[\]\{|;:,.<>?\/])\s*#',     // Remove white-space(s) around punctuation(s) [^4]
+                '#\s*([!%&*\(\)\-=+\[\]\{|;:<>?\/])\s*#',      // Remove white-space(s) around punctuation(s) [^4]
                 '#[;,]([\]\}])#',                               // Remove the last semi-colon and comma [^5]
                 '#\btrue\b#', '#false\b#', '#return\s+#',       // Replace `true` with `!0` and `false` with `!1` [^6]
                 '/\}[^\S ]+/s',                                 // strip whitespaces after tags }, except space [^7]
-                '/[^\S ]+\}/s'                                  // strip whitespaces before tags }, except space [^8]
+                '/[^\S ]+\}/s',                                 // strip whitespaces before tags }, except space [^8]
+                '/\/\*(.|\s)*?\*\//'                            // Remove Javascript comments only /* */ or /** */ [^9]
             );
         
             $replace = array(
@@ -854,7 +867,8 @@
                 '$1',                   // [^5]
                 '!0', '!1', 'return ',  // [^6]
                 '}',                    // [^7]
-                '}'                     // [^8]
+                '}',                    // [^8]
+                ''                      // [^9]
             );
         
             $buffer = preg_replace($search, $replace, $buffer);
@@ -873,16 +887,18 @@
          * 
          * @param $age = set how long file to be expired
          * @param $xmlformat = determine if page is xml formatted. Default is false
-         * @param $path = set where cache files place to be put
+         * @param $match = set where spesific url should be cache in your php
          */
-        public static function startCache($age=18000,$xmlformat=false,$path='cache-files'){
+        public static function startCache($age=18000,$xmlformat=false,$match=null){
             if (self::getInstance()->runcache){
                 //Create folder if it doesn't already exist
+                $path = self::getInstance()->pathcache;
                 if (!file_exists($path)) {
                     mkdir($path, 0777, true);
                 }
-                // Detect url file and build path file
+                // Detect url file
                 $url = trim ( $_SERVER['REQUEST_URI'] ,'/' );
+                // Build path file
                 $link_array = explode('/',$url);
                 $file = "";
                 foreach ($link_array as $key){
@@ -891,20 +907,41 @@
                 $file = substr($file, 0, -1);
                 // Dont cache url using parameter           
                 if(!empty($file) && strpos($file,'?') === false ){
-                    // define the path and name of cached file
-    	            $cachefile = $path.'/'.$file.'.cache';
-                    // define how long we want to keep the file in seconds. I set mine to 5 hours.
-                    $cachetime = $age;
-                    // Check if the cached file is still fresh. If it is, serve it up and exit.
-                    if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
-                        readfile($cachefile);
-                        exit;
-                    }
-        	        // if there is either no file OR the file to too old, render the page and capture the HTML.
-                    ob_start();
-                    if ($xmlformat == false){
-                        echo '<!-- This page is cached version created at: '.date('Y-m-d H:i:s').' -->';
-                    }
+                    // is using spesific url to cache
+                    if (!empty($match)){
+                        // if url match then do start
+                        if (strpos($url,$match) !== false){
+                            // define the path and name of cached file
+        	                $cachefile = $path.'/'.$file.'.cache';
+                            // define how long we want to keep the file in seconds. I set mine to 5 hours.
+                            $cachetime = $age;
+                            // Check if the cached file is still fresh. If it is, serve it up and exit.
+                            if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
+                                readfile($cachefile);
+                                exit;
+                            }
+                	        // if there is either no file OR the file to too old, render the page and capture the HTML.
+                            ob_start();
+                            if ($xmlformat == false){
+                                echo '<!-- This page is cached version created at: '.date('Y-m-d H:i:s').' -->';
+                            }
+                        }
+                    } else {
+                        // define the path and name of cached file
+    	                $cachefile = $path.'/'.$file.'.cache';
+                        // define how long we want to keep the file in seconds. I set mine to 5 hours.
+                        $cachetime = $age;
+                        // Check if the cached file is still fresh. If it is, serve it up and exit.
+                        if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
+                            readfile($cachefile);
+                            exit;
+                        }
+            	        // if there is either no file OR the file to too old, render the page and capture the HTML.
+                        ob_start();
+                        if ($xmlformat == false){
+                            echo '<!-- This page is cached version created at: '.date('Y-m-d H:i:s').' -->';
+                        }
+                    }       
                 }
             }
         }
@@ -912,12 +949,15 @@
         /**
          * This function will write the cache, so put this on very bottom on your script
          * 
-         * @param $path = set where cache files place to be write
+         * @param $match = set where spesific url should be cache in your php
          */
-        public static function endCache($path='cache-files'){
+        public static function endCache($match=null){
             if (self::getInstance()->runcache){
-                // Detect url file and build path file
+                //Determine path
+                $path = self::getInstance()->pathcache;
+                // Detect url file
                 $url = trim ( $_SERVER['REQUEST_URI'] ,'/' );
+                // Build path file
                 $link_array = explode('/',$url);
                 $file = "";
                 foreach ($link_array as $key){
@@ -926,14 +966,37 @@
                 $file = substr($file, 0, -1);
                 // Dont cache url using parameter
                 if(!empty($file) && strpos($file,'?') === false ){
-                    // define the path and name of cached file
-	                $cachefile = $path.'/'.$file.'.cache';
-                    // We're done! Save the cached content to a file
-	                $fp = fopen($cachefile, 'w');
-    	            fwrite($fp, ob_get_contents());
-                    fclose($fp);
-                    // finally send browser output
-                    ob_end_flush();
+                    // is using spesific url to cache
+                    if (!empty($match)){
+                        // if url match then do start
+                        if (strpos($url,$match) !== false){
+                            // define the path and name of cached file
+        	                $cachefile = $path.'/'.$file.'.cache';
+                            // We're done! Save the cached content to a file
+	                        $fp = fopen($cachefile, 'w');
+            	            if (self::getInstance()->minifycache){
+                                fwrite($fp, self::sanitize_output(ob_get_contents()));
+                            } else {
+                                fwrite($fp, ob_get_contents());
+                            }
+                            fclose($fp);
+                            // finally send browser output
+                            ob_end_flush();
+                        }
+                    } else {
+                        // define the path and name of cached file
+    	                $cachefile = $path.'/'.$file.'.cache';
+                        // We're done! Save the cached content to a file
+	                    $fp = fopen($cachefile, 'w');
+    	                if (self::getInstance()->minifycache){
+                            fwrite($fp, self::sanitize_output(ob_get_contents()));
+                        } else {
+                            fwrite($fp, ob_get_contents());
+                        }
+                        fclose($fp);
+                        // finally send browser output
+                        ob_end_flush();
+                    }
                 }
             }
         }
