@@ -16,7 +16,7 @@
             ->withStatus($status)
             ->withHeader('Content-Type','application/json; charset=utf-8')
             ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+            ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, ETag')
             ->withBody($body);
         }
 
