@@ -10,6 +10,20 @@ $container['cache'] = function () {
     return new \Slim\HttpCache\CacheProvider();
 };
 
+// Default generate eTag per 5minutes
+$container['etag'] = function(){
+    $fix = date('Y-m-d H:');
+    $rate = date('i');
+    $maxminute = 60;
+    $intervalminute = 5;
+
+    $n=0;
+    for ($i = 0; $i <= $maxminute; $i+=$intervalminute) {
+        if($i<=$rate) {$n++;}
+    }
+    return md5($fix.$n);
+};
+
 // Default generate eTag per 30minutes
 $container['etag30min'] = function(){
     $fix = date('Y-m-d H:');
