@@ -3,7 +3,7 @@
 // Create container
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
-$app->add(new \Slim\HttpCache\Cache('public',7200));
+$app->add(new \Slim\HttpCache\Cache('public',604800));
 
 // Register component Http-cache
 $container['cache'] = function () {
