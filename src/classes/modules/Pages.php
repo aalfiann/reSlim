@@ -91,7 +91,7 @@ use PDO;
 				];
             }
 
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 			$this->db = null;
 
         }
@@ -162,7 +162,7 @@ use PDO;
 				];
             }
 
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 			$this->db = null;
 
         }
@@ -202,7 +202,7 @@ use PDO;
 	    		    $this->db->rollBack();
         		} 
 
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 			$this->db = null;
 
         }
@@ -270,7 +270,7 @@ use PDO;
 				];
             }
             
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 			$this->db = null;
 
 		}
@@ -351,7 +351,7 @@ use PDO;
 				];
 			}
 			
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
 		}
 		
@@ -423,7 +423,7 @@ use PDO;
 					];
 				}	
         
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
 		}
 
@@ -528,7 +528,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
         }
 
@@ -643,7 +643,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
         }
 
@@ -751,7 +751,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
         }
 
@@ -804,7 +804,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data, JSON_PRETTY_PRINT);
+			return json_encode($data);
 	        $this->db= null;
 		}
     }
