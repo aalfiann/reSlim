@@ -835,28 +835,35 @@
 
         /**
          * This will minify output buffer, using this will minify about 80% of your page
-         * Consider about speed for pregmatch, it require high memory in PHP and little bit slowdown your server, 
+         * Consider about speed for pregmatch in output buffer, it will require high memory in PHP and affect memory cpu in your server, 
          * so we make not high maximum minify for smallest risk failure in output buffering
          * 
          * Please note:
-         * - Only for HTML and Javascript 
+         * - Best for HTML, Inline CSS or JS maybe will broken (always check your console)
          * - Still not support to strip inline comment javascript like //this is comment string here...
-         * - This is not silver bullet, don't use this if broke your javascript
+         * - This is not silver bullet, don't use this if broke your inline css or javascript
          */
         public static function sanitize_output($buffer) {
     
             $search = array(
-                // Minify HTML
+                // Minify contents from buffer before write to file.
                 '/\>[^\S ]+/s',                                 // strip whitespaces after tags, except space [^1]
                 '/[^\S ]+\</s',                                 // strip whitespaces before tags, except space [^2]
                 '/<!--(.|\s)*?-->/',                            // Remove HTML comments [^3]
-                // Minify Javascript
-                '#\s*([!%&*\(\)\-=+\[\]\{|;:<>?\/])\s*#',      // Remove white-space(s) around punctuation(s) [^4]
+                '#\s*([!%&*\=+\)\{;\/])\s*#',                   // Remove white-space(s) around punctuation(s) [^4]
                 '#[;,]([\]\}])#',                               // Remove the last semi-colon and comma [^5]
                 '#\btrue\b#', '#false\b#', '#return\s+#',       // Replace `true` with `!0` and `false` with `!1` [^6]
                 '/\}[^\S ]+/s',                                 // strip whitespaces after tags }, except space [^7]
                 '/[^\S ]+\}/s',                                 // strip whitespaces before tags }, except space [^8]
-                '/\/\*(.|\s)*?\*\//'                            // Remove Javascript comments only /* */ or /** */ [^9]
+                '/\/\*(.|\s)*?\*\//',                           // Remove Javascript comments only /* */ or /** */ [^9]
+                '/[\n+\r+\t+]+\</s',                            // Strip inline break before tags < [^10]
+                '/\>[\n+\r+\t+]+/s',                            // Strip inline break after tags > [^11]
+                '/[\n+\r+\t+]+\}/s',                            // Strip inline break before tags } [^12]
+                '/\}[\n+\r+\t+]+/s',                            // Strip inline break after tags } [^13]
+                '/[\n+\r+\t+]+\{/s',                            // Strip inline break before tags { [^14]
+                '/\{[\n+\r+\t+]+/s',                            // Strip inline break after tags { [^15]  
+                '/[\n+\r+\t+]+\,/s',                            // Strip inline break before tags , [^16]
+                '/\,[\n+\r+\t+]+/s'                             // strip inline break after tags , [^17]
             );
         
             $replace = array(
@@ -868,7 +875,15 @@
                 '!0', '!1', 'return ',  // [^6]
                 '}',                    // [^7]
                 '}',                    // [^8]
-                ''                      // [^9]
+                '',                     // [^9]
+                '<',                    // [^10]
+                '>',                    // [^11]
+                '}',                    // [^12]
+                '}',                    // [^13]
+                '{',                    // [^14]
+                '{',                    // [^15]
+                ',',                    // [^16]
+                ','                     // [^17]
             );
         
             $buffer = preg_replace($search, $replace, $buffer);
@@ -917,7 +932,8 @@
                             $cachetime = $age;
                             // Check if the cached file is still fresh. If it is, serve it up and exit.
                             if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
-                                readfile($cachefile);
+                                // we use file_get_contents instead readfile because readfile using output buffer which is not good in high simultaneous traffic
+                                echo file_get_contents($cachefile);
                                 exit;
                             }
                 	        // if there is either no file OR the file to too old, render the page and capture the HTML.
@@ -933,7 +949,8 @@
                         $cachetime = $age;
                         // Check if the cached file is still fresh. If it is, serve it up and exit.
                         if (file_exists($cachefile) && time() - $cachetime < filemtime($cachefile)) {
-                            readfile($cachefile);
+                            // we use file_get_contents instead readfile because readfile using output buffer which is not good in high simultaneous traffic
+                            echo file_get_contents($cachefile);
                             exit;
                         }
             	        // if there is either no file OR the file to too old, render the page and capture the HTML.
@@ -941,7 +958,7 @@
                         if ($xmlformat == false){
                             echo '<!-- This page is cached version created at: '.date('Y-m-d H:i:s').' -->';
                         }
-                    }       
+                    }
                 }
             }
         }
