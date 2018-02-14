@@ -14,7 +14,7 @@ use \classes\SimpleCache as SimpleCache;
                 'github' => 'https://github.com/aalfian/reSlim',
                 'license' => 'https://github.com/aalfiann/reSlim/blob/master/license.md'
             ],
-            'how to use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.',
+            'how_to_use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.',
             'generate_time' => date('Y-m-d h:i:s a', time())
 		];
         $body = $response->getBody();
