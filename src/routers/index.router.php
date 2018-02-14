@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\SimpleCache as SimpleCache;
 
     // GET example api to show all data role
     $app->get('/', function (Request $request, Response $response) {
@@ -13,10 +14,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
                 'github' => 'https://github.com/aalfian/reSlim',
                 'license' => 'https://github.com/aalfiann/reSlim/blob/master/license.md'
             ],
-            'how to use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.'
+            'how to use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.',
+            'generate_time' => date('Y-m-d h:i:s a', time())
 		];
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write(json_encode($data, JSON_PRETTY_PRINT));
+        if (SimpleCache::isCached()){
+            $datajson = SimpleCache::load();
+        } else {
+            $datajson = SimpleCache::save(json_encode($data, JSON_PRETTY_PRINT),3600);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
     });
