@@ -485,24 +485,29 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function validAPIKey($db, $apikey,$domain=null){
             $r = false;
-		    $sql = "SELECT a.Domain
-			    FROM user_api a 
-                INNER JOIN user_data b ON a.Username = b.Username
-    			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = BINARY :apikey LIMIT 1;";
-	    	$stmt = $db->prepare($sql);
-		    $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
-    		if ($stmt->execute()) {	
-                if ($stmt->rowCount() > 0){
-                    if ($domain == null){
-                        $r = true;
-                    } else {
-                        $single = $stmt->fetch();
-					    if (strtolower($single['Domain']) == strtolower($domain)){
+            if (self::isAPICached($apikey)){
+                $r = true;
+            } else {
+                $sql = "SELECT a.Domain
+			        FROM user_api a 
+                    INNER JOIN user_data b ON a.Username = b.Username
+        			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = BINARY :apikey LIMIT 1;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
+        		if ($stmt->execute()) {	
+                    if ($stmt->rowCount() > 0){
+                        if ($domain == null){
                             $r = true;
+                        } else {
+                            $single = $stmt->fetch();
+					        if (strtolower($single['Domain']) == strtolower($domain)){
+                                $r = true;
+                            }
                         }
-                    }                    
-                }          	   	
-	    	} 		
+                        self::writeCache($apikey);            
+                    }          	   	
+    	    	}
+            }
 		    return $r;
     		$this->db = null;
         }
@@ -593,7 +598,8 @@ use \classes\BaseConverter as BaseConverter;
 			   		'status' => 'success',
 			    	'code' => 'RS306',
 				    'message' => CustomHandlers::getreSlimMessage('RS306')
-				];
+                ];
+                self::deleteCache($apikey);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -604,6 +610,89 @@ use \classes\BaseConverter as BaseConverter;
             }
             return $data;
             $db = null;
+        }
+
+
+        // CACHE API KEYS=========================
+
+        /**
+         * Cache will run if you set variable runcache to true
+         * If you set to false, this only disable the cache process and will not deleted the current cache files
+         */
+        private static $runcache = true;
+
+        /**
+         * Default folder is cache-keys
+         * Path folder is api/cache-keys/ 
+         */
+        private static $filefolder = 'cache-keys';
+
+        /**
+		 * Get filepath cache
+		 *
+		 * @return string
+		 */
+        public static function filePath($apikey){
+            if (!is_dir(self::$filefolder)) {
+                mkdir(self::$filefolder,0775,true);
+            }            
+            return self::$filefolder.'/'.$apikey.'.cache';
+        }
+
+        /**
+         * Determine is current apikey already cached or not
+         * 
+         * @param cachetime = Set expired time in second. Default value is 3600 seconds (1 hour)
+         * 
+         * @return bool
+         */
+        public static function isAPICached($apikey,$cachetime=3600) {
+            if (self::$runcache){
+                $file = self::filePath($apikey);
+                // check the expired file cache.
+                $mtime = 0;
+                if (file_exists($file)) {
+                    $mtime = filemtime($file);
+                }
+                $filetimemod = $mtime + $cachetime;
+                // if the renewal date is smaller than now, return true; else false (no need for update)
+                if ($filetimemod < time()) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Write api key to static file cache
+         * 
+         * @param apikey = apikey value
+         * @param cachetime = Set expired time in second. Default value is 3600 seconds (1 hour)
+         * 
+         */
+        public static function writeCache($apikey,$cachetime=3600) {
+            if (!empty($apikey)) {
+                $file = self::filePath($apikey);
+                $content = '{"APIKey":"'.$apikey.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
+                if (self::$runcache) file_put_contents($file, $content);
+            }
+        }
+
+        /**
+         * Delete static api key file cache
+         * 
+         * @param apikey = apikey value
+         * 
+         */
+        public static function deleteCache($apikey) {
+            if (!empty($apikey)) {
+                $file = self::filePath($apikey);
+                if (file_exists($file)){
+                    if (self::$runcache) unlink($file);
+                }
+            }
         }
 
     }
