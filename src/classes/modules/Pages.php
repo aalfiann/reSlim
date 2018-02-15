@@ -563,7 +563,7 @@ use PDO;
 
 							
 					// Query Data
-					$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Content,a.Tags,a.Viewer,a.Username as 'User',
+					$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username as 'User',
 							a.Updated_at,a.Updated_by,a.StatusID,b.`Status`
 						from data_page a
 						inner join core_status b on a.StatusID=b.StatusID
@@ -595,7 +595,6 @@ use PDO;
 									"Title":'.json_encode($redata['Title']).',
 									"Image":'.json_encode($redata['Image']).',
 									"Description":'.json_encode($redata['Description']).',
-                                    "Content":'.json_encode($redata['Content']).',
                                     "Tags_Inline":'.json_encode($redata['Tags']).',
                                     "Tags":'.json_encode($return_arr).',
                                     "Viewer":'.json_encode($redata['Viewer']).',
@@ -676,7 +675,7 @@ use PDO;
 					$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
 					// Query Data
-					$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Content,a.Tags,a.Viewer,a.Username as 'User',
+					$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username as 'User',
 							a.Updated_at,a.Updated_by,a.StatusID,b.`Status`
 						from data_page a
 						inner join core_status b on a.StatusID=b.StatusID
@@ -703,7 +702,6 @@ use PDO;
 									"Title":'.json_encode($redata['Title']).',
 									"Image":'.json_encode($redata['Image']).',
 									"Description":'.json_encode($redata['Description']).',
-                                    "Content":'.json_encode($redata['Content']).',
                                     "Tags_Inline":'.json_encode($redata['Tags']).',
                                     "Tags":'.json_encode($return_arr).',
                                     "Viewer":'.json_encode($redata['Viewer']).',
