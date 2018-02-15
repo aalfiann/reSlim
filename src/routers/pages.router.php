@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\SimpleCache as SimpleCache;
 
     // POST api to create new page
     $app->post('/page/data/new', function (Request $request, Response $response) {
@@ -87,7 +88,12 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write($pages->showSinglePagePublic());
+        if (SimpleCache::isCached()){
+            $datajson = SimpleCache::load();
+        } else {
+            $datajson = SimpleCache::save($pages->showSinglePagePublic(),3600);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
@@ -99,7 +105,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write($pages->searchPageAsPaginationPublic());
+        if (empty($pages->search)){
+            if (SimpleCache::isCached()){
+                $datajson = SimpleCache::load();
+            } else {
+                $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),3600);
+            }
+            $body->write($datajson);
+        } else {
+            $body->write($pages->searchPageAsPaginationPublic());
+        }
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
@@ -110,11 +125,16 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write($pages->showPublishPageAsPaginationPublic());
+        if (SimpleCache::isCached()){
+            $datajson = SimpleCache::load();
+        } else {
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),3600);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
-    // GET api to show all data published page ascending pagination public
+    // GET api to show all data published page asc or desc pagination public
     $app->get('/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->page = $request->getAttribute('page');
@@ -122,7 +142,12 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $pages->sort = $request->getAttribute('sort');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write($pages->showPublishPageAsPaginationPublic());
+        if (SimpleCache::isCached()){
+            $datajson = SimpleCache::load();
+        } else {
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),3600);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
@@ -131,7 +156,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $pages = new classes\modules\Pages($this->db);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
-        $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write($pages->updateViewPage());
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
