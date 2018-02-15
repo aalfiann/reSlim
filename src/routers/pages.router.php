@@ -88,10 +88,10 @@ use \classes\SimpleCache as SimpleCache;
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached()){
-            $datajson = SimpleCache::load();
+        if (SimpleCache::isCached(3600,["apikey"])){
+            $datajson = SimpleCache::load(["apikey"]);
         } else {
-            $datajson = SimpleCache::save($pages->showSinglePagePublic(),3600);
+            $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
@@ -106,10 +106,10 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (empty($pages->search)){
-            if (SimpleCache::isCached()){
-                $datajson = SimpleCache::load();
+            if (SimpleCache::isCached(3600,["apikey","query"])){
+                $datajson = SimpleCache::load(["apikey","query"]);
             } else {
-                $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),3600);
+                $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query"]);
             }
             $body->write($datajson);
         } else {
@@ -125,10 +125,10 @@ use \classes\SimpleCache as SimpleCache;
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached()){
-            $datajson = SimpleCache::load();
+        if (SimpleCache::isCached(3600,["apikey","query"])){
+            $datajson = SimpleCache::load(["apikey","query"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),3600);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","query"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
@@ -142,10 +142,10 @@ use \classes\SimpleCache as SimpleCache;
         $pages->sort = $request->getAttribute('sort');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached()){
-            $datajson = SimpleCache::load();
+        if (SimpleCache::isCached(3600,["apikey"])){
+            $datajson = SimpleCache::load(["apikey"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),3600);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);

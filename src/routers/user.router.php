@@ -50,10 +50,10 @@ use \classes\SimpleCache as SimpleCache;
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached()){
-            $datajson = SimpleCache::load();
+        if (SimpleCache::isCached(1800,["apikey"])){
+            $datajson = SimpleCache::load(["apikey"]);
         } else {
-            $datajson = SimpleCache::save($users->showUserPublic(),1800);
+            $datajson = SimpleCache::save($users->showUserPublic(),["apikey"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);

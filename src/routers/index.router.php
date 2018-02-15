@@ -19,10 +19,11 @@ use \classes\SimpleCache as SimpleCache;
 		];
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached()){
+        if (SimpleCache::isCached(3600)){
             $datajson = SimpleCache::load();
         } else {
-            $datajson = SimpleCache::save(json_encode($data, JSON_PRETTY_PRINT),3600);
+            $blacklistparam = ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"];
+            $datajson = SimpleCache::save(json_encode($data, JSON_PRETTY_PRINT),null,$blacklistparam);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
