@@ -14,7 +14,7 @@ use \classes\SimpleCache as SimpleCache;
      * Note:
      * - App Cache is better to use for api with public Api Keys
      * - Minimum expired cache file should be 300s (5 minutes). Longer is better but consider with your business requirement.
-     * - Url contains param also will cached automatically, so this will created a thousand static files in your harddisk
+     * - Url contains param also will cached automatically, so this will created a thousand static files in your harddisk. You should setparam or blacklistparam to avoid this
      * - Better to use harddisk with SDD feature to make performance faster
      *
      * @package    Core reSlim
@@ -51,10 +51,12 @@ use \classes\SimpleCache as SimpleCache;
 
         /**
 		 * Get filename cache
+         * 
+         * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
 		 *
 		 * @return string
 		 */
-        public static function fileName(){
+        public static function fileName($setparam=null){
 		    // Detect url file
             $url = trim($_SERVER['REQUEST_URI'] ,'/');
             $link_array = explode('/',$url);
@@ -63,32 +65,85 @@ use \classes\SimpleCache as SimpleCache;
                 $file .= $key.'-';
             }
             $file = substr($file, 0, -1);
-            $path = str_replace('?','_',str_replace(['=','&'],'-',$file)).'.cache';
+            if (empty($setparam)){    
+                $path = str_replace('?','_',str_replace(['=','&'],'-',$file)).'.cache';
+            } else {
+                $build = explode('?',$file);
+                if (!empty($build[0])){
+                    $rebuild = '';
+                    if (is_array($setparam)){
+                        foreach ($_GET as $key => $value) {
+                            foreach ($setparam as $singleparam){
+                                if (strpos($key,$singleparam) !== false){
+                                    $rebuild .= $key.'-'.$value.'-';
+                                }
+                            }
+                        }
+                    } else {
+                        foreach ($_GET as $key => $value) {
+                            if (strpos($key,$setparam) !== false){
+                                $rebuild .= $key.'-'.$value.'-';
+                            }
+                        }
+                    }
+                    $rebuild = substr($rebuild, 0, -1);
+                    if (empty($build[1])){
+                        $path = $build[0].$rebuild.'.cache';
+                    } else {
+                        $path = $build[0].'_'.$rebuild.'.cache';
+                    }
+                } else {
+                    $path = str_replace('?','_',str_replace(['=','&'],'-',$file)).'.cache';
+                }
+            }
             return $path;
         }
 
         /**
 		 * Get filepath cache
+         * 
+         * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
 		 *
 		 * @return string
 		 */
-        public static function filePath(){
+        public static function filePath($setparam=null){
             if (!is_dir(self::$filefolder)) {
                 mkdir(self::$filefolder,0775,true);
             }            
-            return self::$filefolder.'/'.self::fileName();
+            return self::$filefolder.'/'.self::fileName($setparam);
+        }
+
+        /**
+         * Determine is uri contains parameter to not cache?
+         * 
+         * @param blacklistparam = = Input parameter name to not getting cached. Ex: ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"]
+         * 
+         * @return bool
+         */
+        private static function isBlacklisted($blacklistparam=null){
+            if(!empty($blacklistparam)){
+                if (is_array($blacklistparam)){
+                    foreach($blacklistparam as $value){
+                        if (strpos(self::filePath(),'-'.str_replace(['&','='],'',$value).'-') !== false) return true;
+                    }
+                } else {
+                    if (strpos(self::filePath(),'-'.str_replace(['&','='],'',$blacklistparam).'-') !== false) return true;
+                }
+            }
+            return false;
         }
 
         /**
          * Determine is current url already cached or not
          * 
          * @param cachetime = Set expired time in second. Default value is 300 seconds (5 minutes)
+         * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
          * 
          * @return bool
          */
-        public static function isCached($cachetime=300) {
+        public static function isCached($cachetime=300,$setparam=null) {
             if (self::$runcache){
-                $file = self::filePath();
+                $file = self::filePath($setparam);
                 // check the expired file cache.
                 $mtime = 0;
                 if (file_exists($file)) {
@@ -108,10 +163,12 @@ use \classes\SimpleCache as SimpleCache;
         /**
          * Load cached file
          * 
+         * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
+         * 
          * @return string
          */
-        public static function load() {
-            $file = self::filePath();
+        public static function load($setparam=null) {
+            $file = self::filePath($setparam);
             if (file_exists($file)) {
                 return file_get_contents($file);
             }
@@ -122,14 +179,15 @@ use \classes\SimpleCache as SimpleCache;
          * Save content to static file cache
          * 
          * @param datajson = Save the content to cache file. (json string only)
-         * @param cachetime = Set expired time in second. Default value is 300 seconds (5 minutes)
+         * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
+         * @param blacklistparam = Input parameter to not getting cached. Ex: ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"]
          * 
          * @return string
          */
-        public static function save($datajson,$cachetime=300) {
-            $file = self::filePath();
+        public static function save($datajson,$setparam=null,$blacklistparam=null) {
+            $file = self::filePath($setparam);
             if (!empty($datajson) && self::isJson($datajson)) {
-                if (self::$runcache) file_put_contents($file, $datajson);
+                if (self::$runcache && self::isBlacklisted($blacklistparam) == false) file_put_contents($file, $datajson);
             }
             return $datajson;
         }
