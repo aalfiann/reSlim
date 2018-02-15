@@ -669,10 +669,9 @@ use \classes\BaseConverter as BaseConverter;
          * Write api key to static file cache
          * 
          * @param apikey = apikey value
-         * @param cachetime = Set expired time in second. Default value is 3600 seconds (1 hour)
          * 
          */
-        public static function writeCache($apikey,$cachetime=3600) {
+        public static function writeCache($apikey) {
             if (!empty($apikey)) {
                 $file = self::filePath($apikey);
                 $content = '{"APIKey":"'.$apikey.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
