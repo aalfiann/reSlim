@@ -10,8 +10,12 @@ namespace classes;
 use \classes\SimpleCache as SimpleCache;
 	/**
      * A class for generate simple cache file response json in traditional way (static files)
-     * Warning: Url contains param also will cached automatically, so this will created a thousand static files in your harddisk
-     * Better to use harddisk with SDD feature to make performance faster
+     * 
+     * Note:
+     * - App Cache is better to use for api with public Api Keys
+     * - Minimum expired cache file should be 300s (5 minutes). Longer is better but consider with your business requirement.
+     * - Url contains param also will cached automatically, so this will created a thousand static files in your harddisk
+     * - Better to use harddisk with SDD feature to make performance faster
      *
      * @package    Core reSlim
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
@@ -27,6 +31,12 @@ use \classes\SimpleCache as SimpleCache;
         private static $filefolder = "cache";
 
         /**
+         * Cache will run if you set variable runcache to true
+         * If you set to false, this only disable the cache process and will not deleted the current cache files
+         */
+        private static $runcache = true;
+
+        /**
          * Determine content string is valid json or not
          * 
          * @param string = string json
@@ -34,6 +44,7 @@ use \classes\SimpleCache as SimpleCache;
          * @return bool
          */
         private static function isJson($string) {
+            if (empty($string)) return false;
             json_decode($string);
             return (json_last_error() == JSON_ERROR_NONE);
         }
@@ -76,15 +87,19 @@ use \classes\SimpleCache as SimpleCache;
          * @return bool
          */
         public static function isCached($cachetime=300) {
-            $file = self::filePath();
-            // check the expired file cache.
-            $mtime = 0;
-            if (file_exists($file)) {
-                $mtime = filemtime($file);
-            }
-            $filetimemod = $mtime + $cachetime;
-            // if the renewal date is smaller than now, return true; else false (no need for update)
-            if ($filetimemod < time()) {
+            if (self::$runcache){
+                $file = self::filePath();
+                // check the expired file cache.
+                $mtime = 0;
+                if (file_exists($file)) {
+                    $mtime = filemtime($file);
+                }
+                $filetimemod = $mtime + $cachetime;
+                // if the renewal date is smaller than now, return true; else false (no need for update)
+                if ($filetimemod < time()) {
+                    return false;
+                }
+            } else {
                 return false;
             }
             return true;
@@ -114,7 +129,34 @@ use \classes\SimpleCache as SimpleCache;
         public static function save($datajson,$cachetime=300) {
             $file = self::filePath();
             if (!empty($datajson) && self::isJson($datajson)) {
-                file_put_contents($file, $datajson);
+                if (self::$runcache) file_put_contents($file, $datajson);
+            }
+            return $datajson;
+        }
+
+        /**
+         * Clear all cache files that have age more than 5 minutes old
+         */
+        public static function clearAll(){
+            if (file_exists(self::$filefolder)) {
+                //Auto delete useless cache
+                $files = glob(self::$filefolder.'/*');
+                $now   = time();
+
+                $total = 0;
+                $deleted = 0;
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        $total++;
+                        if ($now - filemtime($file) >= 60 * 5) { // 5 minutes ago
+                            unlink($file);
+                            $deleted++;
+                        }
+                    }
+                }
+                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"].'","message":"To prevent any error occured on the server, only cache files that have age more than 5 minutes old, will be deleted."}';
+            } else {
+                $datajson = '{"status:"error","message":"Directory not found!"}';
             }
             return $datajson;
         }
