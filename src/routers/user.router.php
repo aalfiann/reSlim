@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\SimpleCache as SimpleCache;
 
     // GET example api to show all data role
     $app->get('/user/role/{token}', function (Request $request, Response $response) {
@@ -49,7 +50,12 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        $body->write($users->showUserPublic());
+        if (SimpleCache::isCached()){
+            $datajson = SimpleCache::load();
+        } else {
+            $datajson = SimpleCache::save($users->showUserPublic(),1800);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 
