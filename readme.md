@@ -1,10 +1,10 @@
 reSlim
 =======
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.6.2-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.7.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
-reSlim is Lightweight, Fast, Secure and Powerful rest api.<br>
+reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
 Features:
@@ -14,15 +14,17 @@ Reslim is already build with essentials of user management system in rest api wa
 1. User register, login and logout
 2. Auto generated token every login
 3. User can revoke all active token
-4. Every user can upload file to server
-5. There is a role for superuser, admin and member
+4. User can manage their API Keys
+5. Included with default role for superuser, admin and member
 6. Auto clear current token when logout,user deleted or password was changed
 7. Change, reset, forgot password concept is very secure
 8. Mailer for sending email or contact form
-9. User can manage their API Keys
-10. Pagination json response
-11. Support Multi Language
-12. Etc.
+9. File management system
+10. Pages management system
+11. Pagination json response
+12. Support Multi Language
+13. Server Side Caching
+14. Etc.
 
 System Requirements
 ---------------
@@ -48,13 +50,17 @@ Folder System
     * classes/
         * middleware/
             * ApiKey.php (For handling authentication api key)
+        * modules
+            * Pages.php (For pages management)
         * Auth.php (For handling authentication)
         * BaseConverter.php (For encryption)
         * Cors.php (For accessing web resources)
         * CustomHandlers.php (For handle message)
+        * index.php (Default forbidden page)
         * Logs.php (For handle Log Server)
         * Mailer.php (For sending mail)
         * Pagination.php (For pagination json response)
+        * SimpleCache.php (For handle cache server side)
         * Upload.php (For user upload and management file)
         * User.php (For user management)
         * Validation.php (For validation)
@@ -109,6 +115,7 @@ user.router.php
 ```php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\SimpleCache as SimpleCache;
 
     // POST example api to show all data user
     $app->post('/user', function (Request $request, Response $response) {
@@ -120,14 +127,24 @@ use \Psr\Http\Message\ResponseInterface as Response;
         return classes\Cors::modify($response,$body,200);
     });
 
-    // GET example api to show profile user (doesn't need a authentication)
-    $app->get('/user/profile/{username}', function (Request $request, Response $response) {
+    // GET example api to show profile user (for public is need an api key)
+    $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->Username = $request->getAttribute('username');
         $body = $response->getBody();
-        $body->write($users->showUser());
+        
+        // Use Http Cache Control and ETag
+        $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
+        
+        // Working with server side cache.
+        if (SimpleCache::isCached(600,["apikey"])){
+            $datajson = SimpleCache::load(["apikey"]);
+        } else {
+            $datajson = SimpleCache::save($users->showUserPublic(),["apikey"]);
+        }
+        $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
 ```
 
 ### reSlim Configuration
@@ -138,7 +155,7 @@ Example Config.php
  * Configuration App
  *
  * @var $config['displayErrorDetails'] to display error details on slim
- * @var $config['addContentLengthHeader'] to set the Content-Length header which makes Slim behave more predictably
+ * @var $config['addContentLengthHeader'] should be set to false. This will allows the web server to set the Content-Length header which makes Slim behave more predictably
  * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
  * @var $config['enableApiKeys'] to protect api from guest or anonymous. Guest which don't have api key can not using this service. Default is true.
  * 
