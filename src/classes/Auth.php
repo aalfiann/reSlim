@@ -675,7 +675,7 @@ use \classes\BaseConverter as BaseConverter;
             if (!empty($apikey)) {
                 $file = self::filePath($apikey);
                 $content = '{"APIKey":"'.$apikey.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
-                if (self::$runcache) file_put_contents($file, $content);
+                if (self::$runcache) file_put_contents($file, $content, LOCK_EX);
             }
         }
 

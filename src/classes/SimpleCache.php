@@ -187,7 +187,7 @@ use \classes\SimpleCache as SimpleCache;
         public static function save($datajson,$setparam=null,$blacklistparam=null) {
             $file = self::filePath($setparam);
             if (!empty($datajson) && self::isJson($datajson)) {
-                if (self::$runcache && self::isBlacklisted($blacklistparam) == false) file_put_contents($file, $datajson);
+                if (self::$runcache && self::isBlacklisted($blacklistparam) == false) file_put_contents($file, $datajson, LOCK_EX);
             }
             return $datajson;
         }
