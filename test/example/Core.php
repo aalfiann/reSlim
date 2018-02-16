@@ -33,7 +33,7 @@
         var $pathcache = 'cache-files';
         var $minifycache = true;
 
-        var $version = '1.6.0';
+        var $version = '1.7.0';
 
         private static $instance;
         

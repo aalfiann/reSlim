@@ -3,7 +3,7 @@
  * Configuration App
  *
  * @var $config['displayErrorDetails'] to display error details on slim
- * @var $config['addContentLengthHeader'] to set the Content-Length header which makes Slim behave more predictably
+ * @var $config['addContentLengthHeader'] should be set to false. This will allows the web server to set the Content-Length header which makes Slim behave more predictably
  * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
  * @var $config['enableApiKeys'] to protect api from guest or anonymous. Guest which don't have api key can not using this service. Default is true.
  * @var $config['language'] is language that we use for delivery message information. Default is en means english.
