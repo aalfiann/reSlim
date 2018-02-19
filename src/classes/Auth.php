@@ -696,12 +696,6 @@ use \classes\BaseConverter as BaseConverter;
 
         /**
          * Delete all static api key file cache
-         * 
-         * @param apikey = apikey value
-         * @param asbool = will make this function return bool
-         * 
-         * @return bool with condition param
-         * 
          */
         public static function deleteCacheAll() {
             if (file_exists(self::$filefolder)) {
