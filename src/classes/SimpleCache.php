@@ -212,7 +212,7 @@ use \classes\SimpleCache as SimpleCache;
                         }
                     }
                 }
-                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"].'","message":"To prevent any error occured on the server, only cache files that have age more than 5 minutes old, will be deleted."}';
+                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than 5 minutes old, will be deleted."}';
             } else {
                 $datajson = '{"status:"error","message":"Directory not found!"}';
             }

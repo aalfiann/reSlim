@@ -1343,6 +1343,28 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Delete All Cache API Keys",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/apikey/delete/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Cache Data",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/data/delete/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

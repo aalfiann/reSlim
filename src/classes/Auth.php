@@ -694,4 +694,37 @@ use \classes\BaseConverter as BaseConverter;
             }
         }
 
+        /**
+         * Delete all static api key file cache
+         * 
+         * @param apikey = apikey value
+         * @param asbool = will make this function return bool
+         * 
+         * @return bool with condition param
+         * 
+         */
+        public static function deleteCacheAll() {
+            if (file_exists(self::$filefolder)) {
+                //Auto delete useless cache
+                $files = glob(self::$filefolder.'/*');
+                $now   = time();
+
+                $total = 0;
+                $deleted = 0;
+                foreach ($files as $file) {
+                    if (is_file($file)) {
+                        $total++;
+                        if ($now - filemtime($file) >= 60 * 5) { // 5 minutes ago
+                            unlink($file);
+                            $deleted++;
+                        }
+                    }
+                }
+                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than 5 minutes old, will be deleted."}';
+            } else {
+                $datajson = '{"status:"error","message":"Directory not found!"}';
+            }
+            return $datajson;
+        }
+
     }
