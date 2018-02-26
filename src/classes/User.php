@@ -1104,12 +1104,13 @@ use PDO;
 		 */
 		public function showUser() {
 			if (Auth::validToken($this->db,$this->token)){
+				$roles = Auth::getRoleID($this->db,$this->token);
 				$sql = "SELECT a.Username, a.Fullname, a.Address, a.Phone, a.Email, a.Aboutme,a.Avatar, b.Role , c.Status,
 						a.Created_at, a.Updated_at
 					FROM user_data a 
 					INNER JOIN user_role b ON a.RoleID = b.RoleID
 					INNER JOIN core_status c ON a.StatusID = c.StatusID
-					WHERE a.Username = :username AND a.StatusID = '1';";
+					WHERE a.Username = :username ".($roles == '1'?'':"AND a.StatusID = '1'").";";
 				
 				$stmt = $this->db->prepare($sql);		
 				$stmt->bindParam(':username', $this->username, PDO::PARAM_STR);
@@ -1313,14 +1314,23 @@ use PDO;
 		 */
 		public function delete(){
 			if (Auth::validToken($this->db,$this->token)){
-				if ($this->isRegistered()){
-					$data = $this->doDelete();
+				$roles = Auth::getRoleID($this->db,$this->token);
+				if ($roles == '1'){
+					if ($this->isRegistered()){
+						$data = $this->doDelete();
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS902',
+							'message' => CustomHandlers::getreSlimMessage('RS902')
+						];
+					}
 				} else {
 					$data = [
-	    				'status' => 'error',
-						'code' => 'RS902',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS902')
-					];
+						'status' => 'error',
+						'code' => 'RS404',
+						'message' => CustomHandlers::getreSlimMessage('RS404')
+					];	
 				}
 			} else {
 				$data = [
