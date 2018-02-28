@@ -307,16 +307,20 @@
         public static function logout()
         {
             //Unset SESSION
-        	if (!isset($_SESSION['username'])) session_start();
+        	session_start();
+            if(isset($_SESSION['username']) && !empty($_SESSION['username'])) {
                 if (self::revokeToken($_SESSION['username'],$_SESSION['token'])){
                     unset($_SESSION['username']);
-                	unset($_SESSION['token']);
+                    unset($_SESSION['token']);
                 }
+            }
         	// unset cookies
         	if (isset($_SERVER['HTTP_COOKIE'])) {
-                if (self::revokeToken($_COOKIE['username'],$_COOKIE['token'])){
-                    setcookie('username', '', time()-1000, '/');
-                    setcookie('token', '', time()-1000, '/');
+                if(isset($_COOKIE['username']) && !empty($_COOKIE['username'])) {
+                    if (self::revokeToken($_COOKIE['username'],$_COOKIE['token'])){
+                        setcookie('username', '', time()-1000, '/');
+                        setcookie('token', '', time()-1000, '/');
+                    }
                 }
             	$cookies = explode(';', $_SERVER['HTTP_COOKIE']);
             	    foreach($cookies as $cookie) {
@@ -325,8 +329,8 @@
                     	setcookie($name, '', time()-1000);
                         setcookie($name, '', time()-1000, '/');
                 	}
-	        }
-        	header("Location: ".self::getInstance()->basepath."/modul-login.php?m=1");
+            }
+        	header("Location: ".self::getInstance()->basepath."/modul-login.php");
         }
 
         /**
