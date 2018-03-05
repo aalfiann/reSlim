@@ -572,16 +572,17 @@ use PDO;
 		 */
 		public function searchAllApiKeysAsPagination() {
 			if (Auth::validToken($this->db,$this->token)){
+				$roles = Auth::getRoleID($this->db,$this->token);
 				$newusername = strtolower($this->username);
 				$search = "%$this->search%";
 				//count total row
 				$sqlcountrow = "SELECT count(a.Domain) as TotalRow 
 					from user_api a
 					inner join core_status b on a.StatusID=b.StatusID
-					where a.Username=:username and a.Domain like :search
+					where ".(($roles != '1')?' ':'')."a.Domain like :search
 					order by a.Created_at desc;";
 				$stmt = $this->db->prepare($sqlcountrow);		
-				$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+				if($roles != '1') $stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				$stmt->bindParam(':search', $search, PDO::PARAM_STR);
 				
 				if ($stmt->execute()) {	
@@ -599,10 +600,10 @@ use PDO;
 							$sql = "SELECT a.Created_at,a.Domain,a.ApiKey,a.StatusID,b.`Status`,a.Username,a.Updated_at,a.Updated_by 
 								from user_api a
 								inner join core_status b on a.StatusID=b.StatusID
-								where a.Username=:username and a.Domain like :search
+								where ".(($roles != '1')?'a.Username=:username and ':'')."a.Domain like :search
 								order by a.Created_at desc LIMIT :limpage , :offpage;";
 							$stmt2 = $this->db->prepare($sql);
-							$stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
+							if($roles != '1') $stmt2->bindParam(':username', $newusername, PDO::PARAM_STR);
 							$stmt2->bindParam(':search', $search, PDO::PARAM_STR);
 							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
