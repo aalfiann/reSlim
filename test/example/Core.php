@@ -412,6 +412,28 @@
             } else {
                 echo self::getMessage('danger',self::lang('core_update_failed'),self::lang('core_not_connected'));
             }
+        }
+        
+        /**
+		 * Process Upload File avoid resubmit on refreshed page
+         *
+         * @param $url = The url api to post the request
+         * @param $post_array = Data array to post
+		 * @return result json encoded data
+		 */
+	    public static function safeUploadFile($url,$post_array){
+            $data = json_decode(self::execPostUploadRequest($url,$post_array));
+            if (!empty($data)){
+                if ($data->{'status'} == "success"){
+                    echo self::getMessage('success',self::lang('core_upload_success'));
+                    echo self::reloadPage(0);
+                    exit;
+                } else {
+                    echo self::getMessage('danger',self::lang('core_update_failed'),$data->{'message'});
+                }
+            } else {
+                echo self::getMessage('danger',self::lang('core_update_failed'),self::lang('core_not_connected'));
+            }
 	    }
 
         /**
@@ -718,8 +740,13 @@
 		 */
         public static function redirectPage($url,$timeout=2)
         {
-            $timeout = $timeout * 1000;
-            return '<script>setTimeout(function() {window.location.href="'.$url.'"}, '.$timeout.')</script>';
+            if ($timeout>0){
+                $timeout = $timeout * 1000;
+                return '<script>setTimeout(function() {window.location.href="'.$url.'"}, '.$timeout.')</script>';
+            } else{
+                return '<script>window.location.href="'.$url.'";</script>';
+            }
+            
         }
 
         /**
@@ -730,8 +757,12 @@
 		 */
         public static function reloadPage($timeout=2)
         {
-            $timeout = $timeout * 1000;
-            return '<script>setTimeout(function() {window.location.href=window.location.href}, '.$timeout.')</script>';
+            if ($timeout>0){
+                $timeout = $timeout * 1000;
+                return '<script>setTimeout(function() {window.location.href=window.location.href}, '.$timeout.')</script>';
+            } else{
+                return '<script>window.location.href=window.location.href;</script>';
+            }
         }
 
         /**

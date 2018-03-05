@@ -41,7 +41,7 @@ $itemsperpage = filter_var((empty($_GET['itemsperpage'])?'12':$_GET['itemsperpag
                                         'Alternate' => filter_var($_POST['alternate'],FILTER_SANITIZE_STRING),
                                         'External' => filter_var($_POST['external'],FILTER_SANITIZE_URL)
                                     );
-                                    Core::uploadFile(Core::getInstance()->api.'/user/upload',$post_array);
+                                    Core::safeUploadFile(Core::getInstance()->api.'/user/upload',$post_array);
                                 }
                             ?>
                             <button name="submitupload" type="submit" class="btn btn-wd" data-toggle="modal" data-target="#myModal"><i class="ti-cloud-up"></i> <?php echo Core::lang('upload_here')?></button>
