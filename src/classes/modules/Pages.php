@@ -820,8 +820,8 @@ use PDO;
 						(SELECT count(x.PageID) FROM data_page x WHERE x.StatusID='52') AS 'Draft',
 						(SELECT sum(x.Viewer) FROM data_page x) AS 'Viewer',
 						(SELECT count(x.PageID) FROM data_page x) AS 'Total',
-						round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100) AS 'Percent_Up',
-						(100 - (SELECT Percent_Up)) AS 'Precent_Down';";
+						IFNULL(round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100),0) AS 'Percent_Up',
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
 					$stmt = $this->db->prepare($sql);
 				} else {
 					$sql = "SELECT 
@@ -829,8 +829,8 @@ use PDO;
 						(SELECT count(x.PageID) FROM data_page x WHERE x.StatusID='52' AND x.Username=:username) AS 'Draft',
 						(SELECT sum(x.Viewer) FROM data_page x WHERE x.Username=:username) AS 'Viewer',
 						(SELECT count(x.PageID) FROM data_page x WHERE x.Username=:username) AS 'Total',
-						round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100) AS 'Percent_Up',
-						(100 - (SELECT Percent_Up)) AS 'Precent_Down';";
+						IFNULL(round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100),0) AS 'Percent_Up',
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				}
