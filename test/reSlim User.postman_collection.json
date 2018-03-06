@@ -1369,7 +1369,7 @@
 		{
 			"name": "Stats Data User",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/stats/data/summary/xsilent/1oSPIt0BUgDy7owQMPOjXrlkyvvnVfqRwlmK2",
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/data/summary/{username}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1380,7 +1380,7 @@
 		{
 			"name": "Stats Data API",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/stats/api/summary/xsilent/1oSPIt0BUgDy7owQMPOjXrlkyvvnVfqRwlmK2",
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/api/summary/{username}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1391,7 +1391,7 @@
 		{
 			"name": "Stats Data Upload",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/stats/upload/summary/xsilent/1oSPIt0BUgDy7owQMPOjXrlkyvvnVfqRwlmK2",
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/upload/summary/{username}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1402,7 +1402,7 @@
 		{
 			"name": "Stats Data Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/page/stats/data/summary/xsilent/1oSPIt0BUgDy7owQMPOjXrlkyvvnVfqRwlmK2",
+				"url": "http://localhost:1337/reSlim/src/api/page/stats/data/summary/{username}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
