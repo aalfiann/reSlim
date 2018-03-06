@@ -805,4 +805,56 @@ use PDO;
 			return json_encode($data);
 	        $this->db= null;
 		}
+
+		/** 
+		 * Get data statistic page
+		 * @return result process in json encoded data
+		 */
+		public function statPageSummary() {
+			if (Auth::validToken($this->db,$this->token)){
+				$sql = "SELECT 
+					(SELECT count(x.PageID) FROM data_page x WHERE x.StatusID='51') AS 'Publish',
+					(SELECT count(x.PageID) FROM data_page x WHERE x.StatusID='52') AS 'Draft',
+					(SELECT sum(x.Viewer) FROM data_page x) AS 'Viewer',
+					(SELECT count(x.PageID) FROM data_page x) AS 'Total',
+					round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100) AS 'Percent_Up',
+					(100 - (SELECT Percent_Up)) AS 'Precent_Down'
+				FROM data_page a LIMIT 1;";
+				$stmt = $this->db->prepare($sql);
+
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+        			   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+		    		        'status' => 'success', 
+				           	'code' => 'RS501',
+        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+				    } else {
+    	    			$data = [
+        	    		   	'status' => 'error',
+		    	    	    'code' => 'RS601',
+        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}		
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			
+        
+			return json_encode($data);
+	        $this->db= null;
+		}
     }

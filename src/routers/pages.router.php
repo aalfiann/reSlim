@@ -159,3 +159,13 @@ use \classes\SimpleCache as SimpleCache;
         $body->write($pages->updateViewPage());
         return classes\Cors::modify($response,$body,200);
     })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+
+    // GET api to get all data page for statistic purpose
+    $app->get('/page/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {
+        $pages = new classes\modules\Pages($this->db);
+        $pages->token = $request->getAttribute('token');
+        $pages->username = $request->getAttribute('username');
+        $body = $response->getBody();
+        $body->write($pages->statPageSummary());
+        return classes\Cors::modify($response,$body,200);
+    });

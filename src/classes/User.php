@@ -1495,4 +1495,157 @@ use PDO;
     		$this->db = null;
 		}
 
+
+		/** 
+		 * Get data statistic user
+		 * @return result process in json encoded data
+		 */
+		public function statUserSummary() {
+			if (Auth::validToken($this->db,$this->token)){
+				$sql = "SELECT
+					(SELECT count(x.UserID) FROM user_data x WHERE x.StatusID='1') AS 'Active',
+					(SELECT count(x.UserID) FROM user_data x WHERE x.StatusID='42') AS 'Suspended',
+					(SELECT count(x.UserID) FROM user_data x) AS 'Total',
+					round((((SELECT Total) - (SELECT Suspended))/(SELECT Total))*100) AS 'Percent_Up',
+					(100 - (SELECT Percent_Up)) as 'Precent_Down'
+				FROM user_data a LIMIT 1;";
+				$stmt = $this->db->prepare($sql);
+
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+        			   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+		    		        'status' => 'success', 
+				           	'code' => 'RS501',
+        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+				    } else {
+    	    			$data = [
+        	    		   	'status' => 'error',
+		    	    	    'code' => 'RS601',
+        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}		
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			
+        
+			return json_encode($data);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get data statistic data api
+		 * @return result process in json encoded data
+		 */
+		public function statAPISummary() {
+			if (Auth::validToken($this->db,$this->token)){
+				$sql = "SELECT
+					(SELECT count(x.Domain) FROM user_api x WHERE x.StatusID='1') AS 'Active',
+					(SELECT count(x.Domain) FROM user_api x WHERE x.StatusID='42') AS 'Suspended',
+					(SELECT count(x.Domain) FROM user_api x) AS 'Total',
+					round((((SELECT Total) - (SELECT Suspended))/(SELECT Total))*100) AS 'Percent_Up',
+					(100 - (SELECT Percent_Up)) AS 'Precent_Down'
+				FROM user_api a LIMIT 1;";
+				$stmt = $this->db->prepare($sql);
+
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+        			   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+		    		        'status' => 'success', 
+				           	'code' => 'RS501',
+        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+				    } else {
+    	    			$data = [
+        	    		   	'status' => 'error',
+		    	    	    'code' => 'RS601',
+        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}		
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			
+        
+			return json_encode($data);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get data statistic user uploaded file
+		 * @return result process in json encoded data
+		 */
+		public function statUploadSummary() {
+			if (Auth::validToken($this->db,$this->token)){
+				$sql = "SELECT 
+					(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='49') AS 'Public',
+					(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='42') AS 'Private',
+					(SELECT count(x.ItemID) FROM user_upload x) AS 'Total',
+					round((((SELECT Total) - (SELECT Private))/(SELECT Total))*100) AS 'Percent_Up',
+					(100 - (SELECT Percent_Up)) AS 'Precent_Down'
+				FROM user_upload a LIMIT 1;";
+				$stmt = $this->db->prepare($sql);
+
+				if ($stmt->execute()) {	
+    	    		if ($stmt->rowCount() > 0){
+        			   	$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						$data = [
+			   	            'result' => $results, 
+		    		        'status' => 'success', 
+				           	'code' => 'RS501',
+        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+				    } else {
+    	    			$data = [
+        	    		   	'status' => 'error',
+		    	    	    'code' => 'RS601',
+        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    	    			'status' => 'error',
+						'code' => 'RS202',
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}		
+			} else {
+				$data = [
+    	    		'status' => 'error',
+					'code' => 'RS404',
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+				];
+			}
+			
+        
+			return json_encode($data);
+	        $this->db= null;
+		}
 	}
