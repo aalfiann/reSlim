@@ -1629,7 +1629,7 @@ use PDO;
 				if($roles == '1' || $roles == '2'){
 					$sql = "SELECT 
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='49') AS 'Public',
-						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='42') AS 'Private',
+						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='50') AS 'Private',
 						(SELECT count(x.ItemID) FROM user_upload x) AS 'Total',
 						round((((SELECT Total) - (SELECT Private))/(SELECT Total))*100) AS 'Percent_Up',
 						(100 - (SELECT Percent_Up)) AS 'Precent_Down';";
@@ -1637,7 +1637,7 @@ use PDO;
 				} else {
 					$sql = "SELECT 
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='49' AND x.Username=:username) AS 'Public',
-						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='42' AND x.Username=:username) AS 'Private',
+						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='50' AND x.Username=:username) AS 'Private',
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.Username=:username) AS 'Total',
 						round((((SELECT Total) - (SELECT Private))/(SELECT Total))*100) AS 'Percent_Up',
 						(100 - (SELECT Percent_Up)) AS 'Precent_Down';";
