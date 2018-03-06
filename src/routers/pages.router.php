@@ -169,3 +169,14 @@ use \classes\SimpleCache as SimpleCache;
         $body->write($pages->statPageSummary());
         return classes\Cors::modify($response,$body,200);
     });
+
+    // GET api to get all data page for statistic chart purpose
+    $app->get('/page/stats/data/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
+        $pages = new classes\modules\Pages($this->db);
+        $pages->token = $request->getAttribute('token');
+        $pages->username = $request->getAttribute('username');
+        $pages->year = $request->getAttribute('year');
+        $body = $response->getBody();
+        $body->write($pages->statPageYear());
+        return classes\Cors::modify($response,$body,200);
+    });

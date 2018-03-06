@@ -1409,6 +1409,50 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Stats Chart Data Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/stats/data/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/data/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/upload/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data API",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/api/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }

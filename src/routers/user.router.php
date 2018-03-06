@@ -437,3 +437,36 @@ use \classes\SimpleCache as SimpleCache;
         $body->write($users->statUploadSummary());
         return classes\Cors::modify($response,$body,200);
     });
+
+    // GET example api to get all data user for statistic chart purpose
+    $app->get('/user/stats/data/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $users->year = $request->getAttribute('year');
+        $body = $response->getBody();
+        $body->write($users->statUserYear());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // GET example api to get all data api user for statistic chart purpose
+    $app->get('/user/stats/api/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $users->year = $request->getAttribute('year');
+        $body = $response->getBody();
+        $body->write($users->statAPIYear());
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // GET example api to get all data uploaded file user for statistic chart purpose
+    $app->get('/user/stats/upload/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->token = $request->getAttribute('token');
+        $users->username = $request->getAttribute('username');
+        $users->year = $request->getAttribute('year');
+        $body = $response->getBody();
+        $body->write($users->statUploadYear());
+        return classes\Cors::modify($response,$body,200);
+    });
