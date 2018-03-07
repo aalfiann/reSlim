@@ -12,8 +12,8 @@ AddDefaultCharset UTF-8
 	#RewriteRule ^(.*)$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
 
 	# Force to use SSL Flexible if using cloudflare
-	RewriteCond %{HTTP:CF-Visitor} '"scheme":"http"'
-	RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L]
+	#RewriteCond %{HTTP:CF-Visitor} '"scheme":"http"'
+	#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L]
 	
 	# Handle not found
 	ErrorDocument 404 "<script>window.location.href='/404.php';</script>"
