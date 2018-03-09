@@ -174,24 +174,30 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function validToken($db, $token,$username=null){
             $r = false;
-		    $sql = "SELECT a.Username
-			    FROM user_auth a 
-                INNER JOIN user_data b ON a.Username = b.Username
-    			WHERE b.StatusID = '1' AND a.RS_Token = BINARY :token AND a.Expired > current_timestamp LIMIT 1;";
-	    	$stmt = $db->prepare($sql);
-		    $stmt->bindParam(':token', $token, PDO::PARAM_STR);
-    		if ($stmt->execute()) {	
-                if ($stmt->rowCount() > 0){
-                    if ($username == null){
-                        $r = true;
-                    } else {
-                        $single = $stmt->fetch();
-					    if ($single['Username'] == strtolower($username)){
+            if (self::isKeyCached($username.'-'.$token,600)){
+                $r = true;
+            } else {
+                $sql = "SELECT a.Username
+			        FROM user_auth a 
+                    INNER JOIN user_data b ON a.Username = b.Username
+        			WHERE b.StatusID = '1' AND a.RS_Token = BINARY :token AND a.Expired > current_timestamp LIMIT 1;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':token', $token, PDO::PARAM_STR);
+        		if ($stmt->execute()) {	
+                    if ($stmt->rowCount() > 0){
+                        if ($username == null){
                             $r = true;
-                        }
-                    }                    
-                }          	   	
-	    	} 		
+                            self::writeCache($username.'-'.$token);
+                        } else {
+                            $single = $stmt->fetch();
+					        if ($single['Username'] == strtolower($username)){
+                                $r = true;
+                                self::writeCache($username.'-'.$token);
+                            }
+                        }                    
+                    }          	   	
+	    	    }
+            } 		
 		    return $r;
     		$this->db = null;
         }
@@ -264,7 +270,9 @@ use \classes\BaseConverter as BaseConverter;
 			   		'status' => 'success',
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
-				];
+                ];
+                self::deleteCache($username.'-'.$token);
+                self::deleteCache('-'.$token);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -302,7 +310,8 @@ use \classes\BaseConverter as BaseConverter;
 			   		'status' => 'success',
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
-				];
+                ];
+                self::deleteCacheAll($username.'*');
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -346,7 +355,9 @@ use \classes\BaseConverter as BaseConverter;
 			   		'status' => 'success',
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
-				];
+                ];
+                self::deleteCache('-'.$token);
+                self::deleteCacheAll($username.'*');
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -383,7 +394,9 @@ use \classes\BaseConverter as BaseConverter;
 			   		'status' => 'success',
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
-				];
+                ];
+                self::deleteCache('-'.$token);
+                self::deleteCacheAll($username.'*');
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -485,7 +498,7 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function validAPIKey($db, $apikey,$domain=null){
             $r = false;
-            if (self::isAPICached($apikey)){
+            if (self::isKeyCached($apikey)){
                 $r = true;
             } else {
                 $sql = "SELECT a.Domain
@@ -498,13 +511,14 @@ use \classes\BaseConverter as BaseConverter;
                     if ($stmt->rowCount() > 0){
                         if ($domain == null){
                             $r = true;
+                            self::writeCache($apikey);
                         } else {
                             $single = $stmt->fetch();
 					        if (strtolower($single['Domain']) == strtolower($domain)){
                                 $r = true;
+                                self::writeCache($apikey);
                             }
-                        }
-                        self::writeCache($apikey);            
+                        }       
                     }          	   	
     	    	}
             }
@@ -613,7 +627,7 @@ use \classes\BaseConverter as BaseConverter;
         }
 
 
-        // CACHE API KEYS=========================
+        // CACHE TOKEN / API KEYS=========================
 
         /**
          * Cache will run if you set variable runcache to true
@@ -632,23 +646,23 @@ use \classes\BaseConverter as BaseConverter;
 		 *
 		 * @return string
 		 */
-        public static function filePath($apikey){
+        public static function filePath($key){
             if (!is_dir(self::$filefolder)) {
                 mkdir(self::$filefolder,0775,true);
             }            
-            return self::$filefolder.'/'.$apikey.'.cache';
+            return self::$filefolder.'/'.$key.'.cache';
         }
 
         /**
-         * Determine is current apikey already cached or not
+         * Determine is current key already cached or not
          * 
          * @param cachetime = Set expired time in second. Default value is 3600 seconds (1 hour)
          * 
          * @return bool
          */
-        public static function isAPICached($apikey,$cachetime=3600) {
+        public static function isKeyCached($key,$cachetime=3600) {
             if (self::$runcache){
-                $file = self::filePath($apikey);
+                $file = self::filePath($key);
                 // check the expired file cache.
                 $mtime = 0;
                 if (file_exists($file)) {
@@ -666,28 +680,28 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /**
-         * Write api key to static file cache
+         * Write key to static file cache
          * 
-         * @param apikey = apikey value
+         * @param key = token or api key value
          * 
          */
-        public static function writeCache($apikey) {
-            if (!empty($apikey)) {
-                $file = self::filePath($apikey);
-                $content = '{"APIKey":"'.$apikey.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
+        public static function writeCache($key) {
+            if (!empty($key)) {
+                $file = self::filePath($key);
+                $content = '{"Key":"'.$key.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
                 if (self::$runcache) file_put_contents($file, $content, LOCK_EX);
             }
         }
 
         /**
-         * Delete static api key file cache
+         * Delete static key file cache
          * 
-         * @param apikey = apikey value
+         * @param key = token or api key value
          * 
          */
-        public static function deleteCache($apikey) {
-            if (!empty($apikey)) {
-                $file = self::filePath($apikey);
+        public static function deleteCache($key) {
+            if (!empty($key)) {
+                $file = self::filePath($key);
                 if (file_exists($file)){
                     if (self::$runcache) unlink($file);
                 }
@@ -695,12 +709,14 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /**
-         * Delete all static api key file cache
+         * Delete all static token / api key file cache
+         * 
+         * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
          */
-        public static function deleteCacheAll() {
+        public static function deleteCacheAll($wildcard="*") {
             if (file_exists(self::$filefolder)) {
                 //Auto delete useless cache
-                $files = glob(self::$filefolder.'/*');
+                $files = glob(self::$filefolder.'/'.$wildcard);
                 $now   = time();
 
                 $total = 0;
