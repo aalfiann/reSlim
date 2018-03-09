@@ -953,6 +953,69 @@
 			"response": []
 		},
 		{
+			"name": "Update Draft Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Title",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Tags",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "PageID",
+							"value": "{pageid}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Page",
 			"request": {
 				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/delete",

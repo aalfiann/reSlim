@@ -37,6 +37,23 @@ use \classes\SimpleCache as SimpleCache;
         return classes\Cors::modify($response,$body,200);
     });
 
+    // POST api to update drafft page
+    $app->post('/page/data/update/draft', function (Request $request, Response $response) {
+        $pages = new classes\modules\Pages($this->db);
+        $datapost = $request->getParsedBody();    
+        $pages->username = $datapost['Username'];
+        $pages->token = $datapost['Token'];
+        $pages->title = $datapost['Title'];
+        $pages->image = $datapost['Image'];
+        $pages->description = $datapost['Description'];
+        $pages->content = $datapost['Content'];
+        $pages->tags = $datapost['Tags'];
+        $pages->pageid = $datapost['PageID'];
+        $body = $response->getBody();
+        $body->write($pages->updateDraftPage());
+        return classes\Cors::modify($response,$body,200);
+    });
+
     // POST api to delete page
     $app->post('/page/data/delete', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);

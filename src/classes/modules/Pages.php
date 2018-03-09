@@ -49,11 +49,16 @@ use PDO;
         public function addPage(){
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $newusername = strtolower(filter_var($this->username,FILTER_SANITIZE_STRING));
-			
+				$role = Auth::getRoleID($this->db,$this->token);
+				if ($role == '1' || $role == '2'){
+					$statuscode = '51';
+				} else {
+					$statuscode = '52';
+				}
     		    try {
     				$this->db->beginTransaction();
 	    			$sql = "INSERT INTO data_page (Title,Image,Description,Content,Tags,StatusID,Created_at,Username) 
-		    			VALUES (:title,:image,:description,:content,:tags,'51',current_timestamp,:username);";
+		    			VALUES (:title,:image,:description,:content,:tags,'".$statuscode."',current_timestamp,:username);";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
 					$stmt->bindParam(':image', $this->image, PDO::PARAM_STR);
@@ -154,6 +159,74 @@ use PDO;
 	        	    	'message' => CustomHandlers::getreSlimMessage('RS404')
 					];
             	}
+            } else {
+                $data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+				];
+            }
+
+			return json_encode($data);
+			$this->db = null;
+
+		}
+		
+		/** 
+		 * Update data draft page for non superuser or admin
+		 * @return result process in json encoded data
+		 */
+        public function updateDraftPage(){
+            if (Auth::validToken($this->db,$this->token,$this->username)){
+                $role = Auth::getRoleID($this->db,$this->token);
+                $newusername = strtolower(filter_var($this->username,FILTER_SANITIZE_STRING));
+                $newpageid = Validation::integerOnly($this->pageid);
+                    
+        		try {
+	        		$this->db->beginTransaction();
+					if ($role > 2){
+						$sql = "UPDATE data_page 
+                            SET Title=:title,Image=:image,Description=:description,Content=:content,Tags=:tags,
+                                StatusID='52',Updated_by=:username,
+                                Updated_at=current_timestamp
+							WHERE PageID=:pageid AND Username=:username;";
+						$stmt = $this->db->prepare($sql);
+						$stmt->bindParam(':title', $this->title, PDO::PARAM_STR);
+						$stmt->bindParam(':image', $this->image, PDO::PARAM_STR);
+						$stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
+						$stmt->bindParam(':content', $this->content, PDO::PARAM_STR);
+						$stmt->bindParam(':tags', $this->tags, PDO::PARAM_STR);
+						$stmt->bindParam(':pageid', $newpageid, PDO::PARAM_STR);
+						$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
+						if ($stmt->execute()) {
+		    				$data = [
+			    				'status' => 'success',
+				    			'code' => 'RS103',
+					    		'message' => CustomHandlers::getreSlimMessage('RS103')
+						    ];	
+    					} else {
+	    					$data = [
+		    					'status' => 'error',
+			    				'code' => 'RS203',
+				    			'message' => CustomHandlers::getreSlimMessage('RS203')
+					    	];
+    					}
+	    			    $this->db->commit();
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS404',
+							'message' => CustomHandlers::getreSlimMessage('RS404')
+						];
+					}
+				} catch (PDOException $e) {
+			        $data = [
+    			    	'status' => 'error',
+    			    	'code' => $e->getCode(),
+	    			    'message' => $e->getMessage()
+    		    	];
+	    		    $this->db->rollBack();
+    	    	} 
             } else {
                 $data = [
 	    			'status' => 'error',
@@ -434,33 +507,47 @@ use PDO;
 		public function searchPageAsPagination() {
 			if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
-                if ($role == '1' || $role == '2'){
-					$search = "%$this->search%";
+				$newusername = strtolower(filter_var($this->username,FILTER_SANITIZE_STRING));
+				$search = "%$this->search%";
+				if ($role == '1' || $role == '2'){
 					$sqlcountrow = "SELECT count(a.PageID) as TotalRow
-							from data_page a
-							inner join core_status b on a.StatusID=b.StatusID
-							where a.PageID like :search
-							or a.Title like :search
-							or a.Tags like :search
-							or a.Username like :search
-							or b.Status like :search
-							order by a.Created_at desc;";
-						$stmt = $this->db->prepare($sqlcountrow);
-						$stmt->bindValue(':search', $search, PDO::PARAM_STR);
+						from data_page a
+						inner join core_status b on a.StatusID=b.StatusID
+						where a.PageID like :search
+						or a.Title like :search
+						or a.Tags like :search
+						or a.Username like :search
+						or b.Status like :search
+						order by a.Created_at desc;";
+					$stmt = $this->db->prepare($sqlcountrow);
+					$stmt->bindValue(':search', $search, PDO::PARAM_STR);
+				} else {
+					$sqlcountrow = "SELECT count(a.PageID) as TotalRow
+						from data_page a
+						inner join core_status b on a.StatusID=b.StatusID
+						where a.Username=:username AND a.PageID like :search
+						or a.Username=:username AND a.Title like :search
+						or a.Username=:username AND a.Tags like :search
+						or a.Username=:username AND b.Status like :search
+						order by a.Created_at desc;";
+					$stmt = $this->db->prepare($sqlcountrow);
+					$stmt->bindValue(':search', $search, PDO::PARAM_STR);
+					$stmt->bindValue(':username', $newusername, PDO::PARAM_STR);
+				}
 
-					if ($stmt->execute()) {	
-    	    	    	if ($stmt->rowCount() > 0){
-							$single = $stmt->fetch();
+				if ($stmt->execute()) {	
+    	        	if ($stmt->rowCount() > 0){
+						$single = $stmt->fetch();
 						
-							// Paginate won't work if page and items per page is negative.
-							// So make sure that page and items per page is always return minimum zero number.
-							$newpage = Validation::integerOnly($this->page);
-							$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
-							$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
-							$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
+						// Paginate won't work if page and items per page is negative.
+						// So make sure that page and items per page is always return minimum zero number.
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
 
-							
-								// Query Data
+						if ($role == '1' || $role == '2'){
+							// Query Data
 							$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Content,a.Tags,a.Viewer,a.Username,
 									a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
 								from data_page a
@@ -475,49 +562,60 @@ use PDO;
 							$stmt2->bindValue(':search', $search, PDO::PARAM_STR);
 							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
 							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+						} else {
+							// Query Data
+							$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Content,a.Tags,a.Viewer,a.Username,
+									a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
+								from data_page a
+								inner join core_status b on a.StatusID=b.StatusID
+								where a.Username=:username AND a.PageID like :search
+								or a.Username=:username AND a.Title like :search
+								or a.Username=:username AND a.Tags like :search
+								or a.Username=:username AND b.Status like :search
+								order by a.Created_at desc LIMIT :limpage , :offpage;";
+							$stmt2 = $this->db->prepare($sql);
+							$stmt2->bindValue(':search', $search, PDO::PARAM_STR);
+							$stmt2->bindValue(':username', $newusername, PDO::PARAM_STR);
+							$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+							$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+						}
+							
 						
-							if ($stmt2->execute()){
-								if ($stmt2->rowCount() > 0){
-									$results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-									$pagination = new \classes\Pagination();
-									$pagination->totalRow = $single['TotalRow'];
-									$pagination->page = $this->page;
-									$pagination->itemsPerPage = $this->itemsPerPage;
-									$pagination->fetchAllAssoc = $results;
-									$data = $pagination->toDataArray();
-								} else {
-									$data = [
-		   	    		    			'status' => 'error',
-	    			    		    	'code' => 'RS601',
-	        					        'message' => CustomHandlers::getreSlimMessage('RS601')
-									];
-								}
+						if ($stmt2->execute()){
+							if ($stmt2->rowCount() > 0){
+								$results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+								$pagination = new \classes\Pagination();
+								$pagination->totalRow = $single['TotalRow'];
+								$pagination->page = $this->page;
+								$pagination->itemsPerPage = $this->itemsPerPage;
+								$pagination->fetchAllAssoc = $results;
+								$data = $pagination->toDataArray();
 							} else {
 								$data = [
-        	    		    		'status' => 'error',
-		    	    		    	'code' => 'RS202',
-	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
-								];	
-							}			
-				        } else {
-    	    			    $data = [
-        	    		    	'status' => 'error',
-		    	    		    'code' => 'RS601',
-        			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
-							];
-		    	        }          	   	
-					} else {
-						$data = [
-    	    				'status' => 'error',
-							'code' => 'RS202',
-	        			    'message' => CustomHandlers::getreSlimMessage('RS202')
+		   	    	    			'status' => 'error',
+	    		    		    	'code' => 'RS601',
+	    					        'message' => CustomHandlers::getreSlimMessage('RS601')
+								];
+							}
+						} else {
+							$data = [
+        	    	    		'status' => 'error',
+		        		    	'code' => 'RS202',
+	    			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+							];	
+						}			
+				    } else {
+    	    		    $data = [
+        			    	'status' => 'error',
+			    		    'code' => 'RS601',
+    			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
 						];
-					}
+		    	    }          	   	
 				} else {
 					$data = [
-	    				'status' => 'error',
-						'code' => 'RS404',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS404')
+    					'status' => 'error',
+						'code' => 'RS202',
+        			    'message' => CustomHandlers::getreSlimMessage('RS202')
 					];
 				}	
 			} else {
