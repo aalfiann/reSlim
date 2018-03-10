@@ -273,6 +273,7 @@ use \classes\BaseConverter as BaseConverter;
                 ];
                 self::deleteCache($username.'-'.$token);
                 self::deleteCache('-'.$token);
+                self::deleteCache($token.'-group');
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -358,6 +359,7 @@ use \classes\BaseConverter as BaseConverter;
                 ];
                 self::deleteCache('-'.$token);
                 self::deleteCacheAll($username.'*');
+                self::deleteCacheAll('*-group',864000);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -397,6 +399,7 @@ use \classes\BaseConverter as BaseConverter;
                 ];
                 self::deleteCache('-'.$token);
                 self::deleteCacheAll($username.'*');
+                self::deleteCacheAll('*-group',864000);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -417,19 +420,27 @@ use \classes\BaseConverter as BaseConverter;
          * @return string RoleID 
          */
         public static function getRoleID($db, $token){
-			$roles = 0;
-			$sql = "SELECT b.RoleID
-				FROM user_auth a 
-				INNER JOIN user_data b ON a.Username = b.Username
-				WHERE a.RS_Token = BINARY :token LIMIT 1;";
-			$stmt = $db->prepare($sql);
-			$stmt->bindParam(':token', $token, PDO::PARAM_STR);
-			if ($stmt->execute()){
-				if ($stmt->rowCount() > 0){
-					$single = $stmt->fetch();
-					$roles = $single['RoleID'];
-				}
-			}
+            $roles = 0;
+            if (self::isKeyCached($token.'group',600)){
+                $data = json_decode(self::loadCache($token.'-group'));
+                if (!empty($data)){
+                    $roles = $data->Role;
+                }
+            } else {
+                $sql = "SELECT b.RoleID
+			    	FROM user_auth a 
+				    INNER JOIN user_data b ON a.Username = b.Username
+    				WHERE a.RS_Token = BINARY :token LIMIT 1;";
+	    		$stmt = $db->prepare($sql);
+		    	$stmt->bindParam(':token', $token, PDO::PARAM_STR);
+			    if ($stmt->execute()){
+				    if ($stmt->rowCount() > 0){
+    					$single = $stmt->fetch();
+                        $roles = $single['RoleID'];
+                        self::writeCache($token.'-group',$roles);
+		    		}
+			    }
+            }
 			return $roles;
 			$db = null;
         }
@@ -680,15 +691,31 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /**
-         * Write key to static file cache
+         * Load cached file
          * 
          * @param key = token or api key value
          * 
+         * @return string
          */
-        public static function writeCache($key) {
+        public static function loadCache($key) {
+            $file = self::filePath($key);
+            if (file_exists($file)) {
+                return file_get_contents($file);
+            }
+            return "";
+        }
+
+        /**
+         * Write key to static file cache
+         * 
+         * @param key = token or api key value
+         * @param roleid = input with user role id. (This will work for cache role id only)
+         * 
+         */
+        public static function writeCache($key,$roleid="") {
             if (!empty($key)) {
                 $file = self::filePath($key);
-                $content = '{"Key":"'.$key.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"}';   
+                $content = '{"Key":"'.$key.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"'.(!empty($roleid)?',"Role":"'.$roleid.'"':'').'}';   
                 if (self::$runcache) file_put_contents($file, $content, LOCK_EX);
             }
         }
@@ -712,8 +739,9 @@ use \classes\BaseConverter as BaseConverter;
          * Delete all static token / api key file cache
          * 
          * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param agecache = Specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
          */
-        public static function deleteCacheAll($wildcard="*") {
+        public static function deleteCacheAll($wildcard="*",$agecache=300) {
             if (file_exists(self::$filefolder)) {
                 //Auto delete useless cache
                 $files = glob(self::$filefolder.'/'.$wildcard);
@@ -724,7 +752,7 @@ use \classes\BaseConverter as BaseConverter;
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         $total++;
-                        if ($now - filemtime($file) >= 60 * 5) { // 5 minutes ago
+                        if ($now - filemtime($file) >= $agecache) { // 5 minutes ago
                             unlink($file);
                             $deleted++;
                         }
