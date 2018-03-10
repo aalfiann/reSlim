@@ -421,7 +421,7 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function getRoleID($db, $token){
             $roles = 0;
-            if (self::isKeyCached($token.'group',600)){
+            if (self::isKeyCached($token.'-group',600)){
                 $data = json_decode(self::loadCache($token.'-group'));
                 if (!empty($data)){
                     $roles = $data->Role;
