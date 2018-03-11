@@ -27,7 +27,7 @@ require __DIR__.'/dependencies.php';
 require __DIR__.'/middleware.php';
 
 // Load all router files before run
-$routers = glob('../routers/*.router.php');
+$routers = glob('../routers/*.router.php',GLOB_NOSORT);
 foreach ($routers as $router) {
     require $router;
 }

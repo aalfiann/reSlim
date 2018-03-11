@@ -194,11 +194,14 @@ use \classes\SimpleCache as SimpleCache;
 
         /**
          * Clear all cache files that have age more than 5 minutes old
+         * 
+         * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param agecache = Specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
          */
-        public static function clearAll(){
+        public static function clearAll($wildcard="*",$agecache=300){
             if (file_exists(self::$filefolder)) {
                 //Auto delete useless cache
-                $files = glob(self::$filefolder.'/*');
+                $files = glob(self::$filefolder.'/'.$wildcard,GLOB_NOSORT);
                 $now   = time();
 
                 $total = 0;
@@ -206,7 +209,7 @@ use \classes\SimpleCache as SimpleCache;
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         $total++;
-                        if ($now - filemtime($file) >= 60 * 5) { // 5 minutes ago
+                        if ($now - filemtime($file) >= $agecache) { // 5 minutes ago
                             unlink($file);
                             $deleted++;
                         }

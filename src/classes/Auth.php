@@ -744,7 +744,7 @@ use \classes\BaseConverter as BaseConverter;
         public static function deleteCacheAll($wildcard="*",$agecache=300) {
             if (file_exists(self::$filefolder)) {
                 //Auto delete useless cache
-                $files = glob(self::$filefolder.'/'.$wildcard);
+                $files = glob(self::$filefolder.'/'.$wildcard,GLOB_NOSORT);
                 $now   = time();
 
                 $total = 0;
