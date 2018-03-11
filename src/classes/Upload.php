@@ -96,7 +96,7 @@ use PDO;
   "code": "403",
   "message": "This page is forbidden."
 }\';?>';
-				$newprotection = '<Files ~ "\.(php|pdf|js|sql|sqlite3|doc|xls|db|dbf|json|xml|html)$">
+				$newprotection = '<Files ~ "\.(php|js|sql|sqlite3|db|dbf|json|xml|html)$">
    Order allow,deny
    Deny from all
 </Files>';
