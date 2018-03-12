@@ -174,7 +174,7 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function validToken($db, $token,$username=null){
             $r = false;
-            if (self::isKeyCached($username.'-'.$token,600)){
+            if (self::isKeyCached('token-'.$username.'-'.$token,600)){
                 $r = true;
             } else {
                 $sql = "SELECT a.Username
@@ -187,12 +187,12 @@ use \classes\BaseConverter as BaseConverter;
                     if ($stmt->rowCount() > 0){
                         if ($username == null){
                             $r = true;
-                            self::writeCache($username.'-'.$token);
+                            self::writeCache('token-'.$username.'-'.$token);
                         } else {
                             $single = $stmt->fetch();
 					        if ($single['Username'] == strtolower($username)){
                                 $r = true;
-                                self::writeCache($username.'-'.$token);
+                                self::writeCache('token-'.$username.'-'.$token,$username);
                             }
                         }                    
                     }          	   	
@@ -271,9 +271,9 @@ use \classes\BaseConverter as BaseConverter;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCache($username.'-'.$token);
-                self::deleteCache('-'.$token);
-                self::deleteCache($token.'-group');
+                self::deleteCache('token-'.$username.'-'.$token,30);
+                self::deleteCache('token--'.$token,30);
+                self::deleteCache('token-'.$token.'-group',30);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -312,7 +312,8 @@ use \classes\BaseConverter as BaseConverter;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCacheAll($username.'*');
+                // Tell server to refresh all keys above 10 minutes old
+                self::deleteCacheAll('token-'.'*',600);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -357,9 +358,9 @@ use \classes\BaseConverter as BaseConverter;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCache('-'.$token);
-                self::deleteCacheAll($username.'*');
-                self::deleteCacheAll('*-group',864000);
+                self::deleteCache('token--'.$token,30);
+                self::deleteCacheAll('token-'.$username.'*',30);
+                self::deleteCacheAll('token-'.$token.'-group',30);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -397,9 +398,8 @@ use \classes\BaseConverter as BaseConverter;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCache('-'.$token);
-                self::deleteCacheAll($username.'*');
-                self::deleteCacheAll('*-group',864000);
+                // Tell server to refresh all keys above 10 minutes old
+                self::deleteCacheAll('token-'.'*',600);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -421,8 +421,8 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function getRoleID($db, $token){
             $roles = 0;
-            if (self::isKeyCached($token.'-group',600)){
-                $data = json_decode(self::loadCache($token.'-group'));
+            if (self::isKeyCached('token-'.$token.'-group',600)){
+                $data = json_decode(self::loadCache('token-'.$token.'-group'));
                 if (!empty($data)){
                     $roles = $data->Role;
                 }
@@ -437,7 +437,7 @@ use \classes\BaseConverter as BaseConverter;
 				    if ($stmt->rowCount() > 0){
     					$single = $stmt->fetch();
                         $roles = $single['RoleID'];
-                        self::writeCache($token.'-group',$roles);
+                        self::writeCache('token-'.$token.'-group',$roles);
 		    		}
 			    }
             }
@@ -509,7 +509,7 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function validAPIKey($db, $apikey,$domain=null){
             $r = false;
-            if (self::isKeyCached($apikey)){
+            if (self::isKeyCached('api-'.$apikey)){
                 $r = true;
             } else {
                 $sql = "SELECT a.Domain
@@ -522,12 +522,12 @@ use \classes\BaseConverter as BaseConverter;
                     if ($stmt->rowCount() > 0){
                         if ($domain == null){
                             $r = true;
-                            self::writeCache($apikey);
+                            self::writeCache('api-'.$apikey);
                         } else {
                             $single = $stmt->fetch();
 					        if (strtolower($single['Domain']) == strtolower($domain)){
                                 $r = true;
-                                self::writeCache($apikey);
+                                self::writeCache('api-'.$apikey,$domain);
                             }
                         }       
                     }          	   	
