@@ -197,7 +197,9 @@ CREATE TABLE `user_role` (
 INSERT INTO `user_role` (`RoleID`, `Role`) VALUES
 (1, 'superuser'),
 (2, 'admin'),
-(3, 'member');
+(3, 'member'),
+(4, 'developer'),
+(5, 'applicant');
 
 -- --------------------------------------------------------
 
@@ -323,7 +325,7 @@ ALTER TABLE `user_data`
 -- AUTO_INCREMENT for table `user_role`
 --
 ALTER TABLE `user_role`
-  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `RoleID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `user_upload`
 --
