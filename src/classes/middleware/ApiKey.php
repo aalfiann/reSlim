@@ -24,11 +24,10 @@ use PDO;
     {
         private $apikey,$pdo,$conf;
 
-        public function __construct($apikey)
-        {
+        public function __construct(){
             require '../config.php';
             $db = $config['db'];
-            $this->apikey = $apikey;
+            $this->apikey = filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING);
             $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
@@ -36,8 +35,7 @@ use PDO;
             $this->conf = $config['enableApiKeys'];
         }
 
-        public function __invoke($request, $response, $next)
-        {
+        public function __invoke($request, $response, $next){
             if ($this->conf == true){
                 if (!empty($this->apikey)){
                     if (Auth::validAPIKey($this->pdo,$this->apikey)){

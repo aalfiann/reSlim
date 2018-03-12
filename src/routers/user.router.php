@@ -57,7 +57,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET example api to show profile user (for internal is need an authentication token)
     $app->get('/user/profile/{username}/{token}', function (Request $request, Response $response) {
@@ -292,7 +292,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->showItem());
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET example api to stream data upload
     $app->get('/user/upload/stream/{token}/{filename}', function (Request $request, Response $response) {

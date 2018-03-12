@@ -112,7 +112,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data page pagination public
     $app->get('/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
@@ -133,7 +133,7 @@ use \classes\SimpleCache as SimpleCache;
             $body->write($pages->searchPageAsPaginationPublic());
         }
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data published page pagination public
     $app->get('/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
@@ -149,7 +149,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data published page asc or desc pagination public
     $app->get('/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
@@ -166,7 +166,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET api to update data view page
     $app->get('/page/data/view/{pageid}/', function (Request $request, Response $response) {
@@ -175,7 +175,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->updateViewPage());
         return classes\Cors::modify($response,$body,200);
-    })->add(new \classes\middleware\ApiKey(filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING)));
+    })->add(new \classes\middleware\ApiKey());
 
     // GET api to get all data page for statistic purpose
     $app->get('/page/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {
