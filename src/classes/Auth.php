@@ -76,6 +76,22 @@ use \classes\BaseConverter as BaseConverter;
         }
 
         /** 
+         * Get the domain of API Key
+         *
+         * @param $encoded : encoded data
+         * @return string domain of API Key
+         */
+        public static function getDomainAPIKey($encoded){
+            if(!empty($encoded)){
+                $host = explode('::',BaseConverter::convertToBinary($encoded, self::$characters));
+                if (!empty($host[0])){
+                    return $host[0];
+                }
+            }
+            return "";
+        }
+
+        /** 
          * Convert any char into Numeric
          *
          * @param $char : source to be converted into numeric
