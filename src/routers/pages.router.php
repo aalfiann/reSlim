@@ -100,7 +100,7 @@ use \classes\SimpleCache as SimpleCache;
     });
 
     // GET api to show single data page public
-    $app->get('/page/data/public/read/{pageid}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/public/read/{pageid}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
@@ -111,11 +111,11 @@ use \classes\SimpleCache as SimpleCache;
             $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey"]);
         }
         $body->write($datajson);
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data page pagination public
-    $app->get('/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->page = $request->getAttribute('page');
@@ -132,11 +132,11 @@ use \classes\SimpleCache as SimpleCache;
         } else {
             $body->write($pages->searchPageAsPaginationPublic());
         }
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data published page pagination public
-    $app->get('/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
@@ -148,11 +148,11 @@ use \classes\SimpleCache as SimpleCache;
             $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","query"]);
         }
         $body->write($datajson);
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET api to show all data published page asc or desc pagination public
-    $app->get('/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
@@ -165,16 +165,16 @@ use \classes\SimpleCache as SimpleCache;
             $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey"]);
         }
         $body->write($datajson);
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET api to update data view page
-    $app->get('/page/data/view/{pageid}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/view/{pageid}/', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $body->write($pages->updateViewPage());
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET api to get all data page for statistic purpose

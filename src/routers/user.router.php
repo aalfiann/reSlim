@@ -45,7 +45,7 @@ use \classes\SimpleCache as SimpleCache;
     });
 
     // GET example api to show profile user (for public is need an api key)
-    $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/user/profile/{username}/', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
         $users->username = $request->getAttribute('username');
         $body = $response->getBody();
@@ -56,7 +56,7 @@ use \classes\SimpleCache as SimpleCache;
             $datajson = SimpleCache::save($users->showUserPublic(),["apikey"]);
         }
         $body->write($datajson);
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET example api to show profile user (for internal is need an authentication token)
@@ -285,13 +285,13 @@ use \classes\SimpleCache as SimpleCache;
     });
 
     // GET example api to show user upload item (need an api key)
-    $app->get('/user/{username}/upload/data/item/{itemid}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/user/{username}/upload/data/item/{itemid}/', function (Request $request, Response $response) {
         $upload = new classes\Upload($this->db);
         $upload->username = $request->getAttribute('username');
         $upload->itemid = $request->getAttribute('itemid');
         $body = $response->getBody();
         $body->write($upload->showItem());
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new \classes\middleware\ApiKey());
 
     // GET example api to stream data upload
