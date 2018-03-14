@@ -7,10 +7,6 @@
 </IfModule>
 
 <IfModule mod_headers.c>
-	# Example to add cors for multiple domain
-	#SetEnvIf Origin "http(s)?://(www\.)?(google.com|staging.google.com|development.google.com|yourdomain.com|server.yourdomain.com|otherdomain1.com|otherdomain2.com)$" AccessControlAllowOrigin=$0
-    #Header add Access-Control-Allow-Origin %{AccessControlAllowOrigin}e env=AccessControlAllowOrigin
-
 	# Unset Server Signature header
 	ServerSignature Off
 
