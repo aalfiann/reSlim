@@ -381,6 +381,28 @@
 			"response": []
 		},
 		{
+			"name": "Verify Username",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verify/register/{username}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verify/email/{youremail}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Get User Role by Token",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/user/scope/{yourtoken}",
