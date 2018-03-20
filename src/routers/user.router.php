@@ -69,6 +69,32 @@ use \classes\SimpleCache as SimpleCache;
         return classes\Cors::modify($response,$body,200);
     });
 
+    // GET api to get verify user is registered
+    $app->get('/user/verify/register/{username}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->username = $request->getAttribute('username');
+        $body = $response->getBody();
+        if ($users->isRegistered()){
+            $body->write('{"status":"success","code":"RS501","result": {"username": "'.$users->username.'","registered":true},"message":"'.classes\CustomHandlers::getreSlimMessage('RS501').'"}');
+        } else {
+            $body->write('{"status":"error","code":"RS601","result": {"username": "'.$users->username.'","registered":false},"message":"'.classes\CustomHandlers::getreSlimMessage('RS601').'"}');
+        }
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // GET api to get verify email is exists
+    $app->get('/user/verify/email/{email}', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->email = $request->getAttribute('email');
+        $body = $response->getBody();
+        if ($users->isEmailRegistered()){
+            $body->write('{"status":"success","code":"RS501","result": {"email": "'.$users->email.'","registered":true},"message":"'.classes\CustomHandlers::getreSlimMessage('RS501').'"}');
+        } else {
+            $body->write('{"status":"error","code":"RS601","result": {"email": "'.$users->email.'","registered":false},"message":"'.classes\CustomHandlers::getreSlimMessage('RS601').'"}');
+        }
+        return classes\Cors::modify($response,$body,200);
+    });
+
     // GET example api to verify user token
     $app->get('/user/verify/{token}', function (Request $request, Response $response) {
         $users = new classes\User($this->db);
