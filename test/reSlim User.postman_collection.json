@@ -829,7 +829,7 @@
 		{
 			"name": "Create New Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/new",
+				"url": "http://localhost:1337/reSlim/src/api/page/data/new",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -886,7 +886,7 @@
 		{
 			"name": "Update Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/update",
+				"url": "http://localhost:1337/reSlim/src/api/page/data/update",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -955,7 +955,7 @@
 		{
 			"name": "Update Draft Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/update",
+				"url": "http://localhost:1337/reSlim/src/api/page/data/update",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -1018,7 +1018,7 @@
 		{
 			"name": "Delete Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/delete",
+				"url": "http://localhost:1337/reSlim/src/api/page/data/delete",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -1052,14 +1052,14 @@
 			"name": "Search Page Pagination",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/search/{yourusername}/{yourtoken}/{page}/{itemsperpage}/?query={query to search}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/search/{yourusername}/{yourtoken}/{page}/{itemsperpage}/?query={query to search}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1092,14 +1092,14 @@
 			"name": "Search Page Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/public/search/{page}/{itemsperpage}/?apikey={yourapikey}&query={query to search}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/search/{page}/{itemsperpage}/?apikey={yourapikey}&query={query to search}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1137,14 +1137,14 @@
 			"name": "Update View Page",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/view/{pageid}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/view/{pageid}/?apikey={yourapikey}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1174,14 +1174,14 @@
 			"name": "Show Publish Page Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/public/published/{page}/{itemsperpage}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/?apikey={yourapikey}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1213,14 +1213,14 @@
 			"name": "Show Publish Page Sort Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/public/published/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1253,14 +1253,14 @@
 			"name": "Show Single Page Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1291,14 +1291,14 @@
 			"name": "Show Single Page",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim-tuber/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "1337",
 					"path": [
-						"reSlim-tuber",
+						"reSlim",
 						"src",
 						"api",
 						"page",
@@ -1328,7 +1328,7 @@
 		{
 			"name": "Show Status Page",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/page/data/status/{yourtoken}",
+				"url": "http://localhost:1337/reSlim/src/api/page/data/status/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1339,7 +1339,7 @@
 		{
 			"name": "Get User Data Token",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/data/{yourusername}/{yourtoken}",
+				"url": "http://localhost:1337/reSlim/src/api/user/token/data/{yourusername}/{yourtoken}",
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1350,7 +1350,7 @@
 		{
 			"name": "Delete Single Token",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/delete",
+				"url": "http://localhost:1337/reSlim/src/api/user/token/delete",
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -1383,7 +1383,7 @@
 		{
 			"name": "Delete All Token except active one",
 			"request": {
-				"url": "http://localhost:1337/reSlim-tuber/src/api/user/token/delete/all",
+				"url": "http://localhost:1337/reSlim/src/api/user/token/delete/all",
 				"method": "POST",
 				"header": [],
 				"body": {
