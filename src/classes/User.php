@@ -399,7 +399,7 @@ use PDO;
 		 * Determine if user is already registered or not
 		 * @return boolean true / false
 		 */
-		private function isRegistered(){
+		public function isRegistered(){
 			$newusername = strtolower($this->username);
 			$r = false;
 			$sql = "SELECT a.Username
@@ -420,7 +420,7 @@ use PDO;
 		 * Determine if email is already registered or not
 		 * @return boolean true / false
 		 */
-		private function isEmailRegistered(){
+		public function isEmailRegistered(){
 			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
 			$r = false;
 			$sql = "SELECT a.Email
