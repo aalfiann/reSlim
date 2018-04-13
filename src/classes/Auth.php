@@ -136,6 +136,33 @@ use \classes\BaseConverter as BaseConverter;
             }
             return substr(bin2hex($bytes), 0, $lenght);
         }
+
+        /**
+         * Generate Unique Numeric ID in PHP
+         * Note: 
+         * - In 32bit, if set $abs to true will make lengths of digits fixed to 10, but will reduce the level of uniqueness
+         * - In 32bit, if set $abs to false sometimes will return 11 digits because of negative number.
+         * - This is based of function uniqid() which uniqueness is still not guaranteed as mentioned in http://php.net/manual/en/function.uniqid.php
+         *  
+         * @param prefix = adding additional value on the first to get more uniqueness level.
+         * @param suffix = adding additional value on the last to get more uniqueness level.
+         * @param fixedkey = adding additional value on uniqid string before converted to numeric
+         * @param abs = Will make sure all return value is positive and fixed length 10 (without any prefix or suffix). Default is true.
+         *
+         * @return string
+         */
+        public static function uniqidNumeric($prefix,$suffix,$fixedkey,$abs=true){
+            $data = (($abs)?abs(crc32(uniqid($fixedkey))):crc32(uniqid($fixedkey)));
+            $pad = (10 - strlen($data));
+            if($pad > 0){
+                $leading = "";
+                for ($i=1;$i<=$pad;$i++){
+                    $leading .= '0';
+                }
+                return $prefix.str_replace('-','00',str_pad($data, 10, $leading, STR_PAD_LEFT)).$suffix;
+            }
+            return $prefix.str_replace('-','0',$data).$suffix;
+        }
         
         /** 
          * Generate reSlim Token when user logged
