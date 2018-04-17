@@ -685,7 +685,7 @@ use \classes\BaseConverter as BaseConverter;
 
         /**
          * Cache will run if you set variable runcache to true
-         * If you set to false, this only disable the cache process and will not deleted the current cache files
+         * If you set to false, this will only disable the cache process
          */
         private static $runcache = true;
 
@@ -697,6 +697,8 @@ use \classes\BaseConverter as BaseConverter;
 
         /**
 		 * Get filepath cache
+         * 
+         * @param key = Filename (without .cache), token or api key value
 		 *
 		 * @return string
 		 */
@@ -736,7 +738,7 @@ use \classes\BaseConverter as BaseConverter;
         /**
          * Load cached file
          * 
-         * @param key = token or api key value
+         * @param key = Filename (without .cache), token or api key value
          * 
          * @return string
          */
@@ -751,7 +753,7 @@ use \classes\BaseConverter as BaseConverter;
         /**
          * Write key to static file cache
          * 
-         * @param key = token or api key value
+         * @param key = Filename (without .cache), token or api key value
          * @param roleid = input with user role id. (This will work for cache role id only)
          * 
          */
@@ -766,14 +768,22 @@ use \classes\BaseConverter as BaseConverter;
         /**
          * Delete static key file cache
          * 
-         * @param key = token or api key value
+         * @param key = Filename (without .cache), token or api key value
+         * @param agecache = Specify the age of cache file to be deleted. Default will delete file immediately.
          * 
          */
-        public static function deleteCache($key) {
+        public static function deleteCache($key,$agecache=0) {
             if (!empty($key)) {
                 $file = self::filePath($key);
                 if (file_exists($file)){
-                    if (self::$runcache) unlink($file);
+                    if ($agecache=0){
+                        unlink($file);
+                    } else {
+                        $now   = time();
+                        if ($now - filemtime($file) >= $agecache) {
+                            unlink($file);
+                        }
+                    }
                 }
             }
         }
@@ -782,11 +792,11 @@ use \classes\BaseConverter as BaseConverter;
          * Delete all static token / api key file cache
          * 
          * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
-         * @param agecache = Specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
+         * @param agecache = Specify the age of cache file to be deleted. Default will delete cached files which is already have more 300 seconds old.
          */
         public static function deleteCacheAll($wildcard="*",$agecache=300) {
             if (file_exists(self::$filefolder)) {
-                //Auto delete useless cache
+                //Build list cached files
                 $files = glob(self::$filefolder.'/'.$wildcard,GLOB_NOSORT);
                 $now   = time();
 
@@ -795,13 +805,13 @@ use \classes\BaseConverter as BaseConverter;
                 foreach ($files as $file) {
                     if (is_file($file)) {
                         $total++;
-                        if ($now - filemtime($file) >= $agecache) { // 5 minutes ago
+                        if ($now - filemtime($file) >= $agecache) {
                             unlink($file);
                             $deleted++;
                         }
                     }
                 }
-                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than 5 minutes old, will be deleted."}';
+                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cached files that have age more than '.$agecache.' seconds old, will be deleted."}';
             } else {
                 $datajson = '{"status:"error","message":"Directory not found!"}';
             }
