@@ -21,14 +21,68 @@ use \classes\Validation as Validation;
         /**
 		 * Sanitizer string and only accept integer
 		 *
-		 * @var $string
+		 * @var string is the value
 		 *
 		 * @return string
 		 */
-        public static function integerOnly($string)
-	    {
-		    $nn = preg_replace("/[^0-9]/", "", $string );
-    		return $nn;
-	    }
+        public static function integerOnly($string){
+			return preg_replace("/[^0-9]/", "", $string);
+		}
+		
+		/**
+		 * Sanitizer string and only accept numeric
+		 *
+		 * @var string is the value
+		 *
+		 * @return string
+		 */
+		public static function numericOnly($string){
+			return preg_replace("/[^0-9.-]/", "", $string);
+		}
+		
+		/**
+		 * Sanitizer string and only accept numeric abs
+		 *
+		 * @var string is the value
+		 *
+		 * @return string
+		 */
+		public static function numericAbsOnly($string){
+			return preg_replace("/[^0-9.]/", "", $string);
+		}
+
+		/**
+		 * Determine if string is numeric
+		 *
+		 * @var string is the value
+		 *
+		 * @return bool
+		 */
+		public static function isNumeric($string){
+			return is_numeric($string);
+		}
+
+		/**
+		 * Determine if string is decimal
+		 *
+		 * @var string is the value
+		 *
+		 * @return bool
+		 */
+		public static function isDecimal($string){
+			if (is_numeric($string)) return 1;
+			return is_numeric($string) && floor($string) != $string;
+		}
+
+		/**
+		 * Determine if string is decimal only
+		 *
+		 * @var string is the value
+		 *
+		 * @return bool
+		 */
+		public static function isDecimalOnly($string){
+			return is_numeric($string) && floor($string) != $string;
+		}
 
     }
