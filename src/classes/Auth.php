@@ -151,7 +151,7 @@ use \classes\BaseConverter as BaseConverter;
          *
          * @return string
          */
-        public static function uniqidNumeric($prefix,$suffix,$fixedkey,$abs=true){
+        public static function uniqidNumeric($prefix="",$suffix="",$fixedkey="",$abs=true){
             $data = (($abs)?abs(crc32(uniqid($fixedkey))):crc32(uniqid($fixedkey)));
             $pad = (10 - strlen($data));
             if($pad > 0){
