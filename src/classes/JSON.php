@@ -71,11 +71,11 @@ namespace classes;
 		}
 
 		/**
-		 * Decode json string (not safe for use in email, html and javascript)
+		 * Decode json string (faster but sometimes fail)
 		 *
 		 * @var json is the json string
 		 *
-		 * @return string
+		 * @return array stdClass
 		 */
 		public static function decode($json){
 			if (self::isValid($json)){
@@ -85,11 +85,11 @@ namespace classes;
 		}
 		
 		/**
-		 * Safest way to decode json string (safe but slower for big json string)
+		 * Safest way to decode json string (bit slower)
 		 *
 		 * @var json is the json string
 		 *
-		 * @return string
+		 * @return array stdClass
 		 */
 		public static function safeDecode($json){
 			$json = utf8_encode($json);
@@ -122,6 +122,7 @@ namespace classes;
 		 * - You have to create regex to convert char to invalid utf-8 for test in array
 		 *
 		 * @var string is the array string or value
+		 * @var simple if set to true will only show status and message. Default is false.
 		 *
 		 * @return string json output formatted
 		 */
@@ -132,97 +133,97 @@ namespace classes;
 				case JSON_ERROR_NONE:
 					$msg = 'no errors found';
 					if($simple){
-						$data = ['status' => 'success','message' => $msg];
+						$data = ['status' => 'success','case' => 'json_error_none','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'success','message' => $msg];
+						$data = ['data'=> $string,'status' => 'success','case' => 'json_error_none','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_DEPTH:
 					$msg = 'maximum stack depth exceeded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_depth','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_depth','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_STATE_MISMATCH:
 					$msg = 'underflow or the modes mismatch';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_state_mismatch','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_state_mismatch','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_CTRL_CHAR:
 					$msg = 'unexpected control character found';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_ctrl_char','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_ctrl_char','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_SYNTAX:
 					$msg = 'syntax error, malformed json';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_syntax','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_syntax','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UTF8:
 					$msg = 'malformed UTF-8 characters, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_utf8','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_utf8','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_RECURSION:
 					$msg = 'malformed one or more recursive references, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_recursion','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_recursion','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_INF_OR_NAN:
 					$msg = 'malformed NAN or INF, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_inf_or_nan','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_inf_or_nan','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UNSUPPORTED_TYPE:
 					$msg = 'a value of a type that cannot be encoded was given';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_unsupported_type','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_unsupported_type','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_INVALID_PROPERTY_NAME:
 					$msg = 'a property name that cannot be encoded was given';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_invalid_property_name','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_invalid_property_name','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UTF16:
 					$msg = 'malformed UTF-16 characters, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_utf16','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'json_error_utf16','message' => $msg];
 					}
 					break;
 				default:
 					$msg = 'unknown error';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'unknown','message' => $msg];
 					} else {
-						$data = ['data'=> $string,'status' => 'error','message' => $msg];
+						$data = ['data'=> $string,'status' => 'error','case' => 'unknown','message' => $msg];
 					}
 					break;
 			}
@@ -233,6 +234,7 @@ namespace classes;
 		 * Debugger to test json decode
 		 *
 		 * @var json is the json string
+		 * @var simple if set to true will only show status and message. Default is false.
 		 *
 		 * @return string json output formatted
 		 */
@@ -246,97 +248,97 @@ namespace classes;
 				case JSON_ERROR_NONE:
 					$msg = 'no errors found';
 					if($simple){
-						$data = ['status' => 'success','message' => $msg];
+						$data = ['status' => 'success','case' => 'json_error_none','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'success','message' => $msg];
+						$data = ['data'=> $json,'status' => 'success','case' => 'json_error_none','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_DEPTH:
 					$msg = 'maximum stack depth exceeded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_depth','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_depth','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_STATE_MISMATCH:
 					$msg = 'underflow or the modes mismatch';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_state_mismatch','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_state_mismatch','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_CTRL_CHAR:
 					$msg = 'unexpected control character found';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_ctrl_char','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_ctrl_char','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_SYNTAX:
 					$msg = 'syntax error, malformed json';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_syntax','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_syntax','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UTF8:
 					$msg = 'malformed UTF-8 characters, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_utf8','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_utf8','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_RECURSION:
 					$msg = 'malformed one or more recursive references, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_recursion','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_recursion','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_INF_OR_NAN:
 					$msg = 'malformed NAN or INF, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_inf_or_nan','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_inf_or_nan','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UNSUPPORTED_TYPE:
 					$msg = 'a value of a type that cannot be encoded was given';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_unsupported_type','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_unsupported_type','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_INVALID_PROPERTY_NAME:
 					$msg = 'a property name that cannot be encoded was given';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_invalid_property_name','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_invalid_property_name','message' => $msg];
 					}
 					break;
 				case JSON_ERROR_UTF16:
 					$msg = 'malformed UTF-16 characters, possibly incorrectly encoded';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'json_error_utf16','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'json_error_utf16','message' => $msg];
 					}
 					break;
 				default:
 					$msg = 'unknown error';
 					if($simple){
-						$data = ['status' => 'error','message' => $msg];
+						$data = ['status' => 'error','case' => 'unknown','message' => $msg];
 					} else {
-						$data = ['data'=> $json,'status' => 'error','message' => $msg];
+						$data = ['data'=> $json,'status' => 'error','case' => 'unknown','message' => $msg];
 					}
 					break;
 			}
