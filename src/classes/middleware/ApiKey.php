@@ -8,7 +8,6 @@
  */
 namespace classes\middleware;
 use \classes\Auth as Auth;
-use \classes\middleware\ApiKey as ApiKey;
 use \classes\CustomHandlers as CustomHandlers;
 use \classes\Cors as Cors;
 use PDO;
