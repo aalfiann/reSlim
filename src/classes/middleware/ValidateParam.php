@@ -1,6 +1,6 @@
 <?php 
 /**
- * This class is a part of middleware reSlim project to make validation for body parameter in rest api using Regular Expression
+ * This class is a part of middleware reSlim project to make validation for body parameter in form request using Regular Expression
  * @author M ABD AZIZ ALFIAN <github.com/aalfiann>
  *
  * Don't remove this class unless You know what to do
@@ -9,9 +9,9 @@
 namespace classes\middleware;
 use \classes\CustomHandlers as CustomHandlers;
 use \classes\Cors as Cors;
-use PDO;
+use \classes\JSON as JSON;
     /**
-     * A class for validation the body parameter in rest api using Regular Expression
+     * A class for validation the body parameter in form request using Regular Expression
      *
      * @package    Core reSlim
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
@@ -20,7 +20,7 @@ use PDO;
      */
     class ValidateParam
     {
-        private $parameter,$between,$regex,$message,$length;
+        private $parameter,$between,$regex,$message,$length,$error;
 
         /**
          * Constructor
@@ -35,6 +35,15 @@ use PDO;
             $this->between = $between;
         }
 
+        /**
+         * Validation middleware invokable class
+         * 
+         * @param \Psr\Http\Message\ServerRequestInterface  $request    PSR7 request
+         * @param \Psr\Http\Message\ResponseInterface       $response   PSR7 response
+         * @param callable                                  $next       Next middleware
+         * 
+         * @return \Psr\Http\Message\ResponseInterface
+         */
         public function __invoke($request, $response, $next){
             if($this->validate($request,$this->parameter,$this->between,$this->regex)){
                 $response = $next($request, $response);    
@@ -42,7 +51,11 @@ use PDO;
             } else {
                 $body = $response->getBody();
                 if (empty($this->message)){
-                    $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801')]));
+                    if (empty($this->error)){
+                        $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801')]));
+                    } else {
+                        $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'description'=>$this->error]));
+                    }
                 } else {
                     if (empty($this->length)){
                         $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message]));
@@ -59,44 +72,59 @@ use PDO;
                 case 'required':
                     $regex = '/.*\S.*/';
                     $msg = 'This field is required. Blank, empty or whitespace value is not allowed!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'alphanumeric':
                     $regex = '/^[a-zA-Z0-9]+$/';
                     $msg = 'The value is not alphanumeric!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'alphabet':
                     $regex = '/^[a-zA-Z]+$/';
                     $msg = 'The value is not alphabet!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'decimal':
                     $regex = '/^[+-]?[0-9]+(?:\.[0-9]+)?$/';
                     $msg = 'The value is not decimal!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'notzero':
                     $regex = '/^[1-9][0-9]*$/';
                     $msg = 'Only zero value is not allowed!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'numeric':
                     $regex = '/^[0-9]+$/';
                     $msg = 'The value is not numeric!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'double':
                     $regex = '/^[+-]?[0-9]+(?:,[0-9]+)*(?:\.[0-9]+)?$/';
                     $msg = 'The value is not numeric (double)!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'username':
                     $regex = '/^[a-zA-Z0-9]{3,20}$/';
                     $msg = 'The value is not username allowed format!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'email':
                     $regex = '/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
                     $msg = 'The value is not email address allowed format!';
-                    break;
+                    return $this->regexTest($regex,$key,$value,$msg);
+                case 'json':
+                    $msg = 'The value is not valid json format!';
+                    return $this->jsonTest($key,$value,$msg);
                 default:
                     $regex = $regex;
                     $msg = 'The value is not using valid format!';
+                    return $this->regexTest($regex,$key,$value,$msg);
             }
+        }
+
+        private function regexTest($regex,$key,$value,$msg){
             if(!preg_match($regex, $value)){
+                $this->message[$key] = $msg;
+                return false;
+            }
+            return true;
+        }
+
+        private function jsonTest($key,$value,$msg){
+            if (JSON::isValid($value) == false){
                 $this->message[$key] = $msg;
                 return false;
             }
@@ -136,14 +164,13 @@ use PDO;
             return true;
         }
 
-        private function validate($request,$parameter,$between='',$regex=''){
-            $parsedBody = $request->getParsedBody();
-            if (empty($parsedBody)) return true;
+        private function valueTest($parameter,$data,$between='',$regex=''){
+            $count = 0;
             if (is_array($parameter)){
                 $aa = 0;
                 foreach ($parameter as $singleparam){
                     $tt = 0;
-                    foreach ($parsedBody as $key => $value) {
+                    foreach ($data as $key => $value) {
                         if ($key==$singleparam){
                             if ($this->validateBetween($key,$value,$between)){
                                 if (!empty($regex)){
@@ -158,10 +185,14 @@ use PDO;
                     }
                     if($tt == 0) $aa += 1;
                 }
-                if($aa > 0) return false;
+                if($aa > 0) {
+                    $count += 0;
+                } else {
+                    $count += 1;
+                }
             } else {
                 $tt=0;
-                foreach ($parsedBody as $key => $value) {
+                foreach ($data as $key => $value) {
                     if ($key==$parameter){
                         if (validateBetween($key,$value,$between)){
                             if (!empty($regex)){
@@ -174,8 +205,21 @@ use PDO;
                         }
                     }
                 }
-                if($tt == 0) return false;
+                if($tt > 0){
+                    $count += 1;
+                } else {
+                    $count += 0;
+                }
             }
-            return true;
+            return $count;
+        }
+
+        private function validate($request,$parameter,$between='',$regex=''){
+            $parsedBody = $request->getParsedBody();
+            if (!empty($parsedBody)) {
+                if ($this->valueTest($parameter,$parsedBody,$between,$regex)>0) return true;
+            }
+            $this->error = ['info'=>'Some parameter is required!','required'=>$parameter];
+            return false;
         }
     }
