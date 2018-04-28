@@ -77,6 +77,14 @@ use \classes\JSON as JSON;
                     $regex = '/.*\S.*/';
                     $msg = 'This field is required. Blank, empty or whitespace value is not allowed!';
                     return $this->regexTest($regex,$key,$value,$msg);
+                case 'date':
+                    $regex = '/([123456789]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/';
+                    $msg = 'The value is not valid date with yyyy-mm-dd format.';
+                    return $this->regexTest($regex,$key,$value,$msg);
+                case 'timestamp':
+                    $regex = '/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (00|[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$/';
+                    $msg = 'The value is not valid timestamp with yyyy-mm-dd hh:mm:ss format.';
+                    return $this->regexTest($regex,$key,$value,$msg);
                 case 'alphanumeric':
                     $regex = '/^[a-zA-Z0-9]+$/';
                     $msg = 'The value is not alphanumeric!';
