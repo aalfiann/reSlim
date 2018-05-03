@@ -1,0 +1,213 @@
+{
+	"variables": [],
+	"info": {
+		"name": "reSlim Dev Test",
+		"_postman_id": "f266c2c8-871f-8f81-38dc-64a893ea4029",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Middleware Validate Param Body",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/middleware/test/param/body",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "aalfiann",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "fullname",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "Jakarta",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "628380607",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "fax",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "a@b.com",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "aboutme",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Middleware Validate Param JSON basic",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/middleware/test/param/json",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\":\"aalfiann\",\n\t\"address\":\"Jakarta\",\n\t\"phone\":\"628380607\",\n\t\"fax\":\"\",\n\t\"email\":\"a@b.com\",\n\t\"fullname\":\"\",\n\t\"aboutme\":\"Tester\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Middleware Validate Param JSON nested",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/middleware/test/param/json",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"login\":{\n\t\t\"username\":\"aalfiann\"\n\t},\n\t\"contact\":{\n\t\t\"address\":\"Jakarta\",\n\t\t\"phone\":\"628380607\",\n\t\t\"fax\":\"\",\n\t\t\"email\":\"a@b.com\"\n\t},\n\t\"detail\":{\n\t\t\"fullname\":\"\",\n\t\t\"aboutme\":\"Tester\"\n\t}\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Middleware Validate Param JSON array",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/middleware/test/param/json",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"result\":[\n\t\t{\n\t\t\t\"login\":{\n\t\t\t\t\"username\":\"aalfiann\"\n\t\t\t},\n\t\t\t\"contact\":{\n\t\t\t\t\"address\":\"Jakarta\",\n\t\t\t\t\"phone\":\"6283812312\",\n\t\t\t\t\"fax\":\"\",\n\t\t\t\t\"email\":\"a@b.com\"\n\t\t\t},\n\t\t\t\"detail\":{\n\t\t\t\t\"fullname\":\"\",\n\t\t\t\t\"aboutme\":\"Tester\"\n\t\t\t}\n\t\t},\n\t\t{\n\t\t\t\"login\":{\n\t\t\t\t\"username\":\"aalfiann\"\n\t\t\t},\n\t\t\t\"contact\":{\n\t\t\t\t\"address\":\"Jakarta\",\n\t\t\t\t\"phone\":\"6283812312\",\n\t\t\t\t\"fax\":\"\",\n\t\t\t\t\"email\":\"a@b.com\"\n\t\t\t},\n\t\t\t\"detail\":{\n\t\t\t\t\"fullname\":\"\",\n\t\t\t\t\"aboutme\":\"Tester\"\n\t\t\t}\n\t\t}\n\t]\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Middleware Validate Param URL",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/dev/middleware/test/param/url/?aboutme=&email=a@b.com&fax=&phone=1&address=Jakarta&username=aalfiann&fullname=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"dev",
+						"middleware",
+						"test",
+						"param",
+						"url",
+						""
+					],
+					"query": [
+						{
+							"key": "aboutme",
+							"value": "",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "email",
+							"value": "a@b.com",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "fax",
+							"value": "",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "phone",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "address",
+							"value": "Jakarta",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "username",
+							"value": "aalfiann",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "fullname",
+							"value": "",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
