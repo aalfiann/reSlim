@@ -85,4 +85,13 @@ use \classes\Validation as Validation;
 			return is_numeric($string) && floor($string) != $string;
 		}
 
+		/**
+		 * To determine if string is blank
+		 * @param string is the value
+		 * @return bool
+		 */
+		public static function isBlank($string){
+			return (empty($string) || ctype_space($string));
+		}
+
     }
