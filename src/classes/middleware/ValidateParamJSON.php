@@ -20,7 +20,7 @@ use \classes\JSON as JSON;
      */
     class ValidateParamJSON
     {
-        private $parameter,$between,$regex,$message,$length,$error;
+        private $parameter,$between,$regex,$message,$length,$error,$min=0,$max=0;
 
         /**
          * Constructor
@@ -74,9 +74,8 @@ use \classes\JSON as JSON;
         private function validateRegex($regex,$key,$value){
             switch($regex){
                 case 'required':
-                    $regex = '/.*\S.*/';
                     $msg = 'This field is required. Blank, empty or whitespace value is not allowed!';
-                    return $this->regexTest($regex,$key,$value,$msg);
+                    return $this->blankTest($key,$value,$msg);
                 case 'date':
                     $regex = '/([123456789]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/';
                     $msg = 'The value is not valid date with yyyy-mm-dd format.';
@@ -99,7 +98,7 @@ use \classes\JSON as JSON;
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'notzero':
                     $regex = '/^[1-9][0-9]*$/';
-                    $msg = 'Only zero value is not allowed!';
+                    $msg = 'The value should be numeric and only zero value is not allowed!';
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'numeric':
                     $regex = '/^[0-9]+$/';
@@ -135,6 +134,14 @@ use \classes\JSON as JSON;
             return true;
         }
 
+        private function blankTest($key,$value,$msg){
+            if (empty($value) || ctype_space($value)){
+                $this->message[$key] = $msg;
+                return false;
+            }
+            return true;
+        }
+
         private function jsonTest($key,$value,$msg){
             if (JSON::isValid($value) == false){
                 $this->message[$key] = $msg;
@@ -149,14 +156,14 @@ use \classes\JSON as JSON;
                 if(strpos($between,'-') !== false){
                     if(substr_count($between, '-') == 1){
                         $data = explode('-',$between);
-                        if (!empty($data[0])){
-                            $min = $data[0];
-                            $max = $data[1];
+                        if (!empty($data[0]) || $data[0] == 0){
+                            $this->min = $data[0];
+                            $this->max = $data[1];
                             $total = strlen($value);
-                            if ($total >= $min && $total <= $max){
+                            if ($total >= $this->min && $total <= $this->max){
                                 return true;
                             } else {
-                                $this->message[$key] = 'Chars length is should be between '.$min.' - '.$max.' only!';
+                                $this->message[$key] = 'Chars length is should be between '.$this->min.' - '.$this->max.' only!';
                                 $this->length[$key] = $total;
                                 return false;
                             }
@@ -181,33 +188,14 @@ use \classes\JSON as JSON;
             if (is_array($parameter)){
                 $aa = 0;
                 foreach ($parameter as $singleparam){
-                    $tt = 0;
-                    foreach ($data as $key => $value) {
-                        if (is_array($value)){
-                            $r = $this->valueTest($parameter,$value,$between,$regex);
-                            if ($r > 0){
-                                $tt += 1;
-                            }
-                        } else if(is_string($value)){
-                            if ($key==$singleparam){
-                                if ($this->validateBetween($key,$value,$between)){
-                                    if (!empty($regex)){
-                                        if($this->validateRegex($regex,$key,$value)){
-                                            $tt += 1;    
-                                        }
-                                    } else {
-                                        $tt += 1;
-                                    }
-                                }
-                            }
-                        }
+                    if($this->valueTest($singleparam,$data,$between,$regex) == 0){
+                        $aa +=1;
                     }
-                    if($tt == 0) $aa += 1;
                 }
-                if($aa > 0) {
-                    $count += 0;
-                } else {
-                    $count += 1;
+                if ($aa > 0){
+                    $count=0;
+                } else{
+                    $count +=1;
                 }
             } else if(is_string($parameter)) {
                 $tt=0;
@@ -219,10 +207,14 @@ use \classes\JSON as JSON;
                         }
                     } else if (is_string($value)){
                         if ($key==$parameter){
-                            if (validateBetween($key,$value,$between)){
+                            if ($this->validateBetween($key,$value,$between)){
                                 if (!empty($regex)){
-                                    if($this->validateRegex($regex,$key,$value)){
-                                        $tt += 1;    
+                                    if ($this->min > 0 || strlen($value) > 0 || $regex == 'required'){
+                                        if($this->validateRegex($regex,$key,$value)){
+                                            $tt += 1;    
+                                        }
+                                    } else {
+                                        $tt += 1;
                                     }
                                 } else {
                                     $tt += 1;
@@ -248,13 +240,13 @@ use \classes\JSON as JSON;
             } else {
                 $parsedBody = json_decode($data,true);
                 if (empty($parsedBody)) {
-                    $this->error = ['info'=>'Corrupted, malformed or empty request json!','debug' => json_decode(JSON::debug_decode($data,true)),'encoded_request'=>$data];
+                    $this->error = ['info'=>'Corrupted, malformed or empty request json!','parameter'=>$parameter,'debug' => json_decode(JSON::debug_decode($data,true))];
                     return false;
                 } else {
                     if ($this->valueTest($parameter,$parsedBody,$between,$regex) > 0) return true;
                 }
             }
-            $this->error = ['info'=>'Some parameter is required!','required'=>$parameter];
+            $this->error = ['info'=>'Some parameter is required!','required'=>$parameter,'encoded_request'=>$parsedBody];
             return false;
         }
     }
