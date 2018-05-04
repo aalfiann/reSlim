@@ -47,7 +47,7 @@ use \classes\JSON as JSON;
         public function __invoke($request, $response, $next){
             if($this->validate($request,$this->parameter,$this->between,$this->regex)){
                 $response = $next($request, $response);    
-                return $response;
+                return $response;        
             } else {
                 $body = $response->getBody();
                 if (empty($this->message)){
@@ -98,7 +98,7 @@ use \classes\JSON as JSON;
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'notzero':
                     $regex = '/^[1-9][0-9]*$/';
-                    $msg = 'The value should be numeric and only zero value is not allowed!';
+                    $msg = 'The value should be numeric and contains leading zero value is not allowed!';
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'numeric':
                     $regex = '/^[0-9]+$/';

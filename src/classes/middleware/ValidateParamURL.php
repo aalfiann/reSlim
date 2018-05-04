@@ -94,7 +94,7 @@ use \classes\JSON as JSON;
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'notzero':
                     $regex = '/^[1-9][0-9]*$/';
-                    $msg = 'The value should be numeric and only zero value is not allowed!';
+                    $msg = 'The value should be numeric and contains leading zero value is not allowed!';
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'numeric':
                     $regex = '/^[0-9]+$/';
@@ -213,7 +213,7 @@ use \classes\JSON as JSON;
                 $tt=0;
                 foreach ($data as $key => $value) {
                     if ($key==$parameter){
-                        if (validateBetween($key,$value,$between)){
+                        if ($this->validateBetween($key,$value,$between)){
                             if (!empty($regex)){
                                 if ($this->min > 0 || strlen($value) > 0 || $regex == 'required'){
                                     if($this->validateRegex($regex,$key,$value)){
