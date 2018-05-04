@@ -208,6 +208,160 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Response test APIKey in URL",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/dev/response/test/api/url/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"dev",
+						"response",
+						"test",
+						"api",
+						"url",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test APIKey Authorization Header",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/api/header",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{yourapikey}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test debug json valid",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/debug/json/valid",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test debug json invalid",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/debug/json/invalid",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test cache http",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/cache/http",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test cache server",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/cache/server",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Response test cache server with param",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/dev/response/test/cache/server/withparam?page=1&title=response%20server%20cache",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"dev",
+						"response",
+						"test",
+						"cache",
+						"server",
+						"withparam"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "title",
+							"value": "response%20server%20cache",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Log",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/test/log/create",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
