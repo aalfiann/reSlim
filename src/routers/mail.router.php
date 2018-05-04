@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\middleware\ValidateParam as ValidateParam;
 
     // POST example api to send mail
     $app->post('/mail/send', function (Request $request, Response $response) {      
@@ -20,4 +21,6 @@ use \Psr\Http\Message\ResponseInterface as Response;
         $body = $response->getBody();
         $body->write($mail->send());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['FromName','CC','BCC','Attachment']))
+        ->add(new ValidateParam(['To','Subject','Message','Html'],'','required'))
+        ->add(new ValidateParam('From','6-50','email'));

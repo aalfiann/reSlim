@@ -1,6 +1,9 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\middleware\ValidateParam as ValidateParam;
+use \classes\middleware\ValidateParamURL as ValidateParamURL;
+use \classes\middleware\ApiKey as ApiKey;
 use \classes\SimpleCache as SimpleCache;
 
     // POST api to create new page
@@ -17,7 +20,11 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->addPage());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Content'))
+        ->add(new ValidateParam('Tags','0-500'))
+        ->add(new ValidateParam(['Image','Description'],'0-250'))
+        ->add(new ValidateParam(['Title','Token'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST api to update page
     $app->post('/page/data/update', function (Request $request, Response $response) {
@@ -35,9 +42,14 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->updatePage());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Content'))
+        ->add(new ValidateParam('Tags','0-500'))
+        ->add(new ValidateParam(['Image','Description'],'0-250'))
+        ->add(new ValidateParam(['PageID','StatusID'],'1-11','numeric'))
+        ->add(new ValidateParam(['Token','Title'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
-    // POST api to update drafft page
+    // POST api to update draft page
     $app->post('/page/data/update/draft', function (Request $request, Response $response) {
         $pages = new classes\modules\Pages($this->db);
         $datapost = $request->getParsedBody();    
@@ -52,7 +64,12 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->updateDraftPage());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Content'))
+        ->add(new ValidateParam('Tags','0-500'))
+        ->add(new ValidateParam(['Image','Description'],'0-250'))
+        ->add(new ValidateParam(['PageID'],'1-11','numeric'))
+        ->add(new ValidateParam(['Token','Title'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST api to delete page
     $app->post('/page/data/delete', function (Request $request, Response $response) {
@@ -64,7 +81,9 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->deletePage());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('PageID','1-11','numeric'))
+        ->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // GET api to show all data page pagination registered user
     $app->get('/page/data/search/{username}/{token}/{page}/{itemsperpage}/', function (Request $request, Response $response) {
@@ -77,7 +96,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->searchPageAsPagination());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParamURL('query'));
 
     // GET api to show all data status page
     $app->get('/page/data/status/{token}', function (Request $request, Response $response) {
@@ -112,7 +131,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET api to show all data page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
@@ -129,7 +148,8 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ValidateParamURL('query'))
+        ->add(new ApiKey);
 
     // GET api to show all data published page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
@@ -138,14 +158,14 @@ use \classes\SimpleCache as SimpleCache;
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(3600,["apikey","query"])){
-            $datajson = SimpleCache::load(["apikey","query"]);
+        if (SimpleCache::isCached(3600,["apikey"])){
+            $datajson = SimpleCache::load(["apikey"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","query"]);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET api to show all data published page asc or desc pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
@@ -162,7 +182,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET api to update data view page
     $app->map(['GET','OPTIONS'],'/page/data/view/{pageid}/', function (Request $request, Response $response) {
@@ -171,7 +191,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($pages->updateViewPage());
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET api to get all data page for statistic purpose
     $app->get('/page/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {

@@ -1,6 +1,9 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \classes\middleware\ValidateParam as ValidateParam;
+use \classes\middleware\ValidateParamURL as ValidateParamURL;
+use \classes\middleware\ApiKey as ApiKey;
 use \classes\SimpleCache as SimpleCache;
 
     // GET example api to show all data role
@@ -57,7 +60,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET example api to show profile user (for internal is need an authentication token)
     $app->get('/user/profile/{username}/{token}', function (Request $request, Response $response) {
@@ -130,7 +133,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->showAll());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'));
 
     // POST example api register user
     $app->post('/user/register', function (Request $request, Response $response) {
@@ -148,7 +151,14 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->register());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Avatar'))
+        ->add(new ValidateParam('Fullname','0-50'))
+        ->add(new ValidateParam(['Address','Aboutme'],'0-250'))
+        ->add(new ValidateParam('Email','0-50','email'))
+        ->add(new ValidateParam('Phone','0-15','numeric'))
+        ->add(new ValidateParam('Role','1-11','numeric'))
+        ->add(new ValidateParam('Password','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api login user
     $app->post('/user/login', function (Request $request, Response $response) {
@@ -159,7 +169,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->login());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Password','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api logout user
     $app->post('/user/logout', function (Request $request, Response $response) {
@@ -170,7 +181,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->logout());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api update user
     $app->post('/user/update', function (Request $request, Response $response) {
@@ -189,7 +201,14 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->update());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Avatar'))
+        ->add(new ValidateParam('Fullname','0-50'))
+        ->add(new ValidateParam(['Address','Aboutme'],'0-250'))
+        ->add(new ValidateParam('Email','0-50','email'))
+        ->add(new ValidateParam('Phone','0-15','numeric'))
+        ->add(new ValidateParam(['Role','Status'],'1-11','numeric'))
+        ->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api delete user
     $app->post('/user/delete', function (Request $request, Response $response) {
@@ -200,7 +219,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->delete());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api change password
     $app->post('/user/changepassword', function (Request $request, Response $response) {
@@ -213,7 +233,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->changePassword());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api reset password
     $app->post('/user/resetpassword', function (Request $request, Response $response) {
@@ -225,7 +246,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->resetPassword());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['Token','NewPassword'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api upload
     $app->post('/user/upload', function (Request $request, Response $response) {
@@ -245,7 +267,9 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->process());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['Alternate','External'],'0-250'))
+        ->add(new ValidateParam(['Token','Title'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api update user upload item
     $app->post('/user/upload/update', function (Request $request, Response $response) {
@@ -261,7 +285,10 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->update());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['Alternate','External'],'0-250'))
+        ->add(new ValidateParam(['Status','ItemID'],'1-11','numeric'))
+        ->add(new ValidateParam(['Token','Title'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api delete user upload item
     $app->post('/user/upload/delete', function (Request $request, Response $response) {
@@ -273,7 +300,9 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->delete());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('ItemID','1-11','numeric'))
+        ->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // GET example api to show all data status for upload
     $app->get('/user/upload/status/{token}', function (Request $request, Response $response) {
@@ -308,7 +337,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->searchAllAsPagination());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParamURL('query'));
 
     // GET example api to show user upload item (need an api key)
     $app->map(['GET','OPTIONS'],'/user/{username}/upload/data/item/{itemid}/', function (Request $request, Response $response) {
@@ -318,7 +347,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($upload->showItem());
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+    })->add(new ApiKey);
 
     // GET example api to stream data upload
     $app->get('/user/upload/stream/{token}/{filename}', function (Request $request, Response $response) {
@@ -338,7 +367,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->generatePassKey());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Email','6-50','email'));
 
     // POST example api verify passkey to reset password
     $app->post('/user/verifypasskey', function (Request $request, Response $response) {
@@ -349,7 +378,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->verifyPassKey());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['PassKey','NewPassword'],'1-250','required'));
 
     // POST example api create new API Key
     $app->post('/user/keys/create', function (Request $request, Response $response) {
@@ -361,7 +390,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->generateApiKey());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam(['Username','Domain'],'1-50','required'));
 
     // POST example api update status API Key
     $app->post('/user/keys/update', function (Request $request, Response $response) {
@@ -374,7 +404,9 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->updateApiKey());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Status','1-11','numeric'))
+        ->add(new ValidateParam(['Token','ApiKey'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // POST example api delete API Key
     $app->post('/user/keys/delete', function (Request $request, Response $response) {
@@ -386,7 +418,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->deleteApiKey());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['Token','ApiKey'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // GET example api to search all data user api keys with pagination
     $app->get('/user/{username}/keys/data/search/{page}/{itemsperpage}/{token}/', function (Request $request, Response $response) {
@@ -399,7 +432,7 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->searchAllApiKeysAsPagination());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParamURL('query'));
 
     // GET example api to get all data user token
     $app->get('/user/token/data/{username}/{token}', function (Request $request, Response $response) {
@@ -421,7 +454,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->deleteSingleToken());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam(['Token','TokenToDelete'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // Post example api to delete all data user token
     $app->post('/user/token/delete/all', function (Request $request, Response $response) {
@@ -432,7 +466,8 @@ use \classes\SimpleCache as SimpleCache;
         $body = $response->getBody();
         $body->write($users->deleteAllUserToken());
         return classes\Cors::modify($response,$body,200);
-    });
+    })->add(new ValidateParam('Token','1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
 
     // GET example api to get all data user for statistic purpose
     $app->get('/user/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {
