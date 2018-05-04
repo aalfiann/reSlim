@@ -805,6 +805,45 @@
 			"response": []
 		},
 		{
+			"name": "Append Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/append",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Code",
+							"value": "{ID for error}",
+							"description": "required|alphanumeric",
+							"type": "text"
+						},
+						{
+							"key": "Name",
+							"value": "{yourname}",
+							"description": "required",
+							"type": "text"
+						},
+						{
+							"key": "Email",
+							"value": "{youremail}",
+							"description": "required",
+							"type": "text"
+						},
+						{
+							"key": "Message",
+							"value": "{message to log}",
+							"description": "required",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Update Logs",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/logs/data/update",
