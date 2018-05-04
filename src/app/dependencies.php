@@ -10,6 +10,21 @@ $container['cache'] = function () {
     return new \Slim\HttpCache\CacheProvider();
 };
 
+// Get visitor ip address
+$container['visitorip'] = function(){
+    $client  = @$_SERVER['HTTP_CLIENT_IP'];
+    $forward = @$_SERVER['HTTP_X_FORWARDED_FOR'];
+	$remote  = $_SERVER['REMOTE_ADDR'];
+	if(filter_var($client, FILTER_VALIDATE_IP)) {
+        $ip = $client;
+	} elseif(filter_var($forward, FILTER_VALIDATE_IP)) {
+	    $ip = $forward;
+	} else {
+        $ip = $remote;
+	}
+	return $ip;
+};
+
 // Default generate eTag per 5minutes
 $container['etag'] = function(){
     $fix = date('Y-m-d H:');
@@ -70,6 +85,8 @@ $container['etag2hour'] = function(){
 $container['logger'] = function($c) {
     $logger = new \Monolog\Logger('reSlim_logger');
     $file_handler = new \Monolog\Handler\StreamHandler("../logs/app.log");
+    $formatter = new \Monolog\Formatter\LineFormatter(null, null, false, true);
+    $file_handler->setFormatter($formatter);
     $logger->pushHandler($file_handler);
     return $logger;
 };
@@ -127,9 +144,7 @@ $container['errorHandler'] = function ($container) {
     return function ($request, $response, $exception) use ($container) {
         $container->logger->addInfo('{ 
 "code": "'.$exception->getCode().'", 
-"message": "'.$exception->getMessage().'",
-"file": "'.$exception->getFile().'",
-"line": "'.$exception->getLine().'"}');
+"message": "'.$exception->getMessage().'"}',['file'=>$exception->getFile(),'line'=>$exception->getLine()]);
         $response->getBody()->rewind();
         $data = [
             'status' => 'error',
