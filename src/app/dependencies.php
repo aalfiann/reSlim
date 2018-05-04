@@ -143,8 +143,8 @@ $container['notAllowedHandler'] = function ($container) {
 $container['errorHandler'] = function ($container) {
     return function ($request, $response, $exception) use ($container) {
         $container->logger->addInfo('{ 
-"code": "'.$exception->getCode().'", 
-"message": "'.$exception->getMessage().'"}',['file'=>$exception->getFile(),'line'=>$exception->getLine()]);
+"code": '.json_encode($exception->getCode()).', 
+"message": '.json_encode($exception->getMessage()).'}',['file'=>$exception->getFile(),'line'=>$exception->getLine()]);
         $response->getBody()->rewind();
         $data = [
             'status' => 'error',
