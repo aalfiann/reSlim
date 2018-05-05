@@ -76,6 +76,13 @@ use \classes\JSON as JSON;
                 case 'required':
                     $msg = 'This field is required. Blank, empty or whitespace value is not allowed!';
                     return $this->blankTest($key,$value,$msg);
+                case 'domain':
+                    $regex = '/([a-zA-Z0-9]+\.)*[a-zA-Z0-9]+\.[a-zA-Z]{2,}/';
+                    $msg = 'The value is not valid domain or subdomain format.';
+                    return $this->regexTest($regex,$key,$value,$msg);
+                case 'url':
+                    $msg = 'The value is not valid url format.';
+                    return $this->urlTest($key,$value,$msg);
                 case 'date':
                     $regex = '/([123456789]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/';
                     $msg = 'The value is not valid date with yyyy-mm-dd format.';
@@ -148,6 +155,12 @@ use \classes\JSON as JSON;
                 return false;
             }
             return true;
+        }
+
+        private function urlTest($key,$value,$msg){
+            if (!filter_var($value, FILTER_VALIDATE_URL) === false) return true;
+            $this->message[$key] = $msg;
+            return false;
         }
 
         private function validateBetween($key,$value,$between=''){
