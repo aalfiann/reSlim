@@ -225,17 +225,19 @@
         ];
 
         /**
-         * @param $code : input the code of status message in reSlim
+         * @param code : input the code of status message in reSlim
+         * @param lang : is to override the default language. Default is null, means will read from main configuration reSlim
          * @return string status message
          */
-        public static function getreSlimMessage($code){
+        public static function getreSlimMessage($code,$lang=''){
             global $config;
-            if (strtolower($config['language']) == 'id'){
-                return self::$reSlimMessagesID[$code];
-            } else {
-                return self::$reSlimMessagesEN[$code];
+            $datalang = (empty($lang)?strtolower($config['language']):$lang);
+            switch($datalang){
+                case 'id':
+                    return self::$reSlimMessagesID[$code];
+                default:
+                    return self::$reSlimMessagesEN[$code];
             }
-            
         }
 
         /**
