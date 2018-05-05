@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.7.4-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.8.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
@@ -50,6 +50,9 @@ Folder System
     * classes/
         * middleware/
             * ApiKey.php (For handling authentication api key)
+            * ValidateParam.php (For handling validation in body form request)
+            * ValidateParamJSON.php (For handling validation in JSON request)
+            * ValidateParamURL.php (For handling validation in query parameter url)
         * modules
             * Pages.php (For pages management)
         * Auth.php (For handling authentication)
@@ -97,9 +100,15 @@ You can add your custom log in your any container or router.
 
 Example adding custom log in a router
 ```php
-$app->post('/user/new', function (Request $request, Response $response) {
-    echo 'This is a POST route';
-    $this->logger->addInfo("Response post is succesfully complete!!!");
+$app->post('/custom/log/new', function (Request $request, Response $response) {
+    $this->logger->addInfo(
+        '{"message":"Response post is succesfully complete!!!"}',
+        [
+            'type'=>'customlog',
+            'created_by'=>'yourname',
+            'IP'=>$this->visitorip
+        ]
+    );
 });
 ```
 
