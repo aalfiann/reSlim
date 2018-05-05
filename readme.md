@@ -50,11 +50,13 @@ Folder System
     * classes/
         * middleware/
             * ApiKey.php (For handling authentication api key)
+            * index.php (Default forbidden page)
             * ValidateParam.php (For handling validation in body form request)
             * ValidateParamJSON.php (For handling validation in JSON request)
             * ValidateParamURL.php (For handling validation in query parameter url)
         * modules
             * Pages.php (For pages management)
+            * index.php (Default forbidden page)
         * Auth.php (For handling authentication)
         * BaseConverter.php (For encryption)
         * Cors.php (For accessing web resources)
@@ -68,6 +70,8 @@ Folder System
         * User.php (For user management)
         * Validation.php (For validation)
     * logs/
+        * app.log (Log data will stored in here)
+        * index.php (Default forbidden page)
     * routers/
 	    * name.router.php (routes by functionalities)
 * test/
