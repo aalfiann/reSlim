@@ -362,6 +362,17 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "Test change the handler message language",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/dev/response/test/message/id",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
