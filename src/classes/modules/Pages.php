@@ -375,24 +375,24 @@ use PDO;
 									$names = $redata['Tags'];	
 									$named = preg_split( "/[,]/", $names );
 									foreach($named as $name){
-										if ($name != null){$return_arr[] = trim($name);}
+										if ($name != null){$return_arr[] = utf8_encode(trim($name));}
 									}
 									//End Tags
 
-									$datares .= '{"PageID":'.json_encode($redata['PageID']).',
-											"Title":'.json_encode($redata['Title']).',
-											"Image":'.json_encode($redata['Image']).',
-											"Description":'.json_encode($redata['Description']).',
-											"Content":'.json_encode($redata['Content']).',
-											"Tags_inline":'.json_encode($redata['Tags']).',
+									$datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
+											"Title":'.json_encode(utf8_encode($redata['Title'])).',
+											"Image":'.json_encode(utf8_encode($redata['Image'])).',
+											"Description":'.json_encode(utf8_encode($redata['Description'])).',
+											"Content":'.json_encode(utf8_encode($redata['Content'])).',
+											"Tags_inline":'.json_encode(utf8_encode($redata['Tags'])).',
 											"Tags":'.json_encode($return_arr).',
-											"Viewer":'.json_encode($redata['Viewer']).',
-											"Created_at":'.json_encode($redata['Created_at']).',
-											"Username":'.json_encode($redata['Username']).',
-											"Updated_at":'.json_encode($redata['Updated_at']).',
-											"Updated_by":'.json_encode($redata['Updated_by']).',
-											"StatusID":'.json_encode($redata['StatusID']).',
-											"Status":'.json_encode($redata['Status']).'},';
+											"Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
+											"Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
+											"Username":'.json_encode(utf8_encode($redata['Username'])).',
+											"Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
+											"Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
+											"StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
+											"Status":'.json_encode(utf8_encode($redata['Status'])).'},';
 								}
 								$datares = substr($datares, 0, -1);
 								$datares .= "]";
@@ -454,24 +454,24 @@ use PDO;
 									$names = $redata['Tags'];	
 									$named = preg_split( "/[,]/", $names );
 									foreach($named as $name){
-										if ($name != null){$return_arr[] = trim($name);}
+										if ($name != null){$return_arr[] = utf8_encode(trim($name));}
 									}
 									//End Tags
 
-									$datares .= '{"PageID":'.json_encode($redata['PageID']).',
-											"Title":'.json_encode($redata['Title']).',
-											"Image":'.json_encode($redata['Image']).',
-											"Description":'.json_encode($redata['Description']).',
-											"Content":'.json_encode($redata['Content']).',
-											"Tags_inline":'.json_encode($redata['Tags']).',
+									$datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
+											"Title":'.json_encode(utf8_encode($redata['Title'])).',
+											"Image":'.json_encode(utf8_encode($redata['Image'])).',
+											"Description":'.json_encode(utf8_encode($redata['Description'])).',
+											"Content":'.json_encode(utf8_encode($redata['Content'])).',
+											"Tags_inline":'.json_encode(utf8_encode($redata['Tags'])).',
 											"Tags":'.json_encode($return_arr).',
-											"Viewer":'.json_encode($redata['Viewer']).',
-											"Created_at":'.json_encode($redata['Created_at']).',
-											"User":'.json_encode($redata['User']).',
-											"Updated_at":'.json_encode($redata['Updated_at']).',
-											"Updated_by":'.json_encode($redata['Updated_by']).',
-											"StatusID":'.json_encode($redata['StatusID']).',
-											"Status":'.json_encode($redata['Status']).'},';
+											"Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
+											"Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
+											"User":'.json_encode(utf8_encode($redata['User'])).',
+											"Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
+											"Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
+											"StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
+											"Status":'.json_encode(utf8_encode($redata['Status'])).'},';
 								}
 								$datares = substr($datares, 0, -1);
 								$datares .= "]";
@@ -685,23 +685,23 @@ use PDO;
 								$names = $redata['Tags'];	
 								$named = preg_split( "/[,]/", $names );
 								foreach($named as $name){
-									if ($name != null){$return_arr[] = trim($name);}
+									if ($name != null){$return_arr[] = utf8_encode(trim($name));}
 								}
                                 //End Tags
                                 
-                                $datares .= '{"PageID":'.json_encode($redata['PageID']).',
-									"Title":'.json_encode($redata['Title']).',
-									"Image":'.json_encode($redata['Image']).',
-									"Description":'.json_encode($redata['Description']).',
-                                    "Tags_Inline":'.json_encode($redata['Tags']).',
+                                $datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
+									"Title":'.json_encode(utf8_encode($redata['Title'])).',
+									"Image":'.json_encode(utf8_encode($redata['Image'])).',
+									"Description":'.json_encode(utf8_encode($redata['Description'])).',
+                                    "Tags_Inline":'.json_encode(utf8_encode($redata['Tags'])).',
                                     "Tags":'.json_encode($return_arr).',
-                                    "Viewer":'.json_encode($redata['Viewer']).',
-                                    "Created_at":'.json_encode($redata['Created_at']).',
-                                    "User":'.json_encode($redata['User']).',
-                                    "Updated_at":'.json_encode($redata['Updated_at']).',
-                                    "Updated_by":'.json_encode($redata['Updated_by']).',
-                                    "StatusID":'.json_encode($redata['StatusID']).',
-                                    "Status":'.json_encode($redata['Status']).'},';
+                                    "Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
+                                    "Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
+                                    "User":'.json_encode(utf8_encode($redata['User'])).',
+                                    "Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
+                                    "Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
+                                    "StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
+                                    "Status":'.json_encode(utf8_encode($redata['Status'])).'},';
                             }
                             $datares = substr($datares, 0, -1);
                             $datares .= "]";
@@ -792,23 +792,23 @@ use PDO;
 								$names = $redata['Tags'];	
 								$named = preg_split( "/[,]/", $names );
 								foreach($named as $name){
-									if ($name != null){$return_arr[] = trim($name);}
+									if ($name != null){$return_arr[] = utf8_encode(trim($name));}
 								}
                                 //End Tags
                                 
-                                $datares .= '{"PageID":'.json_encode($redata['PageID']).',
-									"Title":'.json_encode($redata['Title']).',
-									"Image":'.json_encode($redata['Image']).',
-									"Description":'.json_encode($redata['Description']).',
-                                    "Tags_Inline":'.json_encode($redata['Tags']).',
+                                $datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
+									"Title":'.json_encode(utf8_encode($redata['Title'])).',
+									"Image":'.json_encode(utf8_encode($redata['Image'])).',
+									"Description":'.json_encode(utf8_encode($redata['Description'])).',
+                                    "Tags_Inline":'.json_encode(utf8_encode($redata['Tags'])).',
                                     "Tags":'.json_encode($return_arr).',
-                                    "Viewer":'.json_encode($redata['Viewer']).',
-                                    "Created_at":'.json_encode($redata['Created_at']).',
-                                    "User":'.json_encode($redata['User']).',
-                                    "Updated_at":'.json_encode($redata['Updated_at']).',
-                                    "Updated_by":'.json_encode($redata['Updated_by']).',
-                                    "StatusID":'.json_encode($redata['StatusID']).',
-                                    "Status":'.json_encode($redata['Status']).'},';
+                                    "Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
+                                    "Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
+                                    "User":'.json_encode(utf8_encode($redata['User'])).',
+                                    "Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
+                                    "Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
+                                    "StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
+                                    "Status":'.json_encode(utf8_encode($redata['Status'])).'},';
                             }
                             $datares = substr($datares, 0, -1);
                             $datares .= "]";
