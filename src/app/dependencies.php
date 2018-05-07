@@ -1,7 +1,19 @@
 <?php
 
-// Create container
+// Built router cache if enabled in config
+if ($config['router']['enableCache'] == true){
+    if (!is_dir($config['router']['folderCache'])) mkdir($config['router']['folderCache'],0775,true);
+    $config['routerCacheFile'] = $config['router']['folderCache'].'/'.$config['router']['fileCache'];
+} else {
+    if (file_exists($config['router']['folderCache'].'/'.$config['router']['fileCache'])) {
+        unlink($config['router']['folderCache'].'/'.$config['router']['fileCache']);
+    }
+}
+
+// Initialize Slim App
 $app = new \Slim\App(["settings" => $config]);
+
+// Create container
 $container = $app->getContainer();
 $settings = $container->get('settings');
 $app->add(new \Slim\HttpCache\Cache('public',604800));
