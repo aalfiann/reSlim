@@ -23,7 +23,7 @@ namespace classes;
 	class JSON {
 
 		/**
-		 * Convert string to valid UTF8 chars 
+		 * Convert string to valid UTF8 chars (Faster but not support for ANSII)
 		 *
 		 * @var string is the array string or value
 		 *
@@ -40,8 +40,26 @@ namespace classes;
 			return $string;
 		}
 
+		/**
+		 * Convert string to valid UTF8 chars (slower but support ANSII)
+		 *
+		 * @var string is the array string or value
+		 *
+		 * @return string
+		 */
+		private static function safeConvertToUTF8($string){
+			if (is_array($string)) {
+				foreach ($string as $k => $v) {
+					$string[$k] = self::safeConvertToUTF8($v);
+				}
+			} else if (is_string ($string)) {
+				return mb_convert_encoding($string, "UTF-8", "Windows-1252");
+			}
+			return $string;
+		}
+
         /**
-		 * Encode Array string or value to json (faster but not safe for use in email, html and javascript)
+		 * Encode Array string or value to json (faster with no any conversion to utf8)
 		 *
 		 * @var data is the array string or value
 		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
@@ -49,6 +67,7 @@ namespace classes;
 		 * @return string
 		 */
         public static function encode($data,$pretty=false){
+			$data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
 			if ($pretty){
 				return json_encode($data,JSON_PRETTY_PRINT);
 			}
@@ -56,48 +75,34 @@ namespace classes;
 		}
 
 		/**
-		 * Safest way to encode Array string or value to json (safe but slower for big array)
+		 * Safest way to encode Array string or value to json (safe but slower because conversion)
+		 * When the time to use this function: If you want to display json data which is retrieve from database that maybe contains invalid utf8 chars.
 		 *
 		 * @var data is the array string or value
 		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
+		 * @var ansii if set to true then conversion to utf8 is more reliable because will work for ANSII chars. Default is set to false for performance reason.
 		 *
 		 * @return string
 		 */
-        public static function safeEncode($data,$pretty=false){
+        public static function safeEncode($data,$pretty=false,$ansii=false){
+			$data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
 			if ($pretty){
-				return json_encode(self::convertToUTF8($data),JSON_PRETTY_PRINT);
+				return json_encode((($ansii)?self::safeConvertToUTF8($data):self::convertToUTF8($data)),JSON_PRETTY_PRINT);
 			}
-			return json_encode(self::convertToUTF8($data));
+			return json_encode((($ansii)?self::safeConvertToUTF8($data):self::convertToUTF8($data)));
 		}
 
 		/**
-		 * Decode json string (faster but sometimes fail)
+		 * Decode json string (if fail will return null)
 		 *
 		 * @var json is the json string
 		 *
 		 * @return array stdClass
 		 */
-		public static function decode($json){
-			if (self::isValid($json)){
-				return json_decode($json);
-			}
-			return '';
+		public static function decode($json,$array=false){
+			return json_decode($json,$array);
 		}
-		
-		/**
-		 * Safest way to decode json string (bit slower)
-		 *
-		 * @var json is the json string
-		 *
-		 * @return array stdClass
-		 */
-		public static function safeDecode($json){
-			$json = utf8_encode($json);
-			if (self::isValid($json)){
-				return json_decode($json);
-			}
-			return '';
-		}
+
 
 		/**
 		 * Determine is valid json or not
@@ -107,11 +112,9 @@ namespace classes;
 		 * @return bool
 		 */
 		public static function isValid($data=null) {
-			if (!empty($data)) {
-				@json_decode($data);
-				return (json_last_error() === JSON_ERROR_NONE);
-			}
-			return false;
+			if (empty($data) || ctype_space($data)) return false;
+			json_decode($data);
+			return (json_last_error() === JSON_ERROR_NONE);
 		}
 
 		/**
