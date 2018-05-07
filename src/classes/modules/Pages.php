@@ -8,7 +8,7 @@
  */
 namespace classes\modules;
 use \classes\Auth as Auth;
-use \classes\modules\Pages as Pages;
+use \classes\JSON as JSON;
 use \classes\Validation as Validation;
 use \classes\CustomHandlers as CustomHandlers;
 use PDO;
@@ -96,7 +96,7 @@ use PDO;
 				];
             }
 
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db = null;
 
         }
@@ -167,7 +167,7 @@ use PDO;
 				];
             }
 
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db = null;
 
 		}
@@ -235,7 +235,7 @@ use PDO;
 				];
             }
 
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db = null;
 
         }
@@ -275,7 +275,7 @@ use PDO;
 	    		    $this->db->rollBack();
         		} 
 
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db = null;
 
         }
@@ -343,7 +343,7 @@ use PDO;
 				];
             }
             
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db = null;
 
 		}
@@ -424,7 +424,7 @@ use PDO;
 				];
 			}
 			
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 		
@@ -496,7 +496,7 @@ use PDO;
 					];
 				}	
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -626,7 +626,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
         }
 
@@ -740,7 +740,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
         }
 
@@ -847,7 +847,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
         }
 
@@ -900,7 +900,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -965,7 +965,7 @@ use PDO;
 			}
 			
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -1052,7 +1052,7 @@ use PDO;
 				];
 			}	
 	
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db= null;
 		}
     }

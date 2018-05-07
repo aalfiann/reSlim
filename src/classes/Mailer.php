@@ -7,7 +7,7 @@
  *
  */
 namespace classes;
-use \classes\Mailer as Mailer;
+use \classes\JSON as JSON;
 use PDO;
     /**
      * A class for user sending email in reSlim
@@ -134,6 +134,6 @@ use PDO;
             		'message' => CustomHandlers::getreSlimMessage('RS105')
                 ];
             }
-            return json_encode($data);
+            return JSON::encode($data);
         }
     }

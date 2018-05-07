@@ -7,7 +7,7 @@
  *
  */
 namespace classes;
-use \classes\Logs as Logs;
+use \classes\JSON as JSON;
 use PDO;
     /**
      * A class for handle log in reSlim
@@ -67,7 +67,7 @@ use PDO;
                     'message' => CustomHandlers::getreSlimMessage('RS401')
                 ];
             }
-            return json_encode($data);
+            return JSON::encode($data);
         }
 
         /** 
@@ -99,7 +99,7 @@ use PDO;
                     'message' => CustomHandlers::getreSlimMessage('RS401')
                 ];
             }
-            return json_encode($data);
+            return JSON::encode($data);
         }
 
     }

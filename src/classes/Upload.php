@@ -7,7 +7,7 @@
  *
  */
 namespace classes;
-use \classes\Upload as Upload;
+use \classes\JSON as JSON;
 use \classes\Validation as Validation;
 use PDO;
     /**
@@ -267,7 +267,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -285,7 +285,7 @@ use PDO;
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -362,7 +362,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -449,7 +449,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -491,7 +491,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -662,7 +662,7 @@ use PDO;
 	        	    'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -679,7 +679,7 @@ use PDO;
 	        	    'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -744,7 +744,7 @@ use PDO;
 						'code' => 'RS601',
         		    	'message' => CustomHandlers::getreSlimMessage('RS601')
 					];
-					return json_encode($data);
+					return JSON::encode($data);
 				}
 			} else {
 				$data = [
@@ -752,7 +752,7 @@ use PDO;
 					'code' => 'RS401',
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
-				return json_encode($data);
+				return JSON::encode($data);
 			}
 			$this->db= null;
 			exit;

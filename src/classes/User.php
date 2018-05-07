@@ -8,6 +8,7 @@
  */
 namespace classes;
 use \classes\Auth as Auth;
+use \classes\JSON as JSON;
 use \classes\Validation as Validation;
 use PDO;
 	/**
@@ -315,7 +316,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS914')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
         }
 
@@ -391,7 +392,7 @@ use PDO;
 			    	'message' => CustomHandlers::getreSlimMessage('RS202')
 				];
 			}	
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
         }
 
@@ -524,7 +525,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 
@@ -543,7 +544,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 
@@ -562,7 +563,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 
@@ -645,7 +646,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -700,7 +701,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -749,7 +750,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 	
@@ -828,7 +829,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -956,7 +957,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -1094,7 +1095,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -1148,7 +1149,7 @@ use PDO;
 			}
 			
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -1191,7 +1192,7 @@ use PDO;
 				];
 			}		
         
-			return json_encode($data);
+			return JSON::safeEncode($data);
 	        $this->db= null;
 		}
 
@@ -1226,7 +1227,7 @@ use PDO;
 				}
 			}
 			
-			return json_encode($data,JSON_PRETTY_PRINT);
+			return JSON::encode($data,JSON_PRETTY_PRINT);
 		}
 
 		/** 
@@ -1268,7 +1269,7 @@ use PDO;
 				}
 			}
 		
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1277,7 +1278,7 @@ use PDO;
 		 */
 		public function logout(){
 			$data = Auth::clearToken($this->db,$this->username,$this->token);
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1306,7 +1307,7 @@ use PDO;
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1340,7 +1341,7 @@ use PDO;
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1366,7 +1367,7 @@ use PDO;
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1392,7 +1393,7 @@ use PDO;
         	    	'message' => CustomHandlers::getreSlimMessage('RS401')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1413,7 +1414,7 @@ use PDO;
 	            	'message' => CustomHandlers::getreSlimMessage('RS404')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1435,7 +1436,7 @@ use PDO;
 	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
 				];
 			}
-			return json_encode($data);
+			return JSON::encode($data);
 		}
 
 		/** 
@@ -1453,7 +1454,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 		
@@ -1472,7 +1473,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 
@@ -1491,7 +1492,7 @@ use PDO;
 					'message' => CustomHandlers::getreSlimMessage('RS404')
     			];
 			}
-		    return json_encode($data);
+		    return JSON::encode($data);
     		$this->db = null;
 		}
 
@@ -1551,7 +1552,7 @@ use PDO;
 			}
 			
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -1614,7 +1615,7 @@ use PDO;
 			}
 			
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -1677,7 +1678,7 @@ use PDO;
 			}
 			
         
-			return json_encode($data);
+			return JSON::encode($data);
 	        $this->db= null;
 		}
 
@@ -1752,7 +1753,7 @@ use PDO;
 				];
 			}	
 	
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db= null;
 		}
 
@@ -1840,7 +1841,7 @@ use PDO;
 				];
 			}	
 	
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db= null;
 		}
 
@@ -1927,7 +1928,7 @@ use PDO;
 				];
 			}	
 	
-			return json_encode($data);
+			return JSON::encode($data);
 			$this->db= null;
 		}
 	}
