@@ -50,23 +50,25 @@ use \classes\JSON as JSON;
                 return $response;        
             } else {
                 $body = $response->getBody();
+                $datajson = "";
                 if (empty($this->message)){
                     if (empty($this->error)){
                         if ($this->regex == 'json'){
-                            $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'), 'description' => 'If the value is in json format, You have to encode it.']));
+                            $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'), 'description' => 'If the value is in json format, You have to encode it.'];
                         } else {
-                            $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801')]));
+                            $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801')];
                         }
                     } else {
-                        $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'), 'description' => $this->error]));
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'), 'description' => $this->error];
                     }
                 } else {
                     if (empty($this->length)){
-                        $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message]));
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message];
                     } else {
-                        $body->write(json_encode(['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message,'length' => $this->length]));
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message,'length' => $this->length];
                     }
                 }
+                $body->write(JSON::encode($datajson));
                 return Cors::modify($response,$body,400);
             }
         }

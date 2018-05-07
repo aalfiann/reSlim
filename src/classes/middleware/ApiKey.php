@@ -8,6 +8,7 @@
  */
 namespace classes\middleware;
 use \classes\Auth as Auth;
+use \classes\JSON as JSON;
 use \classes\CustomHandlers as CustomHandlers;
 use \classes\Cors as Cors;
 use PDO;
@@ -51,7 +52,7 @@ use PDO;
                         return $response;
                     } else {
                         $body = $response->getBody();
-                        $body->write(json_encode([
+                        $body->write(JSON::encode([
 	    	        	    'status' => 'error',
                             'code' => 'RS406',
 			        	    'message' => CustomHandlers::getreSlimMessage('RS406')
@@ -65,7 +66,7 @@ use PDO;
                             return $response;
                         } else {
                             $body = $response->getBody();
-                            $body->write(json_encode([
+                            $body->write(JSON::encode([
                                 'status' => 'error',
                                 'code' => 'RS406',
                                 'message' => CustomHandlers::getreSlimMessage('RS406')
@@ -74,7 +75,7 @@ use PDO;
                         }
                     } else {
                         $body = $response->getBody();
-                        $body->write(json_encode([
+                        $body->write(JSON::encode([
 		        	        'status' => 'error',
     			   	    	'code' => 'RS407',
 	    		    	    'message' => CustomHandlers::getreSlimMessage('RS407')
