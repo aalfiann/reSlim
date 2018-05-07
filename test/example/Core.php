@@ -33,7 +33,7 @@
         var $pathcache = 'cache-files';
         var $minifycache = true;
 
-        var $version = '1.7.0';
+        var $version = '1.8.1';
 
         private static $instance;
         
@@ -354,14 +354,12 @@
                         '.self::lang('core_mail_reset_password5').'<br />
                         '.self::getInstance()->title.'</p></body></html>',
                         'Html' => 'true',
-                        'From' => '',
-                        'FromName' => '',
                         'CC' => '',
                         'BCC' => '',
                         'Attachment' => ''
                     );
                     try {
-                        $sendemail = json_decode(self::execPostRequest(self::getInstance()->api.'/mail/send',$email_array));
+                        $sendemail = json_decode(self::execPostRequest(self::getInstance()->api.'/mail/send/default',$email_array));
                         echo self::getMessage('success',self::lang('core_reset_password_success1'),self::lang('core_reset_password_success2'));
                     } catch (Exception $e) {
                         echo self::getMessage('danger',self::lang('core_reset_password_failed'),$e->getMessage());
