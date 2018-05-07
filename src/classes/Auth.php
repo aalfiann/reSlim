@@ -818,4 +818,42 @@ use \classes\BaseConverter as BaseConverter;
             return $datajson;
         }
 
+        /**
+         * Get total size of the cache folder
+         * 
+         * @return string
+         */
+        public static function getSize() {
+            $size = 0;
+            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
+                $size += $file->getSize();
+            }
+            return self::formatSize($size);
+        }
+
+        /**
+         * Get info folder name
+         * 
+         * @return string
+         */
+        public static function getFolder() {
+            return self::$filefolder;
+        }
+
+        /**
+         * Formatting bytes to human readable format
+         * 
+         * @param size is the bytes value
+         * 
+         * @return string
+         */
+        private static function formatSize($size) {
+            $mod = 1024;
+            $units = explode(' ','B KB MB GB TB PB');
+            for ($i = 0; $size > $mod; $i++) {
+                $size /= $mod;
+            }
+            return round($size, 2) . ' ' . $units[$i];
+        }
+
     }

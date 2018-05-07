@@ -2,7 +2,9 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \classes\CustomHandlers as CustomHandlers;
+use \classes\SimpleCache as SimpleCache;
 use \classes\Auth as Auth;
+use \classes\JSON as JSON;
 
     // Delete All cache data
     $app->get('/maintenance/cache/data/delete/{username}/{token}', function (Request $request, Response $response) {
@@ -51,5 +53,19 @@ use \classes\Auth as Auth;
         }
         $body = $response->getBody();
         $body->write($datajson);
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Get information about cache data
+    $app->get('/maintenance/cache/data/info', function (Request $request, Response $response) {
+        $body = $response->getBody();
+        $body->write(JSON::encode(['foldername' => SimpleCache::getFolder(),'size'=>SimpleCache::getSize()]));
+        return classes\Cors::modify($response,$body,200);
+    });
+    
+    // Get information about cache api keys
+    $app->get('/maintenance/cache/apikey/info', function (Request $request, Response $response) {
+        $body = $response->getBody();
+        $body->write(JSON::encode(['foldername' => Auth::getFolder(),'size' => Auth::getSize()]));
         return classes\Cors::modify($response,$body,200);
     });
