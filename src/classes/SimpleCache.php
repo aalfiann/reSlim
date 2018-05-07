@@ -7,7 +7,6 @@
  *
  */
 namespace classes;
-use \classes\SimpleCache as SimpleCache;
 	/**
      * A class for generate simple cache file response json in traditional way (static files)
      * 

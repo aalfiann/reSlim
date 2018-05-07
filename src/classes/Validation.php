@@ -7,7 +7,6 @@
  *
  */
 namespace classes;
-use \classes\Validation as Validation;
 	/**
      * A class for validation in reSlim
      *

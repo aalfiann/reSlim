@@ -7,7 +7,6 @@
  *
  */
  namespace classes;
- use classes\Cors as Cors;
  use classes\Auth as Auth;
     /**
      * A class for modify the cors based on the API Key
