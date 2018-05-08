@@ -62,12 +62,13 @@ namespace classes;
 		 * Encode Array string or value to json (faster with no any conversion to utf8)
 		 *
 		 * @var data is the array string or value
+		 * @var withlog if set to true then will append logger data. Default is false.
 		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
 		 *
 		 * @return string
 		 */
-        public static function encode($data,$pretty=false){
-			$data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
+        public static function encode($data,$withlog=false,$pretty=false){
+			if($withlog && is_array($data)) $data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
 			if ($pretty){
 				return json_encode($data,JSON_PRETTY_PRINT);
 			}
@@ -79,13 +80,14 @@ namespace classes;
 		 * When the time to use this function: If you want to display json data which is retrieve from database that maybe contains invalid utf8 chars.
 		 *
 		 * @var data is the array string or value
+		 * @var withlog if set to true then will append logger data. Default is false.
 		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
 		 * @var ansii if set to true then conversion to utf8 is more reliable because will work for ANSII chars. Default is set to false for performance reason.
 		 *
 		 * @return string
 		 */
-        public static function safeEncode($data,$pretty=false,$ansii=false){
-			$data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
+        public static function safeEncode($data,$withlog=false,$pretty=false,$ansii=false){
+			if($withlog && is_array($data)) $data['logger'] = ['timestamp' => date('Y-m-d H:i:s', time()),'uniqid'=>uniqid()];
 			if ($pretty){
 				return json_encode((($ansii)?self::safeConvertToUTF8($data):self::convertToUTF8($data)),JSON_PRETTY_PRINT);
 			}
