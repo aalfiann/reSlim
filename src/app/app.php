@@ -20,6 +20,16 @@ spl_autoload_register(function ($classname) {
 // Set time zone
 date_default_timezone_set($config['reslim']['timezone']);
 
+// Set up router cache if enabled in config
+if ($config['router']['enableCache'] == true){
+    if (!is_dir($config['router']['folderCache'])) mkdir($config['router']['folderCache'],0775,true);
+    $config['routerCacheFile'] = $config['router']['folderCache'].'/'.$config['router']['fileCache'];
+} else {
+    if (file_exists($config['router']['folderCache'].'/'.$config['router']['fileCache'])) {
+        unlink($config['router']['folderCache'].'/'.$config['router']['fileCache']);
+    }
+}
+
 // Set up dependencies
 require __DIR__.'/dependencies.php';
 
