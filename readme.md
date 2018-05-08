@@ -229,15 +229,15 @@ $config['db']['dbname'] = 'reSlim';
  *                               To work using rest api, You should set debug 1,
  *                               because other than 1, there is special characters that will broke json format. 
  */
-$config['smtp']['host'] = 'smtp.gmail.com';
-$config['smtp']['autotls'] = false;
-$config['smtp']['auth'] = true;
-$config['smtp']['secure'] = 'tls';
-$config['smtp']['port'] = 587;
-$config['smtp']['defaultnamefrom'] = 'reSlim admin';
-$config['smtp']['username'] = 'youremail@gmail.com';
-$config['smtp']['password'] = 'secret';
-$config['smtp']['debug'] = 1;
+$config['smtp']['host']             = 'smtp.gmail.com';
+$config['smtp']['autotls']          = false;
+$config['smtp']['auth']             = true;
+$config['smtp']['secure']           = 'tls';
+$config['smtp']['port']             = 587;
+$config['smtp']['defaultnamefrom']  = 'reSlim admin';
+$config['smtp']['username']         = 'youremail@gmail.com';
+$config['smtp']['password']         = 'secret';
+$config['smtp']['debug']            = 1;
 
 // Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
