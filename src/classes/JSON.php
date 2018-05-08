@@ -98,8 +98,9 @@ namespace classes;
 		 * Decode json string (if fail will return null)
 		 *
 		 * @var json is the json string
+		 * @var array if set to true then will return array()
 		 *
-		 * @return array stdClass
+		 * @return mixed stdClass/array
 		 */
 		public static function decode($json,$array=false){
 			return json_decode($json,$array);
