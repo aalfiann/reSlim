@@ -385,7 +385,7 @@ use PDO;
 											"Description":'.JSON::safeEncode($redata['Description']).',
 											"Content":'.JSON::safeEncode($redata['Content']).',
 											"Tags_inline":'.JSON::safeEncode($redata['Tags']).',
-											"Tags":'.JSON::encode($return_arr).',
+											"Tags":'.JSON::safeEncode($return_arr).',
 											"Viewer":'.JSON::safeEncode($redata['Viewer']).',
 											"Created_at":'.JSON::safeEncode($redata['Created_at']).',
 											"Username":'.JSON::safeEncode($redata['Username']).',
@@ -464,7 +464,7 @@ use PDO;
 											"Description":'.JSON::safeEncode($redata['Description']).',
 											"Content":'.JSON::safeEncode($redata['Content']).',
 											"Tags_inline":'.JSON::safeEncode($redata['Tags']).',
-											"Tags":'.JSON::encode($return_arr).',
+											"Tags":'.JSON::safeEncode($return_arr).',
 											"Viewer":'.JSON::safeEncode($redata['Viewer']).',
 											"Created_at":'.JSON::safeEncode($redata['Created_at']).',
 											"User":'.JSON::safeEncode($redata['User']).',
@@ -694,7 +694,7 @@ use PDO;
 									"Image":'.JSON::safeEncode($redata['Image']).',
 									"Description":'.JSON::safeEncode($redata['Description']).',
                                     "Tags_Inline":'.JSON::safeEncode($redata['Tags']).',
-                                    "Tags":'.JSON::encode($return_arr).',
+                                    "Tags":'.JSON::safeEncode($return_arr).',
                                     "Viewer":'.JSON::safeEncode($redata['Viewer']).',
                                     "Created_at":'.JSON::safeEncode($redata['Created_at']).',
                                     "User":'.JSON::safeEncode($redata['User']).',
@@ -801,7 +801,7 @@ use PDO;
 									"Image":'.JSON::safeEncode($redata['Image']).',
 									"Description":'.JSON::safeEncode($redata['Description']).',
                                     "Tags_Inline":'.JSON::safeEncode($redata['Tags']).',
-                                    "Tags":'.JSON::encode($return_arr).',
+                                    "Tags":'.JSON::safeEncode($return_arr).',
                                     "Viewer":'.JSON::safeEncode($redata['Viewer']).',
                                     "Created_at":'.JSON::safeEncode($redata['Created_at']).',
                                     "User":'.JSON::safeEncode($redata['User']).',
@@ -1020,7 +1020,7 @@ use PDO;
 						$dataseries = '"series":[';
 						while($redata = $stmt->fetch()) {
 							$datares .= '
-								['.JSON::encode($redata['Jan']).','.JSON::encode($redata['Feb']).','.JSON::encode($redata['Mar']).','.JSON::encode($redata['Apr']).','.JSON::encode($redata['May']).','.JSON::encode($redata['Jun']).','.JSON::encode($redata['Jul']).','.JSON::encode($redata['Aug']).','.JSON::encode($redata['Sep']).','.JSON::encode($redata['Oct']).','.JSON::encode($redata['Nov']).','.JSON::encode($redata['Dec']).'],';
+								['.JSON::safeEncode($redata['Jan']).','.JSON::safeEncode($redata['Feb']).','.JSON::safeEncode($redata['Mar']).','.JSON::safeEncode($redata['Apr']).','.JSON::safeEncode($redata['May']).','.JSON::safeEncode($redata['Jun']).','.JSON::safeEncode($redata['Jul']).','.JSON::safeEncode($redata['Aug']).','.JSON::safeEncode($redata['Sep']).','.JSON::safeEncode($redata['Oct']).','.JSON::safeEncode($redata['Nov']).','.JSON::safeEncode($redata['Dec']).'],';
 						}
 						$datares = substr($datares, 0, -1);
 						$combine = $datalabel.$dataseries.$datares.']}';

@@ -1714,7 +1714,7 @@ use PDO;
 							$dataseries = '"series":[';
 							while($redata = $stmt->fetch()) {
 								$datares .= '
-									['.JSON::encode($redata['Jan']).','.JSON::encode($redata['Feb']).','.JSON::encode($redata['Mar']).','.JSON::encode($redata['Apr']).','.JSON::encode($redata['May']).','.JSON::encode($redata['Jun']).','.JSON::encode($redata['Jul']).','.JSON::encode($redata['Aug']).','.JSON::encode($redata['Sep']).','.JSON::encode($redata['Oct']).','.JSON::encode($redata['Nov']).','.JSON::encode($redata['Dec']).'],';
+									['.JSON::safeEncode($redata['Jan']).','.JSON::safeEncode($redata['Feb']).','.JSON::safeEncode($redata['Mar']).','.JSON::safeEncode($redata['Apr']).','.JSON::safeEncode($redata['May']).','.JSON::safeEncode($redata['Jun']).','.JSON::safeEncode($redata['Jul']).','.JSON::safeEncode($redata['Aug']).','.JSON::safeEncode($redata['Sep']).','.JSON::safeEncode($redata['Oct']).','.JSON::safeEncode($redata['Nov']).','.JSON::safeEncode($redata['Dec']).'],';
 							}
 							$datares = substr($datares, 0, -1);
 							$combine = $datalabel.$dataseries.$datares.']}';
@@ -1809,7 +1809,7 @@ use PDO;
 						$dataseries = '"series":[';
 						while($redata = $stmt->fetch()) {
 							$datares .= '
-								['.JSON::encode($redata['Jan']).','.JSON::encode($redata['Feb']).','.JSON::encode($redata['Mar']).','.JSON::encode($redata['Apr']).','.JSON::encode($redata['May']).','.JSON::encode($redata['Jun']).','.JSON::encode($redata['Jul']).','.JSON::encode($redata['Aug']).','.JSON::encode($redata['Sep']).','.JSON::encode($redata['Oct']).','.JSON::encode($redata['Nov']).','.JSON::encode($redata['Dec']).'],';
+								['.JSON::safeEncode($redata['Jan']).','.JSON::safeEncode($redata['Feb']).','.JSON::safeEncode($redata['Mar']).','.JSON::safeEncode($redata['Apr']).','.JSON::safeEncode($redata['May']).','.JSON::safeEncode($redata['Jun']).','.JSON::safeEncode($redata['Jul']).','.JSON::safeEncode($redata['Aug']).','.JSON::safeEncode($redata['Sep']).','.JSON::safeEncode($redata['Oct']).','.JSON::safeEncode($redata['Nov']).','.JSON::safeEncode($redata['Dec']).'],';
 						}
 						$datares = substr($datares, 0, -1);
 						$combine = $datalabel.$dataseries.$datares.']}';
@@ -1896,7 +1896,7 @@ use PDO;
 						$dataseries = '"series":[';
 						while($redata = $stmt->fetch()) {
 							$datares .= '
-								['.JSON::encode($redata['Jan']).','.JSON::encode($redata['Feb']).','.JSON::encode($redata['Mar']).','.JSON::encode($redata['Apr']).','.JSON::encode($redata['May']).','.JSON::encode($redata['Jun']).','.JSON::encode($redata['Jul']).','.JSON::encode($redata['Aug']).','.JSON::encode($redata['Sep']).','.JSON::encode($redata['Oct']).','.JSON::encode($redata['Nov']).','.JSON::encode($redata['Dec']).'],';
+								['.JSON::safeEncode($redata['Jan']).','.JSON::safeEncode($redata['Feb']).','.JSON::safeEncode($redata['Mar']).','.JSON::safeEncode($redata['Apr']).','.JSON::safeEncode($redata['May']).','.JSON::safeEncode($redata['Jun']).','.JSON::safeEncode($redata['Jul']).','.JSON::safeEncode($redata['Aug']).','.JSON::safeEncode($redata['Sep']).','.JSON::safeEncode($redata['Oct']).','.JSON::safeEncode($redata['Nov']).','.JSON::safeEncode($redata['Dec']).'],';
 						}
 						$datares = substr($datares, 0, -1);
 						$combine = $datalabel.$dataseries.$datares.']}';
