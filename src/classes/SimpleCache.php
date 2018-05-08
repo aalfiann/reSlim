@@ -224,14 +224,43 @@ namespace classes;
         /**
          * Get total size of the cache folder
          * 
-         * @return string
+         * @param formatted if set to false will return bytes
+         * 
+         * @return mixed
          */
-        public static function getSize() {
+        public static function getCacheSize($formatted=true) {
             $size = 0;
             foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
                 $size += $file->getSize();
             }
-            return self::formatSize($size);
+            return (($formatted)?self::formatSize($size):$size);
+        }
+
+        /**
+         * Get total available size on harddisk
+         * 
+         * @param formatted if set to false will return bytes
+         * 
+         * @return mixed
+         */
+        public static function getCacheAvailSize($formatted=true) {
+            return (($formatted)?self::formatSize(disk_free_space(".")):disk_free_space("."));
+        }
+
+        /**
+         * Get total available size on harddisk
+         * 
+         * @param formatted if set to false will return bytes
+         * 
+         * @return string
+         */
+        public static function getCacheHDDSize($formatted=true){
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $ds = disk_total_space("C:");
+            } else {
+                $ds = disk_total_space("/");
+            }
+            return (($formatted)?self::formatSize($ds):$ds);
         }
 
         /**
@@ -239,24 +268,58 @@ namespace classes;
          * 
          * @return string
          */
-        public static function getFolder() {
+        public static function getCacheFolder() {
             return self::$filefolder;
+        }
+
+        /**
+         * Get info data cache
+         * 
+         * @return array
+         */
+        public static function getCacheInfo() {
+            $size = 0;
+            $files = 0;
+            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
+                $size += $file->getSize();
+                $files++;
+            }
+            $total = self::getCacheHDDSize(false);
+            $free = self::getCacheAvailSize(false);
+            $usehdd = $total-$free;
+            $usecache = $size;
+            $freehddpercent = sprintf('%1.2f',((($total-$usehdd)/$total)*100)).'%';
+            $usehddpercent = sprintf('%1.2f',((($total-$free)/$total)*100)).'%';
+            $usecachepercent = sprintf('%1.6f',((($total-($total-$usecache))/$total)*100)).'%';
+            return [
+                'folder'=>self::$filefolder,'files'=>$files,
+                'size'=>[
+                    'cache'=>['use'=>self::formatSize($size),'free'=>self::formatSize($free)],
+                    'hdd'=>['use'=>self::formatSize($usehdd),'free'=>self::formatSize($free),'total'=>self::formatSize($total)]
+                ],
+                'percent'=>[
+                    'cache'=>['use'=>$usecachepercent,'free'=>$freehddpercent],
+                    'hdd'=>['use'=>$usehddpercent,'free'=>$freehddpercent]
+                ],
+                'bytes'=>[
+                    'cache'=>['use'=>$size,'free'=>$free],
+                    'hdd'=>['use'=>$usehdd,'free'=>$free,'total'=>$total]
+                ]
+            ];
         }
 
         /**
          * Formatting bytes to human readable format
          * 
-         * @param size is the bytes value
+         * @param bytes is the value
          * 
          * @return string
          */
-        private static function formatSize($size) {
-            $mod = 1024;
-            $units = explode(' ','B KB MB GB TB PB');
-            for ($i = 0; $size > $mod; $i++) {
-                $size /= $mod;
-            }
-            return round($size, 2) . ' ' . $units[$i];
+        private static function formatSize($bytes) {
+            $si_prefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' );
+            $base = 1024;
+            $class = min((int)log($bytes , $base) , count($si_prefix) - 1);
+            return sprintf('%1.2f' ,$bytes / pow($base,$class)).' '.$si_prefix[$class];
         }
 
     }
