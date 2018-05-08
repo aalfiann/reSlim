@@ -10,8 +10,9 @@ use \classes\JSON as JSON;
     $app->get('/maintenance/cache/data/delete/{username}/{token}', function (Request $request, Response $response) {
         $usertoken = $request->getAttribute('token');
         if (Auth::validToken($this->db,$usertoken,$request->getAttribute('username'))){
-            if (Auth::getRoleID($this->db,$usertoken) == '1'){
-                $datajson = \classes\SimpleCache::ClearAll();
+            $roles = Auth::getRoleID($this->db,$usertoken);
+            if ($roles == '1' || $roles == '2'){
+                $datajson = SimpleCache::ClearAll();
             } else {
                 $data = json_encode([
                     'status' => 'error',
@@ -35,7 +36,8 @@ use \classes\JSON as JSON;
     $app->get('/maintenance/cache/apikey/delete/{username}/{token}', function (Request $request, Response $response) {
         $usertoken = $request->getAttribute('token');
         if (Auth::validToken($this->db,$usertoken,$request->getAttribute('username'))){
-            if (Auth::getRoleID($this->db,$usertoken) == '1'){
+            $roles = Auth::getRoleID($this->db,$usertoken);
+            if ($roles == '1' || $roles == '2'){
                 $datajson = Auth::deleteCacheAll();
             } else {
                 $data = json_encode([
