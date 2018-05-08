@@ -14,18 +14,18 @@ use \classes\JSON as JSON;
             if ($roles == '1' || $roles == '2'){
                 $datajson = SimpleCache::ClearAll();
             } else {
-                $data = json_encode([
+                $data = JSON::encode([
                     'status' => 'error',
                     'code' => 'RS404',
                     'message' => CustomHandlers::getreSlimMessage('RS404')
-                ]);
+                ],true);
             }
         } else {
-            $datajson = json_encode([
+            $datajson = JSON::encode([
                 'status' => 'error',
                 'code' => 'RS401',
                 'message' => CustomHandlers::getreSlimMessage('RS401')
-            ]);
+            ],true);
         }
         $body = $response->getBody();
         $body->write($datajson);
@@ -40,18 +40,18 @@ use \classes\JSON as JSON;
             if ($roles == '1' || $roles == '2'){
                 $datajson = Auth::deleteCacheAll();
             } else {
-                $data = json_encode([
+                $data = JSON::encode([
                     'status' => 'error',
                     'code' => 'RS404',
                     'message' => CustomHandlers::getreSlimMessage('RS404')
-                ]);
+                ],true);
             }
         } else {
-            $datajson = json_encode([
+            $datajson = JSON::encode([
                 'status' => 'error',
                 'code' => 'RS401',
                 'message' => CustomHandlers::getreSlimMessage('RS401')
-            ]);
+            ],true);
         }
         $body = $response->getBody();
         $body->write($datajson);
@@ -61,13 +61,13 @@ use \classes\JSON as JSON;
     // Get information about cache data
     $app->get('/maintenance/cache/data/info', function (Request $request, Response $response) {
         $body = $response->getBody();
-        $body->write(JSON::encode(['foldername' => SimpleCache::getFolder(),'size'=>SimpleCache::getSize()]));
+        $body->write(JSON::encode(SimpleCache::getCacheInfo(),true));
         return classes\Cors::modify($response,$body,200);
     });
     
     // Get information about cache api keys
     $app->get('/maintenance/cache/apikey/info', function (Request $request, Response $response) {
         $body = $response->getBody();
-        $body->write(JSON::encode(['foldername' => Auth::getFolder(),'size' => Auth::getSize()]));
+        $body->write(JSON::encode(Auth::getCacheInfo(),true));
         return classes\Cors::modify($response,$body,200);
     });
