@@ -67,7 +67,7 @@ use PDO;
                     'message' => CustomHandlers::getreSlimMessage('RS401')
                 ];
             }
-            return JSON::encode($data);
+            return JSON::encode($data,true);
         }
 
         /** 
@@ -99,7 +99,7 @@ use PDO;
                     'message' => CustomHandlers::getreSlimMessage('RS401')
                 ];
             }
-            return JSON::encode($data);
+            return JSON::encode($data,true);
         }
 
     }

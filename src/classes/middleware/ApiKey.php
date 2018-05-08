@@ -56,7 +56,7 @@ use PDO;
 	    	        	    'status' => 'error',
                             'code' => 'RS406',
 			        	    'message' => CustomHandlers::getreSlimMessage('RS406')
-    				    ]));
+    				    ],true));
                         return Cors::modify($response,$body,401);
                     }
                 } else {
@@ -70,7 +70,7 @@ use PDO;
                                 'status' => 'error',
                                 'code' => 'RS406',
                                 'message' => CustomHandlers::getreSlimMessage('RS406')
-                            ]));
+                            ],true));
                             return Cors::modify($response,$body,401);
                         }
                     } else {
@@ -79,7 +79,7 @@ use PDO;
 		        	        'status' => 'error',
     			   	    	'code' => 'RS407',
 	    		    	    'message' => CustomHandlers::getreSlimMessage('RS407')
-    	    			]));
+    	    			],true));
                         return Cors::modify($response,$body,400);
                     }
                 }

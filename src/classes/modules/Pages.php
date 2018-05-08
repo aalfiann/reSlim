@@ -96,7 +96,7 @@ use PDO;
 				];
             }
 
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db = null;
 
         }
@@ -167,7 +167,7 @@ use PDO;
 				];
             }
 
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db = null;
 
 		}
@@ -235,7 +235,7 @@ use PDO;
 				];
             }
 
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db = null;
 
         }
@@ -275,7 +275,7 @@ use PDO;
 	    		    $this->db->rollBack();
         		} 
 
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db = null;
 
         }
@@ -343,7 +343,7 @@ use PDO;
 				];
             }
             
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db = null;
 
 		}
@@ -379,20 +379,20 @@ use PDO;
 									}
 									//End Tags
 
-									$datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
-											"Title":'.json_encode(utf8_encode($redata['Title'])).',
-											"Image":'.json_encode(utf8_encode($redata['Image'])).',
-											"Description":'.json_encode(utf8_encode($redata['Description'])).',
-											"Content":'.json_encode(utf8_encode($redata['Content'])).',
-											"Tags_inline":'.json_encode(utf8_encode($redata['Tags'])).',
-											"Tags":'.json_encode($return_arr).',
-											"Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
-											"Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
-											"Username":'.json_encode(utf8_encode($redata['Username'])).',
-											"Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
-											"Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
-											"StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
-											"Status":'.json_encode(utf8_encode($redata['Status'])).'},';
+									$datares .= '{"PageID":'.JSON::safeEncode($redata['PageID']).',
+											"Title":'.JSON::safeEncode($redata['Title']).',
+											"Image":'.JSON::safeEncode($redata['Image']).',
+											"Description":'.JSON::safeEncode($redata['Description']).',
+											"Content":'.JSON::safeEncode($redata['Content']).',
+											"Tags_inline":'.JSON::safeEncode($redata['Tags']).',
+											"Tags":'.JSON::encode($return_arr).',
+											"Viewer":'.JSON::safeEncode($redata['Viewer']).',
+											"Created_at":'.JSON::safeEncode($redata['Created_at']).',
+											"Username":'.JSON::safeEncode($redata['Username']).',
+											"Updated_at":'.JSON::safeEncode($redata['Updated_at']).',
+											"Updated_by":'.JSON::safeEncode($redata['Updated_by']).',
+											"StatusID":'.JSON::safeEncode($redata['StatusID']).',
+											"Status":'.JSON::safeEncode($redata['Status']).'},';
 								}
 								$datares = substr($datares, 0, -1);
 								$datares .= "]";
@@ -424,7 +424,7 @@ use PDO;
 				];
 			}
 			
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 	        $this->db= null;
 		}
 		
@@ -458,20 +458,20 @@ use PDO;
 									}
 									//End Tags
 
-									$datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
-											"Title":'.json_encode(utf8_encode($redata['Title'])).',
-											"Image":'.json_encode(utf8_encode($redata['Image'])).',
-											"Description":'.json_encode(utf8_encode($redata['Description'])).',
-											"Content":'.json_encode(utf8_encode($redata['Content'])).',
-											"Tags_inline":'.json_encode(utf8_encode($redata['Tags'])).',
-											"Tags":'.json_encode($return_arr).',
-											"Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
-											"Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
-											"User":'.json_encode(utf8_encode($redata['User'])).',
-											"Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
-											"Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
-											"StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
-											"Status":'.json_encode(utf8_encode($redata['Status'])).'},';
+									$datares .= '{"PageID":'.JSON::safeEncode($redata['PageID']).',
+											"Title":'.JSON::safeEncode($redata['Title']).',
+											"Image":'.JSON::safeEncode($redata['Image']).',
+											"Description":'.JSON::safeEncode($redata['Description']).',
+											"Content":'.JSON::safeEncode($redata['Content']).',
+											"Tags_inline":'.JSON::safeEncode($redata['Tags']).',
+											"Tags":'.JSON::encode($return_arr).',
+											"Viewer":'.JSON::safeEncode($redata['Viewer']).',
+											"Created_at":'.JSON::safeEncode($redata['Created_at']).',
+											"User":'.JSON::safeEncode($redata['User']).',
+											"Updated_at":'.JSON::safeEncode($redata['Updated_at']).',
+											"Updated_by":'.JSON::safeEncode($redata['Updated_by']).',
+											"StatusID":'.JSON::safeEncode($redata['StatusID']).',
+											"Status":'.JSON::safeEncode($redata['Status']).'},';
 								}
 								$datares = substr($datares, 0, -1);
 								$datares .= "]";
@@ -496,7 +496,7 @@ use PDO;
 					];
 				}	
         
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 	        $this->db= null;
 		}
 
@@ -626,7 +626,7 @@ use PDO;
 				];
 			}		
         
-			return JSON::safeEncode($data);
+			return JSON::safeEncode($data,true);
 	        $this->db= null;
         }
 
@@ -689,19 +689,19 @@ use PDO;
 								}
                                 //End Tags
                                 
-                                $datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
-									"Title":'.json_encode(utf8_encode($redata['Title'])).',
-									"Image":'.json_encode(utf8_encode($redata['Image'])).',
-									"Description":'.json_encode(utf8_encode($redata['Description'])).',
-                                    "Tags_Inline":'.json_encode(utf8_encode($redata['Tags'])).',
-                                    "Tags":'.json_encode($return_arr).',
-                                    "Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
-                                    "Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
-                                    "User":'.json_encode(utf8_encode($redata['User'])).',
-                                    "Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
-                                    "Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
-                                    "StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
-                                    "Status":'.json_encode(utf8_encode($redata['Status'])).'},';
+                                $datares .= '{"PageID":'.JSON::safeEncode($redata['PageID']).',
+									"Title":'.JSON::safeEncode($redata['Title']).',
+									"Image":'.JSON::safeEncode($redata['Image']).',
+									"Description":'.JSON::safeEncode($redata['Description']).',
+                                    "Tags_Inline":'.JSON::safeEncode($redata['Tags']).',
+                                    "Tags":'.JSON::encode($return_arr).',
+                                    "Viewer":'.JSON::safeEncode($redata['Viewer']).',
+                                    "Created_at":'.JSON::safeEncode($redata['Created_at']).',
+                                    "User":'.JSON::safeEncode($redata['User']).',
+                                    "Updated_at":'.JSON::safeEncode($redata['Updated_at']).',
+                                    "Updated_by":'.JSON::safeEncode($redata['Updated_by']).',
+                                    "StatusID":'.JSON::safeEncode($redata['StatusID']).',
+                                    "Status":'.JSON::safeEncode($redata['Status']).'},';
                             }
                             $datares = substr($datares, 0, -1);
                             $datares .= "]";
@@ -740,7 +740,7 @@ use PDO;
 				];
 			}		
         
-			return JSON::safeEncode($data);
+			return JSON::safeEncode($data,true);
 	        $this->db= null;
         }
 
@@ -796,19 +796,19 @@ use PDO;
 								}
                                 //End Tags
                                 
-                                $datares .= '{"PageID":'.json_encode(utf8_encode($redata['PageID'])).',
-									"Title":'.json_encode(utf8_encode($redata['Title'])).',
-									"Image":'.json_encode(utf8_encode($redata['Image'])).',
-									"Description":'.json_encode(utf8_encode($redata['Description'])).',
-                                    "Tags_Inline":'.json_encode(utf8_encode($redata['Tags'])).',
-                                    "Tags":'.json_encode($return_arr).',
-                                    "Viewer":'.json_encode(utf8_encode($redata['Viewer'])).',
-                                    "Created_at":'.json_encode(utf8_encode($redata['Created_at'])).',
-                                    "User":'.json_encode(utf8_encode($redata['User'])).',
-                                    "Updated_at":'.json_encode(utf8_encode($redata['Updated_at'])).',
-                                    "Updated_by":'.json_encode(utf8_encode($redata['Updated_by'])).',
-                                    "StatusID":'.json_encode(utf8_encode($redata['StatusID'])).',
-                                    "Status":'.json_encode(utf8_encode($redata['Status'])).'},';
+                                $datares .= '{"PageID":'.JSON::safeEncode($redata['PageID']).',
+									"Title":'.JSON::safeEncode($redata['Title']).',
+									"Image":'.JSON::safeEncode($redata['Image']).',
+									"Description":'.JSON::safeEncode($redata['Description']).',
+                                    "Tags_Inline":'.JSON::safeEncode($redata['Tags']).',
+                                    "Tags":'.JSON::encode($return_arr).',
+                                    "Viewer":'.JSON::safeEncode($redata['Viewer']).',
+                                    "Created_at":'.JSON::safeEncode($redata['Created_at']).',
+                                    "User":'.JSON::safeEncode($redata['User']).',
+                                    "Updated_at":'.JSON::safeEncode($redata['Updated_at']).',
+                                    "Updated_by":'.JSON::safeEncode($redata['Updated_by']).',
+                                    "StatusID":'.JSON::safeEncode($redata['StatusID']).',
+                                    "Status":'.JSON::safeEncode($redata['Status']).'},';
                             }
                             $datares = substr($datares, 0, -1);
                             $datares .= "]";
@@ -847,7 +847,7 @@ use PDO;
 				];
 			}		
         
-			return JSON::safeEncode($data);
+			return JSON::safeEncode($data,true);
 	        $this->db= null;
         }
 
@@ -900,7 +900,7 @@ use PDO;
 				];
 			}		
         
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 	        $this->db= null;
 		}
 
@@ -965,7 +965,7 @@ use PDO;
 			}
 			
         
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 	        $this->db= null;
 		}
 
@@ -1020,7 +1020,7 @@ use PDO;
 						$dataseries = '"series":[';
 						while($redata = $stmt->fetch()) {
 							$datares .= '
-								['.json_encode($redata['Jan']).','.json_encode($redata['Feb']).','.json_encode($redata['Mar']).','.json_encode($redata['Apr']).','.json_encode($redata['May']).','.json_encode($redata['Jun']).','.json_encode($redata['Jul']).','.json_encode($redata['Aug']).','.json_encode($redata['Sep']).','.json_encode($redata['Oct']).','.json_encode($redata['Nov']).','.json_encode($redata['Dec']).'],';
+								['.JSON::encode($redata['Jan']).','.JSON::encode($redata['Feb']).','.JSON::encode($redata['Mar']).','.JSON::encode($redata['Apr']).','.JSON::encode($redata['May']).','.JSON::encode($redata['Jun']).','.JSON::encode($redata['Jul']).','.JSON::encode($redata['Aug']).','.JSON::encode($redata['Sep']).','.JSON::encode($redata['Oct']).','.JSON::encode($redata['Nov']).','.JSON::encode($redata['Dec']).'],';
 						}
 						$datares = substr($datares, 0, -1);
 						$combine = $datalabel.$dataseries.$datares.']}';
@@ -1052,7 +1052,7 @@ use PDO;
 				];
 			}	
 	
-			return JSON::encode($data);
+			return JSON::encode($data,true);
 			$this->db= null;
 		}
     }

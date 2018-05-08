@@ -68,7 +68,7 @@ use \classes\JSON as JSON;
                         $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message,'length' => $this->length];
                     }
                 }
-                $body->write(JSON::encode($datajson));
+                $body->write(JSON::encode($datajson,true));
                 return Cors::modify($response,$body,400);
             }
         }

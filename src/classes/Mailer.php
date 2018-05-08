@@ -134,6 +134,6 @@ use PDO;
             		'message' => CustomHandlers::getreSlimMessage('RS105')
                 ];
             }
-            return JSON::encode($data);
+            return JSON::encode($data,true);
         }
     }
