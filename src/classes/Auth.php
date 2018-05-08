@@ -889,6 +889,7 @@ use \classes\BaseConverter as BaseConverter;
             $usehddpercent = sprintf('%1.2f',((($total-$free)/$total)*100)).'%';
             $usecachepercent = sprintf('%1.6f',((($total-($total-$usecache))/$total)*100)).'%';
             return [
+                'status'=>'success',
                 'folder'=>self::$filefolder,'files'=>$files,
                 'size'=>[
                     'cache'=>['use'=>self::formatSize($size),'free'=>self::formatSize($free)],
