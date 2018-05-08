@@ -129,20 +129,23 @@ user.router.php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use \classes\SimpleCache as SimpleCache;
+use \classes\User as User;
+use \classes\Cors as Cors;
+use \classes\middleware\ApiKey as ApiKey;
 
     // POST example api to show all data user
     $app->post('/user', function (Request $request, Response $response) {
-        $users = new classes\User($this->db);
+        $users = new User($this->db);
         $datapost = $request->getParsedBody();
         $users->Token = $datapost['Token'];
         $body = $response->getBody();
         $body->write($users->showAll());
-        return classes\Cors::modify($response,$body,200);
+        return Cors::modify($response,$body,200);
     });
 
     // GET example api to show profile user (for public is need an api key)
     $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
-        $users = new classes\User($this->db);
+        $users = new User($this->db);
         $users->Username = $request->getAttribute('username');
         $body = $response->getBody();
         
@@ -156,8 +159,8 @@ use \classes\SimpleCache as SimpleCache;
             $datajson = SimpleCache::save($users->showUserPublic(),["apikey"]);
         }
         $body->write($datajson);
-        return classes\Cors::modify($response,$body,200,$request);
-    })->add(new \classes\middleware\ApiKey());
+        return Cors::modify($response,$body,200,$request);
+    })->add(new ApiKey());
 ```
 
 ### reSlim Configuration
@@ -171,12 +174,32 @@ Example Config.php
  * @var $config['addContentLengthHeader'] should be set to false. This will allows the web server to set the Content-Length header which makes Slim behave more predictably
  * @var $config['limitLoadData'] to protect high request data load. Default is 1000.
  * @var $config['enableApiKeys'] to protect api from guest or anonymous. Guest which don't have api key can not using this service. Default is true.
+ * @var $config['httpVersion'] The protocol version used by the Response object. Default is '1.1'. 
+ * @var $config['responseChunkSize'] Size of each chunk read from the Response body when sending to the browser. Default is 4096
+ * @var $config['outputBuffering'] If false, then no output buffering is enabled. If 'append' or 'prepend', then any echo or print statements are captured and are either appended or prepended to the Response returned from the route callable. Default is 'append'
+ * @var $config['determineRouteBeforeAppMiddleware'] When true, the route is calculated before any middleware is executed. This means that you can inspect route parameters in middleware if you need to. Default is false.
  * 
  */
-$config['displayErrorDetails']      = true;
-$config['addContentLengthHeader']   = false;
-$config['limitLoadData'] = 1000;
-$config['enableApiKeys'] = true;
+$config['displayErrorDetails']                  = true;
+$config['addContentLengthHeader']               = false;
+$config['limitLoadData']                        = 1000;
+$config['enableApiKeys']                        = true;
+$config['httpVersion']                          = '1.1';
+$config['responseChunkSize']                    = 4096;
+$config['outputBuffering']                      = 'append';
+$config['determineRouteBeforeAppMiddleware']    = false;
+
+/**
+ * Configuration Router Cache
+ * 
+ * @var $config['router']['enableCache'] If set to true, this will make your router performance faster. If you in development mode, just set to false. The exist file cache will automatically deleted from server.
+ * @var $config['router']['folderCache'] To set the folder of router cache. Don't leave this blank.  
+ * @var $config['router']['fileCache'] To set the filename of router cache. Don't leave this blank.
+ * 
+ */
+$config['router']['enableCache']    = false;
+$config['router']['folderCache']    = 'cache-router';
+$config['router']['fileCache']      = 'routes.cache.php';
 
 /** 
  * Configuration PDO MySQL Database
