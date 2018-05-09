@@ -214,7 +214,7 @@ namespace classes;
                         }
                     }
                 }
-                $datajson = '{"status":"success","total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than '.$agecache.' seconds old, will be deleted."}';
+                $datajson = '{"status":"success","age":'.$agecache.',"total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than '.$agecache.' seconds old, will be deleted."}';
             } else {
                 $datajson = '{"status:"error","message":"Directory not found!"}';
             }
