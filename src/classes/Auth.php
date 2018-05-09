@@ -897,7 +897,7 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function getCacheInfo() {
             $size = 0;
-            $files = 0;
+            $files = -2;
             foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
                 $size += $file->getSize();
                 $files++;
