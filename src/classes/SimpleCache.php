@@ -220,6 +220,15 @@ namespace classes;
             }
             return $datajson;
         }
+
+        /**
+         * Determine if cache is activated
+         * 
+         * @return bool
+         */
+        public static function isCacheActive() {
+            return self::$runcache;
+        }
         
         /**
          * Get total size of the cache folder
@@ -273,6 +282,18 @@ namespace classes;
         }
 
         /**
+         * Get status cache
+         * 
+         * @return array
+         */
+        public static function getCacheStatus() {
+            if(self::$runcache) {
+                return ['status'=>'active','description'=>'Cache is running!'];
+            }
+            return ['status'=>'disabled','description'=>'Cache is disabled!'];
+        }
+
+        /**
          * Get info data cache
          * 
          * @return array
@@ -291,9 +312,12 @@ namespace classes;
             $freehddpercent = sprintf('%1.2f',((($total-$usehdd)/$total)*100)).'%';
             $usehddpercent = sprintf('%1.2f',((($total-$free)/$total)*100)).'%';
             $usecachepercent = sprintf('%1.6f',((($total-($total-$usecache))/$total)*100)).'%';
+            $data = self::getCacheStatus();
+            $data['folder'] = self::$filefolder;
+            $data['files'] = $files;
             return [
                 'status'=>'success',
-                'folder'=>self::$filefolder,'files'=>$files,
+                'info'=>$data,
                 'size'=>[
                     'cache'=>['use'=>self::formatSize($size),'free'=>self::formatSize($free)],
                     'hdd'=>['use'=>self::formatSize($usehdd),'free'=>self::formatSize($free),'total'=>self::formatSize($total)]
