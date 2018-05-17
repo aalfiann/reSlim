@@ -25,7 +25,7 @@ use PDO;
         protected $information = [
             'module' => [
                 'name' => 'Pages',
-                'uri' => 'https://github.com/aalfiann/reSlim-modules/pages',
+                'uri' => 'https://github.com/aalfiann/reSlim-modules/tree/master/pages',
                 'description' => 'A module for pages management',
 				'version' => '1.0',
 				'reSlim' => '1.9.0'
