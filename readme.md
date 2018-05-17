@@ -84,7 +84,7 @@ Here is the place to run your application
 
 ### app/
 
-Here is the place for slim framework
+Here is the place for slim framework<br>
 We are using PDO MySQL for the Database.
 
 ### classes/
@@ -97,7 +97,7 @@ reSlim middleware classes are here.
 
 ### logs/
 
-Your custom log will be place in here as default.
+Your custom log will be place in here as default.<br>
 You can add your custom log in your any container or router.
 
 Example adding custom log in a router
@@ -118,12 +118,12 @@ $app->post('/custom/log/new', function (Request $request, Response $response) {
 
 You have to create new folder for each different module project.
 
-How to create new reSlim modules?
+How to create new reSlim modules?<br>
 Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules/tree/master/first_mod).
 
 ### routers/
 
-All the files with the routes. Each file contents the routes of an specific functionality.
+All the files with the routes. Each file contents the routes of an specific functionality.<br>
 It is very important that the names of the files inside this folder follow this pattern: name.router.php
 
 Example of router file:
