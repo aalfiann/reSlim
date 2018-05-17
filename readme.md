@@ -119,7 +119,7 @@ $app->post('/custom/log/new', function (Request $request, Response $response) {
 You have to create new folder for each different module project.
 
 How to create new reSlim modules?
-Please look at this very simple project on Github.
+Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules/tree/master/first_mod).
 
 ### routers/
 
