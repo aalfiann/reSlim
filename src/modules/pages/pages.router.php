@@ -5,10 +5,11 @@ use \classes\middleware\ValidateParam as ValidateParam;
 use \classes\middleware\ValidateParamURL as ValidateParamURL;
 use \classes\middleware\ApiKey as ApiKey;
 use \classes\SimpleCache as SimpleCache;
+use \modules\pages\Pages as Pages;
 
     // POST api to create new page
     $app->post('/page/data/new', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $datapost = $request->getParsedBody();
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -28,7 +29,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // POST api to update page
     $app->post('/page/data/update', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $datapost = $request->getParsedBody();    
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -51,7 +52,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // POST api to update draft page
     $app->post('/page/data/update/draft', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $datapost = $request->getParsedBody();    
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -73,7 +74,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // POST api to delete page
     $app->post('/page/data/delete', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $datapost = $request->getParsedBody();    
         $pages->pageid = $datapost['PageID'];
         $pages->username = $datapost['Username'];
@@ -87,7 +88,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show all data page pagination registered user
     $app->get('/page/data/search/{username}/{token}/{page}/{itemsperpage}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->username = $request->getAttribute('username');
         $pages->token = $request->getAttribute('token');
@@ -100,7 +101,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show all data status page
     $app->get('/page/data/status/{token}', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($pages->showOptionRelease());
@@ -109,7 +110,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show single data page registered user
     $app->get('/page/data/read/{pageid}/{username}/{token}', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->username = $request->getAttribute('username');
         $pages->token = $request->getAttribute('token');
         $pages->pageid = $request->getAttribute('pageid');
@@ -120,7 +121,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show single data page public
     $app->map(['GET','OPTIONS'],'/page/data/public/read/{pageid}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
@@ -135,7 +136,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show all data page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
@@ -153,7 +154,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show all data published page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
@@ -169,7 +170,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to show all data published page asc or desc pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $pages->sort = $request->getAttribute('sort');
@@ -186,7 +187,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to update data view page
     $app->map(['GET','OPTIONS'],'/page/data/view/{pageid}/', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $body->write($pages->updateViewPage());
@@ -195,7 +196,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to get all data page for statistic purpose
     $app->get('/page/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
         $body = $response->getBody();
@@ -205,7 +206,7 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET api to get all data page for statistic chart purpose
     $app->get('/page/stats/data/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
-        $pages = new classes\modules\Pages($this->db);
+        $pages = new Pages($this->db);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
         $pages->year = $request->getAttribute('year');
