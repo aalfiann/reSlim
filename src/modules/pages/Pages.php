@@ -21,6 +21,22 @@ use PDO;
      * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
      */
     class Pages {
+		// modules information var
+        protected $information = [
+            'module' => [
+                'name' => 'Pages',
+                'uri' => 'https://github.com/aalfiann/reSlim-modules/pages',
+                'description' => 'A module for pages management',
+				'version' => '1.0',
+				'reSlim' => '1.9.0'
+            ],
+            'author' => [
+                'name' => 'M ABD AZIZ ALFIAN',
+                'uri' => 'https://github.com/aalfiann'
+            ]
+		];
+		
+		//database var
         protected $db;
 
         //master var
@@ -36,6 +52,11 @@ use PDO;
 			if (!empty($db)) {
     	        $this->db = $db;
         	}
+		}
+		
+		//Get modules information
+        public function viewInfo(){
+            return JSON::encode($this->information,true);
         }
 
 
