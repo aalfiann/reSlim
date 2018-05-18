@@ -23,18 +23,24 @@ use PDO;
     class Pages {
 		// modules information var
         protected $information = [
-            'module' => [
+            'package' => [
                 'name' => 'Pages',
                 'uri' => 'https://github.com/aalfiann/reSlim-modules/tree/master/pages',
                 'description' => 'A module for pages management',
-				'version' => '1.0',
-				'reSlim' => '1.9.0'
-            ],
-            'author' => [
-                'name' => 'M ABD AZIZ ALFIAN',
-                'uri' => 'https://github.com/aalfiann'
+                'version' => '1.0',
+                'require' => [
+                    'reSlim' => '1.9.0'
+                ],
+                'license' => [
+                    'type' => 'MIT',
+                    'uri' => 'https://github.com/aalfiann/reSlim-modules/tree/master/pages/LICENSE.md'
+                ],
+                'author' => [
+                    'name' => 'M ABD AZIZ ALFIAN',
+                    'uri' => 'https://github.com/aalfiann'
+                ],
             ]
-		];
+        ];
 		
 		//database var
         protected $db;
