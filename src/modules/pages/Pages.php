@@ -15,10 +15,10 @@ use PDO;
 	/**
      * A class for pages management
      *
-     * @package    reSlim
+     * @package    modules/pages
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
      * @copyright  Copyright (c) 2018 M ABD AZIZ ALFIAN
-     * @license    https://github.com/aalfiann/reSlim/blob/master/license.md  MIT License
+     * @license    https://github.com/aalfiann/reSlim-modules/tree/master/pages/LICENSE.md  MIT License
      */
     class Pages {
 		// modules information var
