@@ -7,6 +7,16 @@ use \classes\middleware\ApiKey as ApiKey;
 use \classes\SimpleCache as SimpleCache;
 use \modules\pages\Pages as Pages;
 
+
+    // Get module information
+    $app->get('/page/get/info/', function (Request $request, Response $response) {
+        $pages = new Pages($this->db);
+        $body = $response->getBody();
+        $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
+        $body->write($pages->viewInfo());
+        return classes\Cors::modify($response,$body,200);
+    })->add(new ApiKey);
+
     // POST api to create new page
     $app->post('/page/data/new', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
