@@ -9,4 +9,3 @@
 2. Go to your reSlim server and go to directory modules
 3. Create new folder **packager** and paste all files.
 4. Done
-
