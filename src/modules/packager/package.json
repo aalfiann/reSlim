@@ -1,0 +1,19 @@
+{
+    "package": {
+        "name": "Packager",
+        "url": "https://github.com/aalfiann/reSlim-modules/tree/master/packager",
+        "description": "A modules to make easy for manage the packages for reSlim",
+        "version": "1.0",
+        "require": {
+            "reSlim": "1.10.0"
+        },
+        "license": {
+            "type": "MIT",
+            "url": "https://github.com/aalfiann/reSlim-modules/tree/master/packager/LICENSE.md"
+        },
+        "author": {
+            "name": "M ABD AZIZ ALFIAN",
+            "url": "https://github.com/aalfiann"
+        }
+    }
+}
