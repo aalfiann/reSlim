@@ -7,6 +7,9 @@
  * @license   https://github.com/aalfiann/reSlim/blob/master/license.md (MIT License)
  */
 
+// reSlim Version
+define('RESLIM_VERSION','1.10.0');
+
 // Load all class libraries
 require '../vendor/autoload.php';
 // Load config

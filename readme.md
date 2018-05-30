@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.9.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.10.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
@@ -70,6 +70,8 @@ Folder System
         * app.log (Log data will stored in here)
         * index.php (Default forbidden page)
     * modules
+        * backup/ (Default module backup for database)
+        * packager/ (Default module packager for app management)
         * pages/ (Default module package for pages management)
         * index.php (Default forbidden page)
     * routers/
