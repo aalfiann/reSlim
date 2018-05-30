@@ -9,5 +9,3 @@
 2. Go to your reSlim server and go to directory modules
 3. Create new folder **pages** and paste all files.
 4. Done
-
-### This modules is already included in reSlim package
