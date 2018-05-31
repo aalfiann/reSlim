@@ -1,7 +1,7 @@
 {
     "package": {
         "name": "Backup",
-        "url": "https://github.com/aalfiann/reSlim-modules/tree/master/backup",
+        "url": "https://github.com/aalfiann/reSlim-modules-backup",
         "description": "For handle database backup in reSlim",
         "version": "1.0",
         "require": {
@@ -9,7 +9,7 @@
         },
         "license": {
             "type": "MIT",
-            "url": "https://github.com/aalfiann/reSlim-modules/tree/master/backup/LICENSE.md"
+            "url": "https://github.com/aalfiann/reSlim-modules-backup/LICENSE.md"
         },
         "author": {
             "name": "M ABD AZIZ ALFIAN",
