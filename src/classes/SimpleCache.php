@@ -74,14 +74,14 @@ namespace classes;
                         foreach ($_GET as $key => $value) {
                             foreach ($setparam as $singleparam){
                                 if ($key == $singleparam){
-                                    $rebuild .= $key.'-'.$value.'-';
+                                    $rebuild .= $key.'-'.str_replace(['\\','/','<','>',':','?','"','|','*'],'_',$value).'-';
                                 }
                             }
                         }
                     } else {
                         foreach ($_GET as $key => $value) {
                             if ($key == $setparam){
-                                $rebuild .= $key.'-'.$value.'-';
+                                $rebuild .= $key.'-'.str_replace(['\\','/','<','>',':','?','"','|','*'],'_',$value).'-';
                             }
                         }
                     }
