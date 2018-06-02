@@ -73,14 +73,14 @@ namespace classes;
                     if (is_array($setparam)){
                         foreach ($_GET as $key => $value) {
                             foreach ($setparam as $singleparam){
-                                if (strpos($key,$singleparam) !== false){
+                                if ($key == $singleparam){
                                     $rebuild .= $key.'-'.$value.'-';
                                 }
                             }
                         }
                     } else {
                         foreach ($_GET as $key => $value) {
-                            if (strpos($key,$setparam) !== false){
+                            if ($key == $setparam){
                                 $rebuild .= $key.'-'.$value.'-';
                             }
                         }
