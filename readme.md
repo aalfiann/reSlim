@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.10.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Version](https://img.shields.io/badge/stable-1.10.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
@@ -59,6 +59,7 @@ Folder System
         * Cors.php (For accessing web resources)
         * CustomHandlers.php (For handle message)
         * index.php (Default forbidden page)
+        * JSON.php (Default handler JSON)
         * Logs.php (For handle Log Server)
         * Mailer.php (For sending mail)
         * Pagination.php (For pagination json response)
