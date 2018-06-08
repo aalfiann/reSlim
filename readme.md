@@ -28,6 +28,10 @@ Reslim is already build with essentials of user management system in rest api wa
 14. Scalable architecture with modular concept
 15. Etc.
 
+Modules
+---------------
+Here is the available modules created by reSlim author. [reSlim-modules](https://github.com/aalfiann/reSlim-modules)
+
 System Requirements
 ---------------
 
@@ -124,8 +128,7 @@ $app->post('/custom/log/new', function (Request $request, Response $response) {
 You have to create new folder for each different module project.
 
 **How to create new reSlim modules?**  
-Read the more detail information about modules in [reSlim-modules](https://github.com/aalfiann/reSlim-modules).  
-Or you can start to learn from this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).  
+Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).  
 
 ### routers/
 
