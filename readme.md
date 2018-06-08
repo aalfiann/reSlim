@@ -30,7 +30,7 @@ Reslim is already build with essentials of user management system in rest api wa
 
 Modules
 ---------------
-Here is the available modules created by reSlim author. [reSlim-modules](https://github.com/aalfiann/reSlim-modules)
+Here is the available modules created by reSlim author >> [reSlim-modules](https://github.com/aalfiann/reSlim-modules)
 
 System Requirements
 ---------------
