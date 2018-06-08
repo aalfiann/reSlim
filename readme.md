@@ -1,7 +1,8 @@
 reSlim
 =======
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![Version](https://img.shields.io/badge/stable-1.10.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![Package](https://img.shields.io/badge/stable-1.10.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![UI-Test](https://img.shields.io/badge/UI-1.8.2-brightgreen.svg)](https://github.com/aalfiann/reSlim/test/example)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
