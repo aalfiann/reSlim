@@ -1,6 +1,6 @@
 <?php
 require_once realpath(__DIR__ . '/..').'/config.php';
-$lang = [
+$vocabularies[] = [
     //core
     'core_register_success' => 'Proses Pendaftaran Berhasil!',
     'core_register_failed' => 'Proses Pendaftaran Gagal!',
