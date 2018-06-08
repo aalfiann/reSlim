@@ -28,7 +28,7 @@ Reslim is already build with essentials of user management system in rest api wa
 14. Scalable architecture with modular concept
 15. Etc.
 
-Extension
+Extensions:
 ---------------
 - **Modules**  
 Here is the available modules created by reSlim author >> [reSlim-modules](https://github.com/aalfiann/reSlim-modules).
