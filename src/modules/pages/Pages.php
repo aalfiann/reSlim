@@ -1,11 +1,4 @@
 <?php
-/**
- * This class is a part of reSlim project
- * @author M ABD AZIZ ALFIAN <github.com/aalfiann>
- *
- * Don't remove this class unless You know what to do
- *
- */
 namespace modules\pages;
 use \classes\Auth as Auth;
 use \classes\JSON as JSON;
@@ -18,7 +11,7 @@ use PDO;
      * @package    modules/pages
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
      * @copyright  Copyright (c) 2018 M ABD AZIZ ALFIAN
-     * @license    https://github.com/aalfiann/reSlim-modules/tree/master/pages/LICENSE.md  MIT License
+     * @license    https://github.com/aalfiann/reSlim-modules-pages/blob/master/LICENSE.md  MIT License
      */
     class Pages {
 		

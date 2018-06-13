@@ -7,7 +7,7 @@ namespace modules\packager;
      * @package    Dictionary Packager
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
      * @copyright  Copyright (c) 2018 M ABD AZIZ ALFIAN
-     * @license    https://github.com/aalfiann/reSlim-modules/tree/master/packager/LICENSE.md  MIT License
+     * @license    https://github.com/aalfiann/reSlim-modules-packager/blob/master/LICENSE.md  MIT License
      */
 	class Dictionary {
         /**
