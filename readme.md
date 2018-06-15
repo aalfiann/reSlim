@@ -81,6 +81,7 @@ Folder System
         * index.php (Default forbidden page)
     * modules
         * backup/ (Default module backup for database)
+        * flexibleconfig/ (Default module flexibleconfig for extend the app config)
         * packager/ (Default module packager for app management)
         * pages/ (Default module package for pages management)
         * index.php (Default forbidden page)
