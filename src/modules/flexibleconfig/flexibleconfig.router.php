@@ -101,13 +101,14 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
         return classes\Cors::modify($response,$body,200);
     });
 
+    
     // GET api to read single data for public user (include cache)
     $app->get('/flexibleconfig/read/{key}/', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
         $fc->key = $request->getAttribute('key');
         $body = $response->getBody();
-        $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(60,["apikey"])){
+        $response = $this->cache->withEtag($response, $this->etag.'-'.trim($_SERVER['REQUEST_URI'],'/'));
+        if (SimpleCache::isCached(300,["apikey"])){
             $datajson = SimpleCache::load(["apikey"]);
         } else {
             $datajson = SimpleCache::save($fc->readPublic(),["apikey"]);
@@ -117,7 +118,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     })->add(new ApiKey);
 
 
-    // GET api to to test get value by key
+    // GET api to test get value by key
     $app->get('/flexibleconfig/test/{key}', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
         $body = $response->getBody();

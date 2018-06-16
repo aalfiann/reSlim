@@ -233,6 +233,7 @@ use PDO;                                            //To connect with database
 						];
 			        } else {
         			    $data = [
+							'result' => [],
 							'status' => 'error',
 							'code' => 'RS601',
         		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
@@ -276,6 +277,7 @@ use PDO;                                            //To connect with database
 						];
 			        } else {
         			    $data = [
+							'result' => [],
 							'status' => 'error',
 							'code' => 'RS601',
         		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
