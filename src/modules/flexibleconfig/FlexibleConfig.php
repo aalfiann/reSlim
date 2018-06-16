@@ -215,37 +215,85 @@ use PDO;                                            //To connect with database
 
         public function read() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-				$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
+				//calculate keys
+				$datakey = explode(',',$this->key);
+				$listkeys = "";
+				$listdata = "{";
+				$n=0;
+				foreach($datakey as $key){
+					if(!empty(trim($key))){
+						$listkeys .= 'key = :key'.$n.' or ';
+    					$listdata .= '":key'.$n.'":"'.trim($key).'",';
+						$n++;
+					}
+				}
+
+				$listkeys = rtrim($listkeys," or ");
+				$listdata = rtrim($listdata,",").'}';
+
+				if ($n > 1){
+					$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
+						FROM config
+						WHERE ".$listkeys.";";
+				
+					$stmt = $this->dbconfig->prepare($sql);
+					if ($stmt->execute(json_decode($listdata,true))) {	
+						$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						if ($results && count($results)){
+							$data = [
+								'result' => $results, 
+								'status' => 'success', 
+								'code' => 'RS501',
+								'message' => CustomHandlers::getreSlimMessage('RS501')
+							];
+						} else {
+							$data = [
+								'result' => [],
+								'status' => 'error',
+								'code' => 'RS601',
+								'message' => CustomHandlers::getreSlimMessage('RS601')
+							];
+						}          	   	
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS202',
+							'message' => CustomHandlers::getreSlimMessage('RS202')
+						];
+					}
+				} else {
+					$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
 						FROM config
 						WHERE key = :key LIMIT 1;";
 				
-				$stmt = $this->dbconfig->prepare($sql);		
-				$stmt->bindParam(':key', $this->key, PDO::PARAM_STR);
+					$stmt = $this->dbconfig->prepare($sql);		
+					$stmt->bindParam(':key', $this->key, PDO::PARAM_STR);
 
-				if ($stmt->execute()) {	
-					$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    	    	    if ($results && count($results)){
+					if ($stmt->execute()) {	
+						$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+						if ($results && count($results)){
+							$data = [
+								'result' => $results, 
+								'status' => 'success', 
+								'code' => 'RS501',
+								'message' => CustomHandlers::getreSlimMessage('RS501')
+							];
+						} else {
+							$data = [
+								'result' => [],
+								'status' => 'error',
+								'code' => 'RS601',
+								'message' => CustomHandlers::getreSlimMessage('RS601')
+							];
+						}          	   	
+					} else {
 						$data = [
-			   	            'result' => $results, 
-    	    		        'status' => 'success', 
-			           	    'code' => 'RS501',
-        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
-						];
-			        } else {
-        			    $data = [
-							'result' => [],
 							'status' => 'error',
-							'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+							'code' => 'RS202',
+							'message' => CustomHandlers::getreSlimMessage('RS202')
 						];
-	    	        }          	   	
-				} else {
-					$data = [
-    	    			'status' => 'error',
-						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
-					];
-				}	
+					}
+				}
 			} else {
                 $data = [
 	    			'status' => 'error',
@@ -259,37 +307,85 @@ use PDO;                                            //To connect with database
 		}
 		
 		public function readPublic() {
+			//calculate keys
+			$datakey = explode(',',$this->key);
+			$listkeys = "";
+			$listdata = "{";
+			$n=0;
+			foreach($datakey as $key){
+				if(!empty(trim($key))){
+					$listkeys .= 'key = :key'.$n.' or ';
+					$listdata .= '":key'.$n.'":"'.trim($key).'",';
+					$n++;
+				}
+			}
+
+			$listkeys = rtrim($listkeys," or ");
+			$listdata = rtrim($listdata,",").'}';
+
+			if ($n > 1){
 				$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
-						FROM config
-						WHERE key = :key LIMIT 1;";
-				
+					FROM config
+					WHERE ".$listkeys.";";
+			
+				$stmt = $this->dbconfig->prepare($sql);
+				if ($stmt->execute(json_decode($listdata,true))) {	
+					$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					if ($results && count($results)){
+						$data = [
+							'result' => $results, 
+							'status' => 'success', 
+							'code' => 'RS501',
+							'message' => CustomHandlers::getreSlimMessage('RS501')
+						];
+					} else {
+						$data = [
+							'result' => [],
+							'status' => 'error',
+							'code' => 'RS601',
+							'message' => CustomHandlers::getreSlimMessage('RS601')
+						];
+					}          	   	
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS202',
+						'message' => CustomHandlers::getreSlimMessage('RS202')
+					];
+				}
+			} else {
+				$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
+					FROM config
+					WHERE key = :key LIMIT 1;";
+			
 				$stmt = $this->dbconfig->prepare($sql);		
 				$stmt->bindParam(':key', $this->key, PDO::PARAM_STR);
 
 				if ($stmt->execute()) {	
 					$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    	    	    if ($results && count($results)){
+					if ($results && count($results)){
 						$data = [
-			   	            'result' => $results, 
-    	    		        'status' => 'success', 
-			           	    'code' => 'RS501',
-        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+							'result' => $results, 
+							'status' => 'success', 
+							'code' => 'RS501',
+							'message' => CustomHandlers::getreSlimMessage('RS501')
 						];
-			        } else {
-        			    $data = [
+					} else {
+						$data = [
 							'result' => [],
 							'status' => 'error',
 							'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+							'message' => CustomHandlers::getreSlimMessage('RS601')
 						];
-	    	        }          	   	
+					}          	   	
 				} else {
 					$data = [
-    	    			'status' => 'error',
+						'status' => 'error',
 						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+						'message' => CustomHandlers::getreSlimMessage('RS202')
 					];
-				}	
+				}
+			}
 			
 			return JSON::encode($data,true);
 	        $this->dbconfig = null;
