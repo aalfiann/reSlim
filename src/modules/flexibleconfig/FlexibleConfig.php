@@ -27,10 +27,10 @@ use PDO;                                            //To connect with database
         var $username,$token;
 
         //data var
-		var $key,$value,$description,$created_at,$created_by,$updated_at,$updated_by,$id,$fullname,$address,$telp,$email,$website;
-		
+		var $key,$value,$description,$created_at,$created_by,$updated_at,$updated_by;
+
 		//folder data
-        var $folderdata = 'flexibleconfig-data';
+		var $folderdata = 'flexibleconfig-data';
 
         //search var
         var $search;
