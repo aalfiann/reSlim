@@ -27,7 +27,10 @@ use PDO;                                            //To connect with database
         var $username,$token;
 
         //data var
-        var $key,$value,$description,$created_at,$created_by,$updated_at,$updated_by,$id,$fullname,$address,$telp,$email,$website;
+		var $key,$value,$description,$created_at,$created_by,$updated_at,$updated_by,$id,$fullname,$address,$telp,$email,$website;
+		
+		//folder data
+        var $folderdata = 'flexibleconfig-data';
 
         //search var
         var $search;
@@ -73,12 +76,25 @@ use PDO;                                            //To connect with database
         //FlexibleConfig===========================================
 
 
+		private function isDataVerified(){
+			if (!is_dir($this->folderdata)) mkdir($this->folderdata,0775,true);
+			if (!file_exists($this->folderdata.'/data.sqlite3')){
+				return copy($this->basemod.'/table.sqlite3',$this->folderdata.'/data.sqlite3');
+			} else {
+				return true;
+			}
+			return false;
+		}
+
         private function dataConfig() {
-            $dir = 'sqlite:'.$this->basemod.'/data.sqlite3';
-            $pdo  = new PDO($dir);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            return $pdo;
+			if ($this->isDataVerified()){
+				$dir = 'sqlite:'.$this->folderdata.'/data.sqlite3';
+            	$pdo  = new PDO($dir);
+	            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    	        $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        	    return $pdo;
+			}
+			return null;
         }
 
         public function add(){
