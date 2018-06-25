@@ -13,7 +13,7 @@ use PDO;                                            //To connect with database
      * @package    modules/packager
      * @author     M ABD AZIZ ALFIAN <github.com/aalfiann>
      * @copyright  Copyright (c) 2018 M ABD AZIZ ALFIAN
-     * @license    https://github.com/aalfiann/reSlim-modules/tree/master/packager/LICENSE.md  MIT License
+     * @license    https://github.com/aalfiann/reSlim-modules-packager/blob/master/LICENSE.md  MIT License
      */
     class Packager {
 
@@ -108,6 +108,31 @@ use PDO;                                            //To connect with database
             else if (file_exists($src)) copy($src, $dst);
         }
 
+        private function isDependencyExists($dependency,$folders){
+            $c = 0;  
+            if (is_array($dependency)){
+                if (in_array("", $dependency, true)) return true;
+                $dp = count($dependency);
+                for ($i=0;$i<$dp;$i++){
+                    foreach($folders as $folder){
+                        if ($folder == str_replace('modules/','',$dependency[$i])){
+                            $c++;  
+                        }
+                    }
+                }
+            } else {
+                if (empty($dependency)) return true;
+                $dp = 1;
+                foreach($folders as $folder){
+                    if ($folder == str_replace('modules/','',$dependency)){
+                        $c++;
+                    }
+                }
+            }
+            if ($c == $dp) return true;
+            return false;
+        }
+
         // Show all package installed
         public function showAll($lang='en'){
             if (Auth::validToken($this->db,$this->token,$this->username)){
@@ -115,10 +140,12 @@ use PDO;                                            //To connect with database
                 if ($role == 1) {
                     // Scan all packages
                     $packs = $this->glob_recursive('../modules/*/package.json',GLOB_NOSORT);
+                    $listmodules = str_replace(['../modules/','/package.json'],'',$packs);
                     foreach ($packs as $pack) {
                         $mods = json_decode(file_get_contents($pack));
                         $size = $this->GetDirectorySize(str_replace('/package.json','',realpath($pack)));
                         $compatible = (version_compare(RESLIM_VERSION, $mods->package->require->reSlim, ">=")?true:false);
+                        $dependency = (isset($mods->package->dependency)?$this->isDependencyExists($mods->package->dependency,$listmodules):true);
                         $readme = str_replace('/package.json','',realpath($pack)).'/README.md';
                         $readmeurl = (($this->isHttps())?'https://':'http://').$_SERVER['HTTP_HOST'].'/'.basename(dirname(__FILE__,2)).'/'.basename(dirname($pack)).'/README.md';
                         $folder[] = [
@@ -135,6 +162,11 @@ use PDO;                                            //To connect with database
                             'compatible' => [
                                 'status' => (($compatible)?'ok':'failed'),
                                 'message' => (($compatible)?'Package '.$mods->package->name.' '.Dictionary::write('is_compatible',$lang).' '.RESLIM_VERSION:'Package '.$mods->package->name.' '.Dictionary::write('is_not_compatible',$lang).' '.RESLIM_VERSION),
+                            ],
+                            'dependency' => [
+                                'status' => (($dependency)?'ok':'failed'),
+                                'list' => (isset($mods->package->dependency)?$mods->package->dependency:''),
+                                'message' => (($dependency)?'Package '.$mods->package->name.' '.Dictionary::write('dependency_ok',$lang):Dictionary::write('dependency_fail',$lang)),
                             ],
                             'readme' => [
                                 'url' => ((file_exists($readme))?$readmeurl:''),
