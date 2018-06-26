@@ -703,9 +703,7 @@ use \classes\BaseConverter as BaseConverter;
 		 * @return string
 		 */
         public static function filePath($key){
-            if (!is_dir(self::$filefolder)) {
-                mkdir(self::$filefolder,0775,true);
-            }            
+            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);           
             return self::$filefolder.'/'.$key.'.cache';
         }
 
@@ -835,6 +833,7 @@ use \classes\BaseConverter as BaseConverter;
          * @return string
          */
         public static function getCacheSize($formatted=true) {
+            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);
             $size = 0;
             foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
                 $size += $file->getSize();
@@ -896,6 +895,7 @@ use \classes\BaseConverter as BaseConverter;
          * @return array
          */
         public static function getCacheInfo() {
+            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);
             $size = 0;
             $files = -2;
             foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
