@@ -18,7 +18,7 @@ namespace modules\packager;
             //Info
             'is_compatible' => 'kompatibel dengan reSlim',
             'is_not_compatible' => 'tidak kompatibel dengan reSlim',
-            'dependency_ok' => 'tidak memiliki masalah dengan dependency apapun.',
+            'dependency_ok' => 'Telah diperiksa dan berhasil di verifikasi.',
             'dependency_fail' => 'Dependency yang dibutuhkan, masih ada yang belum terpasang!',
             'tips_readme' => 'Jika file readme tidak muncul, Anda harus mengganti nama filenya menjadi README.md atau periksa untuk memastikan file readme ada di dalam server.',
             //handler
@@ -40,7 +40,7 @@ namespace modules\packager;
             //Transaction process
             'is_compatible' => 'is compatible with reSlim',
             'is_not_compatible' => 'is not compatible with reSlim',
-            'dependency_ok' => 'have no problem with any dependencies.',
+            'dependency_ok' => 'Checked and successfully verified.',
             'dependency_fail' => 'Required dependency, still not installed yet!',
             'tips_readme' => 'If file readme doesn\'t appear, You have rename to README.md or check to make sure file readme is exist on server.',
             //handler
@@ -58,16 +58,13 @@ namespace modules\packager;
          * @param $key : input the key of dictionary
          * @return string dictionary language
          */
-        public static function write($key,$lang='id'){
+        public static function write($key,$lang=''){
             switch($lang){
                 case 'id':
                     return self::$id[$key];
                 break;
-                case 'en':
-                    return self::$en[$key];
-                break;
                 default:
-                    return self::$id[$key];
+                    return self::$en[$key];
             }
         }
     }

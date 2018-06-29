@@ -25,6 +25,9 @@ use PDO;                                            //To connect with database
 
         //master var
         var $username,$token;
+
+        //for multi language
+        var $lang;
         
         //construct database object
         function __construct($db=null) {
@@ -134,7 +137,7 @@ use PDO;                                            //To connect with database
         }
 
         // Show all package installed
-        public function showAll($lang='en'){
+        public function showAll(){
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
                 if ($role == 1) {
@@ -161,18 +164,18 @@ use PDO;                                            //To connect with database
                             'app' => 'reSlim v.'.RESLIM_VERSION,
                             'compatible' => [
                                 'status' => (($compatible)?'ok':'failed'),
-                                'message' => (($compatible)?'Package '.$mods->package->name.' '.Dictionary::write('is_compatible',$lang).' '.RESLIM_VERSION:'Package '.$mods->package->name.' '.Dictionary::write('is_not_compatible',$lang).' '.RESLIM_VERSION),
+                                'message' => (($compatible)?'Package '.$mods->package->name.' '.Dictionary::write('is_compatible',$this->lang).' '.RESLIM_VERSION:'Package '.$mods->package->name.' '.Dictionary::write('is_not_compatible',$this->lang).' '.RESLIM_VERSION),
                             ],
                             'dependency' => [
                                 'status' => (($dependency)?'ok':'failed'),
                                 'list' => (isset($mods->package->dependency)?$mods->package->dependency:''),
-                                'message' => (($dependency)?'Package '.$mods->package->name.' '.Dictionary::write('dependency_ok',$lang):Dictionary::write('dependency_fail',$lang)),
+                                'message' => (($dependency)?'Package '.$mods->package->name.' '.Dictionary::write('dependency_ok',$this->lang):Dictionary::write('dependency_fail',$this->lang)),
                             ],
                             'readme' => [
                                 'url' => ((file_exists($readme))?$readmeurl:''),
                                 'path' => ((file_exists($readme))?$readme:''),
                                 'content' => ((file_exists($readme))?file_get_contents($readme):''),
-                                'tips' => Dictionary::write('tips_readme',$lang)
+                                'tips' => Dictionary::write('tips_readme',$this->lang)
                             ]
                         ];
                     }
@@ -182,13 +185,13 @@ use PDO;                                            //To connect with database
                             'results' => $folder,
                             'status' => 'success',
                             'code' => 'PC103',
-                            'message' => Dictionary::write('PC103',$lang)
+                            'message' => Dictionary::write('PC103',$this->lang)
                         ];
                     } else {
                         $data = [
                             'status' => 'error',
                             'code' => 'PC203',
-                            'message' => Dictionary::write('PC203',$lang)
+                            'message' => Dictionary::write('PC203',$this->lang)
                         ];
                     }
                 } else {
@@ -209,7 +212,7 @@ use PDO;                                            //To connect with database
 	        $this->db= null;
         }
 
-        public function installFromZip($source,$namespaces="",$lang='en'){
+        public function installFromZip($source,$namespaces=""){
             $namespaces = str_replace('modules/','',$namespaces);
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
@@ -239,13 +242,13 @@ use PDO;                                            //To connect with database
                         $data = [
                             'status' => 'success',
                             'code' => 'PC101',
-                            'message' => Dictionary::write('PC101',$lang)
+                            'message' => Dictionary::write('PC101',$this->lang)
                         ];
                     } else {
                         $data = [
                             'status' => 'error',
                             'code' => 'PC201',
-                            'message' => Dictionary::write('PC201',$lang),
+                            'message' => Dictionary::write('PC201',$this->lang),
                             'path' => $_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)),
                             'base' => $this->basemod
                         ];
@@ -268,7 +271,7 @@ use PDO;                                            //To connect with database
 	        $this->db= null;
         }
 
-        public function installFromZipSafely($source,$namespaces="",$lang='en'){
+        public function installFromZipSafely($source,$namespaces=""){
             $namespaces = str_replace('modules/','',$namespaces);
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
@@ -306,13 +309,13 @@ use PDO;                                            //To connect with database
                             $data = [
                                 'status' => 'success',
                                 'code' => 'PC101',
-                                'message' => Dictionary::write('PC101',$lang)
+                                'message' => Dictionary::write('PC101',$this->lang)
                             ];
                         } else {
                             $data = [
                                 'status' => 'error',
                                 'code' => 'PC104',
-                                'message' => Dictionary::write('PC204',$lang)
+                                'message' => Dictionary::write('PC204',$this->lang)
                             ];
                         }
                         $zip->close();
@@ -322,7 +325,7 @@ use PDO;                                            //To connect with database
                         $data = [
                             'status' => 'error',
                             'code' => 'PC201',
-                            'message' => Dictionary::write('PC201',$lang),
+                            'message' => Dictionary::write('PC201',$this->lang),
                             'path' => $_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)),
                             'base' => $this->basemod
                         ];
@@ -345,7 +348,7 @@ use PDO;                                            //To connect with database
 	        $this->db= null;
         }
 
-        public function uninstallPackage($namespaces,$lang='en'){
+        public function uninstallPackage($namespaces){
             $namespaces = str_replace('modules/','',$namespaces);
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
@@ -354,7 +357,7 @@ use PDO;                                            //To connect with database
                     $data = [
                         'status' => 'success',
                         'code' => 'PC102',
-                        'message' => Dictionary::write('PC102',$lang),
+                        'message' => Dictionary::write('PC102',$this->lang),
                         'namespace' => 'modules/'.$namespaces
                     ];
                 } else {

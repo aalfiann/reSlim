@@ -26,9 +26,9 @@ use \classes\middleware\ValidateParamURL as ValidateParamURL;   //ValidateParamU
         $pc = new Packager($this->db);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $lang = (empty($_GET['lang'])?'en':$_GET['lang']);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
-        $body->write($pc->showAll($lang));
+        $body->write($pc->showAll());
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParamURL('lang','0-2'));
 
@@ -38,9 +38,9 @@ use \classes\middleware\ValidateParamURL as ValidateParamURL;   //ValidateParamU
         $pc = new Packager($this->db);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $lang = (empty($_GET['lang'])?'en':$_GET['lang']);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
-        $body->write($pc->installFromZip($_GET['source'],'',$lang));
+        $body->write($pc->installFromZip($_GET['source'],''));
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParamURL('lang','0-2'))
         ->add(new ValidateParamURL('source','1-250','url'));
@@ -50,9 +50,9 @@ use \classes\middleware\ValidateParamURL as ValidateParamURL;   //ValidateParamU
         $pc = new Packager($this->db);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $lang = (empty($_GET['lang'])?'en':$_GET['lang']);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
-        $body->write($pc->installFromZipSafely($_GET['source'],$_GET['namespace'],$lang));
+        $body->write($pc->installFromZipSafely($_GET['source'],$_GET['namespace']));
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParamURL('lang','0-2'))
         ->add(new ValidateParamURL('namespace','1-50'))
@@ -63,9 +63,9 @@ use \classes\middleware\ValidateParamURL as ValidateParamURL;   //ValidateParamU
         $pc = new Packager($this->db);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $lang = (empty($_GET['lang'])?'en':$_GET['lang']);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
-        $body->write($pc->uninstallPackage($_GET['namespace'],$lang));
+        $body->write($pc->uninstallPackage($_GET['namespace']));
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParamURL('lang','0-2'))
         ->add(new ValidateParamURL('namespace','1-50'));
