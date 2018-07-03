@@ -943,7 +943,7 @@ use PDO;
 						(SELECT sum(x.Viewer) FROM data_page x) AS 'Viewer',
 						(SELECT count(x.PageID) FROM data_page x) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 				} else {
 					$sql = "SELECT 
@@ -952,7 +952,7 @@ use PDO;
 						(SELECT sum(x.Viewer) FROM data_page x WHERE x.Username=:username) AS 'Viewer',
 						(SELECT count(x.PageID) FROM data_page x WHERE x.Username=:username) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Draft))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				}

@@ -1510,7 +1510,7 @@ use PDO;
 						(SELECT count(x.UserID) FROM user_data x WHERE x.StatusID='42') AS 'Suspended',
 						(SELECT count(x.UserID) FROM user_data x) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Suspended))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) as 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) as 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 
 					if ($stmt->execute()) {	
@@ -1570,7 +1570,7 @@ use PDO;
 						(SELECT count(x.Domain) FROM user_api x WHERE x.StatusID='42') AS 'Suspended',
 						(SELECT count(x.Domain) FROM user_api x) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Suspended))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 				} else {
 					$sql = "SELECT
@@ -1578,7 +1578,7 @@ use PDO;
 						(SELECT count(x.Domain) FROM user_api x WHERE x.StatusID='42' AND x.Username=:username) AS 'Suspended',
 						(SELECT count(x.Domain) FROM user_api x WHERE x.Username=:username) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Suspended))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				}
@@ -1633,7 +1633,7 @@ use PDO;
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='50') AS 'Private',
 						(SELECT count(x.ItemID) FROM user_upload x) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Private))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);	
 				} else {
 					$sql = "SELECT 
@@ -1641,7 +1641,7 @@ use PDO;
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.StatusID='50' AND x.Username=:username) AS 'Private',
 						(SELECT count(x.ItemID) FROM user_upload x WHERE x.Username=:username) AS 'Total',
 						IFNULL(round((((SELECT Total) - (SELECT Private))/(SELECT Total))*100),0) AS 'Percent_Up',
-						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Precent_Down';";
+						IFNULL((100 - (SELECT Percent_Up)),0) AS 'Percent_Down';";
 					$stmt = $this->db->prepare($sql);
 					$stmt->bindParam(':username', $newusername, PDO::PARAM_STR);
 				}
