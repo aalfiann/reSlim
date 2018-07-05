@@ -65,7 +65,7 @@ use \classes\SimpleCache as SimpleCache;
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new ApiKey);
+    })->add(new ValidateParamURL('lang','0-2'))->add(new ApiKey);
 
     // GET example api to show profile user (for internal is need an authentication token)
     $app->get('/user/profile/{username}/{token}', function (Request $request, Response $response) {
