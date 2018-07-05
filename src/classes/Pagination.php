@@ -36,6 +36,11 @@ use PDO;
 		 */
 		var $totalRow,$page,$itemsPerPage,$limitData=1000;
 
+		/**
+		 * Flexible multi language
+		 */
+		var $lang;
+
 		function __construct() {
 			require '../config.php';
     	    if ($config['limitLoadData']!=0){
@@ -86,7 +91,7 @@ use PDO;
                                 'results' => $this->fetchAllAssoc,
                                 'status' => 'success',
                                 'code' => 'RS501',
-			    				'message' =>  CustomHandlers::getreSlimMessage('RS501'),
+			    				'message' =>  CustomHandlers::getreSlimMessage('RS501',$this->lang),
                                 'metadata' => [
                                     'records_total' => (int)$this->totalRow,
                                     'records_count' => (int)count($this->fetchAllAssoc),
@@ -103,7 +108,7 @@ use PDO;
 			    			$alldata = [
                                 'status' => 'error',
                                 'code' => 'RS601',
-					    		'message' => CustomHandlers::getreSlimMessage('RS601')
+					    		'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
                             ];
     					}
 	    			}
@@ -112,7 +117,7 @@ use PDO;
 				    	$alldata = [
                             'status' => 'error',
                             'code' => 'RS601',
-						    'message' => CustomHandlers::getreSlimMessage('RS601')
+						    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
                         ];
 	    			}
 		    	}
@@ -121,7 +126,7 @@ use PDO;
                     $alldata = [
                         'status' => 'error',
                         'code' => 'RS602',
-			    		'message' => CustomHandlers::getreSlimMessage('RS602').' Max items per page : '.$this->limitData.'.'
+			    		'message' => CustomHandlers::getreSlimMessage('RS604',$this->lang).' '.CustomHandlers::getreSlimMessage('RS605',$this->lang).$this->limitData.'.'
                     ];
 	    		}
 		    }
@@ -130,7 +135,7 @@ use PDO;
 		    	$alldata = [
                     'status' => 'error',
                     'code' => 'RS801',
-				    'message' =>  CustomHandlers::getreSlimMessage('RS801')
+				    'message' =>  CustomHandlers::getreSlimMessage('RS801',$this->lang)
                 ];
 	    	}
             return $alldata;

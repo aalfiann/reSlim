@@ -9,6 +9,7 @@ use \classes\JSON as JSON;
     // Delete All cache data
     $app->get('/maintenance/cache/data/delete/{username}/{token}', function (Request $request, Response $response) {
         $usertoken = $request->getAttribute('token');
+        $lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         if (Auth::validToken($this->db,$usertoken,$request->getAttribute('username'))){
             $roles = Auth::getRoleID($this->db,$usertoken);
             if ($roles == '1' || $roles == '2'){
@@ -17,14 +18,14 @@ use \classes\JSON as JSON;
                 $data = JSON::encode([
                     'status' => 'error',
                     'code' => 'RS404',
-                    'message' => CustomHandlers::getreSlimMessage('RS404')
+                    'message' => CustomHandlers::getreSlimMessage('RS404',$lang)
                 ],true);
             }
         } else {
             $datajson = JSON::encode([
                 'status' => 'error',
                 'code' => 'RS401',
-                'message' => CustomHandlers::getreSlimMessage('RS401')
+                'message' => CustomHandlers::getreSlimMessage('RS401',$lang)
             ],true);
         }
         $body = $response->getBody();
@@ -35,6 +36,7 @@ use \classes\JSON as JSON;
     // Delete All cache api keys
     $app->get('/maintenance/cache/apikey/delete/{username}/{token}', function (Request $request, Response $response) {
         $usertoken = $request->getAttribute('token');
+        $lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         if (Auth::validToken($this->db,$usertoken,$request->getAttribute('username'))){
             $roles = Auth::getRoleID($this->db,$usertoken);
             if ($roles == '1' || $roles == '2'){
@@ -43,14 +45,14 @@ use \classes\JSON as JSON;
                 $data = JSON::encode([
                     'status' => 'error',
                     'code' => 'RS404',
-                    'message' => CustomHandlers::getreSlimMessage('RS404')
+                    'message' => CustomHandlers::getreSlimMessage('RS404',$lang)
                 ],true);
             }
         } else {
             $datajson = JSON::encode([
                 'status' => 'error',
                 'code' => 'RS401',
-                'message' => CustomHandlers::getreSlimMessage('RS401')
+                'message' => CustomHandlers::getreSlimMessage('RS401',$lang)
             ],true);
         }
         $body = $response->getBody();

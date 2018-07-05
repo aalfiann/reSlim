@@ -22,11 +22,12 @@ use PDO;
      */
     class ApiKey
     {
-        private $apikey,$pdo,$conf;
+        private $apikey,$pdo,$conf,$lang;
 
         public function __construct(){
             require '../config.php';
             $db = $config['db'];
+            $this->lang = filter_var((empty($_GET['lang'])?'':$_GET['lang']),FILTER_SANITIZE_STRING);
             $this->apikey = filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING);
             $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -55,7 +56,7 @@ use PDO;
                         $body->write(JSON::encode([
 	    	        	    'status' => 'error',
                             'code' => 'RS406',
-			        	    'message' => CustomHandlers::getreSlimMessage('RS406')
+			        	    'message' => CustomHandlers::getreSlimMessage('RS406',$this->lang)
     				    ],true));
                         return Cors::modify($response,$body,401);
                     }
@@ -69,7 +70,7 @@ use PDO;
                             $body->write(JSON::encode([
                                 'status' => 'error',
                                 'code' => 'RS406',
-                                'message' => CustomHandlers::getreSlimMessage('RS406')
+                                'message' => CustomHandlers::getreSlimMessage('RS406',$this->lang)
                             ],true));
                             return Cors::modify($response,$body,401);
                         }
@@ -78,7 +79,7 @@ use PDO;
                         $body->write(JSON::encode([
 		        	        'status' => 'error',
     			   	    	'code' => 'RS407',
-	    		    	    'message' => CustomHandlers::getreSlimMessage('RS407')
+	    		    	    'message' => CustomHandlers::getreSlimMessage('RS407',$this->lang)
     	    			],true));
                         return Cors::modify($response,$body,400);
                     }

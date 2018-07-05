@@ -35,6 +35,9 @@ use PDO;
 		// for search
 		var $search;
 
+		// for multi language
+		var $lang;
+
 		function __construct($db=null) {
 			if (!empty($db)) 
 	        {
@@ -70,13 +73,13 @@ use PDO;
 						$data = [
 							'status' => 'success',
 							'code' => 'RS101',
-							'message' => CustomHandlers::getreSlimMessage('RS101')
+							'message' => CustomHandlers::getreSlimMessage('RS101',$this->lang)
 						];	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS901',
-							'message' => CustomHandlers::getreSlimMessage('RS901')
+							'message' => CustomHandlers::getreSlimMessage('RS901',$this->lang)
 						];
 					}
 				$this->db->commit();
@@ -121,13 +124,13 @@ use PDO;
 						$data = [
 							'status' => 'success',
 							'code' => 'RS103',
-							'message' => CustomHandlers::getreSlimMessage('RS103')
+							'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
 						];	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS904',
-							'message' => CustomHandlers::getreSlimMessage('RS904')
+							'message' => CustomHandlers::getreSlimMessage('RS904',$this->lang)
 						];
 					}
 				$this->db->commit();
@@ -159,13 +162,13 @@ use PDO;
 						$data = [
 							'status' => 'success',
 							'code' => 'RS104',
-							'message' => CustomHandlers::getreSlimMessage('RS104')
+							'message' => CustomHandlers::getreSlimMessage('RS104',$this->lang)
 						];	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS905',
-							'message' => CustomHandlers::getreSlimMessage('RS905')
+							'message' => CustomHandlers::getreSlimMessage('RS905',$this->lang)
 						];
 					}
 				$this->db->commit();
@@ -199,13 +202,13 @@ use PDO;
 						$data = [
 							'status' => 'success',
 							'code' => 'RS103',
-							'message' => CustomHandlers::getreSlimMessage('RS103')
+							'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
 						];	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS905',
-							'message' => CustomHandlers::getreSlimMessage('RS905')
+							'message' => CustomHandlers::getreSlimMessage('RS905',$this->lang)
 						];
 					}
 				$this->db->commit();
@@ -239,13 +242,13 @@ use PDO;
 						$data = [
 							'status' => 'success',
 							'code' => 'RS103',
-							'message' => CustomHandlers::getreSlimMessage('RS103')
+							'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
 						];	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS905',
-							'message' => CustomHandlers::getreSlimMessage('RS905')
+							'message' => CustomHandlers::getreSlimMessage('RS905',$this->lang)
 						];
 					}
 					$this->db->commit();
@@ -261,7 +264,7 @@ use PDO;
 				$data = [
 					'status' => 'error',
 					'code' => 'RS903',
-					'message' => CustomHandlers::getreSlimMessage('RS903')
+					'message' => CustomHandlers::getreSlimMessage('RS903',$this->lang)
 				];
 			}
 			
@@ -290,14 +293,14 @@ use PDO;
 		    				'status' => 'success',
 			   				'code' => 'RS101',
 			    			'passkey' => $hash,
-							'message' => CustomHandlers::getreSlimMessage('RS101'),
-							'info' => 'Keep secret and better to send this pass key via email. This pass key will expired 3 days from now.'
+							'message' => CustomHandlers::getreSlimMessage('RS101',$this->lang),
+							'info' => CustomHandlers::getreSlimMessage('CN001',$this->lang)
 				    	];
     				} else {
 	    				$data = [
 		    				'status' => 'error',
 			   				'code' => 'RS201',
-			    			'message' => CustomHandlers::getreSlimMessage('RS201')
+			    			'message' => CustomHandlers::getreSlimMessage('RS201',$this->lang)
 				    	];
 				    }
     				$this->db->commit();
@@ -313,7 +316,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS914',
-					'message' => CustomHandlers::getreSlimMessage('RS914')
+					'message' => CustomHandlers::getreSlimMessage('RS914',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -351,13 +354,13 @@ use PDO;
 								$data = [
 		    						'status' => 'success',
 			   						'code' => 'RS103',
-									'message' => CustomHandlers::getreSlimMessage('RS103')
+									'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
 						    	];
 							} else {
 								$data = [
 		    						'status' => 'error',
 			   						'code' => 'RS915',
-									'message' => CustomHandlers::getreSlimMessage('RS915')
+									'message' => CustomHandlers::getreSlimMessage('RS915',$this->lang)
 					    		];
 							}
 							
@@ -365,7 +368,7 @@ use PDO;
 	    					$data = [
 		    					'status' => 'error',
 			   					'code' => 'RS201',
-			    				'message' => CustomHandlers::getreSlimMessage('RS201')
+			    				'message' => CustomHandlers::getreSlimMessage('RS201',$this->lang)
 				    		];
 					    }
     					$this->db->commit();
@@ -382,14 +385,14 @@ use PDO;
 					$data = [
 		    					'status' => 'error',
 			   					'code' => 'RS801',
-			    				'message' => CustomHandlers::getreSlimMessage('RS801')
+			    				'message' => CustomHandlers::getreSlimMessage('RS801',$this->lang)
 				    		];
 				}
 			} else {
 				$data = [
 		    		'status' => 'error',
 			   		'code' => 'RS202',
-			    	'message' => CustomHandlers::getreSlimMessage('RS202')
+			    	'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 				];
 			}	
 		    return JSON::encode($data,true);
@@ -522,7 +525,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -541,7 +544,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -560,7 +563,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -620,21 +623,21 @@ use PDO;
 								$data = [
         	    		    		'status' => 'error',
 		    	    		    	'code' => 'RS202',
-	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 								];	
 							}			
 				    } else {
     	    			$data = [
         	    			'status' => 'error',
 		    	    		'code' => 'RS601',
-        			    	'message' => CustomHandlers::getreSlimMessage('RS601')
+        			    	'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 		    	    }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 				
@@ -642,7 +645,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -677,27 +680,27 @@ use PDO;
 			   	            'result' => $results, 
     	    		        'status' => 'success', 
 			           	    'code' => 'RS501',
-        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+        		        	'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 			        } else {
         			    $data = [
             		    	'status' => 'error',
 		        		    'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 	    	        }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -726,27 +729,27 @@ use PDO;
 			   	            'result' => $results, 
     	    		        'status' => 'success', 
 			           	    'code' => 'RS501',
-        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+        		        	'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 			        } else {
         			    $data = [
             		    	'status' => 'error',
 		        		    'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 	    	        }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -765,7 +768,7 @@ use PDO;
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS404',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 					];
 				} else {
 					if ($roles == '1'){
@@ -803,20 +806,20 @@ use PDO;
 			   	    	        'result' => $results, 
     	    		    	    'status' => 'success', 
 			           	    	'code' => 'RS501',
-	        		        	'message' => CustomHandlers::getreSlimMessage('RS501')
+	        		        	'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 							];
 				        } else {
         				    $data = [
             			    	'status' => 'error',
 		        			    'code' => 'RS601',
-        		    		    'message' => CustomHandlers::getreSlimMessage('RS601')
+        		    		    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 							];
 		    	        }          	   	
 					} else {
 						$data = [
     	    				'status' => 'error',
 							'code' => 'RS202',
-	        		    	'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    	'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 						];
 					}
 				}
@@ -825,7 +828,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -844,7 +847,7 @@ use PDO;
 					$data = [
 		    			'status' => 'error',
 						'code' => 'RS404',
-        		    	'message' => CustomHandlers::getreSlimMessage('RS404')
+        		    	'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 					];
 				} else {
 					//Query to count row for superuser and admin
@@ -930,21 +933,21 @@ use PDO;
 								$data = [
         	    		    		'status' => 'error',
 		    	    		    	'code' => 'RS202',
-	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        			    	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 								];	
 							}			
 				        } else {
     	    			    $data = [
         	    		    	'status' => 'error',
 		    	    		    'code' => 'RS601',
-        			    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+        			    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 							];
 		    	        }          	   	
 					} else {
 						$data = [
     	    				'status' => 'error',
 							'code' => 'RS202',
-	        			    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        			    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 						];
 					}	
 				}
@@ -953,7 +956,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -1070,28 +1073,28 @@ use PDO;
 							$data = [
             		    		'status' => 'error',
 		        		    	'code' => 'RS202',
-	        		    	    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 							];	
 						}			
 			        } else {
         			    $data = [
             		    	'status' => 'error',
 		        		    'code' => 'RS601',
-        		    	    'message' => CustomHandlers::getreSlimMessage('RS601')
+        		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 	    	        }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        		    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        		    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}		
         
@@ -1124,27 +1127,27 @@ use PDO;
 			   	            'result' => $results, 
 		    		        'status' => 'success', 
 				           	'code' => 'RS501',
-        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+        			        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 				    } else {
     	    			$data = [
         	    		   	'status' => 'error',
 		    	    	    'code' => 'RS601',
-        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+        			        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 		    	    }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}		
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			
@@ -1175,20 +1178,20 @@ use PDO;
 		   	            'result' => $results, 
 	    		        'status' => 'success', 
 			           	'code' => 'RS501',
-        		        'message' => CustomHandlers::getreSlimMessage('RS501')
+        		        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 					];
 			    } else {
         			$data = [
             		   	'status' => 'error',
 		        	    'code' => 'RS601',
-        		        'message' => CustomHandlers::getreSlimMessage('RS601')
+        		        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 					];
 	    	    }          	   	
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS202',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS202')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 				];
 			}		
         
@@ -1205,7 +1208,7 @@ use PDO;
 				$data = [
 					'status' => 'error',
 					'code' => 'RS804',
-					'message' => CustomHandlers::getreSlimMessage('RS804')
+					'message' => CustomHandlers::getreSlimMessage('RS804',$this->lang)
 				];
 			} else {
 				if ($this->isRegistered() == false){
@@ -1215,14 +1218,14 @@ use PDO;
 						$data = [
 							'status' => 'error',
 							'code' => 'RS914',
-							'message' => CustomHandlers::getreSlimMessage('RS914')
+							'message' => CustomHandlers::getreSlimMessage('RS914',$this->lang)
 						];
 					}
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS902',
-						'message' => CustomHandlers::getreSlimMessage('RS902')
+						'message' => CustomHandlers::getreSlimMessage('RS902',$this->lang)
 					];
 				}
 			}
@@ -1239,7 +1242,7 @@ use PDO;
 				$data = [
 					'status' => 'error',
 					'code' => 'RS804',
-					'message' => CustomHandlers::getreSlimMessage('RS804')
+					'message' => CustomHandlers::getreSlimMessage('RS804',$this->lang)
 				];
 			} else {
 				if ($this->isRegistered()){
@@ -1250,21 +1253,21 @@ use PDO;
 							$data = [
 								'status' => 'error',
 								'code' => 'RS903',
-								'message' => CustomHandlers::getreSlimMessage('RS903')
+								'message' => CustomHandlers::getreSlimMessage('RS903',$this->lang)
 							];
 						}
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS906',
-							'message' => CustomHandlers::getreSlimMessage('RS906')
+							'message' => CustomHandlers::getreSlimMessage('RS906',$this->lang)
 						];
 					}
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS902',
-						'message' => CustomHandlers::getreSlimMessage('RS902')
+						'message' => CustomHandlers::getreSlimMessage('RS902',$this->lang)
 					];
 				}
 			}
@@ -1296,7 +1299,7 @@ use PDO;
 						$data = [
 	    					'status' => 'error',
 							'code' => 'RS914',
-        	    			'message' => CustomHandlers::getreSlimMessage('RS914')
+        	    			'message' => CustomHandlers::getreSlimMessage('RS914',$this->lang)
 				];
 					}
 				}
@@ -1304,7 +1307,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1324,21 +1327,21 @@ use PDO;
 						$data = [
 							'status' => 'error',
 							'code' => 'RS902',
-							'message' => CustomHandlers::getreSlimMessage('RS902')
+							'message' => CustomHandlers::getreSlimMessage('RS902',$this->lang)
 						];
 					}
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS404',
-						'message' => CustomHandlers::getreSlimMessage('RS404')
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 					];	
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1357,14 +1360,14 @@ use PDO;
 					$data = [
 	    				'status' => 'error',
 						'code' => 'RS907',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS907')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS907',$this->lang)
 					];
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1383,14 +1386,14 @@ use PDO;
 					$data = [
 	    				'status' => 'error',
 						'code' => 'RS907',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS907')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS907',$this->lang)
 					];
 				}
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1405,13 +1408,13 @@ use PDO;
 				$data = [
 	    			'status' => 'success',
 					'code' => 'RS304',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS304')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS304',$this->lang)
 				];
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS404',
-	            	'message' => CustomHandlers::getreSlimMessage('RS404')
+	            	'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1427,13 +1430,13 @@ use PDO;
 	    			'status' => 'success',
 					'role' => Auth::getRoleID($this->db,$this->token),
 					'code' => 'RS304',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS304')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS304',$this->lang)
 				];
 			} else {
 				$data = [
 	    			'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			return JSON::encode($data,true);
@@ -1451,7 +1454,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -1470,7 +1473,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -1489,7 +1492,7 @@ use PDO;
 				$data = [
 	    			'status' => 'error',
 				    'code' => 'RS404',
-					'message' => CustomHandlers::getreSlimMessage('RS404')
+					'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
     			];
 			}
 		    return JSON::encode($data,true);
@@ -1520,34 +1523,34 @@ use PDO;
 			   		            'result' => $results, 
 		    			        'status' => 'success', 
 				        	   	'code' => 'RS501',
-        			        	'message' => CustomHandlers::getreSlimMessage('RS501')
+        			        	'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 							];
 					    } else {
     		    			$data = [
         		    		   	'status' => 'error',
 		    		    	    'code' => 'RS601',
-        				        'message' => CustomHandlers::getreSlimMessage('RS601')
+        				        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 							];
 			    	    }          	   	
 					} else {
 						$data = [
     	    				'status' => 'error',
 							'code' => 'RS202',
-	        	    		'message' => CustomHandlers::getreSlimMessage('RS202')
+	        	    		'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 						];
 					}	
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS404',
-						'message' => CustomHandlers::getreSlimMessage('RS404')
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 					];
 				}	
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			
@@ -1590,27 +1593,27 @@ use PDO;
 			   	            'result' => $results, 
 		    		        'status' => 'success', 
 				           	'code' => 'RS501',
-        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+        			        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 				    } else {
     	    			$data = [
         	    		   	'status' => 'error',
 		    	    	    'code' => 'RS601',
-        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+        			        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 		    	    }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}		
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			
@@ -1653,27 +1656,27 @@ use PDO;
 			   	            'result' => $results, 
 		    		        'status' => 'success', 
 				           	'code' => 'RS501',
-        			        'message' => CustomHandlers::getreSlimMessage('RS501')
+        			        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 				    } else {
     	    			$data = [
         	    		   	'status' => 'error',
 		    	    	    'code' => 'RS601',
-        			        'message' => CustomHandlers::getreSlimMessage('RS601')
+        			        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 		    	    }          	   	
 				} else {
 					$data = [
     	    			'status' => 'error',
 						'code' => 'RS202',
-	        	    	'message' => CustomHandlers::getreSlimMessage('RS202')
+	        	    	'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}
 			
@@ -1722,34 +1725,34 @@ use PDO;
 								'results' => json_decode($combine), 
 								'status' => 'success', 
 								'code' => 'RS501',
-								'message' => CustomHandlers::getreSlimMessage('RS501')
+								'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 							];
 						} else {
 							$data = [
 								'status' => 'error',
 								'code' => 'RS601',
-								'message' => CustomHandlers::getreSlimMessage('RS601')
+								'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 							];
 						}          	   	
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS202',
-							'message' => CustomHandlers::getreSlimMessage('RS202')
+							'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 						];
 					}
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS404',
-						'message' => CustomHandlers::getreSlimMessage('RS404')
+						'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 					];
 				}
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}	
 	
@@ -1817,27 +1820,27 @@ use PDO;
 							'results' => json_decode($combine), 
 							'status' => 'success', 
 							'code' => 'RS501',
-							'message' => CustomHandlers::getreSlimMessage('RS501')
+							'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS601',
-							'message' => CustomHandlers::getreSlimMessage('RS601')
+							'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 					}          	   	
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS202',
-						'message' => CustomHandlers::getreSlimMessage('RS202')
+						'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}	
 	
@@ -1904,27 +1907,27 @@ use PDO;
 							'results' => json_decode($combine), 
 							'status' => 'success', 
 							'code' => 'RS501',
-							'message' => CustomHandlers::getreSlimMessage('RS501')
+							'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 						];
 					} else {
 						$data = [
 							'status' => 'error',
 							'code' => 'RS601',
-							'message' => CustomHandlers::getreSlimMessage('RS601')
+							'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
 						];
 					}          	   	
 				} else {
 					$data = [
 						'status' => 'error',
 						'code' => 'RS202',
-						'message' => CustomHandlers::getreSlimMessage('RS202')
+						'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 					];
 				}
 			} else {
 				$data = [
     	    		'status' => 'error',
 					'code' => 'RS404',
-	        	    'message' => CustomHandlers::getreSlimMessage('RS404')
+	        	    'message' => CustomHandlers::getreSlimMessage('RS404',$this->lang)
 				];
 			}	
 	

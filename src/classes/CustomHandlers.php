@@ -105,6 +105,7 @@
             'RS103' => 'Request process is successfully updated.',
             'RS104' => 'Request process is successfully deleted.',
             'RS105' => 'Mail hasbeen sent.',
+            'RS106' => 'Processing log is successfully completed.',
             // User process error 2xx
             'RS201' => 'Request process is failed to create.',
             'RS202' => 'Request process is failed to read.',
@@ -131,6 +132,8 @@
             'RS601' => 'There is no any data records found.',
             'RS602' => 'Data records is exceed the limit.',
             'RS603' => 'Data can\'t be duplicated.',
+            'RS604' => 'Data records is exceed the limit to render.',
+            'RS605' => 'Max items per page : ',
             // Parameter success 7xx
             'RS701' => 'The parameter is valid.',
             'RS702' => 'The parameter is authorized.',
@@ -139,6 +142,7 @@
             'RS802' => 'The parameter is not authorized.',
             'RS803' => 'The parameter is deprecated.',
             'RS804' => 'The parameter is contains not allowed character.',
+            'RS805' => 'Some parameter is required!',
             // Any error messages 9xx
             'RS901' => 'Failed to register user.',
             'RS902' => 'Username is not available.',
@@ -156,7 +160,30 @@
             'RS914' => 'Email is not available.',
             'RS915' => 'Failed to verify pass key maybe it was expired.',
             'RS916' => 'Domain hasbeen registered.',
-            'RS917' => 'Users can not make a review more than one.'
+            'RS917' => 'Users can not make a review more than one.',
+            // Any error messages for midleware
+            'MD001' => 'This field is required. Blank, empty or whitespace value is not allowed!',
+            'MD002' => 'The value is not valid domain or subdomain format.',
+            'MD003' => 'The value is not valid url format.',
+            'MD004' => 'The value is not valid date with yyyy-mm-dd format.',
+            'MD005' => 'The value is not valid timestamp with yyyy-mm-dd hh:mm:ss format.',
+            'MD006' => 'The value is not alphanumeric!',
+            'MD007' => 'The value is not alphabet!',
+            'MD008' => 'The value is not decimal!',
+            'MD009' => 'The value should be numeric and contains leading zero value is not allowed!',
+            'MD010' => 'The value is not numeric!',
+            'MD011' => 'The value is not numeric (double)!',
+            'MD012' => 'The value is not username allowed format!',
+            'MD013' => 'The value is not email address allowed format!',
+            'MD014' => 'The value is not valid json format!',
+            'MD015' => 'The value is not using valid format!',
+            'MD101' => 'Chars length is should be between',
+            'MD102' => 'Failed to determine between chars length!',
+            'MD103' => 'Wrong format between occured! The format is "min-max".',
+            'MD104' => 'The body of request json is empty! Maybe you got the wrong way to send your json request into our server.',
+            'MD105' => 'Corrupted, malformed or empty request json!',
+            // Any Custom Notice
+            'CN001' => 'Keep secret and better to send this pass key via email. This pass key will expired 3 days from now.'
         ];
 
         /**
@@ -167,9 +194,10 @@
             // User process success 1xx    
             'RS101' => 'Permintaan proses create berhasil.',
             'RS102' => 'Permintaan proses read berhasil.',
-            'RS103' => 'Permintaan proses update berhasil',
+            'RS103' => 'Permintaan proses update berhasil.',
             'RS104' => 'Permintaan proses delete berhasil.',
-            'RS105' => 'Mail hasbeen sent.',
+            'RS105' => 'Email telah dikirim.',
+            'RS106' => 'Memproses log berhasil.',
             // User process error 2xx
             'RS201' => 'Permintaan proses create gagal.',
             'RS202' => 'Permintaan proses read gagal.',
@@ -196,6 +224,8 @@
             'RS601' => 'Tidak ada satupun data ditemukan.',
             'RS602' => 'Data telah melebihi batas penyimpanan.',
             'RS603' => 'Data tidak dapat di duplikasi.',
+            'RS604' => 'Data telah melibihi batas untuk ditampilkan.',
+            'RS605' => 'Maksimum item data per halaman : ',
             // Parameter success 7xx
             'RS701' => 'Parameter valid.',
             'RS702' => 'Parameter memiliki wewenang.',
@@ -204,6 +234,7 @@
             'RS802' => 'Parameter tidak memiliki wewenang.',
             'RS803' => 'Parameter telah tidak berlaku lagi.',
             'RS804' => 'Parameter terdapat karakter yang dilarang.',
+            'RS805' => 'Ada beberapa parameter yang dibutuhkan!',
             // Any error messages 9xx
             'RS901' => 'Gagal registrasi pengguna.',
             'RS902' => 'Nama pengguna tidak tersedia.',
@@ -221,7 +252,30 @@
             'RS914' => 'Email tidak tersedia.',
             'RS915' => 'Gagal verifikasi kata kunci, mungkin sudah kadaluarsa.',
             'RS916' => 'Domain telah terdaftar.',
-            'RS917' => 'Pengguna tidak dapat membuat ulasan lebih dari satu.'
+            'RS917' => 'Pengguna tidak dapat membuat ulasan lebih dari satu.',
+            // Any error messages for midleware
+            'MD001' => 'Kolom ini dibutuhkan. Kosong atau hanya spasi karakter, tidak diizinkan!',
+            'MD002' => 'Isi tidak sesuai format domain atau subdomain.',
+            'MD003' => 'Isi tidak sesuai format url.',
+            'MD004' => 'Isi tidak sesuai date dengan format yyyy-mm-dd.',
+            'MD005' => 'Isi tidak sesuai timestamp dengan format yyyy-mm-dd hh:mm:ss.',
+            'MD006' => 'Isi bukan format alphanumeric!',
+            'MD007' => 'Isi bukan format alphabet!',
+            'MD008' => 'Isi bukan format decimal!',
+            'MD009' => 'Isi seharusnya angka dan jika ada angka nol didepan itu tidak diizinkan!',
+            'MD010' => 'Isi bukan format numeric!',
+            'MD011' => 'Isi bukan format numeric (double)!',
+            'MD012' => 'Isi bukan format username!',
+            'MD013' => 'Isi bukan format alamat email!',
+            'MD014' => 'Isi tidak sesuai format json!',
+            'MD015' => 'Isi tidak menggunakan valid format!',
+            'MD101' => 'Panjang karakter seharusnya',
+            'MD102' => 'Gagal mengetahui jarak panjang karakter!',
+            'MD103' => 'Format jarak panjang karakter salah! Formatnya adalah "min-max".',
+            'MD104' => 'The body of request json is empty! Maybe you got the wrong way to send your json request into our server.',
+            'MD105' => 'Korup, format salah atau request json kosong!',
+            // Any Custom Notice
+            'CN001' => 'Simpan dan lebih baik kirim pass key ini via email. Pass key ini akan kadaluarsa dalam 3 hari.'
         ];
 
         /**

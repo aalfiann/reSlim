@@ -35,6 +35,11 @@ use PDO;
          */
         var $setFrom,$setFromName,$wordWrap=50,$addAddress,$addCC,$addBCC,$addAttachment,$subject,$body,$isHtml=true;
 
+        /**
+		 * Flexible multi language
+		 */
+		var $lang;
+
         function __construct($mailer,$db=null) {
             require '../config.php';
             $c = $config['smtp'];
@@ -131,7 +136,7 @@ use PDO;
                 $data = [
                     'status' => 'success',
             		'code' => 'RS105',
-            		'message' => CustomHandlers::getreSlimMessage('RS105')
+            		'message' => CustomHandlers::getreSlimMessage('RS105',$this->lang)
                 ];
             }
             return JSON::encode($data,true);

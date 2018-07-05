@@ -20,7 +20,7 @@ use \classes\JSON as JSON;
      */
     class ValidateParam
     {
-        private $parameter,$between,$regex,$message,$length,$error,$min=0,$max=0;
+        private $parameter,$between,$regex,$message,$length,$error,$lang,$min=0,$max=0;
 
         /**
          * Constructor
@@ -33,6 +33,7 @@ use \classes\JSON as JSON;
             $this->parameter = $parameter;
             $this->regex = $regex;
             $this->between = $between;
+            $this->lang = filter_var((empty($_GET['lang'])?'':$_GET['lang']),FILTER_SANITIZE_STRING);
         }
 
         /**
@@ -53,15 +54,15 @@ use \classes\JSON as JSON;
                 $datajson = "";
                 if (empty($this->message)){
                     if (empty($this->error)){
-                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801')];
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801',$this->lang)];
                     } else {
-                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'description'=>$this->error];
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801',$this->lang),'description'=>$this->error];
                     }
                 } else {
                     if (empty($this->length)){
-                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message];
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801',$this->lang),'parameter' => $this->message];
                     } else {
-                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801'),'parameter' => $this->message,'length' => $this->length];
+                        $datajson = ['status' => 'error','code' => 'RS801','message' => CustomHandlers::getreSlimMessage('RS801',$this->lang),'parameter' => $this->message,'length' => $this->length];
                     }
                 }
                 $body->write(JSON::encode($datajson,true));
@@ -72,61 +73,61 @@ use \classes\JSON as JSON;
         private function validateRegex($regex,$key,$value){
             switch($regex){
                 case 'required':
-                    $msg = 'This field is required. Blank, empty or whitespace value is not allowed!';
+                    $msg = CustomHandlers::getreSlimMessage('MD001',$this->lang);
                     return $this->blankTest($key,$value,$msg);
                 case 'domain':
                     $regex = '/([a-zA-Z0-9]+\.)*[a-zA-Z0-9]+\.[a-zA-Z]{2,}/';
-                    $msg = 'The value is not valid domain or subdomain format.';
+                    $msg = CustomHandlers::getreSlimMessage('MD002',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'url':
-                    $msg = 'The value is not valid url format.';
+                    $msg = CustomHandlers::getreSlimMessage('MD003',$this->lang);
                     return $this->urlTest($key,$value,$msg);
                 case 'date':
                     $regex = '/([123456789]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/';
-                    $msg = 'The value is not valid date with yyyy-mm-dd format.';
+                    $msg = CustomHandlers::getreSlimMessage('MD004',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'timestamp':
                     $regex = '/^\d\d\d\d-(0?[1-9]|1[0-2])-(0?[1-9]|[12][0-9]|3[01]) (00|[0-9]|1[0-9]|2[0-3]):([0-9]|[0-5][0-9]):([0-9]|[0-5][0-9])$/';
-                    $msg = 'The value is not valid timestamp with yyyy-mm-dd hh:mm:ss format.';
+                    $msg = CustomHandlers::getreSlimMessage('MD005',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'alphanumeric':
                     $regex = '/^[a-zA-Z0-9]+$/';
-                    $msg = 'The value is not alphanumeric!';
+                    $msg = CustomHandlers::getreSlimMessage('MD006',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'alphabet':
                     $regex = '/^[a-zA-Z]+$/';
-                    $msg = 'The value is not alphabet!';
+                    $msg = CustomHandlers::getreSlimMessage('MD007',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'decimal':
                     $regex = '/^[+-]?[0-9]+(?:\.[0-9]+)?$/';
-                    $msg = 'The value is not decimal!';
+                    $msg = CustomHandlers::getreSlimMessage('MD008',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'notzero':
                     $regex = '/^[1-9][0-9]*$/';
-                    $msg = 'The value should be numeric and contains leading zero value is not allowed!';
+                    $msg = CustomHandlers::getreSlimMessage('MD009',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'numeric':
                     $regex = '/^[0-9]+$/';
-                    $msg = 'The value is not numeric!';
+                    $msg = CustomHandlers::getreSlimMessage('MD010',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'double':
                     $regex = '/^[+-]?[0-9]+(?:,[0-9]+)*(?:\.[0-9]+)?$/';
-                    $msg = 'The value is not numeric (double)!';
+                    $msg = CustomHandlers::getreSlimMessage('MD011',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'username':
                     $regex = '/^[a-zA-Z0-9]{3,20}$/';
-                    $msg = 'The value is not username allowed format!';
+                    $msg = CustomHandlers::getreSlimMessage('MD012',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'email':
                     $regex = '/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/';
-                    $msg = 'The value is not email address allowed format!';
+                    $msg = CustomHandlers::getreSlimMessage('MD013',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
                 case 'json':
-                    $msg = 'The value is not valid json format!';
+                    $msg = CustomHandlers::getreSlimMessage('MD014',$this->lang);
                     return $this->jsonTest($key,$value,$msg);
                 default:
                     $regex = $regex;
-                    $msg = 'The value is not using valid format!';
+                    $msg = CustomHandlers::getreSlimMessage('MD015',$this->lang);
                     return $this->regexTest($regex,$key,$value,$msg);
             }
         }
@@ -174,20 +175,20 @@ use \classes\JSON as JSON;
                             if ($total >= $this->min && $total <= $this->max){
                                 return true;
                             } else {
-                                $this->message[$key] = 'Chars length is should be between '.$this->min.' - '.$this->max.' only!';
+                                $this->message[$key] = CustomHandlers::getreSlimMessage('MD101',$this->lang).' '.$this->min.' - '.$this->max;
                                 $this->length[$key] = $total;
                                 return false;
                             }
                         } else {
-                            $this->message[$key] = 'Failed to determine between chars length!';
+                            $this->message[$key] = CustomHandlers::getreSlimMessage('MD102',$this->lang);
                             return false;
                         }
                     } else {
-                        $this->message[$key] = 'Wrong format between occured! The format is "min-max".';
+                        $this->message[$key] = CustomHandlers::getreSlimMessage('MD103',$this->lang);
                         return false;
                     }
                 } else {
-                    $this->message[$key] = 'Wrong format between occured! The format is "min-max".';
+                    $this->message[$key] = CustomHandlers::getreSlimMessage('MD103',$this->lang);
                     return false;
                 }
             }
@@ -257,7 +258,7 @@ use \classes\JSON as JSON;
             if (!empty($parsedBody)) {
                 if ($this->valueTest($parameter,$parsedBody,$between,$regex)>0) return true;
             }
-            $this->error = ['info'=>'Some parameter is required!','required'=>$parameter];
+            $this->error = ['info'=>CustomHandlers::getreSlimMessage('RS805',$this->lang),'required'=>$parameter];
             return false;
         }
     }
