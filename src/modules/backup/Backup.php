@@ -27,6 +27,9 @@ use PDO;                                            //To connect with database
         
         //folder backup
         var $folderbackupdb = 'backup-db';
+
+        //multi language
+        var $lang;
         
         //construct database object
         function __construct($db=null) {
@@ -72,7 +75,7 @@ use PDO;                                            //To connect with database
                 $data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
             }
             return JSON::encode($data,true);
@@ -85,13 +88,13 @@ use PDO;                                            //To connect with database
                 $data += [
 	    			'status' => 'success',
 					'code' => 'RS501',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS501')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
 				]; 
             } else {
                 $data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
             }
             return JSON::encode($data,true);
@@ -104,27 +107,27 @@ use PDO;                                            //To connect with database
                         $data = [
                             'status' => 'success',
                             'code' => 'RS104',
-                            'message' => CustomHandlers::getreSlimMessage('RS104')
+                            'message' => CustomHandlers::getreSlimMessage('RS104',$this->lang)
                         ];
                     } else {
                         $data = [
                             'status' => 'error',
                             'code' => 'RS204',
-                            'message' => CustomHandlers::getreSlimMessage('RS204')
+                            'message' => CustomHandlers::getreSlimMessage('RS204',$this->lang)
                         ]; 
                     }
                 } else {
                     $data = [
                         'status' => 'error',
                         'code' => 'RS601',
-                        'message' => CustomHandlers::getreSlimMessage('RS601')
+                        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
                     ];
                 }
             } else {
                 $data = [
 	    			'status' => 'error',
 					'code' => 'RS401',
-        	    	'message' => CustomHandlers::getreSlimMessage('RS401')
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
 				];
             }
             return JSON::encode($data,true);
@@ -145,7 +148,7 @@ use PDO;                                            //To connect with database
                 $data = [
                     'status' => 'success',
                     'code' => 'RS104',
-                    'message' => CustomHandlers::getreSlimMessage('RS104'),
+                    'message' => CustomHandlers::getreSlimMessage('RS104',$this->lang),
                     'total_deleted' => $deleted,
                     'execution_time' => (microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"])
                 ];
@@ -153,7 +156,7 @@ use PDO;                                            //To connect with database
                 $data = [
                     'status' => 'error',
                     'code' => 'RS601',
-                    'message' => CustomHandlers::getreSlimMessage('RS601')
+                    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
                 ];
             }
             return JSON::encode($data,true);
@@ -240,13 +243,13 @@ use PDO;                                            //To connect with database
                 $jdata = [
                     'status' => 'success',
                     'code' => 'RS101',
-                    'message' => CustomHandlers::getreSlimMessage('RS101')
+                    'message' => CustomHandlers::getreSlimMessage('RS101',$this->lang)
                 ];
             } else {
                 $jdata = [
                     'status' => 'error',
                     'code' => 'RS201',
-                    'message' => CustomHandlers::getreSlimMessage('RS201')
+                    'message' => CustomHandlers::getreSlimMessage('RS201',$this->lang)
                 ];
             }
             return JSON::encode($jdata,true);

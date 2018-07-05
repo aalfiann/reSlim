@@ -23,6 +23,7 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
     // Backup all tables
     $app->get('/backup/all/{username}/{token}', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
+        $backup->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $backup->username = $request->getAttribute('username');
         $backup->token = $request->getAttribute('token');
         $body = $response->getBody();
@@ -33,6 +34,7 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
     // Backup for spesific table only
     $app->get('/backup/table/{tablename}/{username}/{token}', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
+        $backup->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $backup->username = $request->getAttribute('username');
         $backup->token = $request->getAttribute('token');
         $body = $response->getBody();
@@ -43,6 +45,7 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
     // Show all backup files
     $app->get('/backup/show/all/{username}/{token}', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
+        $backup->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $backup->username = $request->getAttribute('username');
         $backup->token = $request->getAttribute('token');
         $body = $response->getBody();
@@ -53,6 +56,7 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
     // Post delete backup file
     $app->post('/backup/delete', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
+        $backup->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();
         $backup->username = $datapost['Username'];
         $backup->token = $datapost['Token'];
@@ -65,6 +69,7 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
     // Post delete backup all files
     $app->post('/backup/delete/all', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
+        $backup->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();
         $backup->username = $datapost['Username'];
         $backup->token = $datapost['Token'];

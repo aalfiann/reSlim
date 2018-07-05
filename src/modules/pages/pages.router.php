@@ -20,6 +20,7 @@ use \modules\pages\Pages as Pages;
     // POST api to create new page
     $app->post('/page/data/new', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -40,6 +41,7 @@ use \modules\pages\Pages as Pages;
     // POST api to update page
     $app->post('/page/data/update', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();    
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -63,6 +65,7 @@ use \modules\pages\Pages as Pages;
     // POST api to update draft page
     $app->post('/page/data/update/draft', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();    
         $pages->username = $datapost['Username'];
         $pages->token = $datapost['Token'];
@@ -85,6 +88,7 @@ use \modules\pages\Pages as Pages;
     // POST api to delete page
     $app->post('/page/data/delete', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();    
         $pages->pageid = $datapost['PageID'];
         $pages->username = $datapost['Username'];
@@ -99,6 +103,7 @@ use \modules\pages\Pages as Pages;
     // GET api to show all data page pagination registered user
     $app->get('/page/data/search/{username}/{token}/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->username = $request->getAttribute('username');
         $pages->token = $request->getAttribute('token');
@@ -112,6 +117,7 @@ use \modules\pages\Pages as Pages;
     // GET api to show all data status page
     $app->get('/page/data/status/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $body = $response->getBody();
         $body->write($pages->showOptionRelease());
@@ -121,6 +127,7 @@ use \modules\pages\Pages as Pages;
     // GET api to show single data page registered user
     $app->get('/page/data/read/{pageid}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->username = $request->getAttribute('username');
         $pages->token = $request->getAttribute('token');
         $pages->pageid = $request->getAttribute('pageid');
@@ -132,72 +139,79 @@ use \modules\pages\Pages as Pages;
     // GET api to show single data page public
     $app->map(['GET','OPTIONS'],'/page/data/public/read/{pageid}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(3600,["apikey"])){
-            $datajson = SimpleCache::load(["apikey"]);
+        if (SimpleCache::isCached(3600,["apikey","lang"])){
+            $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey"]);
+            $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey","lang"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new ApiKey);
+    })->add(new ValidateParamURL('lang','0-2'))
+        ->add(new ApiKey);
 
     // GET api to show all data page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(3600,["apikey","query"])){
-            $datajson = SimpleCache::load(["apikey","query"]);
+        if (SimpleCache::isCached(3600,["apikey","query","lang"])){
+            $datajson = SimpleCache::load(["apikey","query","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query"]);
+            $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query","lang"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new ValidateParamURL('query'))
+    })->add(new ValidateParamURL('lang','0-2'))
+        ->add(new ValidateParamURL('query'))
         ->add(new ApiKey);
 
     // GET api to show all data published page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(3600,["apikey"])){
-            $datajson = SimpleCache::load(["apikey"]);
+        if (SimpleCache::isCached(3600,["apikey","lang"])){
+            $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey"]);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new ApiKey);
+    })->add(new ValidateParamURL('lang','0-2'))->add(new ApiKey);
 
     // GET api to show all data published page asc or desc pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $pages->sort = $request->getAttribute('sort');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(3600,["apikey"])){
-            $datajson = SimpleCache::load(["apikey"]);
+        if (SimpleCache::isCached(3600,["apikey","lang"])){
+            $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey"]);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
-    })->add(new ApiKey);
+    })->add(new ValidateParamURL('lang','0-2'))->add(new ApiKey);
 
     // GET api to update data view page
     $app->map(['GET','OPTIONS'],'/page/data/view/{pageid}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $body->write($pages->updateViewPage());
@@ -207,6 +221,7 @@ use \modules\pages\Pages as Pages;
     // GET api to get all data page for statistic purpose
     $app->get('/page/stats/data/summary/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
         $body = $response->getBody();
@@ -217,6 +232,7 @@ use \modules\pages\Pages as Pages;
     // GET api to get all data page for statistic chart purpose
     $app->get('/page/stats/data/chart/{year}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
         $pages->year = $request->getAttribute('year');

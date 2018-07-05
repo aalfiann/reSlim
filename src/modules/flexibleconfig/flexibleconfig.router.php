@@ -29,6 +29,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // POST api to add new config
     $app->post('/flexibleconfig/add', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();
         $fc->username = $datapost['Username'];
         $fc->token = $datapost['Token'];
@@ -47,6 +48,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // POST api to update config
     $app->post('/flexibleconfig/update', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();    
         $fc->username = $datapost['Username'];
         $fc->token = $datapost['Token'];
@@ -65,6 +67,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // POST api to delete config
     $app->post('/flexibleconfig/delete', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();    
         $fc->key = $datapost['Key'];
         $fc->username = $datapost['Username'];
@@ -79,6 +82,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // GET api to show all data config (index) with pagination server side
     $app->get('/flexibleconfig/index/{username}/{token}/{page}/{itemsperpage}/', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $fc->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $fc->username = $request->getAttribute('username');
         $fc->token = $request->getAttribute('token');
@@ -93,6 +97,7 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // GET api to read single data
     $app->get('/flexibleconfig/read/{key}/{username}/{token}', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $fc->username = $request->getAttribute('username');
         $fc->token = $request->getAttribute('token');
         $fc->key = $request->getAttribute('key');
@@ -105,17 +110,18 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     // GET api to read single data for public user (include cache)
     $app->get('/flexibleconfig/read/{key}/', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
+        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $fc->key = $request->getAttribute('key');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        if (SimpleCache::isCached(300,["apikey"])){
-            $datajson = SimpleCache::load(["apikey"]);
+        if (SimpleCache::isCached(300,["apikey","lang"])){
+            $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($fc->readPublic(),["apikey"]);
+            $datajson = SimpleCache::save($fc->readPublic(),["apikey","lang"]);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
-    })->add(new ApiKey);
+    })->add(new ValidateParamURL('lang','0-2'))->add(new ApiKey);
 
 
     // GET api to test get value by key

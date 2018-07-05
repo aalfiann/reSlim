@@ -24,48 +24,45 @@ use \classes\middleware\ValidateParamURL as ValidateParamURL;   //ValidateParamU
     // Show All Installed Packages
     $app->get('/packager/show/all/{username}/{token}', function (Request $request, Response $response) {
         $pc = new Packager($this->db);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
         $body->write($pc->showAll());
         return classes\Cors::modify($response,$body,200);
-    })->add(new ValidateParamURL('lang','0-2'));
+    });
 
 
     // Install Packages from Zip (Notice: This is not safe but faster)
     $app->get('/packager/install/zip/{username}/{token}/', function (Request $request, Response $response) {
         $pc = new Packager($this->db);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
         $body->write($pc->installFromZip($_GET['source'],''));
         return classes\Cors::modify($response,$body,200);
-    })->add(new ValidateParamURL('lang','0-2'))
-        ->add(new ValidateParamURL('source','1-250','url'));
+    })->add(new ValidateParamURL('source','1-250','url'));
 
     // Install Packages from Zip safely
     $app->get('/packager/install/zip/safely/{username}/{token}/', function (Request $request, Response $response) {
         $pc = new Packager($this->db);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
         $body->write($pc->installFromZipSafely($_GET['source'],$_GET['namespace']));
         return classes\Cors::modify($response,$body,200);
-    })->add(new ValidateParamURL('lang','0-2'))
-        ->add(new ValidateParamURL('namespace','1-50'))
+    })->add(new ValidateParamURL('namespace','1-50'))
         ->add(new ValidateParamURL('source','1-250','url'));
 
     // Uninstall Packages
     $app->get('/packager/uninstall/{username}/{token}/', function (Request $request, Response $response) {
         $pc = new Packager($this->db);
+        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pc->username = $request->getAttribute('username');
         $pc->token = $request->getAttribute('token');
-        $pc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $body = $response->getBody();
         $body->write($pc->uninstallPackage($_GET['namespace']));
         return classes\Cors::modify($response,$body,200);
-    })->add(new ValidateParamURL('lang','0-2'))
-        ->add(new ValidateParamURL('namespace','1-50'));
+    })->add(new ValidateParamURL('namespace','1-50'));
