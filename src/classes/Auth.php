@@ -32,8 +32,7 @@ use \classes\BaseConverter as BaseConverter;
         public static function hashPassword($username,$password)
         {
         	$options = [
-                'cost' => 11,
-                'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+                'cost' => 8
             ];
             return password_hash($username.$password, PASSWORD_BCRYPT, $options);
         }
