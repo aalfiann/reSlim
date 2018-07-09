@@ -25,7 +25,8 @@ Reslim is already build with essentials of user management system in rest api wa
 12. Support Multi Language
 13. Server Side Caching
 14. Scalable architecture with modular concept
-15. Etc.
+15. Load Balancer with multiple database server (master to master or master to slave)
+16. Etc
 
 Extensions:
 ---------------
@@ -220,17 +221,55 @@ $config['router']['folderCache']    = 'cache-router';
 $config['router']['fileCache']      = 'routes.cache.php';
 
 /** 
- * Configuration PDO MySQL Database
+ * Configuration PDO MySQL Database MASTER
  *
  * @var $config['db']['host'] = where is database was hosted
  * @var $config['db']['user'] = username database to login
  * @var $config['db']['pass'] = pass database to login
  * @var $config['db']['dbname'] = the database name
+ * 
+ * 
+ * Example to set up multiple database (master to many master)
+ * Because this multiple database configuration uses arrays, so make sure the sequence is the same
+ * 
+ * $config['db']['host']   = ['localhost','another1','another2'];
+ * $config['db']['user']   = ['root','root1','root2'];
+ * $config['db']['pass']   = ['secret','secret1','secret2'];
+ * $config['db']['dbname'] = ['dbname','dbname1','dbname2'];
+ * 
+ * Note: 
+ * - Multiple database will work as load balancer in this reSlim framework
  */
 $config['db']['host']   = 'localhost';
 $config['db']['user']   = 'root';
 $config['db']['pass']   = 'root';
 $config['db']['dbname'] = 'reSlim';
+
+/** 
+ * Configuration PDO MySQL Database SLAVE
+ *
+ * @var $config['dbslave']['host'] = where is database was hosted
+ * @var $config['dbslave']['user'] = username database to login
+ * @var $config['dbslave']['pass'] = pass database to login
+ * @var $config['dbslave']['dbname'] = the database name
+ * 
+ * 
+ * Example to set up multiple slave database
+ * Because this multiple database configuration uses arrays, so make sure the sequence is the same
+ * 
+ * $config['dbslave']['host']   = ['localhost','another1','another2'];
+ * $config['dbslave']['user']   = ['root','root1','root2'];
+ * $config['dbslave']['pass']   = ['secret','secret1','secret2'];
+ * $config['dbslave']['dbname'] = ['dbname','dbname1','dbname2'];
+ * 
+ * Note: 
+ * - Multiple database will work as load balancer in this reSlim framework
+ * - reSlim is not create slave architecture as default, so you have to modify it by yourself 
+ */
+$config['dbslave']['host']   = '';
+$config['dbslave']['user']   = '';
+$config['dbslave']['pass']   = '';
+$config['dbslave']['dbname'] = '';
 
 /**
  * Configuration SMTP for Mailer
