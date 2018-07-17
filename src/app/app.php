@@ -8,7 +8,7 @@
  */
 
 // reSlim Version
-define('RESLIM_VERSION','1.11.1');
+define('RESLIM_VERSION','1.12.0');
 
 // Load all class libraries
 require '../vendor/autoload.php';

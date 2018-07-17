@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![reSlim](https://img.shields.io/badge/stable-1.11.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![reSlim](https://img.shields.io/badge/stable-1.12.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api.<br>
@@ -39,10 +39,10 @@ Here is the basic UI template for production use with reSlim >> [reSlim-ui-boile
 System Requirements
 ---------------
 
-1. Web server with URL rewriting
-2. Web server with mcrypt extension
-3. PHP 5.5 or newer
-
+1. PHP 5.5 or newer (last tested on PHP7.3)
+2. MySQL 5.6 or MariaDB
+3. Web server with URL rewriting
+4. Apache Server (Better to use Apache + Reverse Proxy NGINX)
 
 Getting Started
 ---------------
@@ -174,10 +174,10 @@ It is very important that the names of the files inside this folder follow this 
 Learn more deeply
 -----------------
 ### * Documentation
-Documentation still on progress for now.
+Documentation will update on [Wiki](https://github.com/aalfiann/reslim/wiki).
 
 ### * Learn from test router
-We created several simple function on the **test.router.php** which is located at **src/router/**.
+We created several simple function on the **test.router.php** which is located at **src/router/**.  
 You can learn from there 
 
 ### * Working with postman for testing
