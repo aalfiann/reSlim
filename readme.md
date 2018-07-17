@@ -167,14 +167,14 @@ It is very important that the names of the files inside this folder follow this 
 
 Learn more deeply
 -----------------
-### Documentation
+### * Documentation
 Documentation still on progress for now.
 
-### Learn from test router
+### * Learn from test router
 We created several simple function on the **test.router.php** which is located at **src/router/**.
 You can learn from there 
 
-### Working with postman for testing
+### * Working with postman for testing
 I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
 
 1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
