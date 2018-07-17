@@ -77,10 +77,20 @@ Getting Started
 4. Done
 
 ### III. Test
-1. Open your browser and visit >> http://localhost:1337/reSlim/src/api/
+1. Open your browser and visit >> http://localhost:1337/reslim/src/api/
 
 Note: 
     - My apache server is run on port 1337.
+
+### IV. Development
+**How to create new app or modules?**  
+Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).
+
+### V. Deployment
+1. Upload all files inside folder src to your server
+2. Backup local database and then restore to your server database online
+3. Done
+
 
 About Folder System
 ---------------  
@@ -163,9 +173,10 @@ I recommend you to use PostMan an add ons in Google Chrome to get Started with t
 2. Import file reSlim User.postman_collection.json in your PostMan.
 3. Edit the path in PostMan. Because the example test is using my path server which is my server is run in http://localhost:1337 
     The path to run reSlim is inside folder api.<br> 
-    Example for my case is: http://localhost:1337/reSlim/src/api/<br><br>
+    Example for my case is: http://localhost:1337/reslim/src/api/<br><br>
     In short, It's depend on your server configuration.
 4. Then you can do the test by yourself
+
 
 The concept authentication in reSlim
 -----------------
