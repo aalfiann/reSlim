@@ -77,7 +77,7 @@
                     return $response
                         ->withStatus($status)
                         ->withHeader('Content-Type','application/json; charset=utf-8')
-                        ->withHeader('Access-Control-Allow-Origin', self::checkOrigin($_GET['apikey']))
+                        ->withHeader('Access-Control-Allow-Origin', (isset($_GET['apikey'])?self::checkOrigin($_GET['apikey']):self::$defaultOrigin))
                         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization, ETag')
                         ->withHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS')
                         ->withHeader('Access-Control-Expose-Headers','ETag')
