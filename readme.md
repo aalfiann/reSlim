@@ -97,7 +97,13 @@ About Folder System
 Folder system is inside **src** folder  
 * src/
     * api/
+        * htaccess
+        * index.php (Call the app)
     * app/
+        * app.php (Setup app before running)
+        * dependencies.php (Registering the dependencies)
+        * index.php (Default forbidden page)
+        * middleware.php (middleware as variable on the fly)
     * classes/
         * middleware/
             * ApiKey.php (For handling authentication api key)
