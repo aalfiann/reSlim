@@ -22,7 +22,7 @@ use PDO;
         protected $basepath,$baseurl,$basemod;
 
         //master var
-		var $username,$token,$statusid,$apikey,$adminname;
+		var $username,$token,$statusid,$apikey,$adminname,$user;
 		
 		//data
         var $pageid,$title,$image,$description,$content,$tags,$search,$firstdate,$lastdate,$sort,$year;
@@ -874,6 +874,196 @@ use PDO;
     	    		'status' => 'error',
 					'code' => 'RS202',
 				    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+				];
+			}		
+        
+			return JSON::safeEncode($data,true);
+	        $this->db= null;
+		}
+		
+		/** 
+		 * Show all data page written by paginated
+		 * @return result process in json encoded data
+		 */
+		public function showPageWrittenByAsPagination() {
+			if (Auth::validToken($this->db,$this->token,$this->username)){
+				if (strtolower($this->sort) != 'asc'){
+					$sort = 'desc';
+				} else {
+					$sort = $this->sort;
+				}
+				$newuser = strtolower(filter_var($this->user,FILTER_SANITIZE_STRING));
+				$search = "%$this->search%";
+				$sqlcountrow = "SELECT count(a.PageID) as TotalRow
+					from data_page a
+					inner join core_status b on a.StatusID=b.StatusID
+					where b.StatusID = '51' and a.Username = :user and a.Title like :search
+					or b.StatusID = '51' and a.Username = :user and a.Tags like :search
+					order by a.Created_at $sort;";
+				$stmt = $this->db->prepare($sqlcountrow);
+				$stmt->bindValue(':search', $search, PDO::PARAM_STR);
+				$stmt->bindValue(':user', $newuser, PDO::PARAM_STR);
+
+				if ($stmt->execute()) {	
+    	        	if ($stmt->rowCount() > 0){
+						$single = $stmt->fetch();
+						
+						// Paginate won't work if page and items per page is negative.
+						// So make sure that page and items per page is always return minimum zero number.
+						$newpage = Validation::integerOnly($this->page);
+						$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+						$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+						$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
+
+						// Query Data
+						$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
+								a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
+							from data_page a
+							inner join core_status b on a.StatusID=b.StatusID
+							where b.StatusID = '51' and a.Username = :user and a.Title like :search
+							or b.StatusID = '51' and a.Username = :user and a.Tags like :search
+							order by a.Created_at $sort LIMIT :limpage , :offpage;";
+						$stmt2 = $this->db->prepare($sql);
+						$stmt2->bindValue(':search', $search, PDO::PARAM_STR);
+						$stmt2->bindValue(':user', $newuser, PDO::PARAM_STR);
+						$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+						$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+							
+						
+						if ($stmt2->execute()){
+							if ($stmt2->rowCount() > 0){
+								$results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+								$pagination = new \classes\Pagination();
+								$pagination->lang = $this->lang;
+								$pagination->totalRow = $single['TotalRow'];
+								$pagination->page = $this->page;
+								$pagination->itemsPerPage = $this->itemsPerPage;
+								$pagination->fetchAllAssoc = $results;
+								$data = $pagination->toDataArray();
+							} else {
+								$data = [
+		   	    	    			'status' => 'error',
+	    		    		    	'code' => 'RS601',
+	    					        'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+								];
+							}
+						} else {
+							$data = [
+        	    	    		'status' => 'error',
+		        		    	'code' => 'RS202',
+	    			    	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+							];	
+						}			
+				    } else {
+    	    		    $data = [
+        			    	'status' => 'error',
+			    		    'code' => 'RS601',
+    			    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+						];
+		    	    }          	   	
+				} else {
+					$data = [
+    					'status' => 'error',
+						'code' => 'RS202',
+        			    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+					];
+				}	
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}		
+        
+			return JSON::safeEncode($data,true);
+	        $this->db= null;
+		}
+		
+		/** 
+		 * Show all data page written by paginated public
+		 * @return result process in json encoded data
+		 */
+		public function showPageWrittenByAsPaginationPublic() {
+			if (strtolower($this->sort) != 'asc'){
+                $sort = 'desc';
+            } else {
+                $sort = $this->sort;
+            }
+			$newuser = strtolower(filter_var($this->user,FILTER_SANITIZE_STRING));
+			$search = "%$this->search%";
+			$sqlcountrow = "SELECT count(a.PageID) as TotalRow
+				from data_page a
+				inner join core_status b on a.StatusID=b.StatusID
+				where b.StatusID = '51' and a.Username = :user and a.Title like :search
+				or b.StatusID = '51' and a.Username = :user and a.Tags like :search
+				order by a.Created_at $sort;";
+			$stmt = $this->db->prepare($sqlcountrow);
+			$stmt->bindValue(':search', $search, PDO::PARAM_STR);
+			$stmt->bindValue(':user', $newuser, PDO::PARAM_STR);
+
+			if ($stmt->execute()) {	
+    	    	if ($stmt->rowCount() > 0){
+					$single = $stmt->fetch();
+						
+					// Paginate won't work if page and items per page is negative.
+					// So make sure that page and items per page is always return minimum zero number.
+					$newpage = Validation::integerOnly($this->page);
+					$newitemsperpage = Validation::integerOnly($this->itemsPerPage);
+					$limits = (((($newpage-1)*$newitemsperpage) <= 0)?0:(($newpage-1)*$newitemsperpage));
+					$offsets = (($newitemsperpage <= 0)?0:$newitemsperpage);
+
+					// Query Data
+					$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
+							a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
+						from data_page a
+						inner join core_status b on a.StatusID=b.StatusID
+						where b.StatusID = '51' and a.Username = :user and a.Title like :search
+						or b.StatusID = '51' and a.Username = :user and a.Tags like :search
+						order by a.Created_at $sort LIMIT :limpage , :offpage;";
+					$stmt2 = $this->db->prepare($sql);
+					$stmt2->bindValue(':search', $search, PDO::PARAM_STR);
+					$stmt2->bindValue(':user', $newuser, PDO::PARAM_STR);
+					$stmt2->bindValue(':limpage', (INT) $limits, PDO::PARAM_INT);
+					$stmt2->bindValue(':offpage', (INT) $offsets, PDO::PARAM_INT);
+							
+						
+					if ($stmt2->execute()){
+						if ($stmt2->rowCount() > 0){
+							$results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+							$pagination = new \classes\Pagination();
+							$pagination->lang = $this->lang;
+							$pagination->totalRow = $single['TotalRow'];
+							$pagination->page = $this->page;
+							$pagination->itemsPerPage = $this->itemsPerPage;
+							$pagination->fetchAllAssoc = $results;
+							$data = $pagination->toDataArray();
+						} else {
+							$data = [
+	   	    	    			'status' => 'error',
+    		    		    	'code' => 'RS601',
+	    					    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+							];
+						}
+					} else {
+						$data = [
+        		    		'status' => 'error',
+		    		    	'code' => 'RS202',
+				    	    'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+						];	
+					}			
+				} else {
+    	    	    $data = [
+        		    	'status' => 'error',
+		    		    'code' => 'RS601',
+			    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+					];
+		    	}          	   	
+			} else {
+				$data = [
+    				'status' => 'error',
+					'code' => 'RS202',
+        			'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
 				];
 			}		
         

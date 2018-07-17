@@ -9,12 +9,12 @@ use \modules\pages\Pages as Pages;
 
 
     // Get module information
-    $app->get('/page/get/info/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/get/info/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write($pages->viewInfo());
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new ApiKey);
 
     // POST api to create new page
@@ -240,3 +240,40 @@ use \modules\pages\Pages as Pages;
         $body->write($pages->statPageYear());
         return classes\Cors::modify($response,$body,200);
     });
+
+    // GET api to show all data published page written by asc or desc pagination
+    $app->get('/page/data/written/{username}/{token}/{user}/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
+        $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+        $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
+        $pages->username = $request->getAttribute('username');
+        $pages->token = $request->getAttribute('token');
+        $pages->user = $request->getAttribute('user');
+        $pages->page = $request->getAttribute('page');
+        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
+        $pages->sort = $request->getAttribute('sort');
+        $body = $response->getBody();
+        $body->write($pages->showPageWrittenByAsPagination());
+        return classes\Cors::modify($response,$body,200);
+    })->add(new ValidateParamURL('query'));
+    
+    // GET api to show all data published page written by asc or desc pagination public
+    $app->map(['GET','OPTIONS'],'/page/data/public/written/{user}/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
+        $pages = new Pages($this->db);
+        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+        $pages->user = $request->getAttribute('user');
+        $pages->page = $request->getAttribute('page');
+        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
+        $pages->sort = $request->getAttribute('sort');
+        $body = $response->getBody();
+        $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
+        if (SimpleCache::isCached(3600,["apikey","lang","query"])){
+            $datajson = SimpleCache::load(["apikey","lang","query"]);
+        } else {
+            $datajson = SimpleCache::save($pages->showPageWrittenByAsPaginationPublic(),["apikey","lang","query"]);
+        }
+        $body->write($datajson);
+        return classes\Cors::modify($response,$body,200,$request);
+    })->add(new ValidateParamURL('query'))
+        ->add(new ValidateParamURL('lang','0-2'))
+        ->add(new ApiKey);

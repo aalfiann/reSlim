@@ -14,12 +14,12 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
 
 
     // Get module information
-    $app->get('/flexibleconfig/get/info/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/flexibleconfig/get/info/', function (Request $request, Response $response) {
         $fc = new FlexibleConfig($this->db);
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write($fc->viewInfo());
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new ApiKey);
 
 

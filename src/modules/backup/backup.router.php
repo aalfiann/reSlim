@@ -12,12 +12,12 @@ use \classes\middleware\ApiKey as ApiKey;                       //ApiKey Middlew
 
 
     // Get module information
-    $app->get('/backup/get/info/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/backup/get/info/', function (Request $request, Response $response) {
         $backup = new Backup($this->db);
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         $body->write($backup->viewInfo());
-        return classes\Cors::modify($response,$body,200);
+        return classes\Cors::modify($response,$body,200,$request);
     })->add(new ApiKey);
 
     // Backup all tables
