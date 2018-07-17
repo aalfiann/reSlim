@@ -258,9 +258,10 @@ use \modules\pages\Pages as Pages;
     })->add(new ValidateParamURL('query'));
     
     // GET api to show all data published page written by asc or desc pagination public
-    $app->map(['GET','OPTIONS'],'/page/data/public/written/{user}/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
+    $app->map(['GET','OPTIONS'],'/page/data/written/public/{user}/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+        $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
         $pages->user = $request->getAttribute('user');
         $pages->page = $request->getAttribute('page');
         $pages->itemsPerPage = $request->getAttribute('itemsperpage');
