@@ -109,20 +109,6 @@ reSlim middleware classes are here.
 Your custom log will be place in here as default.<br>
 You can add your custom log in your any container or router.
 
-Example adding custom log in a router
-```php
-$app->post('/custom/log/new', function (Request $request, Response $response) {
-    $this->logger->addInfo(
-        '{"message":"Response post is succesfully complete!!!"}',
-        [
-            'type'=>'customlog',
-            'created_by'=>'yourname',
-            'IP'=>$this->visitorip
-        ]
-    );
-});
-```
-
 ### modules/{your-module}
 
 You have to create new folder for each different module project.
@@ -134,48 +120,6 @@ Please look at this very simple project on [Github.com](https://github.com/aalfi
 
 All the files with the routes. Each file contents the routes of an specific functionality.<br>
 It is very important that the names of the files inside this folder follow this pattern: name.router.php
-
-Example of router file:
-
-user.router.php
-
-```php
-use \Psr\Http\Message\ServerRequestInterface as Request;
-use \Psr\Http\Message\ResponseInterface as Response;
-use \classes\SimpleCache as SimpleCache;
-use \classes\User as User;
-use \classes\Cors as Cors;
-use \classes\middleware\ApiKey as ApiKey;
-
-    // POST example api to show all data user
-    $app->post('/user', function (Request $request, Response $response) {
-        $users = new User($this->db);
-        $datapost = $request->getParsedBody();
-        $users->Token = $datapost['Token'];
-        $body = $response->getBody();
-        $body->write($users->showAll());
-        return Cors::modify($response,$body,200);
-    });
-
-    // GET example api to show profile user (for public is need an api key)
-    $app->get('/user/profile/{username}/', function (Request $request, Response $response) {
-        $users = new User($this->db);
-        $users->Username = $request->getAttribute('username');
-        $body = $response->getBody();
-        
-        // Use Http Cache Control and ETag
-        $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
-        
-        // Working with server side cache.
-        if (SimpleCache::isCached(600,["apikey"])){
-            $datajson = SimpleCache::load(["apikey"]);
-        } else {
-            $datajson = SimpleCache::save($users->showUserPublic(),["apikey"]);
-        }
-        $body->write($datajson);
-        return Cors::modify($response,$body,200,$request);
-    })->add(new ApiKey());
-```
 
 ### reSlim Configuration
 
@@ -306,23 +250,6 @@ I recommend you to use PostMan an add ons in Google Chrome to get Started with t
     Example for my case is: http://localhost:1337/reSlim/src/api/<br><br>
     In short, It's depend on your server configuration.
 4. Then you can do the test by yourself
-
-Working with gui example for testing
------------------
-
-1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
-2. Edit the config.php inside folder "reSlim/test/example"<br>
-    $config['title'] = 'your title website';<br>
-    $config['email'] = 'your default email address';<br>
-    $config['basepath'] = 'url location of base path example';<br>
-    $config['api'] = 'url location of base path of api';<br>
-    $config['apikey'] = 'your api key, you can leave this blank and fill this later';
-3. Visit yourserver/reSlim/test/example<br>
-    For my case is http://localhost:1337/reSlim/test/example
-4. You can login with default superuser account:<br>
-    Username : reslim<br>
-    Password : reslim
-5. All is done
 
 The concept authentication in reSlim
 -----------------
