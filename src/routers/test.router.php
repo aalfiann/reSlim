@@ -160,6 +160,7 @@ $app->get('/dev/response/test/cache/server/withparam', function (Request $reques
 
 // Test get response with API Key in URL (Make sure you have already create an api key)
 // Example url >> http://yourdomain.com/api/dev/response/test/api/url/?apikey=yourapikeyishere
+// Note: Pure Javascript AJAX will not working because OPTIONS request is required to send header
 $app->get('/dev/response/test/api/url/', function (Request $request, Response $response) {
     $body = $response->getBody();
     $body->write('{"result":"make sure here is already json formatted."}');
@@ -172,7 +173,8 @@ $app->get('/dev/response/test/api/url/', function (Request $request, Response $r
 $app->map(['GET','POST','OPTIONS'],'/dev/response/test/api/header', function (Request $request, Response $response) {
     $body = $response->getBody();
     $body->write('{"result":"make sure here is already json formatted."}');
-    return classes\Cors::modify($response,$body,200);
+    return classes\Cors::modify($response,$body,200,$request); //>> This will make cors to check registered domain origin in apikey is match or not
+    //return classes\Cors::modify($response,$body,200); //>> This will allow all cors origin (Note: this is not recommended because apikey will works on all websites)
 })->add(new APIKey);
 
 //=====================TEST ApiKey END=====================
