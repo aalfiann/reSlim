@@ -56,7 +56,7 @@ Getting Started
 
 4. Create Database reslim in your MySQL
 5. Execute **reSlim.sql** which is located at **resources/database/** folder
-6. Edit **config.php** which is located at **src/** folder
+6. Edit **config.php** which is located at **src/** folder  
     Just only this part,
     ```
     $config['db']['host']   = 'localhost';
