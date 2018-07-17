@@ -164,7 +164,7 @@ Please look at this very simple project on [Github.com](https://github.com/aalfi
 All the files with the routes. Each file contents the routes of an specific functionality.<br>
 It is very important that the names of the files inside this folder follow this pattern: name.router.php
 
-
+  
 Learn more deeply
 -----------------
 ### * Documentation
@@ -195,6 +195,7 @@ The concept authentication in reSlim
 The token is always generated new when You relogin and the token is will expired in 7 days as default.<br>
 If You logout or change password or delete user, the token will be clear automatically.
 
+  
 How to Contribute
 -----------------
 ### Pull Requests
