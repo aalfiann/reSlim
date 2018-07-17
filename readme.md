@@ -47,22 +47,23 @@ System Requirements
 Getting Started
 ---------------
 
-### Instalation
+### I. Installation
 1. Get or download the project
 2. Extract then rename folder **reSlim-master** to **reslim**
 3. Open shell or CMD then go to **src** folder
     ```
-    cd reSlim/src
+    cd reslim/src
     ```
     
 4. Install it using Composer  
     ```
     composer install
     ```
+5. Done
 
-### Connection Database
+### II. Connection Database
 1. Create Database reslim in your MySQL
-2. Execute **reSlim.sql** which is located at **resources/database/** folder
+2. Execute or restore **reSlim.sql** which is located at **resources/database/** folder
 3. Edit **config.php** which is located at **src/** folder  
     Just only this part,
     ```
@@ -75,7 +76,7 @@ Getting Started
 
 4. Done
 
-### Test
+### III. Test
 1. Open your browser and visit >> http://localhost:1337/reSlim/src/api/
 
 Note: 
