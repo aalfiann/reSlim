@@ -186,9 +186,7 @@ I recommend you to use PostMan an add ons in Google Chrome to get Started with t
 4. Then you can do the test by yourself
 
 
-The concept authentication in reSlim
------------------
-
+### * The concept authentication in reSlim
 1. Register account first
 2. Then You have to login to get the generated new token
 
