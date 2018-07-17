@@ -4,7 +4,7 @@ reSlim
 [![reSlim](https://img.shields.io/badge/stable-1.11.1-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
-reSlim is Lightweight, Fast, Secure, Simple, Scalable and Powerful rest api.<br>
+reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
 Features:
@@ -50,10 +50,8 @@ Getting Started
 2. Install it using Composer
 
 Folder System
----------------
-* database
-    * event_delete_all_expired_auth_scheduler.sql (An expired token will auto deletion in 7 Days after expired date)
-    * reSlim.sql (Structure database in reSlim to work with default example)
+---------------  
+Folder system is inside **src** folder  
 * src/
     * api/
     * app/
@@ -88,9 +86,6 @@ Folder System
         * index.php (Default forbidden page)
     * routers/
 	    * name.router.php (routes by functionalities)
-* test/
-    * example/ (This is a GUI for test)
-    * reSlim User.postman_collection.json (Is the file to run example test in PostMan)
 
 ### api/
     
