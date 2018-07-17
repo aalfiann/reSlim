@@ -4,7 +4,7 @@ reSlim
 [![reSlim](https://img.shields.io/badge/stable-1.12.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
-reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api.<br>
+reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api framework.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
 Features:
