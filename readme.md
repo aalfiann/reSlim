@@ -57,15 +57,20 @@ Getting Started
 4. Create Database reslim in your MySQL
 5. Execute **reSlim.sql** which is located at **resources/database/** folder
 6. Edit **config.php** which is located at **src/** folder
+    Just only this part,
     ```
     $config['db']['host']   = 'localhost';
     $config['db']['user']   = 'root';
     $config['db']['pass']   = 'root';
     $config['db']['dbname'] = 'reSlim';
     ```
+    You can set the rest config later
 
 7. Done
 8. Open your browser and visit >> http://localhost:1337/reSlim/src/api/
+
+Note: 
+    - My apache server is run on port 1337.
 
 Folder System
 ---------------  
