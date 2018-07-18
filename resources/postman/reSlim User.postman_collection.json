@@ -339,7 +339,38 @@
 		{
 			"name": "Show Profile User Public",
 			"request": {
-				"url": "http://localhost:1337/reSlim/src/api/user/profile/{username}/?apikey={yourapikeys}",
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/user/profile/{username}/?apikey={yourapikeys}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"user",
+						"profile",
+						"{username}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikeys}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
 				"method": "GET",
 				"header": [],
 				"body": {},
@@ -1153,7 +1184,7 @@
 			"name": "Search Page Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/search/{page}/{itemsperpage}/?apikey={yourapikey}&query={query to search}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/search/{page}/{itemsperpage}/?apikey={yourapikey}&query={query to search}&lang=en",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1181,6 +1212,12 @@
 						{
 							"key": "query",
 							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
 							"equals": true,
 							"description": ""
 						}
@@ -1235,7 +1272,7 @@
 			"name": "Show Publish Page Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/?apikey={yourapikey}&lang=en",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1259,6 +1296,12 @@
 							"value": "{yourapikey}",
 							"equals": true,
 							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
 						}
 					],
 					"variable": []
@@ -1274,7 +1317,7 @@
 			"name": "Show Publish Page Sort Pagination Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}&lang=en",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1299,6 +1342,12 @@
 							"value": "{yourapikey}",
 							"equals": true,
 							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
 						}
 					],
 					"variable": []
@@ -1314,7 +1363,7 @@
 			"name": "Show Single Page Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}&lang=en",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1335,6 +1384,12 @@
 						{
 							"key": "apikey",
 							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
 							"equals": true,
 							"description": ""
 						}
@@ -1373,6 +1428,101 @@
 						{
 							"key": "apikey",
 							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Show Page Written By",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/written/{yourusername}/{yourtoken}/{user}/{page}/{itemsperpage}/{sort asc|desc}/?query={query to search}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"written",
+						"{yourusername}",
+						"{yourtoken}",
+						"{user}",
+						"{page}",
+						"{itemsperpage}",
+						"{sort asc|desc}",
+						""
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "Show Page Written By Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/written/public/{user}/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}&query={query to search}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"written",
+						"public",
+						"{user}",
+						"{page}",
+						"{itemsperpage}",
+						"{sort asc|desc}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
 							"equals": true,
 							"description": ""
 						}
