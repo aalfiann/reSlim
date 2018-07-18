@@ -100,16 +100,20 @@ reSlim documentation is available on [Wiki](https://github.com/aalfiann/reslim/w
 We created several simple function on the **test.router.php** which is located at **src/router/**.  
 You can learn from there 
 
-### * Working with postman for testing
+### * Use Postman for learn or test purpose
 I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
 
-1. Import reSlim.sql in your database then config your database connection in config.php inside folder "reSlim/src/"
-2. Import file reSlim User.postman_collection.json in your PostMan.
+1. Import reSlim.sql in your database then config your database connection in config.php inside folder **reSlim/src/**
+2. Import file **reSlim User.postman_collection.json** in your PostMan.
 3. Edit the path in PostMan. Because the example test is using my path server which is my server is run in http://localhost:1337 
     The path to run reSlim is inside folder api.<br> 
     Example for my case is: http://localhost:1337/reslim/src/api/<br><br>
     In short, It's depend on your server configuration.
 4. Then you can do the test by yourself
+
+### * Learn Slim Framework 3
+reSlim is based from Slim Framework 3.  
+Learning Slim Framework 3 will make you easy to understand about reSlim project.
 
 
 ### * The concept authentication in reSlim
