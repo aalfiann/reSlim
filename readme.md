@@ -7,6 +7,7 @@ reSlim
 reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api framework.<br>
 reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br>
 
+
 Features:
 ---------------
 
@@ -33,6 +34,7 @@ Here is the available modules created by reSlim author >> [reSlim-modules](https
 - **UI Boilerplate**  
 Here is the basic UI template for production use with reSlim >> [reSlim-ui-boilerplate](https://github.com/aalfiann/reSlim-ui-boilerplate).
 
+
 System Requirements
 ---------------
 
@@ -40,6 +42,7 @@ System Requirements
 2. MySQL 5.6 or MariaDB
 3. Web server with URL rewriting
 4. Apache Server (Better to use Apache + Reverse Proxy NGINX)
+
 
 Getting Started
 ---------------
@@ -90,38 +93,9 @@ Or learn directly from this very simple project on [Github.com](https://github.c
 3. Done
 
 
-  
-Learn more deeply
+Documentation
 -----------------
-### * Documentation
 reSlim documentation is available on [Wiki](https://github.com/aalfiann/reslim/wiki).
-
-### * Learn from test router
-We created several simple function on the **test.router.php** which is located at **src/router/**.  
-You can learn from there 
-
-### * Use Postman for learn or test purpose
-I recommend you to use PostMan an add ons in Google Chrome to get Started with test.
-
-1. Import reSlim.sql in your database then config your database connection in config.php inside folder **reSlim/src/**
-2. Import file **reSlim User.postman_collection.json** in your PostMan.
-3. Edit the path in PostMan. Because the example test is using my path server which is my server is run in http://localhost:1337 
-    The path to run reSlim is inside folder api.<br> 
-    Example for my case is: http://localhost:1337/reslim/src/api/<br><br>
-    In short, It's depend on your server configuration.
-4. Then you can do the test by yourself
-
-### * Learn Slim Framework 3
-reSlim is based from Slim Framework 3.  
-Learning Slim Framework 3 will make you easy to understand about reSlim project.
-
-
-### * The concept authentication in reSlim
-1. Register account first
-2. Then You have to login to get the generated new token
-
-The token is always generated new when You relogin and the token is will expired in 7 days as default.<br>
-If You logout or change password or delete user, the token will be clear automatically.
 
   
 How to Contribute
