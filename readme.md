@@ -81,7 +81,8 @@ Note:
 
 ### IV. Development
 **How to create new app or modules?**  
-Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).
+You can learn from documentation here >> [Tutorial Create Module](https://github.com/aalfiann/reSlim/wiki/Tutorial-Create-Module).  
+Or learn directly from this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).
 
 ### V. Deployment
 1. Upload all files inside folder src to your server
@@ -93,7 +94,7 @@ Please look at this very simple project on [Github.com](https://github.com/aalfi
 Learn more deeply
 -----------------
 ### * Documentation
-Documentation will update on [Wiki](https://github.com/aalfiann/reslim/wiki).
+reSlim documentation is available on [Wiki](https://github.com/aalfiann/reslim/wiki).
 
 ### * Learn from test router
 We created several simple function on the **test.router.php** which is located at **src/router/**.  
