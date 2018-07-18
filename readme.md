@@ -43,7 +43,7 @@ System Requirements
 3. Web server with URL rewriting
 4. Apache Server (Better to use Apache + Reverse Proxy NGINX)
 
-
+---
 Getting Started
 ---------------
 
@@ -92,7 +92,7 @@ Or learn directly from this very simple project on [Github.com](https://github.c
 2. Backup local database and then restore to your server database online
 3. Done
 
-
+---
 Documentation
 -----------------
 reSlim documentation is available on [Wiki](https://github.com/aalfiann/reslim/wiki).
