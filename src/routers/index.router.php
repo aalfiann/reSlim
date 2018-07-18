@@ -15,15 +15,27 @@ use \classes\JSON as JSON;
                 'status' => 'success',
 			    'code' => '200',
                 'welcome' => 'Hello World, here is the default index reSlim',
+                'concept' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.',
                 'author' => [
-                    'name' => 'M ABD AZIZ ALFIAN (aalfiann@gmail.com)',
-                    'github' => 'https://github.com/aalfian/reSlim',
-                    'license' => 'https://github.com/aalfiann/reSlim/blob/master/license.md'
+                    'name' => 'M ABD AZIZ ALFIAN',
+                    'email' => 'aalfiann@gmail.com',
+                    'github' => 'https://github.com/aalfiann',
+                    'linkedin' => 'https://www.linkedin.com/in/azizalfian'
                 ],
-                'how_to_use' => 'reSlim is using authentication by token. So You have to register and login to get generated new token.'
+                'engine' => [
+                    'name' => 'reSlim',
+                    'version' => RESLIM_VERSION,
+                    'github' => 'https://github.com/aalfiann/reSlim',
+                    'license' => 'https://github.com/aalfiann/reSlim/blob/master/license.md',
+                    'documentation' => 'Documentation is available on Github Wiki.'
+                ],
+                'extensions' => [
+                    'module' => 'https://github.com/aalfiann/reSlim-modules',
+                    'template' => 'https://github.com/aalfiann/reSlim-ui-boilerplate'
+                ]
             ];
             $blacklistparam = ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"];
-            $datajson = SimpleCache::save(JSON::encode($data, true),null,$blacklistparam);
+            $datajson = SimpleCache::save(JSON::encode($data,true,true),null,$blacklistparam);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);
