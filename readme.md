@@ -9,24 +9,21 @@ reSlim is based on [Slim Framework version 3](http://www.slimframework.com/).<br
 
 Features:
 ---------------
-Reslim is already build with essentials of user management system in rest api way.
 
-1. User register, login and logout
-2. Auto generated token every login
-3. User can revoke all active token
-4. User can manage their API Keys
-5. Included with default role for superuser, admin and member
-6. Auto clear current token when logout,user deleted or password was changed
-7. Change, reset, forgot password concept is very secure
-8. Mailer for sending email or contact form
-9. File management system
-10. Pages management system
-11. Pagination json response
-12. Support Multi Language
-13. Server Side Caching
-14. Scalable architecture with modular concept
-15. Load Balancer with multiple database server (master to master or master to slave)
-16. Etc
+1. User management system
+2. File management system
+3. Pages management system
+4. Backup management system
+5. Package management system
+6. Token and API Key management system
+7. Auto log and trace error message
+8. Pagination json response
+9. Support Multi Language
+10. Server Side Caching to handle high traffic
+11. Scalable architecture with modular concept
+12. Load Balancer with multiple database server (master to master or master to slave)
+13. Etc
+
 
 Extensions:
 ---------------
@@ -62,7 +59,7 @@ Getting Started
 5. Done
 
 ### II. Connection Database
-1. Create Database reslim in your MySQL
+1. Create Database name reslim in your MySQL/MariaDB
 2. Execute or restore **reSlim.sql** which is located at **resources/database/** folder
 3. Edit **config.php** which is located at **src/** folder  
     Just only this part,
@@ -134,16 +131,22 @@ Folder system is inside **src** folder
         * pages/ (Default module package for pages management)
         * index.php (Default forbidden page)
     * routers/
-	    * name.router.php (routes by functionalities)
+        * index.php (Default forbidden page)
+        * index.router.php
+	    * logs.router.php
+        * mail.router.php
+        * maintenance.router.php
+        * test.router.php (For tester only)
+        * user.router.php
 
 ### api/
     
-Here is the place to run your application
+Here is the place to run your application as public place
 
 ### app/
 
-Here is the place for slim framework<br>
-We are using PDO MySQL for the Database.
+Here is the place for reslim framework.  
+Connection database and other dependencies are here.
 
 ### classes/
 
@@ -155,20 +158,20 @@ reSlim middleware classes are here.
 
 ### logs/
 
-Your custom log will be place in here as default.<br>
+Default log will be place in here.  
 You can add your custom log in your any container or router.
 
 ### modules/{your-module}
 
-You have to create new folder for each different module project.
+You have to create new folder for each different app or module project.
 
 **How to create new reSlim modules?**  
 Please look at this very simple project on [Github.com](https://github.com/aalfiann/reSlim-modules-first_mod).  
 
 ### routers/
 
-All the files with the routes. Each file contents the routes of an specific functionality.<br>
-It is very important that the names of the files inside this folder follow this pattern: name.router.php
+All the files with the routes. Each file contents the routes of an specific functionality.  
+It is very important that the names of the files inside this folder follow this pattern: **name.router.php**
 
   
 Learn more deeply
