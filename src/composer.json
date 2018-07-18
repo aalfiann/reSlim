@@ -1,7 +1,7 @@
 {
     "name":"aalfiann/reSlim",
     "type":"framework",
-    "description":"Made application reSlim with use of powerful rest api",
+    "description":"Make easy to create http rest api, scalable and strong in high traffic.",
     "keywords":["microframework", "rest", "router", "PSR7", "PSR11"],
     "homepage":"https://github.com/aalfiann/reSlim",
     "license":"https://github.com/aalfiann/reSlim/blob/master/license.md MIT",
