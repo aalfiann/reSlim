@@ -8,10 +8,10 @@
  */
 namespace classes;
 	/**
-     * A class for generate simple cache file response json in traditional way (static files)
+     * A class for generate simple cache file the output response json in traditional way (static files)
      * 
      * Note:
-     * - App Cache is better to use for api with public Api Keys
+     * - Simple Cache is for cache the output response from reSlim and better to use with public Api Keys
      * - Minimum expired cache file should be 300s (5 minutes). Longer is better but consider with your business requirement.
      * - Url contains param also will cached automatically, so this will created a thousand static files in your harddisk. You should setparam or blacklistparam to avoid this
      * - Better to use harddisk with SDD feature to make performance faster
