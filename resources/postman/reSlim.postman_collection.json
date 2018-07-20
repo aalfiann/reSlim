@@ -1,0 +1,1205 @@
+{
+	"variables": [],
+	"info": {
+		"name": "reSlim",
+		"_postman_id": "659e30a2-74dd-3013-e608-2c93c776d823",
+		"description": "API Dcoumentation about reSlim framework.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Login",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/login",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Password",
+							"value": "{password}",
+							"type": "text",
+							"description": "Length is 0-50 {case sensitive,required}"
+						}
+					]
+				},
+				"description": "Login User\n---\n\nDefault Superuser Account:  \nUsername : reslim  \nPassword : reslim\n\nThen keep the token generated after login success.  \nToken will expired when you are logout or automatically expired after 7days as default.  "
+			},
+			"response": []
+		},
+		{
+			"name": "User Register",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/register",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "your username (no space)",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Password",
+							"value": "your password",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						},
+						{
+							"key": "Fullname",
+							"value": "your name",
+							"type": "text",
+							"description": "Length is 1-50"
+						},
+						{
+							"key": "Address",
+							"value": "your address here...",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Phone",
+							"value": "your phone",
+							"type": "text",
+							"description": "Length is 0-15 {numeric}"
+						},
+						{
+							"key": "Email",
+							"value": "your email",
+							"type": "text",
+							"description": "Length is 0-50 {email}"
+						},
+						{
+							"key": "Aboutme",
+							"value": "about you",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Avatar",
+							"value": "your url avatar",
+							"type": "text",
+							"description": "Length is 0-250 {url}"
+						},
+						{
+							"key": "Role",
+							"value": "2",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						}
+					]
+				},
+				"description": "Register user"
+			},
+			"response": []
+		},
+		{
+			"name": "Logout User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/logout",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Logout user\n---\n\nIf you already logout, the current active token will be expired automatically."
+			},
+			"response": []
+		},
+		{
+			"name": "Show All User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show All User\n---\nThis will showing all data of the user.  \nOnly for user with Role Superuser and Admin.\n\n\nNote:\n---\n- There is no pagination and search\n- Don't use this if you have big user more than 1000 users."
+			},
+			"response": []
+		},
+		{
+			"name": "Show All User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Show All User\n---\nThis will showing all data of the user.  \nOnly for user with Role Superuser and Admin.\n\n\nNote:\n---\n- There is no pagination and search\n- Don't use this if you have big user more than 1000 users."
+			},
+			"response": []
+		},
+		{
+			"name": "Search Data User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Search Data User\n---\nThis will showing all data of the user with pagination.  \nOnly for user with Role Superuser and Admin."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Role User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/role/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Role User\n---\nWill showing the role for spesific user  \nThis will work only for user with role superuser"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Option Status User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/status/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Option Status User\n---\nTo get data list status to be use for manage the user"
+			},
+			"response": []
+		},
+		{
+			"name": "User Update",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Fullname",
+							"value": "your name",
+							"type": "text",
+							"description": "Length is 0-50"
+						},
+						{
+							"key": "Address",
+							"value": "your address",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Phone",
+							"value": "your phone",
+							"type": "text",
+							"description": "Length is 0-15 {numeric}"
+						},
+						{
+							"key": "Email",
+							"value": "your email",
+							"type": "text",
+							"description": "Length is 0-50 {email}"
+						},
+						{
+							"key": "Aboutme",
+							"value": "about your",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Avatar",
+							"value": "",
+							"type": "text",
+							"description": "Length is 0-250 {url}"
+						},
+						{
+							"key": "Role",
+							"value": "2",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						},
+						{
+							"key": "Status",
+							"value": "1",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "User Update\n---\nThis is for update the data of the user.  \nWorks for any role type"
+			},
+			"response": []
+		},
+		{
+			"name": "User Delete",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "User Delete\n---\nTo delete the user.  \nWorks for user with role superuser."
+			},
+			"response": []
+		},
+		{
+			"name": "Change Password User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/changepassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Password",
+							"value": "{youroldpassword}",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						},
+						{
+							"key": "NewPassword",
+							"value": "{yournewpassword}",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Change Password User\n---\nTo force change or reset the user (self) password.  \n\nNote:\n---\n- This is commonly use if the user want to change his password from profile page."
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/resetpassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "NewPassword",
+							"value": "{password}",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Reset Password User\n---\nTo force change or reset the user password.  \n\nNote:\n---\n- This works for any role type\n- Make sure only superuser and admin have this access."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Profile User Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/user/profile/{username}/?apikey={yourapikeys}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"user",
+						"profile",
+						"{username}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikeys}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Profile User\n---\nTo show the user data for public access with apikey"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Profile User Internal",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/profile/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Profile User\n---\nTo show the user data for internal access with token.\n\nNote:\n---\n- Only user with role superuser can see the suspended user."
+			},
+			"response": []
+		},
+		{
+			"name": "Show All User Pagination",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/data/{page}/{itemsperpage}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show All User Pagination\n---\nThis will show all data user with pagination.  \nWorks only for user with role superuser and admin"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verify/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Verify Token\n---\nThis will verify the token status active or not"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Username",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verify/register/{username}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Verify Username\n---\nThis is to check is username has already registered or not.\n\nNote:\n---\n- This is commonly use to check if username already taken or not for registration"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Email",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verify/email/{youremail}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Verify Email\n---\nThis is to check is email address has already taken or not.\n\nNote:\n---\n- This is commonly use to check if email address already taken or not for registration or update the user profile"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Role by Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/scope/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get User Role by Token\n---\nTo get RoleID of user by token.\n\nNote:\n---\n- This commonly use to open or route some page which is need spesific role to access it."
+			},
+			"response": []
+		},
+		{
+			"name": "Process User Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Title",
+							"value": "",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Alternate",
+							"value": "",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "External",
+							"value": "",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Datafile",
+							"value": "",
+							"type": "file",
+							"description": ""
+						}
+					]
+				},
+				"description": "User Upload\n---\n\nUser upload will works only with use form method post.  "
+			},
+			"response": []
+		},
+		{
+			"name": "Search Data User Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Search Data User Upload\n---\nTo show all data of the all user uploaded.\n\nNote:\n---\n- Data upload of self user will appear (private or public)\n- Data upload of other user will appear only if status is set to public"
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Data User Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/{page}/{itemsperpage}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show All Data User Upload\n---\nWill show all data of user (self) upload with pagination.  \nSearch is no available in this."
+			},
+			"response": []
+		},
+		{
+			"name": "Show User Upload Item Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/user/{username}/upload/data/item/{itemid}/?apikey={yourapikeys}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"user",
+						"{username}",
+						"upload",
+						"data",
+						"item",
+						"{itemid}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikeys}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show User Upload Item Public\n---\nTo show upload data item of user for public access."
+			},
+			"response": []
+		},
+		{
+			"name": "Update User Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ItemID",
+							"value": "{itemid}",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						},
+						{
+							"key": "Title",
+							"value": "",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Alternate",
+							"value": "",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "External",
+							"value": "",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Status",
+							"value": "{49 or 50}",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						},
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Update User Upload\n---\nTo update the data item uploaded.\n\nNote:\n---\n- Only user with role Superuser and Admin have access to update item uploaded all user for moderation purpose."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "ItemID",
+							"value": "{itemid}",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						},
+						{
+							"key": "Username",
+							"value": "{username}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Delete User Upload\n---\nTo delete the item uploaded of user\nWorks only for user with role Superuser."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Option Status Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload/status/{youtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Data Status Upload\n---\nTo get data list status to be use for manage the data upload."
+			},
+			"response": []
+		},
+		{
+			"name": "Force Download Link",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/upload/steam/{yourtoken}/{filename with extension}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Force Download Link\n---\nForce download stream inline or attachment to protect from hotlinking."
+			},
+			"response": []
+		},
+		{
+			"name": "Send Mail",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/mail/send",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "To",
+							"value": "{destination email address}",
+							"type": "text",
+							"description": "{required}"
+						},
+						{
+							"key": "Subject",
+							"value": "{subject email}",
+							"type": "text",
+							"description": "{required}"
+						},
+						{
+							"key": "Message",
+							"value": "{message of email}",
+							"type": "text",
+							"description": "{required}"
+						},
+						{
+							"key": "Html",
+							"value": "{true or false}",
+							"type": "text",
+							"description": "{required}"
+						},
+						{
+							"key": "From",
+							"value": "{your email address}",
+							"type": "text",
+							"description": "Length is 6-50 {email,required}"
+						},
+						{
+							"key": "FromName",
+							"value": "{your name or website name}",
+							"type": "text",
+							"description": ""
+						},
+						{
+							"key": "CC",
+							"value": "{you can leave this blank}",
+							"type": "text"
+						},
+						{
+							"key": "BCC",
+							"value": "{you can leave this blank}",
+							"type": "text"
+						},
+						{
+							"key": "Attachment",
+							"value": "{you can leave this blank}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Send Mail\n---\nTo sending email directly.\n\nNote:\n- This is required smtp configuration in reslim config.php"
+			},
+			"response": []
+		},
+		{
+			"name": "User Forgot Password",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/forgotpassword",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Email",
+							"value": "{youremail}",
+							"type": "text",
+							"description": "Length is 6-50 {email,required}"
+						}
+					]
+				},
+				"description": "User Forgot Password\n---\nTo send verification reset password via email if user forgot password.\n\nNote:\n- This is required smtp configuration in reslim config.php"
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Pass Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/verifypasskey",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "PassKey",
+							"value": "{yourpasskey}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "NewPassword",
+							"value": "{yournewpassword}",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						}
+					]
+				},
+				"description": "Verify Pass Key\n---\nTo verify if the pass key generated to reset password is correct or expired.\n\nNote:\n---\n- Pass Key will automatically expired in 3days."
+			},
+			"response": []
+		},
+		{
+			"name": "Create API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/create",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Domain",
+							"value": "{yourdomain.com}",
+							"type": "text",
+							"description": "Length is 1-50 {domain,required}"
+						}
+					]
+				},
+				"description": "Create API Key\n---\nThis is to create an Api Key.  \nApi Key is needed to access the our api for public access purpose.\n\nNote:  \n- Domain should be full path. Ex. http://yourdomain.com\n- If domain wrong, then you will get problem with Cors."
+			},
+			"response": []
+		},
+		{
+			"name": "Update API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "ApiKey",
+							"value": "{yourapikey}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Status",
+							"value": "{1 or 42}",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						}
+					]
+				},
+				"description": "Update API Key\n---\nThis is to update the Api Key.\n\nNote:\n- This will only update the status only.\n- Domain and Api Key value can't to update."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete API Key",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/keys/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						},
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "ApiKey",
+							"value": "{yourapikey}",
+							"type": "text",
+							"description": "Length is 1-250 {required}"
+						}
+					]
+				},
+				"description": "Delete API Key\n---\nThis is to delete the Api Key\n\nNote:\n- Only user that is own the Api Key, can to delete."
+			},
+			"response": []
+		},
+		{
+			"name": "Search Data API Keys User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/{username}/keys/data/search/{page}/{itemsperpage}/{yourtoken}/?query={your query to search data}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Search Data API Keys User\n---\nThis will show all data Api Key created by user.\n\nNote:\n---\n- Only user with role Superuser can see all data Api Key of other user."
+			},
+			"response": []
+		},
+		{
+			"name": "Append Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/append",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Code",
+							"value": "{ID for error}",
+							"description": "Length is 1-20 {alphanumeric,required}",
+							"type": "text"
+						},
+						{
+							"key": "Name",
+							"value": "{yourname}",
+							"description": "Length is 1-50 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Email",
+							"value": "{youremail}",
+							"description": "Length is 1-50 {email,required}",
+							"type": "text"
+						},
+						{
+							"key": "Message",
+							"value": "{message to log}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Append Logs\n---\nTo send any log\n\nNote:\n- This is commonly use if the frontend has conflict with the api server then frontend send bugs report to server log.\n- No any role required"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Update Logs\n---\nTo update the log content.\n\nNote:\n---\n- This is commonly use to edit or clear the content of log. \n- No any role required"
+			},
+			"response": []
+		},
+		{
+			"name": "Clear Logs",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/logs/data/clear/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Clear Logs\n---\nThis is to clear the content of log.\n\nNote:\n- No any role required."
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Data Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/token/data/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get User Data Token\n---\nThis is to get user data token.\n\nNote:\n- This is commonly use for manage the generated token of user."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Single Token",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/token/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{youractivetoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "TokenToDelete",
+							"value": "{yourtokentodelete}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Delete Single Token\n---\nThis is to delete single token of user (self).\n\nNote:\n---\n- User can revoke the single token anytime."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Token except active one",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/token/delete/all",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Delete All Token except active one\n---\nThis is to delete all token except the current active one.\n\nNote:\n---\n- If all token has been deleted, then all other device will automatically logout except the current active one."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Cache API Keys",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/apikey/delete/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Delete All Cache API Keys\n---\nThis is to delete all cache generated from api key request."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Cache Data",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/data/delete/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Delete All Cache Data\n---\nThis is to delete all cache generated from output response json.\n\nNote:\n- This will affect only some router with using SimpleCache class."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Data User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/data/summary/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Data User\n---\nThis is to show summary of the Data User."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Data API",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/api/summary/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Data API\n---\nThis is to show summary of the Data API."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Data Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/upload/summary/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Data Upload\n---\nThis is to show summary of the Data Upload."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Data Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/stats/data/summary/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Data Page\n---\nThis is to show summary of the Data Page."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/stats/data/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Chart Data Page\n---\nThis is to show summary of the Data Page.\n\nNote:\n---\n- Format json was set to support using chartist.js as default."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data User",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/data/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Chart Data User\n---\nThis is to show summary of the Data User.\n\nNote:\n---\n- Format json was set to support using chartist.js as default."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data Upload",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/upload/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Chart Data Upload\n---\nThis is to show summary of the Data Upload.\n\nNote:\n---\n- Format json was set to support using chartist.js as default."
+			},
+			"response": []
+		},
+		{
+			"name": "Stats Chart Data API",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/stats/api/chart/{year}/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Stats Chart Data API\n---\nThis is to show summary of the Data API.\n\nNote:\n---\n- Format json was set to support using chartist.js as default."
+			},
+			"response": []
+		}
+	]
+}
