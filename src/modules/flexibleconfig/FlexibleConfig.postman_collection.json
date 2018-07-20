@@ -181,7 +181,7 @@
 			"name": "Read Config Public",
 			"request": {
 				"url": {
-					"raw": "http://localhost:1337/reSlim/src/api/flexibleconfig/read/{key}/?apikey={yourapikey}",
+					"raw": "http://localhost:1337/reSlim/src/api/flexibleconfig/read/{key}/?apikey={yourapikey}&lang=en",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -200,6 +200,12 @@
 						{
 							"key": "apikey",
 							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
 							"equals": true,
 							"description": ""
 						}
