@@ -1,0 +1,256 @@
+{
+	"variables": [],
+	"info": {
+		"name": "FlexibleConfig",
+		"_postman_id": "374b42b5-ad39-bad6-62e9-42d7641865e7",
+		"description": "API Documentation about FlexibleConfig Module.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Info Module",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/flexibleconfig/get/info/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"flexibleconfig",
+						"get",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Module\n---\nGet info detail about FlexibleConfig Module"
+			},
+			"response": []
+		},
+		{
+			"name": "Add Config",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/flexibleconfig/add",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Key",
+							"value": "",
+							"description": "Length is 1-50 {alphanumeric,required}",
+							"type": "text"
+						},
+						{
+							"key": "Value",
+							"value": "",
+							"description": "Length is 0-10000",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "Length is 0-250",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Add Config\n---\nTo Add config into Flexible Config"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Config",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/flexibleconfig/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Key",
+							"value": "",
+							"description": "Length is 1-50 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Value",
+							"value": "",
+							"description": "Length is 0-10000",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "Length is 0-250",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Update Config\n---\nTo update the value in Flexible Config by Key"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Config",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/flexibleconfig/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Key",
+							"value": "",
+							"description": "Length is 1-50 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Delete Config\n---\nTo delete the config in the Flexible Config"
+			},
+			"response": []
+		},
+		{
+			"name": "Read Config",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/flexibleconfig/read/{key}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Read Config\n---\nRead the config by key in Flexible Config.\n\nNote:\n- You can read multiple value with separated commas in key. Example key1,key2,key3"
+			},
+			"response": []
+		},
+		{
+			"name": "Read Config Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/flexibleconfig/read/{key}/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"flexibleconfig",
+						"read",
+						"{key}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Read Config Public\n---\nRead the config by key in Flexible Config for public access with api key.\n\nNote:\n- You can read multiple value with separated commas in key. Example key1,key2,key3."
+			},
+			"response": []
+		},
+		{
+			"name": "Index Config",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/flexibleconfig/index/{yourusername}/{yourapikey}/{page}/{itemsperpage}/?query={query to search}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"flexibleconfig",
+						"index",
+						"{yourusername}",
+						"{yourapikey}",
+						"{page}",
+						"{itemsperpage}",
+						""
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Index Config\n---\nThis will show all data config in Flexible Config with pagination and able to search."
+			},
+			"response": []
+		}
+	]
+}

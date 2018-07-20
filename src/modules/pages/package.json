@@ -3,7 +3,7 @@
         "name": "Pages",
         "url": "https://github.com/aalfiann/reSlim-modules-pages",
         "description": "A module for pages management",
-        "version": "1.2",
+        "version": "1.2.1",
         "require": {
             "reSlim": "1.9.0"
         },

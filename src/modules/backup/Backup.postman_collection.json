@@ -1,0 +1,146 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Backup",
+		"_postman_id": "e78289a1-7a5e-3ff0-afb4-6e0946ba6e66",
+		"description": "API Documentation about Backup Module.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Info Module",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/backup/get/info/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"backup",
+						"get",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Module\n---\nGet info detail about Backup Module"
+			},
+			"response": []
+		},
+		{
+			"name": "Backup All",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/backup/all/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Backup All\n---\nThis will backup all table.\n\nNote:\n---\n- This only work for database Mysql/MariaDB"
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Spesific Table",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/backup/table/{tablename}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Backup Spesific Table\n---\nThis will backup for spesific table only.\n\nNote:\n---\n- This only work for database Mysql/MariaDB"
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Show All",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/backup/show/all/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Backup Show All\n---\nThis will show all data backup."
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Delete",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/backup/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Filename",
+							"value": "",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Backup Delete\n---\nThis will only delete the single bakcup file."
+			},
+			"response": []
+		},
+		{
+			"name": "Backup Delete All",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/backup/delete/all",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Filename",
+							"value": "",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Backup Delete All\n---\nThis will delete all the bakcup file."
+			},
+			"response": []
+		}
+	]
+}

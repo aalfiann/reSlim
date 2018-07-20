@@ -1,0 +1,644 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Pages",
+		"_postman_id": "0dbd1bf7-cb90-c92f-e8fe-462cefecbfc5",
+		"description": "API Documentation about Pages Module.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Info Module",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/get/info/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"get",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Module\n---\nGet info detail about Page Module"
+			},
+			"response": []
+		},
+		{
+			"name": "Create New Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/data/new",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{username}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Title",
+							"value": "",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"value": "",
+							"description": "Length is 0-250 {url}",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "Length is 0-250",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Tags",
+							"value": "",
+							"description": "Length is 0-500",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Create New Page\n---\nThis is to create new page.\n\nNote:\n- This is commonly use to create page website or blog.\n- Only user with role Superuser and Admin can make publish page directly and the other will make the page as draft and required to publish manualy from superuser and admin."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/data/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Title",
+							"value": "",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"value": "",
+							"description": "Length is 0-250 {url}",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "Length is 0-250",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Tags",
+							"value": "",
+							"description": "Length is 0-500",
+							"type": "text"
+						},
+						{
+							"key": "PageID",
+							"value": "{pageid}",
+							"description": "Length is 1-11 {numeric,required}",
+							"type": "text"
+						},
+						{
+							"key": "StatusID",
+							"value": "{51 or 52}",
+							"description": "Length is 1-11 {numericrequired}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Update Page\n---\nThis is to update the page.\nThis is works only for user with role Superuser and Admin."
+			},
+			"response": []
+		},
+		{
+			"name": "Update Draft Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/data/update",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {numeric,required}",
+							"type": "text"
+						},
+						{
+							"key": "Title",
+							"value": "",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"value": "",
+							"description": "Length is 0-250 {url}",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "",
+							"description": "Length is 0-250",
+							"type": "text"
+						},
+						{
+							"key": "Content",
+							"value": "",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "Tags",
+							"value": "",
+							"description": "Length is 0-500",
+							"type": "text"
+						},
+						{
+							"key": "PageID",
+							"value": "{pageid}",
+							"description": "Length is 1-11 {numeric,required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Update Draft Page\n---\nThis is to update the draft page.\nThis is works for all user role except Superuser and Admin."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/data/delete",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "{yourusername}",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}",
+							"type": "text"
+						},
+						{
+							"key": "Token",
+							"value": "{yourtoken}",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
+							"key": "PageID",
+							"value": "{pageid}",
+							"description": "Length is 1-11 {numeric,required}",
+							"type": "text"
+						}
+					]
+				},
+				"description": "Delete Page\n---\nThis is to delete the page.\n\nNote:\n---\n- All user can delete the own page anytime.\n- Only user with role Superuser can delete the page of all users."
+			},
+			"response": []
+		},
+		{
+			"name": "Search Page Pagination",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/search/{yourusername}/{yourtoken}/{page}/{itemsperpage}/?query={query to search}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"search",
+						"{yourusername}",
+						"{yourtoken}",
+						"{page}",
+						"{itemsperpage}",
+						""
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Search Page Pagination\n---\nThis will show all data own page with pagination and search\n\nNote:\n- Only user with role Superuser and Admin can see all data page from other user."
+			},
+			"response": []
+		},
+		{
+			"name": "Search Page Pagination Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/search/{page}/{itemsperpage}/?apikey={yourapikey}&query={query to search}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"public",
+						"search",
+						"{page}",
+						"{itemsperpage}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Search Page Pagination Public\n---\nThis will show all data page with status published with pagination and search for public access with api key.\n\nNote:\n---\n- This commonly use for frontend to show all data page with status publish.\n- Guest can search all data published page."
+			},
+			"response": []
+		},
+		{
+			"name": "Update View Page",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/view/{pageid}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"view",
+						"{pageid}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Update View Page\n---\nThis is to add count page viewer.\n\nNote:\n---\n- This commonly use to count the viewer who read the page."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Publish Page Pagination Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"public",
+						"published",
+						"{page}",
+						"{itemsperpage}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Publish Page Pagination Public\n---\nThis will show all data page with status published with pagination for public access with api key.\n\nNote:\n---\n- This commonly use for frontend to show all data page with status publish for create rss purpose."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Publish Page Sort Pagination Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/published/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"public",
+						"published",
+						"{page}",
+						"{itemsperpage}",
+						"{sort asc|desc}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Publish Page Sort Pagination Public\n---\nThis will show all data page with status published with pagination for public access with api key.\n\nNote:\n---\n- This commonly use for frontend to show all data page with status publish for create sitemap or rss purpose.\n- You can sort the data page."
+			},
+			"response": []
+		},
+		{
+			"name": "Show Single Page Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/public/read/{pageid}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"public",
+						"read",
+						"{pageid}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Single Page Public\n---\nThis is to show the content of the page for public access with api key.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Page Written By",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/written/{yourusername}/{yourtoken}/{user}/{page}/{itemsperpage}/{sort asc|desc}/?query={query to search}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"written",
+						"{yourusername}",
+						"{yourtoken}",
+						"{user}",
+						"{page}",
+						"{itemsperpage}",
+						"{sort asc|desc}",
+						""
+					],
+					"query": [
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Page Written By\n---\nTo show all data page written by user with pagination.\n\nNote:\n- User can search by Title and Tags only"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Page Written By Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/data/written/public/{user}/{page}/{itemsperpage}/{sort asc|desc}/?apikey={yourapikey}&query={query to search}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"data",
+						"written",
+						"public",
+						"{user}",
+						"{page}",
+						"{itemsperpage}",
+						"{sort asc|desc}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "query",
+							"value": "{query to search}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Page Written By Public\n---\nTo show all data page written by user with pagination for public access with api key.\n\nNote:\n- Guest can search by Title and Tags only"
+			},
+			"response": []
+		},
+		{
+			"name": "Show Option Status Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/data/status/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show Option Status Page\n---\nTo get data list status to be use for manage the data page."
+			},
+			"response": []
+		}
+	]
+}

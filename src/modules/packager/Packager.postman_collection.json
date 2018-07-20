@@ -1,0 +1,196 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Packager",
+		"_postman_id": "81de6a28-7d84-1670-43f8-2e3cfa07789c",
+		"description": "API Documentation about Packager Module.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Info Module",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/packager/get/info/?apikey={yourapikey}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"packager",
+						"get",
+						"info",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Module\n---\nGet info detail about Packager Module"
+			},
+			"response": []
+		},
+		{
+			"name": "Show All Modules",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/packager/show/all/{username}/{token}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Show All Modules\n---\nThis will show all data modules installed in reSlim."
+			},
+			"response": []
+		},
+		{
+			"name": "Install Module Zip",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/packager/install/zip/{username}/{token}/?lang=en&source={zip archive source}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"packager",
+						"install",
+						"zip",
+						"{username}",
+						"{token}",
+						""
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "source",
+							"value": "{zip archive source}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Install Module Zip\n---\nThis will install module with source link of the archive zip.\n\nNote:\n---\n- Source archive link must be right formatted\n- Faster but not safe, this may damage your app."
+			},
+			"response": []
+		},
+		{
+			"name": "Install Module Zip Safely",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/packager/install/zip/safely/{username}/{token}/?lang=en&namespace={namespace module}&source={zip archive source}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"packager",
+						"install",
+						"zip",
+						"safely",
+						"{username}",
+						"{token}",
+						""
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "namespace",
+							"value": "{namespace module}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "source",
+							"value": "{zip archive source}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Install Module Zip Safely\n---\nThis will install module with source link of the archive zip and require right namespace.\n\nNote:\n---\n- This is require namespace which is more safely"
+			},
+			"response": []
+		},
+		{
+			"name": "Uninstall Module",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/packager/uninstall/{username}/{token}/?lang=en&namespace={namespace module}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"packager",
+						"uninstall",
+						"{username}",
+						"{token}",
+						""
+					],
+					"query": [
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "namespace",
+							"value": "{namespace module}",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Uninstall Module\n---\nThis will remove the module.\n\nNote:\n- This is not delete the database of the module\n- This is only delete the script on the server."
+			},
+			"response": []
+		}
+	]
+}
