@@ -3,7 +3,7 @@
         "name": "FlexibleConfig",
         "url": "https://github.com/aalfiann/reslim-modules-flexibleconfig",
         "description": "Save unlimited config for flexible use.",
-        "version": "1.5.2",
+        "version": "1.6",
         "require": {
             "reSlim": "1.9.0"
         },

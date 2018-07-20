@@ -98,41 +98,104 @@ use PDO;                                            //To connect with database
         	    return $pdo;
 			}
 			return null;
-        }
+		}
+
+		public function insertConfig($key,$value,$username,$description=""){
+			try {
+				$this->dbconfig->beginTransaction();
+				$sql = "INSERT INTO config (key,value,description,created_at,created_by) 
+					VALUES (:key,:value,:description,current_timestamp,:created_by);";
+				$stmt = $this->dbconfig->prepare($sql);
+				$stmt->bindParam(':key', $key, PDO::PARAM_STR);
+				$stmt->bindParam(':value', $value, PDO::PARAM_STR);
+				$stmt->bindParam(':description', $description, PDO::PARAM_STR);
+				$stmt->bindParam(':created_by', $username, PDO::PARAM_STR);
+				if ($stmt->execute()) {
+					$data = [
+						'status' => 'success',
+						'code' => 'RS101',
+						'message' => CustomHandlers::getreSlimMessage('RS101',$this->lang)
+					];	
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS201',
+						'message' => CustomHandlers::getreSlimMessage('RS201',$this->lang)
+					];
+				}
+				$this->dbconfig->commit();
+			} catch (PDOException $e) {
+				$data = [
+					'status' => 'error',
+					'code' => $e->getCode(),
+					'message' => $e->getMessage()
+				];
+				$this->dbconfig->rollBack();
+			}
+			return $data;
+		}
+
+		public function updateConfig($key,$value,$username,$description=""){
+			try {
+				$this->dbconfig->beginTransaction();
+				$sql = "UPDATE config 
+					SET value=:value,Description=:description,Updated_at=current_timestamp,Updated_by=:updated_by
+					WHERE key=:key;";
+				$stmt = $this->dbconfig->prepare($sql);
+				$stmt->bindParam(':value', $value, PDO::PARAM_STR);
+				$stmt->bindParam(':description', $description, PDO::PARAM_STR);
+				$stmt->bindParam(':updated_by', $username, PDO::PARAM_STR);
+				$stmt->bindParam(':key', $key, PDO::PARAM_STR);
+				if ($stmt->execute()) {
+					$data = [
+						'status' => 'success',
+						'code' => 'RS103',
+						'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
+					];	
+				} else {
+					$data = [
+						'status' => 'error',
+						'code' => 'RS203',
+						'message' => CustomHandlers::getreSlimMessage('RS203',$this->lang)
+					];
+				}
+				$this->dbconfig->commit();
+			} catch (PDOException $e) {
+				$data = [
+					'status' => 'error',
+					'code' => $e->getCode(),
+					'message' => $e->getMessage()
+				];
+				$this->dbconfig->rollBack();
+			}
+			return $data;
+		}
+		
+		public function readConfig($key){
+			$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
+					FROM config
+					WHERE key = :key LIMIT 1;";
+				
+			$stmt = $this->dbconfig->prepare($sql);		
+			$stmt->bindParam(':key', $key, PDO::PARAM_STR);
+
+			if ($stmt->execute()) {	
+				$result = $stmt->fetch();
+    	        if ($result && count($result)){
+					$data = $result['value'];
+		        } else {
+        			$data = "";
+	    	    }  	   	
+			} else {
+				$data = "";
+			}
+			return $data;
+			$this->dbconfig = null;
+		}
 
         public function add(){
             if (Auth::validToken($this->db,$this->token,$this->username)){
-    		    try {
-    				$this->dbconfig->beginTransaction();
-	    			$sql = "INSERT INTO config (key,value,description,created_at,created_by) 
-		    			VALUES (:key,:value,:description,current_timestamp,:created_by);";
-					$stmt = $this->dbconfig->prepare($sql);
-					$stmt->bindParam(':key', $this->key, PDO::PARAM_STR);
-					$stmt->bindParam(':value', $this->value, PDO::PARAM_STR);
-					$stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
-					$stmt->bindParam(':created_by', $this->username, PDO::PARAM_STR);
-                    if ($stmt->execute()) {
-						$data = [
-							'status' => 'success',
-							'code' => 'RS101',
-							'message' => CustomHandlers::getreSlimMessage('RS101',$this->lang)
-						];	
-					} else {
-    					$data = [
-					    	'status' => 'error',
-				    		'code' => 'RS201',
-			    			'message' => CustomHandlers::getreSlimMessage('RS201',$this->lang)
-		    			];
-	    			}
-	    			$this->dbconfig->commit();
-    			} catch (PDOException $e) {
-			        $data = [
-    	    			'status' => 'error',
-	    				'code' => $e->getCode(),
-    	    			'message' => $e->getMessage()
-    			    ];
-	    		    $this->dbconfig->rollBack();
-    		    }
+    		    $data = $this->insertConfig($this->key,$this->value,$this->username,$this->description);
             } else {
                 $data = [
 	    			'status' => 'error',
@@ -147,38 +210,7 @@ use PDO;                                            //To connect with database
 
         public function update() {
             if (Auth::validToken($this->db,$this->token,$this->username)){
-    		    try {
-    				$this->dbconfig->beginTransaction();
-	    			$sql = "UPDATE config 
-                        SET value=:value,Description=:description,Updated_at=current_timestamp,Updated_by=:updated_by
-                        WHERE key=:key;";
-					$stmt = $this->dbconfig->prepare($sql);
-					$stmt->bindParam(':value', $this->value, PDO::PARAM_STR);
-					$stmt->bindParam(':description', $this->description, PDO::PARAM_STR);
-					$stmt->bindParam(':updated_by', $this->username, PDO::PARAM_STR);
-					$stmt->bindParam(':key', $this->key, PDO::PARAM_STR);
-                    if ($stmt->execute()) {
-						$data = [
-							'status' => 'success',
-							'code' => 'RS103',
-							'message' => CustomHandlers::getreSlimMessage('RS103',$this->lang)
-						];	
-					} else {
-    					$data = [
-					    	'status' => 'error',
-				    		'code' => 'RS203',
-			    			'message' => CustomHandlers::getreSlimMessage('RS203',$this->lang)
-		    			];
-	    			}
-	    			$this->dbconfig->commit();
-    			} catch (PDOException $e) {
-			        $data = [
-    	    			'status' => 'error',
-	    				'code' => $e->getCode(),
-    	    			'message' => $e->getMessage()
-    			    ];
-	    		    $this->dbconfig->rollBack();
-    		    }
+    		    $data = $this->updateConfig($this->key,$this->value,$this->username,$this->description);
             } else {
                 $data = [
 	    			'status' => 'error',
@@ -482,28 +514,6 @@ use PDO;                                            //To connect with database
         
 			return JSON::safeEncode($data,true);
 	        $this->dbconfig = null;
-		}
-		
-		public function get($key){
-			$sql = "SELECT key,value,description,created_at,created_by,Updated_at,Updated_by
-					FROM config
-					WHERE key = :key LIMIT 1;";
-				
-			$stmt = $this->dbconfig->prepare($sql);		
-			$stmt->bindParam(':key', $key, PDO::PARAM_STR);
-
-			if ($stmt->execute()) {	
-				$result = $stmt->fetch();
-    	        if ($result && count($result)){
-					$data = $result['value'];
-		        } else {
-        			$data = "";
-	    	    }  	   	
-			} else {
-				$data = "";
-			}
-			return $data;
-			$this->dbconfig = null;
 		}
 
     }    
