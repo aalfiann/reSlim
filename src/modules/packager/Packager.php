@@ -146,17 +146,17 @@ use PDO;                                            //To connect with database
                     $listmodules = str_replace(['../modules/','/package.json'],'',$packs);
                     foreach ($packs as $pack) {
                         $mods = json_decode(file_get_contents($pack));
-                        $size = $this->GetDirectorySize(str_replace('/package.json','',realpath($pack)));
+                        $size = $this->GetDirectorySize(str_replace(DIRECTORY_SEPARATOR.'package.json','',realpath($pack)));
                         $compatible = (version_compare(RESLIM_VERSION, $mods->package->require->reSlim, ">=")?true:false);
                         $dependency = (isset($mods->package->dependency)?$this->isDependencyExists($mods->package->dependency,$listmodules):true);
-                        $readme = str_replace('/package.json','',realpath($pack)).'/README.md';
+                        $readme = str_replace(DIRECTORY_SEPARATOR.'package.json','',realpath($pack)).'/README.md';
                         $readmeurl = (($this->isHttps())?'https://':'http://').$_SERVER['HTTP_HOST'].'/'.basename(dirname(__FILE__,2)).'/'.basename(dirname($pack)).'/README.md';
                         $folder[] = [
                             'date' => date('Y-m-d H:m:s',filectime($pack)),
                             'namespace' => basename(dirname(__FILE__,2)).'/'.basename(dirname($pack)),
                             'package' => $mods->package,
                             'path' => [
-                                'folder' => str_replace('/package.json','',realpath($pack)),
+                                'folder' => str_replace(DIRECTORY_SEPARATOR.'package.json','',realpath($pack)),
                                 'json' => realpath($pack)
                             ],
                             'size' => $this->formatSize($size),
@@ -236,7 +236,7 @@ use PDO;                                            //To connect with database
                     $zip = new \ZipArchive;
                     $res = $zip->open($destination);
                     if ($res === TRUE) {
-                        $zip->extractTo($_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)).'/');
+                        $zip->extractTo(dirname($this->basemod,1).'/');
                         $zip->close();
                         unlink($destination);
                         $data = [
@@ -249,7 +249,7 @@ use PDO;                                            //To connect with database
                             'status' => 'error',
                             'code' => 'PC201',
                             'message' => Dictionary::write('PC201',$this->lang),
-                            'path' => $_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)),
+                            'path' => dirname($this->basemod,1),
                             'base' => $this->basemod
                         ];
                     }
@@ -295,20 +295,21 @@ use PDO;                                            //To connect with database
                     $zip = new \ZipArchive;
                     $res = $zip->open($destination);
                     if ($res === TRUE) {
-                        $folderpath = $_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)).'/tmp';
+                        $folderpath = dirname($this->basemod,1).'/tmp';
                         $zip->extractTo($folderpath);
                         $directories = scandir($folderpath);
                         if (count($directories) ==3){
                             foreach($directories as $directory){
                                 if($directory !='.' and $directory != '..'){
                                     if(is_dir($folderpath.'/'.$directory)){
-                                        $this->rcopy($folderpath.'/'.$directory,$_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)).'/'.$namespaces);
+                                        $this->rcopy($folderpath.'/'.$directory,dirname($this->basemod,1).'/'.$namespaces);
                                     }
                                 }
                             }
                             $data = [
                                 'status' => 'success',
                                 'code' => 'PC101',
+                                'path' => dirname($this->basemod,1).'/'.$namespaces,
                                 'message' => Dictionary::write('PC101',$this->lang)
                             ];
                         } else {
@@ -326,7 +327,7 @@ use PDO;                                            //To connect with database
                             'status' => 'error',
                             'code' => 'PC201',
                             'message' => Dictionary::write('PC201',$this->lang),
-                            'path' => $_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)),
+                            'path' => dirname($this->basemod,1),
                             'base' => $this->basemod
                         ];
                     }
@@ -353,7 +354,7 @@ use PDO;                                            //To connect with database
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
                 if ($role == 1) {
-                    $this->rrmdir($_SERVER['DOCUMENT_ROOT'].'/'.basename(dirname(__FILE__,2)).'/'.$namespaces);
+                    $this->rrmdir(dirname($this->basemod,1).'/'.$namespaces);
                     $data = [
                         'status' => 'success',
                         'code' => 'PC102',
