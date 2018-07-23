@@ -62,7 +62,7 @@ Getting Started
 5. Done
 
 ### II. Connection Database
-1. Create Database name reslim in your MySQL/MariaDB
+1. Create Database name **reSlim** in your MySQL/MariaDB
 2. Execute or restore **reSlim.sql** which is located at **resources/database/** folder
 3. Edit **config.php** which is located at **src/** folder  
     Just only this part,
