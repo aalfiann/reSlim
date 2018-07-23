@@ -153,6 +153,7 @@ use \classes\SimpleCache as SimpleCache;
         $users->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $datapost = $request->getParsedBody();
         $users->username = $datapost['Username'];
+        $users->token = $datapost['Token'];
         $users->password = $datapost['Password'];
         $users->fullname = $datapost['Fullname'];
         $users->address = $datapost['Address'];
@@ -163,6 +164,32 @@ use \classes\SimpleCache as SimpleCache;
         $users->role = $datapost['Role'];
         $body = $response->getBody();
         $body->write($users->register());
+        return classes\Cors::modify($response,$body,200);
+    })->add(new ValidateParam('Avatar'))
+        ->add(new ValidateParam('Fullname','0-50'))
+        ->add(new ValidateParam(['Address','Aboutme'],'0-250'))
+        ->add(new ValidateParam('Email','0-50','email'))
+        ->add(new ValidateParam('Phone','0-15','numeric'))
+        ->add(new ValidateParam('Role','1-11','numeric'))
+        ->add(new ValidateParam(['Token','Password'],'1-250','required'))
+        ->add(new ValidateParam('Username','1-50','required'));
+
+    // POST example api register user safely for public
+    $app->post('/user/register/public', function (Request $request, Response $response) {
+        $users = new classes\User($this->db);
+        $users->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+        $datapost = $request->getParsedBody();
+        $users->username = $datapost['Username'];
+        $users->password = $datapost['Password'];
+        $users->fullname = $datapost['Fullname'];
+        $users->address = $datapost['Address'];
+        $users->phone = $datapost['Phone'];
+        $users->email = $datapost['Email'];
+        $users->aboutme = $datapost['Aboutme'];
+        $users->avatar = $datapost['Avatar'];
+        $users->role = $datapost['Role'];
+        $body = $response->getBody();
+        $body->write($users->registerSafely());
         return classes\Cors::modify($response,$body,200);
     })->add(new ValidateParam('Avatar'))
         ->add(new ValidateParam('Fullname','0-50'))
