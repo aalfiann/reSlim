@@ -47,14 +47,26 @@ use PDO;
 
 		/**
 		 * Inserting into database to register user
+		 * @param safely Will reject register as superuser and admin. Default is false.
 		 * @return result process in json encoded data
 		 */
-		private function doRegister(){
+		private function doRegister($safely=false){
 			
 			$newusername = strtolower($this->username);
 			$newemail = strtolower(filter_var($this->email,FILTER_SANITIZE_EMAIL));
 			$hash = Auth::hashPassword($newusername, $this->password);
+			$newrole = Validation::integerOnly($this->role);
 			
+			if ($safely){
+				if ($this->role < 3){
+					return $data = [
+							'status' => 'error',
+							'code' => 'RS901',
+							'message' => CustomHandlers::getreSlimMessage('RS901',$this->lang)
+						];
+				}
+			}
+
 			try {
 				$this->db->beginTransaction();
 				$sql = "INSERT INTO user_data (Username,Password,Fullname,Address,Phone,Email,Aboutme,Avatar,RoleID,StatusID) 
@@ -68,7 +80,7 @@ use PDO;
 					$stmt->bindParam(':email', $newemail, PDO::PARAM_STR);
 					$stmt->bindParam(':aboutme', $this->aboutme, PDO::PARAM_STR);
 					$stmt->bindParam(':avatar', $this->avatar, PDO::PARAM_STR);
-					$stmt->bindParam(':role', $this->role, PDO::PARAM_STR);
+					$stmt->bindParam(':role', $newrole, PDO::PARAM_STR);
 					if ($stmt->execute()) {
 						$data = [
 							'status' => 'success',
@@ -1207,6 +1219,48 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function register(){
+			if (Auth::validToken($this->db,$this->token)){
+				if ( preg_match('/[A-Za-z0-9]+/',$this->username) == false ){
+					$data = [
+						'status' => 'error',
+						'code' => 'RS804',
+						'message' => CustomHandlers::getreSlimMessage('RS804',$this->lang)
+					];
+				} else {
+					if ($this->isRegistered() == false){
+						if ($this->isEmailRegistered() == false){
+							$data = $this->doRegister();
+						} else {
+							$data = [
+								'status' => 'error',
+								'code' => 'RS914',
+								'message' => CustomHandlers::getreSlimMessage('RS914',$this->lang)
+							];
+						}
+					} else {
+						$data = [
+							'status' => 'error',
+							'code' => 'RS902',
+							'message' => CustomHandlers::getreSlimMessage('RS902',$this->lang)
+						];
+					}
+				}
+			} else {
+				$data = [
+					'status' => 'error',
+					'code' => 'RS401',
+					'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}
+			
+			return JSON::encode($data,true);
+		}
+
+		/** 
+		 * Regiter new user safely
+		 * @return result process in json encoded data
+		 */
+		public function registerSafely(){
 			if ( preg_match('/[A-Za-z0-9]+/',$this->username) == false ){
 				$data = [
 					'status' => 'error',
@@ -1216,7 +1270,7 @@ use PDO;
 			} else {
 				if ($this->isRegistered() == false){
 					if ($this->isEmailRegistered() == false){
-						$data = $this->doRegister();
+						$data = $this->doRegister(true);
 					} else {
 						$data = [
 							'status' => 'error',
