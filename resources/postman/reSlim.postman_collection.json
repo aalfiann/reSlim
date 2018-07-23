@@ -44,6 +44,12 @@
 					"mode": "formdata",
 					"formdata": [
 						{
+							"key": "Token",
+							"value": "your token",
+							"description": "Length is 1-250 {required}",
+							"type": "text"
+						},
+						{
 							"key": "Username",
 							"value": "your username (no space)",
 							"type": "text",
@@ -93,13 +99,82 @@
 						},
 						{
 							"key": "Role",
-							"value": "2",
+							"value": "5",
 							"type": "text",
 							"description": "Length is 1-11 {numeric,required}"
 						}
 					]
 				},
-				"description": "Register user"
+				"description": "Register user\n---\n\nDefault list Role:\n- 1: Superuser\n- 2: Admin\n- 3. Member\n- 4. Developer\n- 5. Applicant"
+			},
+			"response": []
+		},
+		{
+			"name": "User Register Safely",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/user/register/public",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Username",
+							"value": "your username (no space)",
+							"type": "text",
+							"description": "Length is 1-50 {alphanumeric,lowercase,required}"
+						},
+						{
+							"key": "Password",
+							"value": "your password",
+							"type": "text",
+							"description": "Length is 1-250 {case sensitive,required}"
+						},
+						{
+							"key": "Fullname",
+							"value": "your name",
+							"type": "text",
+							"description": "Length is 1-50"
+						},
+						{
+							"key": "Address",
+							"value": "your address here...",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Phone",
+							"value": "your phone",
+							"type": "text",
+							"description": "Length is 0-15 {numeric}"
+						},
+						{
+							"key": "Email",
+							"value": "your email",
+							"type": "text",
+							"description": "Length is 0-50 {email}"
+						},
+						{
+							"key": "Aboutme",
+							"value": "about you",
+							"type": "text",
+							"description": "Length is 0-250"
+						},
+						{
+							"key": "Avatar",
+							"value": "your url avatar",
+							"type": "text",
+							"description": "Length is 0-250 {url}"
+						},
+						{
+							"key": "Role",
+							"value": "5",
+							"type": "text",
+							"description": "Length is 1-11 {numeric,required}"
+						}
+					]
+				},
+				"description": "Register user safely\n---\nSafely means this will prevent user register as superuser or admin\n\nDefault list Role are allowed:\n- 3. Member\n- 4. Developer\n- 5. Applicant"
 			},
 			"response": []
 		},
