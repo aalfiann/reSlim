@@ -1167,6 +1167,17 @@
 			"response": []
 		},
 		{
+			"name": "Get Info Cache Api Keys",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/apikey/info",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Cache Api Keys\n---\nThis will show the information about cache data if using Auth."
+			},
+			"response": []
+		},
+		{
 			"name": "Delete All Cache API Keys",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/apikey/delete/{username}/{yourtoken}",
@@ -1178,6 +1189,17 @@
 			"response": []
 		},
 		{
+			"name": "Get Info Cache Data",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/data/info",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Cache Data\n---\nThis will show the information about cache data if using SimpleCache."
+			},
+			"response": []
+		},
+		{
 			"name": "Delete All Cache Data",
 			"request": {
 				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/data/delete/{username}/{yourtoken}",
@@ -1185,6 +1207,28 @@
 				"header": [],
 				"body": {},
 				"description": "Delete All Cache Data\n---\nThis is to delete all cache generated from output response json.\n\nNote:\n- This will affect only some router with using SimpleCache class."
+			},
+			"response": []
+		},
+		{
+			"name": "Get Info Cache Universal",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/universal/info",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get Info Cache Universal\n---\nThis will show the information about cache data if using UniversalCache."
+			},
+			"response": []
+		},
+		{
+			"name": "Delete All Cache Universal",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/maintenance/cache/universal/delete/{username}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Delete All Cache Universal\n---\nThis is to delete all cache generated from universal cache."
 			},
 			"response": []
 		},

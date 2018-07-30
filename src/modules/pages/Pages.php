@@ -3,6 +3,7 @@ namespace modules\pages;
 use \classes\Auth as Auth;
 use \classes\JSON as JSON;
 use \classes\Validation as Validation;
+use \classes\UniversalCache as UniversalCache;
 use \classes\CustomHandlers as CustomHandlers;
 use PDO;
 	/**
@@ -25,7 +26,7 @@ use PDO;
 		var $username,$token,$statusid,$apikey,$adminname,$user;
 		
 		//data
-        var $pageid,$title,$image,$description,$content,$tags,$search,$firstdate,$lastdate,$sort,$year;
+		var $pageid,$title,$image,$description,$content,$tags,$search,$firstdate,$lastdate,$sort,$year,$taglimit;
 
 		//for pagination
 		var $page,$itemsPerPage;
@@ -1069,7 +1070,405 @@ use PDO;
         
 			return JSON::safeEncode($data,true);
 	        $this->db= null;
-        }
+		}
+		
+
+		//TAXONOMY=======================================
+
+
+		private function getAllTrendingPage(){
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			// Query Data
+			$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
+					a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
+				from data_page a
+				inner join core_status b on a.StatusID=b.StatusID
+				where b.StatusID = '51'
+				order by a.Viewer DESC LIMIT :limpage;";
+				
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(':limpage', (INT) $newlimit, PDO::PARAM_INT);
+
+			if ($stmt->execute()) {	
+    		    if ($stmt->rowCount() > 0){
+        	   		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$data = [
+			            'results' => $results, 
+    			        'status' => 'success', 
+		           	    'code' => 'RS501',
+        		        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
+					];
+			    } else {
+        		    $data = [
+        		    	'status' => 'error',
+	        		    'code' => 'RS601',
+    		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+					];
+	    	    }          	   	
+			} else {
+				$data = [
+        			'status' => 'error',
+					'code' => 'RS202',
+	        		'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+				];
+			}
+			return $data;
+		}
+
+		private function getSeasonalTrendingPage(){
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			// Query Data
+			$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
+					a.Updated_at,a.Updated_by,a.Last_updated,a.StatusID,b.`Status`
+				from data_page a
+				inner join core_status b on a.StatusID=b.StatusID
+				where b.StatusID = '51' AND YEAR(a.Created_at)=YEAR(now()) AND MONTH(a.Created_at) BETWEEN (3*FLOOR((MONTH(now()) % 12)/3)+1) AND MONTH(now())
+				order by a.Viewer DESC LIMIT :limpage;";
+				
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(':limpage', (INT) $newlimit, PDO::PARAM_INT);
+
+			if ($stmt->execute()) {	
+    		    if ($stmt->rowCount() > 0){
+        	   		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$data = [
+			            'results' => $results, 
+    			        'status' => 'success', 
+		           	    'code' => 'RS501',
+        		        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
+					];
+			    } else {
+        		    $data = [
+        		    	'status' => 'error',
+	        		    'code' => 'RS601',
+    		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+					];
+	    	    }          	   	
+			} else {
+				$data = [
+        			'status' => 'error',
+					'code' => 'RS202',
+	        		'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+				];
+			}
+			return $data;
+		}
+
+		private function getAllTrendingTags(){
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			$sql = "SELECT UPPER(substr(sub.val,1,1)) as Alpha,sub.val AS Tags, COUNT(*) AS Total
+				FROM
+				(
+					SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(t.Tags, ',', n.n), ',', -1)) AS val
+					FROM (SELECT Substring(data_page.Tags, 1, LENGTH(data_page.Tags) - 0) AS Tags FROM data_page WHERE data_page.StatusID='51') AS t 
+					CROSS JOIN 
+					(
+						   SELECT a.N + b.N * 10 + 1 n
+						FROM 
+						(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+						   ,(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+					) n
+					WHERE n.n <= 1 + (LENGTH(t.Tags) - LENGTH(REPLACE(t.Tags, ',', '')))
+				) sub
+				WHERE val <> ''
+				GROUP BY sub.val
+				ORDER BY Total DESC,sub.val ASC
+				LIMIT :limpage;";
+				
+			$stmt = $this->db->prepare($sql);		
+			$stmt->bindValue(':limpage', (INT) $newlimit, PDO::PARAM_INT);
+
+			if ($stmt->execute()) {	
+    		    if ($stmt->rowCount() > 0){
+        	   		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$data = [
+			            'results' => $results, 
+    			        'status' => 'success', 
+		           	    'code' => 'RS501',
+        		        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
+					];
+			    } else {
+        		    $data = [
+        		    	'status' => 'error',
+	        		    'code' => 'RS601',
+    		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+					];
+	    	    }          	   	
+			} else {
+				$data = [
+        			'status' => 'error',
+					'code' => 'RS202',
+	        		'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+				];
+			}
+			return $data;
+		}
+
+		private function getSeasonalTrendingTags(){
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			$sql = "SELECT UPPER(substr(sub.val,1,1)) as Alpha,sub.val AS Tags, COUNT(*) AS Total
+				FROM
+				(
+					SELECT TRIM(SUBSTRING_INDEX(SUBSTRING_INDEX(t.Tags, ',', n.n), ',', -1)) AS val
+					FROM (SELECT Substring(data_page.Tags, 1, LENGTH(data_page.Tags) - 0) AS Tags FROM data_page WHERE data_page.StatusID='51' AND YEAR(data_page.Created_at)=YEAR(now()) AND MONTH(data_page.Created_at) BETWEEN (3*FLOOR((MONTH(now()) % 12)/3)+1) AND MONTH(now())) AS t 
+					CROSS JOIN 
+					(
+						   SELECT a.N + b.N * 10 + 1 n
+						FROM 
+						(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) a
+						   ,(SELECT 0 AS N UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) b
+					) n
+					WHERE n.n <= 1 + (LENGTH(t.Tags) - LENGTH(REPLACE(t.Tags, ',', '')))
+				) sub
+				WHERE val <> ''
+				GROUP BY sub.val
+				ORDER BY Total DESC,sub.val ASC
+				LIMIT :limpage;";
+				
+			$stmt = $this->db->prepare($sql);
+			$stmt->bindValue(':limpage', (INT) $newlimit, PDO::PARAM_INT);
+
+			if ($stmt->execute()) {	
+    		    if ($stmt->rowCount() > 0){
+        	   		$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					$data = [
+			            'results' => $results, 
+    			        'status' => 'success', 
+		           	    'code' => 'RS501',
+        		        'message' => CustomHandlers::getreSlimMessage('RS501',$this->lang)
+					];
+			    } else {
+        		    $data = [
+        		    	'status' => 'error',
+	        		    'code' => 'RS601',
+    		    	    'message' => CustomHandlers::getreSlimMessage('RS601',$this->lang)
+					];
+	    	    }          	   	
+			} else {
+				$data = [
+        			'status' => 'error',
+					'code' => 'RS202',
+	        		'message' => CustomHandlers::getreSlimMessage('RS202',$this->lang)
+				];
+			}
+			return $data;
+		}
+
+		/** 
+		 * Get all data Trending Page
+		 * Note:
+		 * - This will get data trending tags from all published pages
+		 * - This is cached for 3600 seconds.
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showAllTrendingPage() {
+			if (Auth::validToken($this->db,$this->token)){
+				$newlimit = Validation::integerOnly($this->taglimit);
+				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+				if (UniversalCache::isCached('all-trending-page-'.$newlimit,3600)){
+                    $datajson = JSON::decode(UniversalCache::loadCache('all-trending-page-'.$newlimit));
+                    $data = JSON::decode($datajson->value);
+                } else {
+					$data = $this->getAllTrendingPage();
+                    UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true));
+                }
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}		
+        
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Trending Page seasonal
+		 * Note:
+		 * - This will get data trending page from current season
+		 * - This is cached for every 300 seconds
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showSeasonalTrendingPage() {
+			if (Auth::validToken($this->db,$this->token)){
+				$newlimit = Validation::integerOnly($this->taglimit);
+				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+				if (UniversalCache::isCached('seasonal-trending-page-'.$newlimit,300)){
+                    $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-page-'.$newlimit));
+                    $data = JSON::decode($datajson->value);
+                } else {
+					$data = $this->getSeasonalTrendingPage();
+                    UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true));
+                }
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}		
+        
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Trending Page
+		 * Note:
+		 * - This will get data trending tags from all published pages
+		 * - This is cached for 3600 seconds.
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showAllTrendingPagePublic() {
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			if (UniversalCache::isCached('all-trending-page-'.$newlimit,3600)){
+                $datajson = JSON::decode(UniversalCache::loadCache('all-trending-page-'.$newlimit));
+                $data = JSON::decode($datajson->value);
+            } else {
+				$data = $this->getAllTrendingPage();
+                UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true));
+            }
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Trending Page seasonal
+		 * Note:
+		 * - This will get data trending page from current season
+		 * - This is cached for every 300 seconds
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showSeasonalTrendingPagePublic() {
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			if (UniversalCache::isCached('seasonal-trending-page-'.$newlimit,300)){
+                $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-page-'.$newlimit));
+                $data = JSON::decode($datajson->value);
+            } else {
+				$data = $this->getSeasonalTrendingPage();
+                UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true));
+            }
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Tags
+		 * Note:
+		 * - This will get data trending tags from all published pages
+		 * - Slower if you have more 100K of data pages, so you better to cache this at least for 3600 seconds. Default is 3600 seconds.
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showAllTrendingTags() {
+			if (Auth::validToken($this->db,$this->token)){
+				$newlimit = Validation::integerOnly($this->taglimit);
+				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+				if (UniversalCache::isCached('all-trending-tags-'.$newlimit,3600)){
+                    $datajson = JSON::decode(UniversalCache::loadCache('all-trending-tags-'.$newlimit));
+                    $data = JSON::decode($datajson->value);
+                } else {
+					$data = $this->getAllTrendingTags();
+                    UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true));
+                }
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}		
+        
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Trending Tags seasonal
+		 * Note:
+		 * - This will get data tags from current season
+		 * - This is cached for every 300 seconds
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showSeasonalTrendingTags() {
+			if (Auth::validToken($this->db,$this->token)){
+				$newlimit = Validation::integerOnly($this->taglimit);
+				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+				if (UniversalCache::isCached('seasonal-trending-tags-'.$newlimit,300)){
+                    $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-tags-'.$newlimit));
+                    $data = JSON::decode($datajson->value);
+                } else {
+					$data = $this->getSeasonalTrendingTags();
+                    UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true));
+                }
+			} else {
+				$data = [
+	    			'status' => 'error',
+					'code' => 'RS401',
+        	    	'message' => CustomHandlers::getreSlimMessage('RS401',$this->lang)
+				];
+			}		
+        
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Tags (public)
+		 * Note:
+		 * - This will get data trending tags from all published pages
+		 * - Slower if you have more 100K of data pages, so you better to cache this at least for 3600 seconds. Default is 3600 seconds.
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showAllTrendingTagsPublic() {
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			if (UniversalCache::isCached('all-trending-tags-'.$newlimit,3600)){
+                $datajson = JSON::decode(UniversalCache::loadCache('all-trending-tags-'.$newlimit));
+                $data = JSON::decode($datajson->value);
+            } else {
+				$data = $this->getAllTrendingTags();
+                UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true));
+            }
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
+
+		/** 
+		 * Get all data Trending Tags seasonal (public)
+		 * Note:
+		 * - This will get data tags from current season
+		 * - This is cached for every 300 seconds
+		 * - Default is limited to 100 rows
+		 * @return result process in json encoded data
+		 */
+		public function showSeasonalTrendingTagsPublic() {
+			$newlimit = Validation::integerOnly($this->taglimit);
+			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
+			if (UniversalCache::isCached('seasonal-trending-tags-'.$newlimit,300)){
+				$datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-tags-'.$newlimit));
+				$data = JSON::decode($datajson->value);
+            } else {
+				$data = $this->getSeasonalTrendingTags();
+                UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true));
+            }
+			return JSON::encode($data,true);
+	        $this->db= null;
+		}
 
         
         //STATUS=======================================
@@ -1123,6 +1522,10 @@ use PDO;
 			return JSON::encode($data,true);
 	        $this->db= null;
 		}
+
+
+		//SUMMARY=======================================
+
 
 		/** 
 		 * Get data statistic page

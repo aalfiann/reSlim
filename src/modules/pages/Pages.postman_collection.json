@@ -639,6 +639,226 @@
 				"description": "Show Option Status Page\n---\nTo get data list status to be use for manage the data page."
 			},
 			"response": []
+		},
+		{
+			"name": "Taxonomy All Trending Tags",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/taxonomy/tags/all/{limit}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy All Trending Tags\n---\nThis will show all Trending Tags."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy Seasonal Trending Tags",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/taxonomy/tags/seasonal/{limit}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy Seasonal Trending Tags\n---\nThis will show all data Trending Tags from current season."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy All Trending Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/taxonomy/page/all/{limit}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy All Trending Page\n---\nThis will show all Trending Page."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy Seasonal Trending Page",
+			"request": {
+				"url": "http://localhost:1337/reSlim/src/api/page/taxonomy/page/seasonal/{limit}/{yourusername}/{yourtoken}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy Seasonal Trending Page\n---\nThis will show all data Trending Page from current season."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy All Trending Tags Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/taxonomy/tags/all/{limit}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"taxonomy",
+						"tags",
+						"all",
+						"{limit}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy All Trending Tags Public\n---\nThis will show all Trending Tags for public access with api key."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy Seasonal Trending Tags Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/taxonomy/tags/seasonal/{limit}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"taxonomy",
+						"tags",
+						"seasonal",
+						"{limit}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy Seasonal Trending Tags Public\n---\nThis will show Seasonal Trending Tags for public access with api key."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy All Trending Page Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/taxonomy/page/all/{limit}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"taxonomy",
+						"page",
+						"all",
+						"{limit}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy All Trending Page Public\n---\nThis will show all Trending Page for public access with api key."
+			},
+			"response": []
+		},
+		{
+			"name": "Taxonomy Seasonal Trending Page Public",
+			"request": {
+				"url": {
+					"raw": "http://localhost:1337/reSlim/src/api/page/taxonomy/page/seasonal/{limit}/?apikey={yourapikey}&lang=en",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1337",
+					"path": [
+						"reSlim",
+						"src",
+						"api",
+						"page",
+						"taxonomy",
+						"page",
+						"seasonal",
+						"{limit}",
+						""
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "{yourapikey}",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lang",
+							"value": "en",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Taxonomy Seasonal Trending Page Public\n---\nThis will show all data Trending Page from current season for public access with api key."
+			},
+			"response": []
 		}
 	]
 }
