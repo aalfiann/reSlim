@@ -280,36 +280,36 @@ use \modules\pages\Pages as Pages;
         ->add(new ApiKey);
 
     // GET api to get all data trending page
-    $app->get('/page/taxonomy/page/all/{taglimit}/{username}/{token}', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/page/all/{limit}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $body->write($pages->showAllTrendingPage());
         return classes\Cors::modify($response,$body,200);
     });
 
     // GET api to get seasonal data trending page
-    $app->get('/page/taxonomy/page/seasonal/{taglimit}/{username}/{token}', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/page/seasonal/{limit}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $body->write($pages->showSeasonalTrendingPage());
         return classes\Cors::modify($response,$body,200);
     });
 
     // GET api to get all data trending page for public
-    $app->get('/page/taxonomy/page/all/{taglimit}/', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/page/all/{limit}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(21600,["apikey","lang"])){
@@ -323,12 +323,12 @@ use \modules\pages\Pages as Pages;
         ->add(new ApiKey);
 
     // GET api to get seasonal data trending page for public
-    $app->get('/page/taxonomy/page/seasonal/{taglimit}/', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/page/seasonal/{limit}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
@@ -342,36 +342,36 @@ use \modules\pages\Pages as Pages;
         ->add(new ApiKey);
 
     // GET api to get all data trending tags page
-    $app->get('/page/taxonomy/tags/all/{taglimit}/{username}/{token}', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/tags/all/{limit}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $body->write($pages->showAllTrendingTags());
         return classes\Cors::modify($response,$body,200);
     });
 
     // GET api to get seasonal data trending tags page
-    $app->get('/page/taxonomy/tags/seasonal/{taglimit}/{username}/{token}', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/tags/seasonal/{limit}/{username}/{token}', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $body->write($pages->showSeasonalTrendingTags());
         return classes\Cors::modify($response,$body,200);
     });
 
     // GET api to get all data trending tags page for public
-    $app->get('/page/taxonomy/tags/all/{taglimit}/', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/tags/all/{limit}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(21600,["apikey","lang"])){
@@ -385,12 +385,12 @@ use \modules\pages\Pages as Pages;
         ->add(new ApiKey);
 
     // GET api to get seasonal data trending tags page for public
-    $app->get('/page/taxonomy/tags/seasonal/{taglimit}/', function (Request $request, Response $response) {
+    $app->get('/page/taxonomy/tags/seasonal/{limit}/', function (Request $request, Response $response) {
         $pages = new Pages($this->db);
         $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
         $pages->token = $request->getAttribute('token');
         $pages->username = $request->getAttribute('username');
-        $pages->taglimit = $request->getAttribute('taglimit');
+        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){

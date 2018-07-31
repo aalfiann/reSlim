@@ -26,7 +26,7 @@ use PDO;
 		var $username,$token,$statusid,$apikey,$adminname,$user;
 		
 		//data
-		var $pageid,$title,$image,$description,$content,$tags,$search,$firstdate,$lastdate,$sort,$year,$taglimit;
+		var $pageid,$title,$image,$description,$content,$tags,$search,$firstdate,$lastdate,$sort,$year,$limit;
 
 		//for pagination
 		var $page,$itemsPerPage;
@@ -1077,7 +1077,7 @@ use PDO;
 
 
 		private function getAllTrendingPage(){
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			// Query Data
 			$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
@@ -1117,7 +1117,7 @@ use PDO;
 		}
 
 		private function getSeasonalTrendingPage(){
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			// Query Data
 			$sql = "SELECT a.PageID,a.Created_at,a.Title,a.Image,a.Description,a.Tags,a.Viewer,a.Username,
@@ -1157,7 +1157,7 @@ use PDO;
 		}
 
 		private function getAllTrendingTags(){
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			$sql = "SELECT UPPER(substr(sub.val,1,1)) as Alpha,sub.val AS Tags, COUNT(*) AS Total
 				FROM
@@ -1208,7 +1208,7 @@ use PDO;
 		}
 
 		private function getSeasonalTrendingTags(){
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			$sql = "SELECT UPPER(substr(sub.val,1,1)) as Alpha,sub.val AS Tags, COUNT(*) AS Total
 				FROM
@@ -1268,7 +1268,7 @@ use PDO;
 		 */
 		public function showAllTrendingPage() {
 			if (Auth::validToken($this->db,$this->token)){
-				$newlimit = Validation::integerOnly($this->taglimit);
+				$newlimit = Validation::integerOnly($this->limit);
 				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 				if (UniversalCache::isCached('all-trending-page-'.$newlimit,3600)){
                     $datajson = JSON::decode(UniversalCache::loadCache('all-trending-page-'.$newlimit));
@@ -1299,7 +1299,7 @@ use PDO;
 		 */
 		public function showSeasonalTrendingPage() {
 			if (Auth::validToken($this->db,$this->token)){
-				$newlimit = Validation::integerOnly($this->taglimit);
+				$newlimit = Validation::integerOnly($this->limit);
 				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 				if (UniversalCache::isCached('seasonal-trending-page-'.$newlimit,300)){
                     $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-page-'.$newlimit));
@@ -1329,7 +1329,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showAllTrendingPagePublic() {
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			if (UniversalCache::isCached('all-trending-page-'.$newlimit,3600)){
                 $datajson = JSON::decode(UniversalCache::loadCache('all-trending-page-'.$newlimit));
@@ -1351,7 +1351,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showSeasonalTrendingPagePublic() {
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			if (UniversalCache::isCached('seasonal-trending-page-'.$newlimit,300)){
                 $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-page-'.$newlimit));
@@ -1374,7 +1374,7 @@ use PDO;
 		 */
 		public function showAllTrendingTags() {
 			if (Auth::validToken($this->db,$this->token)){
-				$newlimit = Validation::integerOnly($this->taglimit);
+				$newlimit = Validation::integerOnly($this->limit);
 				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 				if (UniversalCache::isCached('all-trending-tags-'.$newlimit,3600)){
                     $datajson = JSON::decode(UniversalCache::loadCache('all-trending-tags-'.$newlimit));
@@ -1405,7 +1405,7 @@ use PDO;
 		 */
 		public function showSeasonalTrendingTags() {
 			if (Auth::validToken($this->db,$this->token)){
-				$newlimit = Validation::integerOnly($this->taglimit);
+				$newlimit = Validation::integerOnly($this->limit);
 				if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 				if (UniversalCache::isCached('seasonal-trending-tags-'.$newlimit,300)){
                     $datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-tags-'.$newlimit));
@@ -1435,7 +1435,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showAllTrendingTagsPublic() {
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			if (UniversalCache::isCached('all-trending-tags-'.$newlimit,3600)){
                 $datajson = JSON::decode(UniversalCache::loadCache('all-trending-tags-'.$newlimit));
@@ -1457,7 +1457,7 @@ use PDO;
 		 * @return result process in json encoded data
 		 */
 		public function showSeasonalTrendingTagsPublic() {
-			$newlimit = Validation::integerOnly($this->taglimit);
+			$newlimit = Validation::integerOnly($this->limit);
 			if (empty($newlimit) || $newlimit < 1 || $newlimit > 1000) $newlimit = 100;
 			if (UniversalCache::isCached('seasonal-trending-tags-'.$newlimit,300)){
 				$datajson = JSON::decode(UniversalCache::loadCache('seasonal-trending-tags-'.$newlimit));
