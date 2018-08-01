@@ -98,8 +98,8 @@ $config['dbslave']['dbname'] = '';
  * @var $config['smtp']['username'] your username to login into smtp server
  * @var $config['smtp']['password'] the password to login into smtp server
  * @var $config['smtp']['debug'] get more information by set debug.
- *                               To work using rest api, You should set debug 1,
- *                               because other than 1, there is special characters that will broke json format. 
+ *                               To work using rest api, You should set debug 0,
+ *                               because other than 0, there is special characters that will broke json format. 
  */
 $config['smtp']['host']             = 'smtp.gmail.com';
 $config['smtp']['autotls']          = false;
@@ -109,7 +109,7 @@ $config['smtp']['port']             = 587;
 $config['smtp']['defaultnamefrom']  = 'reSlim admin';
 $config['smtp']['username']         = 'youremail@gmail.com';
 $config['smtp']['password']         = 'secret';
-$config['smtp']['debug']            = 1;
+$config['smtp']['debug']            = 0;
 
 // Configuration timezone
 $config['reslim']['timezone'] = 'Asia/Jakarta';
