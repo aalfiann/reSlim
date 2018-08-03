@@ -64,6 +64,13 @@ use PDO;                                            //To connect with database
 
         //PACKAGER================
 
+        private function dirname_r($path, $count=1){
+            if ($count > 1){
+               return dirname($this->dirname_r($path, --$count));
+            }
+            return dirname($path);
+        }
+
         private function glob_recursive($pattern, $flags = 0){
             $files = glob($pattern, $flags);
             foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
@@ -150,10 +157,10 @@ use PDO;                                            //To connect with database
                         $compatible = (version_compare(RESLIM_VERSION, $mods->package->require->reSlim, ">=")?true:false);
                         $dependency = (isset($mods->package->dependency)?$this->isDependencyExists($mods->package->dependency,$listmodules):true);
                         $readme = str_replace(DIRECTORY_SEPARATOR.'package.json','',realpath($pack)).'/README.md';
-                        $readmeurl = (($this->isHttps())?'https://':'http://').$_SERVER['HTTP_HOST'].'/'.basename(dirname(__FILE__,2)).'/'.basename(dirname($pack)).'/README.md';
+                        $readmeurl = (($this->isHttps())?'https://':'http://').$_SERVER['HTTP_HOST'].dirname(dirname($_SERVER['PHP_SELF'])).'/'.basename($this->dirname_r(__FILE__,2)).'/'.basename(dirname($pack)).'/README.md';
                         $folder[] = [
                             'date' => date('Y-m-d H:m:s',filectime($pack)),
-                            'namespace' => basename(dirname(__FILE__,2)).'/'.basename(dirname($pack)),
+                            'namespace' => basename($this->dirname_r(__FILE__,2)).'/'.basename(dirname($pack)),
                             'package' => $mods->package,
                             'path' => [
                                 'folder' => str_replace(DIRECTORY_SEPARATOR.'package.json','',realpath($pack)),
