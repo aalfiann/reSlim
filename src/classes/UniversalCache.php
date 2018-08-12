@@ -26,7 +26,7 @@ namespace classes;
          * Cache will run if you set variable runcache to true
          * If you set to false, this will only disable the cache process
          */
-        private static $runcache = true;
+        private static $runcache = UNIVERSAL_CACHE;
 
         /**
          * Default folder is cache-universal

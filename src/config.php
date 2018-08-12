@@ -111,5 +111,16 @@ $config['smtp']['username']         = 'youremail@gmail.com';
 $config['smtp']['password']         = 'secret';
 $config['smtp']['debug']            = 0;
 
+/**
+ * Configuration built-in cache
+ * 
+ * @var $config['reslim']['authcache'] is used to reduce the api key validation for every request. Not really matter for multi server purpose. Default is true.
+ * @var $config['reslim']['simplecache'] is used to cache the output json from reslim api. This is recommended to set false if you run the reslim api only for multiserver purpose. Default is true.
+ * @var $config['reslim']['universalcache'] is used to cache for internal process. This is recommended to set false if you run the reslim api only for multiserver purpose. Default is true.
+ */
+$config['reslim']['authcache']      = true;
+$config['reslim']['simplecache']    = true;
+$config['reslim']['universalcache'] = true;
+
 // Configuration timezone
-$config['reslim']['timezone'] = 'Asia/Jakarta';
+$config['reslim']['timezone']       = 'Asia/Jakarta';

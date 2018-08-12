@@ -33,7 +33,7 @@ namespace classes;
          * Cache will run if you set variable runcache to true
          * If you set to false, this only disable the cache process and will not deleted the current cache files
          */
-        private static $runcache = true;
+        private static $runcache = SIMPLE_CACHE;
 
         /**
          * Determine content string is valid json or not

@@ -7,13 +7,17 @@
  * @license   https://github.com/aalfiann/reSlim/blob/master/license.md (MIT License)
  */
 
-// reSlim Version
-define('RESLIM_VERSION','1.14.1');
-
 // Load all class libraries
 require '../vendor/autoload.php';
 // Load config
 require '../config.php';
+
+// reSlim Version
+define('RESLIM_VERSION','1.14.2');
+// reSlim built-in cache
+define('AUTH_CACHE',$config['reslim']['authcache']);
+define('SIMPLE_CACHE',$config['reslim']['simplecache']);
+define('UNIVERSAL_CACHE',$config['reslim']['universalcache']);
 
 // Autoload all external classes
 spl_autoload_register(function ($classname) {
