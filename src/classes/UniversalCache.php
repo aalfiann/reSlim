@@ -35,6 +35,11 @@ namespace classes;
         private static $filefolder = 'cache-universal';
 
         /**
+         * MD5 Hash for filename cache
+         */
+        private static $hash = true;
+
+        /**
 		 * Convert string to valid UTF8 chars (slower but support ANSII)
 		 *
 		 * @var string is the array string or value
@@ -60,7 +65,8 @@ namespace classes;
 		 * @return string
 		 */
         public static function filePath($key){
-            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);           
+            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);
+            if (self::$hash) return self::$filefolder.'/'.md5($key).'.cache';
             return self::$filefolder.'/'.$key.'.cache';
         }
 
