@@ -22,18 +22,21 @@ use PDO;
      */
     class ApiKey
     {
-        private $apikey,$pdo,$conf,$lang;
+        private $apikey,$pdo,$conf,$lang,$dbconfig;
 
         public function __construct(){
             require '../config.php';
-            $db = $config['db'];
+            $this->dbconfig = $config['db'];
             $this->lang = filter_var((empty($_GET['lang'])?'':$_GET['lang']),FILTER_SANITIZE_STRING);
             $this->apikey = filter_var((empty($_GET['apikey'])?'':$_GET['apikey']),FILTER_SANITIZE_STRING);
-            $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
+            $this->conf = $config['enableApiKeys'];
+        }
+
+        private function openDB($db){
+            $pdo = new SafePDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-            $this->pdo = $pdo;
-            $this->conf = $config['enableApiKeys'];
+            return $pdo;
         }
 
         /**
@@ -47,6 +50,7 @@ use PDO;
          */
         public function __invoke($request, $response, $next){
             if ($this->conf == true){
+                $this->pdo = $this->openDB($this->dbconfig);
                 if (!empty($this->apikey)){
                     if (Auth::validAPIKey($this->pdo,$this->apikey)){
                         $response = $next($request, $response);    
@@ -88,5 +92,27 @@ use PDO;
                 $response = $next($request, $response);    
                 return $response;
             }
+        }
+    }
+
+    Class SafePDO extends PDO {
+        public static function exception_handler($exception) {
+            //Output the exception details
+            header("Content-type: application/json; charset=utf-8");
+            $data = [
+                'status' => 'error',
+                'code' => $exception->getCode(),
+                'message' => trim($exception->getMessage())
+            ];
+            die(json_encode($data));
+        }
+
+        public function __construct($dsn, $username='', $password='', $driver_options=array()) {
+            // Temporarily change the PHP exception handler while we . . .
+            set_exception_handler(array(__CLASS__, 'exception_handler'));
+            // . . . create a PDO object
+            parent::__construct($dsn, $username, $password, $driver_options);
+            // Change the exception handler back to whatever it was before
+            restore_exception_handler();
         }
     }
