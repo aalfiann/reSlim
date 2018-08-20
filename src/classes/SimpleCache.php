@@ -7,6 +7,7 @@
  *
  */
 namespace classes;
+use Predis\Client;
 	/**
      * A class for generate simple cache file the output response json in traditional way (static files)
      * 
@@ -34,6 +35,42 @@ namespace classes;
          * If you set to false, this only disable the cache process and will not deleted the current cache files
          */
         private static $runcache = SIMPLE_CACHE;
+
+        /**
+         * If set to true then traditional filebased cache will change to use memory RAM with redis server.
+         */
+        private static $useredis = REDIS_ENABLE;
+
+        /**
+         * Open Redis Connection.
+         */
+        private static function openRedis(){
+            try {
+                return new Client(self::paramRedis(),self::optionRedis());
+            } catch (Exception $e) {
+                header("Content-type: application/json; charset=utf-8");
+                $data = [
+                    'status' => 'error',
+                    'code' => $e->getCode(),
+                    'message' => trim($e->getMessage())
+                ];
+                die(json_encode($data));
+            }
+        }
+
+        /**
+         * Set Redis parameter (This parameter can be set from config.php).
+         */
+        private static function paramRedis(){
+            return json_decode(REDIS_PARAMETER);
+        }
+
+        /**
+         * Set Redis option (This option can be set from config.php).
+         */
+        private static function optionRedis(){
+            return json_decode(REDIS_OPTION);
+        }
 
         /**
          * Determine content string is valid json or not
@@ -141,15 +178,22 @@ namespace classes;
         public static function isCached($cachetime=300,$setparam=null) {
             if (self::$runcache){
                 $file = self::filePath($setparam);
-                // check the expired file cache.
-                $mtime = 0;
-                if (file_exists($file)) {
-                    $mtime = filemtime($file);
-                }
-                $filetimemod = $mtime + $cachetime;
-                // if the renewal date is smaller than now, return true; else false (no need for update)
-                if ($filetimemod < time()) {
-                    return false;
+                if (self::$useredis){
+                    $redis = self::openRedis();
+                    if (empty($redis->get($file))){
+                        return false;
+                    }
+                } else {
+                    // check the expired file cache.
+                    $mtime = 0;
+                    if (file_exists($file)) {
+                        $mtime = filemtime($file);
+                    }
+                    $filetimemod = $mtime + $cachetime;
+                    // if the renewal date is smaller than now, return true; else false (no need for update)
+                    if ($filetimemod < time()) {
+                        return false;
+                    }
                 }
             } else {
                 return false;
@@ -166,8 +210,13 @@ namespace classes;
          */
         public static function load($setparam=null) {
             $file = self::filePath($setparam);
-            if (file_exists($file)) {
-                return file_get_contents($file);
+            if (self::$useredis){
+                $redis = self::openRedis();
+                return $redis->get($file);
+            } else {
+                if (file_exists($file)) {
+                    return file_get_contents($file);
+                }
             }
             return "";
         }
@@ -178,13 +227,21 @@ namespace classes;
          * @param datajson = Save the content to cache file. (json string only)
          * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
          * @param blacklistparam = Input parameter to not getting cached. Ex: ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"]
+         * @param redis_agecache = Set expired time in second (only works for Redis). Default value is 300 seconds (5 minutes)
          * 
          * @return string
          */
-        public static function save($datajson,$setparam=null,$blacklistparam=null) {
+        public static function save($datajson,$setparam=null,$blacklistparam=null,$redis_agecache=300) {
             $file = self::filePath($setparam);
             if (!empty($datajson) && self::isJson($datajson)) {
-                if (self::$runcache && self::isBlacklisted($blacklistparam) == false) file_put_contents($file, $datajson, LOCK_EX);
+                if (self::$runcache && self::isBlacklisted($blacklistparam) == false) {
+                    if (self::$useredis){
+                        $redis = self::openRedis();
+                        $redis->setex($file,$redis_agecache,$datajson);
+                    } else {
+                        file_put_contents($file, $datajson, LOCK_EX);
+                    }
+                }
             }
             return $datajson;
         }
@@ -329,8 +386,22 @@ namespace classes;
                 'bytes'=>[
                     'cache'=>['use'=>$size,'free'=>$free],
                     'hdd'=>['use'=>$usehdd,'free'=>$free,'total'=>$total]
-                ]
+                ],
+                'redis' =>self::getRedisInfo()
             ];
+        }
+
+        /**
+         * Get info Redis Server
+         * 
+         * @return array
+         */
+        public static function getRedisInfo() {
+            $redis = self::openRedis();
+            foreach ($redis as $node) {
+                $info = $node->info();
+            }
+            return $info;
         }
 
         /**

@@ -1275,7 +1275,7 @@ use PDO;
                     $data = JSON::decode($datajson->value);
                 } else {
 					$data = $this->getAllTrendingPage();
-                    UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true));
+                    UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true),3600);
                 }
 			} else {
 				$data = [
@@ -1306,7 +1306,7 @@ use PDO;
                     $data = JSON::decode($datajson->value);
                 } else {
 					$data = $this->getSeasonalTrendingPage();
-                    UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true));
+                    UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true),300);
                 }
 			} else {
 				$data = [
@@ -1336,7 +1336,7 @@ use PDO;
                 $data = JSON::decode($datajson->value);
             } else {
 				$data = $this->getAllTrendingPage();
-                UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true));
+                UniversalCache::writeCache('all-trending-page-'.$newlimit,JSON::encode($data,true),3600);
             }
 			return JSON::encode($data,true);
 	        $this->db= null;
@@ -1358,7 +1358,7 @@ use PDO;
                 $data = JSON::decode($datajson->value);
             } else {
 				$data = $this->getSeasonalTrendingPage();
-                UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true));
+                UniversalCache::writeCache('seasonal-trending-page-'.$newlimit,JSON::encode($data,true),300);
             }
 			return JSON::encode($data,true);
 	        $this->db= null;
@@ -1381,7 +1381,7 @@ use PDO;
                     $data = JSON::decode($datajson->value);
                 } else {
 					$data = $this->getAllTrendingTags();
-                    UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true));
+                    UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true),3600);
                 }
 			} else {
 				$data = [
@@ -1412,7 +1412,7 @@ use PDO;
                     $data = JSON::decode($datajson->value);
                 } else {
 					$data = $this->getSeasonalTrendingTags();
-                    UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true));
+                    UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true),300);
                 }
 			} else {
 				$data = [
@@ -1442,7 +1442,7 @@ use PDO;
                 $data = JSON::decode($datajson->value);
             } else {
 				$data = $this->getAllTrendingTags();
-                UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true));
+                UniversalCache::writeCache('all-trending-tags-'.$newlimit,JSON::encode($data,true),3600);
             }
 			return JSON::encode($data,true);
 	        $this->db= null;
@@ -1464,7 +1464,7 @@ use PDO;
 				$data = JSON::decode($datajson->value);
             } else {
 				$data = $this->getSeasonalTrendingTags();
-                UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true));
+                UniversalCache::writeCache('seasonal-trending-tags-'.$newlimit,JSON::encode($data,true),300);
             }
 			return JSON::encode($data,true);
 	        $this->db= null;

@@ -122,7 +122,7 @@ $app->get('/dev/response/test/cache/server', function (Request $request, Respons
         $datajson = SimpleCache::load();
     } else {
         //if there is no cached file or the cached file is already expired
-        $datajson = SimpleCache::save('{"result":"make sure here is already json formatted."}');
+        $datajson = SimpleCache::save('{"result":"make sure here is already json formatted."}',null,null,3600);
     }
     $body->write($datajson);
     return classes\Cors::modify($response,$body,200);
@@ -147,7 +147,7 @@ $app->get('/dev/response/test/cache/server/withparam', function (Request $reques
         $datajson = SimpleCache::load($params);
     } else {
         //if there is no cached file or the cached file is already expired
-        $datajson = SimpleCache::save('{"result":"make sure here is already json formatted."}',$params);
+        $datajson = SimpleCache::save('{"result":"make sure here is already json formatted."}',$params,null,3600);
     }
     $body->write($datajson);
     return classes\Cors::modify($response,$body,200);

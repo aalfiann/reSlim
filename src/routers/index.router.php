@@ -35,7 +35,7 @@ use \classes\JSON as JSON;
                 ]
             ];
             $blacklistparam = ["&_=","&query=","&search=","token","apikey","api_key","time","timestamp","time_stamp","etag","key","q","s","k","t"];
-            $datajson = SimpleCache::save(JSON::encode($data,true,true),null,$blacklistparam);
+            $datajson = SimpleCache::save(JSON::encode($data,true,true),null,$blacklistparam,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200);

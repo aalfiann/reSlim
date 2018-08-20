@@ -9,6 +9,7 @@
 namespace classes;
 use PDO;
 use \classes\BaseConverter as BaseConverter;
+use Predis\Client;
     /**
      * A class for secure authentication user in rest api way
      *
@@ -234,7 +235,7 @@ use \classes\BaseConverter as BaseConverter;
                             $single = $stmt->fetch();
 					        if ($single['Username'] == strtolower($username)){
                                 $r = true;
-                                self::writeCache('token-'.$username.'-'.$token,$username);
+                                self::writeCache('token-'.$username.'-'.$token,$username,600);
                             }
                         }                    
                     }          	   	
@@ -479,7 +480,7 @@ use \classes\BaseConverter as BaseConverter;
 				    if ($stmt->rowCount() > 0){
     					$single = $stmt->fetch();
                         $roles = $single['RoleID'];
-                        self::writeCache('token-'.$token.'-group',$roles);
+                        self::writeCache('token-'.$token.'-group',$roles,600);
 		    		}
 			    }
             }
@@ -695,6 +696,42 @@ use \classes\BaseConverter as BaseConverter;
         private static $filefolder = 'cache-keys';
 
         /**
+         * If set to true then traditional filebased cache will change to use memory RAM with redis server.
+         */
+        private static $useredis = REDIS_ENABLE;
+
+        /**
+         * Open Redis Connection.
+         */
+        private static function openRedis(){
+            try {
+                return new Client(self::paramRedis(),self::optionRedis());
+            } catch (Exception $e) {
+                header("Content-type: application/json; charset=utf-8");
+                $data = [
+                    'status' => 'error',
+                    'code' => $e->getCode(),
+                    'message' => trim($e->getMessage())
+                ];
+                die(json_encode($data));
+            }
+        }
+
+        /**
+         * Set Redis parameter (This parameter can be set from config.php).
+         */
+        private static function paramRedis(){
+            return json_decode(REDIS_PARAMETER);
+        }
+
+        /**
+         * Set Redis option (This option can be set from config.php).
+         */
+        private static function optionRedis(){
+            return json_decode(REDIS_OPTION);
+        }
+
+        /**
 		 * Get filepath cache
          * 
          * @param key = Filename (without .cache), token or api key value
@@ -716,15 +753,22 @@ use \classes\BaseConverter as BaseConverter;
         public static function isKeyCached($key,$cachetime=3600) {
             if (self::$runcache){
                 $file = self::filePath($key);
-                // check the expired file cache.
-                $mtime = 0;
-                if (file_exists($file)) {
-                    $mtime = filemtime($file);
-                }
-                $filetimemod = $mtime + $cachetime;
-                // if the renewal date is smaller than now, return true; else false (no need for update)
-                if ($filetimemod < time()) {
-                    return false;
+                if (self::$useredis){
+                    $redis = self::openRedis();
+                    if (empty($redis->get($file))){
+                        return false;
+                    }
+                } else {
+                    // check the expired file cache.
+                    $mtime = 0;
+                    if (file_exists($file)) {
+                        $mtime = filemtime($file);
+                    }
+                    $filetimemod = $mtime + $cachetime;
+                    // if the renewal date is smaller than now, return true; else false (no need for update)
+                    if ($filetimemod < time()) {
+                        return false;
+                    }
                 }
             } else {
                 return false;
@@ -741,8 +785,13 @@ use \classes\BaseConverter as BaseConverter;
          */
         public static function loadCache($key) {
             $file = self::filePath($key);
-            if (file_exists($file)) {
-                return file_get_contents($file);
+            if (self::$useredis){
+                $redis = self::openRedis();
+                return $redis->get($file);
+            } else {
+                if (file_exists($file)) {
+                    return file_get_contents($file);
+                }
             }
             return "";
         }
@@ -752,13 +801,21 @@ use \classes\BaseConverter as BaseConverter;
          * 
          * @param key = Filename (without .cache), token or api key value
          * @param roleid = input with user role id. (This will work for cache role id only)
+         * @param redis_agecache = Set expired time in second (only works for Redis). Default value is 3600 seconds (1 hour)
          * 
          */
-        public static function writeCache($key,$roleid="") {
+        public static function writeCache($key,$roleid="",$redis_agecache=3600) {
             if (!empty($key)) {
                 $file = self::filePath($key);
                 $content = '{"Key":"'.$key.'","Refreshed":"'.date('Y-m-d h:i:s a', time()).'"'.(!empty($roleid)?',"Role":"'.$roleid.'"':'').'}';   
-                if (self::$runcache) file_put_contents($file, $content, LOCK_EX);
+                if (self::$runcache) {
+                    if (self::$useredis){
+                        $redis = self::openRedis();
+                        $redis->setex($file,$redis_agecache,$content);
+                    } else {
+                        file_put_contents($file, $content, LOCK_EX);
+                    }
+                }
             }
         }
 
@@ -772,13 +829,18 @@ use \classes\BaseConverter as BaseConverter;
         public static function deleteCache($key,$agecache=0) {
             if (!empty($key)) {
                 $file = self::filePath($key);
-                if (file_exists($file)){
-                    if ($agecache=0){
-                        unlink($file);
-                    } else {
-                        $now   = time();
-                        if ($now - filemtime($file) >= $agecache) {
+                if (self::$useredis){
+                    $redis = self::openRedis();
+                    $redis->del($file);
+                } else {
+                    if (file_exists($file)){
+                        if ($agecache=0){
                             unlink($file);
+                        } else {
+                            $now   = time();
+                            if ($now - filemtime($file) >= $agecache) {
+                                unlink($file);
+                            }
                         }
                     }
                 }
@@ -925,8 +987,22 @@ use \classes\BaseConverter as BaseConverter;
                 'bytes'=>[
                     'cache'=>['use'=>$size,'free'=>$free],
                     'hdd'=>['use'=>$usehdd,'free'=>$free,'total'=>$total]
-                ]
+                ],
+                'redis' =>self::getRedisInfo()
             ];
+        }
+
+        /**
+         * Get info Redis Server
+         * 
+         * @return array
+         */
+        public static function getRedisInfo() {
+            $redis = self::openRedis();
+            foreach ($redis as $node) {
+                $info = $node->info();
+            }
+            return $info;
         }
 
         /**

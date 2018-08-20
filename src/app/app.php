@@ -12,12 +12,16 @@ require '../vendor/autoload.php';
 // Load config
 require '../config.php';
 
-// reSlim Version
-define('RESLIM_VERSION','1.14.2');
-// reSlim built-in cache
+// Declare reSlim Version
+define('RESLIM_VERSION','1.15.0');
+// Declare reSlim built-in cache
 define('AUTH_CACHE',$config['reslim']['authcache']);
 define('SIMPLE_CACHE',$config['reslim']['simplecache']);
 define('UNIVERSAL_CACHE',$config['reslim']['universalcache']);
+// Declare Redis
+define('REDIS_ENABLE',$config['redis']['enable']);
+define('REDIS_PARAMETER',json_encode($config['redis']['parameter']));
+define('REDIS_OPTION',json_encode($config['redis']['option']));
 
 // Autoload all external classes
 spl_autoload_register(function ($classname) {

@@ -146,7 +146,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -165,7 +165,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","query","lang"])){
             $datajson = SimpleCache::load(["apikey","query","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query","lang"]);
+            $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -184,7 +184,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -202,7 +202,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -271,7 +271,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang","query"])){
             $datajson = SimpleCache::load(["apikey","lang","query"]);
         } else {
-            $datajson = SimpleCache::save($pages->showPageWrittenByAsPaginationPublic(),["apikey","lang","query"]);
+            $datajson = SimpleCache::save($pages->showPageWrittenByAsPaginationPublic(),["apikey","lang","query"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -315,7 +315,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(21600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showAllTrendingPagePublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showAllTrendingPagePublic(),["apikey","lang"],null,21600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -334,7 +334,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showSeasonalTrendingPagePublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showSeasonalTrendingPagePublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -377,7 +377,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(21600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showAllTrendingTagsPublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showAllTrendingTagsPublic(),["apikey","lang"],null,21600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
@@ -396,7 +396,7 @@ use \modules\pages\Pages as Pages;
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
-            $datajson = SimpleCache::save($pages->showSeasonalTrendingTagsPublic(),["apikey","lang"]);
+            $datajson = SimpleCache::save($pages->showSeasonalTrendingTagsPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
         return classes\Cors::modify($response,$body,200,$request);
