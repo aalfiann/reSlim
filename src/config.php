@@ -129,7 +129,7 @@ $config['reslim']['universalcache'] = true;
  * @var $config['redis']['parameter'] = The parameter to create redis connection. Default is using standar redis connection.
  * @var $config['redis']['option'] = Option of redis connection.
  * 
- * Note: We use predis library, for more details about parameter an option, you can read at here >> https://github.com/nrk/predis
+ * Note: We use predis library, for more details about parameter and option, you can read at here >> https://github.com/nrk/predis
  */
 $config['redis']['enable'] = false;
 $config['redis']['parameter'] = ['tcp://127.0.0.1:6379'];
