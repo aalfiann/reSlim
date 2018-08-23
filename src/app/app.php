@@ -70,6 +70,10 @@ foreach ($modrouters as $modrouter) {
     require $modrouter;
 }
 
+// Release unecessary memory
+unset($routers);
+unset($modrouters);
+
 $app->run();
 
 ?>
