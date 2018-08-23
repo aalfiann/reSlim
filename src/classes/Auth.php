@@ -973,7 +973,7 @@ use Predis\Client;
             $data = self::getCacheStatus();
             $data['folder'] = self::$filefolder;
             $data['files'] = $files;
-            return [
+            $result = [
                 'status'=>'success',
                 'info'=>$data,
                 'size'=>[
@@ -987,9 +987,10 @@ use Predis\Client;
                 'bytes'=>[
                     'cache'=>['use'=>$size,'free'=>$free],
                     'hdd'=>['use'=>$usehdd,'free'=>$free,'total'=>$total]
-                ],
-                'redis' =>self::getRedisInfo()
+                ]
             ];
+            if (self::$useredis) $result['redis'] = self::getRedisInfo(); 
+            return $result;
         }
 
         /**
