@@ -106,6 +106,70 @@ namespace classes;
 			return json_decode($json,$array);
 		}
 
+		/**
+         * Modify json data string in some field array to be nice json data structure
+		 * 
+		 * Note:
+		 * - When you put json into database, then you load it with using PDO:fetch() or PDO::fetchAll() it will be served as string inside some field array.
+		 * - So this function is make you easier to modify the json string to become nice json data structure automatically.
+		 * - This function is well tested at here >> https://3v4l.org/cQbU7
+         * 
+         * @var data is the data array
+         * @var jsonfield is the field which is contains json string
+         * @var setnewfield is to put the result of modified json string in new field
+         * @return array
+         */
+		public static function modifyJsonStringInArray($data,$jsonfield,$setnewfield=""){
+			if (is_array($data)){
+				if (count($data) == count($data, COUNT_RECURSIVE)) {
+					foreach($data as $value){
+						if(!empty($setnewfield)){
+							if (is_array($jsonfield)){
+								while (current($data)) {
+									for ($i=0;$i<count($jsonfield);$i++){
+										if (key($data) == $jsonfield[$i]){
+											$data[$setnewfield[$i]] = json_decode($data[$jsonfield[$i]]);
+										}   
+									}
+									next($data);
+								}
+							} else {
+								while (current($data)) {
+									if (key($data) == $jsonfield){
+										$data[$setnewfield] = json_decode($data[$jsonfield]);
+									}
+									next($data);
+								}
+							}
+						} else {
+							if (is_array($jsonfield)){
+								while (current($data)) {
+									for ($i=0;$i<count($jsonfield);$i++){
+										if (key($data) == $jsonfield[$i]){
+											$data[$jsonfield[$i]] = json_decode($data[$jsonfield[$i]]);
+										}   
+									}
+									next($data);
+								}
+							} else {
+								while (current($data)) {
+									if (key($data) == $jsonfield){
+										$data[$jsonfield] = json_decode($data[$jsonfield]);
+									}
+									next($data);
+								}
+							}
+						}
+					}
+				} else {
+					foreach($data as $key => $value){
+						$data[$key] = self::modifyJsonStringInArray($data[$key],$jsonfield,$setnewfield);
+					}
+				}
+			}
+			return $data;
+		}
+
 
 		/**
 		 * Determine is valid json or not
