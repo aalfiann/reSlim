@@ -118,7 +118,7 @@ namespace classes;
 		 * Note:
 		 * - When you put json into database, then you load it with using PDO:fetch() or PDO::fetchAll() it will be served as string inside some field array.
 		 * - So this function is make you easier to modify the json string to become nice json data structure automatically.
-		 * - This function is well tested at here >> https://3v4l.org/UMvZ7
+		 * - This function is well tested at here >> https://3v4l.org/G8Jaa
          * 
          * @var data is the data array
          * @var jsonfield is the field which is contains json string
@@ -132,24 +132,24 @@ namespace classes;
 						if(!empty($setnewfield)){
 							if (is_array($jsonfield)){
 								for ($i=0;$i<count($jsonfield);$i++){
-									if (!empty($data[$jsonfield[$i]])){
+									if (isset($data[$jsonfield[$i]])){
 										$data[$setnewfield[$i]] = json_decode($data[$jsonfield[$i]]);
 									}
 								}
 							} else {
-								if (!empty($data[$jsonfield])){
+								if (isset($data[$jsonfield])){
 									$data[$setnewfield] = json_decode($data[$jsonfield]);
 								}
 							}
 						} else {
 							if (is_array($jsonfield)){
 								for ($i=0;$i<count($jsonfield);$i++){
-									if (!empty($data[$jsonfield[$i]])){
+									if (isset($data[$jsonfield[$i]])){
 										if (is_string($data[$jsonfield[$i]])) $data[$jsonfield[$i]] = json_decode($data[$jsonfield[$i]]);
 									}
 								}
 							} else {
-								if (!empty($data[$jsonfield])){
+								if (isset($data[$jsonfield])){
 									$data[$jsonfield] = json_decode($data[$jsonfield]);
 								}
 							}
