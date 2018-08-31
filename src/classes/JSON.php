@@ -118,7 +118,7 @@ namespace classes;
 		 * Note:
 		 * - When you put json into database, then you load it with using PDO:fetch() or PDO::fetchAll() it will be served as string inside some field array.
 		 * - So this function is make you easier to modify the json string to become nice json data structure automatically.
-		 * - This function is well tested at here >> https://3v4l.org/G8Jaa
+		 * - This function is well tested at here >> https://3v4l.org/IWkjn
          * 
          * @var data is the data array
          * @var jsonfield is the field which is contains json string
