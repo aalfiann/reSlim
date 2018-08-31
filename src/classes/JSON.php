@@ -145,12 +145,16 @@ namespace classes;
 							if (is_array($jsonfield)){
 								for ($i=0;$i<count($jsonfield);$i++){
 									if (isset($data[$jsonfield[$i]])){
-										if (is_string($data[$jsonfield[$i]])) $data[$jsonfield[$i]] = json_decode($data[$jsonfield[$i]]);
+										if (is_string($data[$jsonfield[$i]])) {
+                                            $decode = json_decode($data[$jsonfield[$i]]);
+                                            if (!empty($decode)) $data[$jsonfield[$i]] = $decode;
+                                        }
 									}
 								}
 							} else {
 								if (isset($data[$jsonfield])){
-									$data[$jsonfield] = json_decode($data[$jsonfield]);
+                                    $decode = json_decode($data[$jsonfield]);
+                                    if (!empty($decode)) $data[$jsonfield] = $decode;
 								}
 							}
 						}
