@@ -13,11 +13,15 @@ require '../vendor/autoload.php';
 require '../config.php';
 
 // Declare reSlim Version
-define('RESLIM_VERSION','1.16.0');
+define('RESLIM_VERSION','1.17.0');
 // Declare reSlim built-in cache
 define('AUTH_CACHE',$config['reslim']['authcache']);
 define('SIMPLE_CACHE',$config['reslim']['simplecache']);
 define('UNIVERSAL_CACHE',$config['reslim']['universalcache']);
+// Define cache transfer
+define('CACHE_TRANSFER',$config['cache']['transfer']);
+define('CACHE_SECRET_KEY',$config['cache']['secretkey']);
+define('LISTENER_SIMPLECACHE',json_encode($config['listener']['simplecache']));
 // Declare Redis
 define('REDIS_ENABLE',$config['redis']['enable']);
 define('REDIS_PARAMETER',json_encode($config['redis']['parameter']));

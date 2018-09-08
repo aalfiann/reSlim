@@ -240,10 +240,65 @@ use Predis\Client;
                         $redis->setex($file,$redis_agecache,$datajson);
                     } else {
                         file_put_contents($file, $datajson, LOCK_EX);
+                        self::transfer($datajson,$setparam);
                     }
                 }
             }
             return $datajson;
+        }
+
+        public static function listen($content,$filepath,$secretkey){
+            $data = [];
+            if (CACHE_TRANSFER){
+                if ($secretkey == CACHE_SECRET_KEY){
+                    file_put_contents($filepath, $content, LOCK_EX);
+                    $data = [
+                        'status' => 'success',
+                        'message' => 'Successful to listen data.'
+                    ];
+                } else {
+                    $data = [
+                        'status' => 'error',
+                        'message' => 'Request rejected! Server does\'t have authority to listen.'
+                    ];
+                }
+            } else {
+                $data = [
+                    'status' => 'error',
+                    'message' => 'Request rejected! Failed to listen data.'
+                ];
+            }
+            return $data;
+        }
+
+        public static function transfer($content,$setparam=null){
+            if (CACHE_TRANSFER){
+                $server = json_decode(LISTENER_SIMPLECACHE,true);
+                if (!empty($server)){
+                    $request = array();
+                    foreach($server as $value){
+                        $request[] = [
+                            'url' => $value,
+                            'post' => [
+                                'filepath' => self::filePath($setparam),
+                                'content' => $content,
+                                'secretkey' => CACHE_SECRET_KEY
+                            ]
+                        ];
+                    }
+                    $req = new ParallelRequest;
+                    $req->request = $request;
+                    $req->options = [
+                        CURLOPT_NOBODY => false,
+                        CURLOPT_HEADER => false,
+                        CURLOPT_SSL_VERIFYPEER => false,
+                        CURLOPT_SSL_VERIFYHOST => false,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_RETURNTRANSFER => true,
+                    ];
+                    $req->send();
+                }
+            }
         }
 
         /**

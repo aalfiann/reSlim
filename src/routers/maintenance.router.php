@@ -108,3 +108,11 @@ use \classes\JSON as JSON;
         $body->write(JSON::encode(UniversalCache::getCacheInfo(),true));
         return classes\Cors::modify($response,$body,200);
     });
+
+    // Listen cache data
+    $app->post('/maintenance/cache/data/listen', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $body = $response->getBody();
+        $body->write(JSON::encode(SimpleCache::listen($datapost['content'],$datapost['filepath'],$datapost['secretkey']),true));
+        return classes\Cors::modify($response,$body,200);
+    });
