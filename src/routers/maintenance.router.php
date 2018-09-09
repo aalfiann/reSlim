@@ -112,7 +112,21 @@ use \classes\JSON as JSON;
     // Listen cache data
     $app->post('/maintenance/cache/data/listen', function (Request $request, Response $response) {
         $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $filepath = (empty($datapost['filepath'])?'':$datapost['filepath']);
+        $content = (empty($datapost['content'])?'':$datapost['content']);
         $body = $response->getBody();
-        $body->write(JSON::encode(SimpleCache::listen($datapost['content'],$datapost['filepath'],$datapost['secretkey']),true));
+        $body->write(JSON::encode(SimpleCache::listen($secretkey,$filepath,$content),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen to delete cache data
+    $app->post('/maintenance/cache/data/listen/delete', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $wildcard = (empty($datapost['wildcard'])?'':$datapost['wildcard']);
+        $agecache = (empty($datapost['agecache'])?'':$datapost['agecache']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(SimpleCache::listenToDelete($secretkey,$wildcard,$agecache),true));
         return classes\Cors::modify($response,$body,200);
     });

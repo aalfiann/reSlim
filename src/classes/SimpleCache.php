@@ -247,7 +247,16 @@ use Predis\Client;
             return $datajson;
         }
 
-        public static function listen($content,$filepath,$secretkey){
+        /**
+         * Listen to the new data cache from another server
+         * 
+         * @param secretkey is the data key to proctect from unknown request
+         * @param filepath is the filepath of data cache
+         * @param content the new data cache
+         * 
+         * @return array
+         */
+        public static function listen($secretkey,$filepath,$content){
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
@@ -271,32 +280,109 @@ use Predis\Client;
             return $data;
         }
 
+        /**
+         * Transfer the data cache to another server
+         * 
+         * @param content is the data cache
+         * @param setparam Build filepath if any custom parameter
+         */
         public static function transfer($content,$setparam=null){
             if (CACHE_TRANSFER){
-                $server = json_decode(LISTENER_SIMPLECACHE,true);
-                if (!empty($server)){
-                    $request = array();
-                    foreach($server as $value){
-                        $request[] = [
-                            'url' => $value,
-                            'post' => [
-                                'filepath' => self::filePath($setparam),
-                                'content' => $content,
-                                'secretkey' => CACHE_SECRET_KEY
-                            ]
+                if (!empty(LISTENER_SIMPLECACHE)){
+                    $server = json_decode(LISTENER_SIMPLECACHE,true);
+                    if (!empty($server)){
+                        $request = array();
+                        foreach($server as $value){
+                            $request[] = [
+                                'url' => $value,
+                                'post' => [
+                                    'filepath' => self::filePath($setparam),
+                                    'content' => $content,
+                                    'secretkey' => CACHE_SECRET_KEY
+                                ]
+                            ];
+                        }
+                        $req = new ParallelRequest;
+                        $req->request = $request;
+                        $req->encoded = true;
+                        $req->options = [
+                            CURLOPT_NOBODY => false,
+                            CURLOPT_HEADER => false,
+                            CURLOPT_SSL_VERIFYPEER => false,
+                            CURLOPT_SSL_VERIFYHOST => false,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_RETURNTRANSFER => true,
                         ];
+                        $req->send();
                     }
-                    $req = new ParallelRequest;
-                    $req->request = $request;
-                    $req->options = [
-                        CURLOPT_NOBODY => false,
-                        CURLOPT_HEADER => false,
-                        CURLOPT_SSL_VERIFYPEER => false,
-                        CURLOPT_SSL_VERIFYHOST => false,
-                        CURLOPT_FOLLOWLOCATION => true,
-                        CURLOPT_RETURNTRANSFER => true,
+                }
+            }
+        }
+
+        /**
+         * Listen to delete the data cache from another server
+         * 
+         * @param secretkey is the data key to proctect from unknown request
+         * @param wildcard is the filename cache. You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param agecache is to specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
+         * 
+         * @return array
+         */
+        public static function listenToDelete($secretkey,$wildcard="*",$agecache=300){
+            $data = [];
+            if (CACHE_TRANSFER){
+                if ($secretkey == CACHE_SECRET_KEY){
+                    $data = self::clearAll($wildcard, $agecache, false);
+                } else {
+                    $data = [
+                        'status' => 'error',
+                        'message' => 'Request rejected! Server does\'t have authority to listen.'
                     ];
-                    $req->send();
+                }
+            } else {
+                $data = [
+                    'status' => 'error',
+                    'message' => 'Request rejected! Failed to listen data.'
+                ];
+            }
+            return $data;
+        }
+
+        /**
+         * Transfer request to delete the data cache to another server
+         * 
+         * @param wildcard is the filename cache. You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param agecache is to specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
+         */
+        public static function transferToDelete($wildcard="*",$agecache=300){
+            if (CACHE_TRANSFER){
+                if (!empty(LISTENER_SIMPLECACHE)){
+                    $server = json_decode(LISTENER_SIMPLECACHE,true);
+                    if (!empty($server)){
+                        $request = array();
+                        foreach($server as $value){
+                            $request[] = [
+                                'url' => $value.'/delete',
+                                'post' => [
+                                    'wildcard' => $wildcard,
+                                    'agecache' => $agecache,
+                                    'secretkey' => CACHE_SECRET_KEY
+                                ]
+                            ];
+                        }
+                        $req = new ParallelRequest;
+                        $req->request = $request;
+                        $req->encoded = true;
+                        $req->options = [
+                            CURLOPT_NOBODY => false,
+                            CURLOPT_HEADER => false,
+                            CURLOPT_SSL_VERIFYPEER => false,
+                            CURLOPT_SSL_VERIFYHOST => false,
+                            CURLOPT_FOLLOWLOCATION => true,
+                            CURLOPT_RETURNTRANSFER => true,
+                        ];
+                        $req->send();
+                    }
                 }
             }
         }
@@ -306,8 +392,11 @@ use Predis\Client;
          * 
          * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
          * @param agecache = Specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
+         * @param transfer = If set to true then will make request to delete the data cache on another server. Default is true.
+         * 
+         * @return json
          */
-        public static function clearAll($wildcard="*",$agecache=300){
+        public static function clearAll($wildcard="*",$agecache=300,$transfer=true){
             if (file_exists(self::$filefolder)) {
                 //Auto delete useless cache
                 $files = glob(self::$filefolder.'/'.$wildcard,GLOB_NOSORT);
@@ -325,6 +414,7 @@ use Predis\Client;
                     }
                 }
                 $datajson = '{"status":"success","age":'.$agecache.',"total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cache files that have age more than '.$agecache.' seconds old, will be deleted."}';
+                if($transfer) self::transferToDelete($wildcard,$agecache);
             } else {
                 $datajson = '{"status:"error","message":"Directory not found!"}';
             }
