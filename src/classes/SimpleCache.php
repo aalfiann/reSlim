@@ -268,7 +268,7 @@ use Predis\Client;
                 } else {
                     $data = [
                         'status' => 'error',
-                        'message' => 'Request rejected! Server does\'t have authority to listen.'
+                        'message' => 'Request rejected! Server doesn\'t have authority to listen.'
                     ];
                 }
             } else {
@@ -336,7 +336,7 @@ use Predis\Client;
                 } else {
                     $data = [
                         'status' => 'error',
-                        'message' => 'Request rejected! Server does\'t have authority to listen.'
+                        'message' => 'Request rejected! Server doesn\'t have authority to listen.'
                     ];
                 }
             } else {
