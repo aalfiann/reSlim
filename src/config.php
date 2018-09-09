@@ -127,11 +127,11 @@ $config['reslim']['universalcache'] = true;
  * 
  * @var $config['cache']['transfer'] is set to true then built-in cache will send data cache to other api server. Default is false.
  * @var $config['cache']['secretkey'] is the secret key to protect the data (case sensitive).
- * @var $config['listener']['simplecache'] is the url of server to listen incoming data cache.
+ * @var $config['cache']['listener'] is the url of server to listen incoming data cache.
  */
 $config['cache']['transfer']            = true;
 $config['cache']['secretkey']           = '123456';
-$config['listener']['simplecache']      = ['http://localhost:1337/reslim2/src/api/maintenance/cache/data/listen'];
+$config['cache']['listener']            = ['http://localhost:1337/reSlim2/src/api'];
 
 /**
  * Configuration redis server

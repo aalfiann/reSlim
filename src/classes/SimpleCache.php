@@ -288,13 +288,13 @@ use Predis\Client;
          */
         public static function transfer($content,$setparam=null){
             if (CACHE_TRANSFER){
-                if (!empty(LISTENER_SIMPLECACHE)){
-                    $server = json_decode(LISTENER_SIMPLECACHE,true);
+                if (!empty(CACHE_LISTENER)){
+                    $server = json_decode(CACHE_LISTENER,true);
                     if (!empty($server)){
                         $request = array();
                         foreach($server as $value){
                             $request[] = [
-                                'url' => $value,
+                                'url' => $value.'/maintenance/cache/data/listen',
                                 'post' => [
                                     'filepath' => self::filePath($setparam),
                                     'content' => $content,
@@ -356,13 +356,13 @@ use Predis\Client;
          */
         public static function transferToDelete($wildcard="*",$agecache=300){
             if (CACHE_TRANSFER){
-                if (!empty(LISTENER_SIMPLECACHE)){
-                    $server = json_decode(LISTENER_SIMPLECACHE,true);
+                if (!empty(CACHE_LISTENER)){
+                    $server = json_decode(CACHE_LISTENER,true);
                     if (!empty($server)){
                         $request = array();
                         foreach($server as $value){
                             $request[] = [
-                                'url' => $value.'/delete',
+                                'url' => $value.'/maintenance/cache/data/listen/delete',
                                 'post' => [
                                     'wildcard' => $wildcard,
                                     'agecache' => $agecache,

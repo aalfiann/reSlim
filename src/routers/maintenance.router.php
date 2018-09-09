@@ -109,6 +109,11 @@ use \classes\JSON as JSON;
         return classes\Cors::modify($response,$body,200);
     });
 
+    // ======================================================================================
+    // Router for communication transfer data cache 
+    // Don't modify below here because the router path is hardcoded inside some class cache
+    // ======================================================================================
+
     // Listen cache data
     $app->post('/maintenance/cache/data/listen', function (Request $request, Response $response) {
         $datapost = $request->getParsedBody();
