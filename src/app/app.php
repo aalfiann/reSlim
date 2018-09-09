@@ -21,7 +21,7 @@ define('UNIVERSAL_CACHE',$config['reslim']['universalcache']);
 // Define cache transfer
 define('CACHE_TRANSFER',$config['cache']['transfer']);
 define('CACHE_SECRET_KEY',$config['cache']['secretkey']);
-define('CACHE_LISTENER',json_encode($config['cache']['listener']));
+define('CACHE_LISTENFROM',json_encode($config['cache']['listenfrom']));
 // Declare Redis
 define('REDIS_ENABLE',$config['redis']['enable']);
 define('REDIS_PARAMETER',json_encode($config['redis']['parameter']));

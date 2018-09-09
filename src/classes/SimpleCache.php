@@ -288,8 +288,8 @@ use Predis\Client;
          */
         public static function transfer($content,$setparam=null){
             if (CACHE_TRANSFER){
-                if (!empty(CACHE_LISTENER)){
-                    $server = json_decode(CACHE_LISTENER,true);
+                if (!empty(CACHE_LISTENFROM)){
+                    $server = json_decode(CACHE_LISTENFROM,true);
                     if (!empty($server)){
                         $request = array();
                         foreach($server as $value){
@@ -356,8 +356,8 @@ use Predis\Client;
          */
         public static function transferToDelete($wildcard="*",$agecache=300){
             if (CACHE_TRANSFER){
-                if (!empty(CACHE_LISTENER)){
-                    $server = json_decode(CACHE_LISTENER,true);
+                if (!empty(CACHE_LISTENFROM)){
+                    $server = json_decode(CACHE_LISTENFROM,true);
                     if (!empty($server)){
                         $request = array();
                         foreach($server as $value){
