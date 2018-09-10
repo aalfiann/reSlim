@@ -126,11 +126,11 @@ $config['reslim']['universalcache'] = true;
  * Configuration built-in cache for share across network
  * 
  * @var $config['cache']['transfer'] is set to true then built-in cache will send data cache to other api server. Default is false.
- * @var $config['cache']['secretkey'] is the secret key to protect the data (case sensitive).
+ * @var $config['cache']['secretkey'] is the secret key to protect the data (case sensitive). This key should match with another servers.
  * @var $config['cache']['listenfrom'] is the url of server to listen incoming data cache.
  */
-$config['cache']['transfer']            = true;
-$config['cache']['secretkey']           = '123456';
+$config['cache']['transfer']            = false;
+$config['cache']['secretkey']           = 'b372e7fe';
 $config['cache']['listenfrom']          = ['http://localhost:1337/reSlim2/src/api'];
 
 /**

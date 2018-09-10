@@ -135,3 +135,69 @@ use \classes\JSON as JSON;
         $body->write(JSON::encode(SimpleCache::listenToDelete($secretkey,$wildcard,$agecache),true));
         return classes\Cors::modify($response,$body,200);
     });
+
+    // Listen api keys data
+    $app->post('/maintenance/cache/apikey/listen', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $filepath = (empty($datapost['filepath'])?'':$datapost['filepath']);
+        $content = (empty($datapost['content'])?'':$datapost['content']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(Auth::listen($secretkey,$filepath,$content),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen to delete api keys data
+    $app->post('/maintenance/cache/apikey/listen/delete', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $wildcard = (empty($datapost['wildcard'])?'':$datapost['wildcard']);
+        $agecache = (empty($datapost['agecache'])?'':$datapost['agecache']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(Auth::listenToDelete($secretkey,$wildcard,$agecache),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen to delete api keys data by single key
+    $app->post('/maintenance/cache/apikey/listen/delete/key', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $keycache = (empty($datapost['keycache'])?'':$datapost['keycache']);
+        $agecache = (empty($datapost['agecache'])?'':$datapost['agecache']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(Auth::listenToDeleteSingleKey($secretkey,$keycache,$agecache),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen universalcache data
+    $app->post('/maintenance/cache/universal/listen', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $filepath = (empty($datapost['filepath'])?'':$datapost['filepath']);
+        $content = (empty($datapost['content'])?'':$datapost['content']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(UniversalCache::listen($secretkey,$filepath,$content),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen to delete universalcache data
+    $app->post('/maintenance/cache/universal/listen/delete', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $wildcard = (empty($datapost['wildcard'])?'':$datapost['wildcard']);
+        $agecache = (empty($datapost['agecache'])?'':$datapost['agecache']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(UniversalCache::listenToDelete($secretkey,$wildcard,$agecache),true));
+        return classes\Cors::modify($response,$body,200);
+    });
+
+    // Listen to delete universalcache data by single key
+    $app->post('/maintenance/cache/universal/listen/delete/key', function (Request $request, Response $response) {
+        $datapost = $request->getParsedBody();
+        $secretkey = (empty($datapost['secretkey'])?'':$datapost['secretkey']);
+        $keycache = (empty($datapost['keycache'])?'':$datapost['keycache']);
+        $agecache = (empty($datapost['agecache'])?'':$datapost['agecache']);
+        $body = $response->getBody();
+        $body->write(JSON::encode(UniversalCache::listenToDeleteSingleKey($secretkey,$keycache,$agecache),true));
+        return classes\Cors::modify($response,$body,200);
+    });
