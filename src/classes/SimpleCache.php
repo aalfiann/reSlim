@@ -136,6 +136,23 @@ use Predis\Client;
         }
 
         /**
+         * Verify the folder path for cache
+         */
+        public static function verifyFolderPath(){
+            if (!is_dir(self::$filefolder)) {
+                mkdir(self::$filefolder,0775,true);
+                $newcontent = '<?php header(\'Content-type:application/json; charset=utf-8\');header("Access-Control-Allow-Origin: *");header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");header(\'HTTP/1.0 403 Forbidden\');echo \'{
+                    "status": "error",
+                    "code": "403",
+                    "message": "This page is forbidden."
+                  }\';?>';
+                $ihandle = fopen(self::$filefolder.'/index.php','w+'); 
+                fwrite($ihandle,$newcontent); 
+                fclose($ihandle);
+            }
+        }
+
+        /**
 		 * Get filepath cache
          * 
          * @param setparam = Cache the page according to the specified parameter. This is a prevention for undesirable parameters getting to cache. Ex: ["apikey","query"]
@@ -143,7 +160,7 @@ use Predis\Client;
 		 * @return string
 		 */
         public static function filePath($setparam=null){
-            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);          
+            self::verifyFolderPath();
             return self::$filefolder.'/'.self::fileName($setparam);
         }
 
@@ -260,6 +277,7 @@ use Predis\Client;
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
+                    self::verifyFolderPath();
                     file_put_contents($filepath, $content, LOCK_EX);
                     $data = [
                         'status' => 'success',
@@ -332,6 +350,7 @@ use Predis\Client;
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
+                    self::verifyFolderPath();
                     $data = self::clearAll($wildcard, $agecache, false);
                 } else {
                     $data = [

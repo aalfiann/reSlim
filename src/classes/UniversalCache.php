@@ -92,7 +92,24 @@ use Predis\Client;
 				return mb_convert_encoding($string, "UTF-8", "Windows-1252");
 			}
 			return $string;
-		}
+        }
+        
+        /**
+         * Verify the folder path for cache
+         */
+        public static function verifyFolderPath(){
+            if (!is_dir(self::$filefolder)) {
+                mkdir(self::$filefolder,0775,true);
+                $newcontent = '<?php header(\'Content-type:application/json; charset=utf-8\');header("Access-Control-Allow-Origin: *");header("Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept, Origin, Authorization");header(\'HTTP/1.0 403 Forbidden\');echo \'{
+                    "status": "error",
+                    "code": "403",
+                    "message": "This page is forbidden."
+                  }\';?>';
+                $ihandle = fopen(self::$filefolder.'/index.php','w+'); 
+                fwrite($ihandle,$newcontent); 
+                fclose($ihandle);
+            }
+        }
 
         /**
 		 * Get filepath cache
@@ -102,7 +119,7 @@ use Predis\Client;
 		 * @return string
 		 */
         public static function filePath($key){
-            if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);
+            self::verifyFolderPath();
             if (self::$hash) return self::$filefolder.'/'.md5($key).'.cache';
             return self::$filefolder.'/'.$key.'.cache';
         }
@@ -197,6 +214,7 @@ use Predis\Client;
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
+                    self::verifyFolderPath();
                     file_put_contents($filepath, $content, LOCK_EX);
                     $data = [
                         'status' => 'success',
@@ -269,6 +287,7 @@ use Predis\Client;
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
+                    self::verifyFolderPath();
                     $data = self::deleteCacheAll($wildcard, $agecache, false);
                 } else {
                     $data = [
@@ -337,6 +356,7 @@ use Predis\Client;
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
+                    self::verifyFolderPath();
                     self::deleteCache($key, $agecache, false);
                     $data = [
                         'status' => 'success',
