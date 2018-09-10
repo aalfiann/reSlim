@@ -1,7 +1,7 @@
 reSlim
 =======
 [![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)](https://github.com/aalfiann/reSlim)
-[![reSlim](https://img.shields.io/badge/stable-1.16.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
+[![reSlim](https://img.shields.io/badge/stable-1.17.0-brightgreen.svg)](https://github.com/aalfiann/reSlim)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/aalfiann/reSlim/blob/master/license.md)
 
 reSlim is Lightweight, Fast, Secure, Simple, Scalable, Flexible and Powerful rest api framework.<br>
@@ -21,9 +21,10 @@ Features:
 8. Pagination json response
 9. Support Multi Language
 10. Server Side Caching to handle high traffic
-11. Scalable architecture with modular concept
-12. Load Balancer with multiple database server (master to master or master to slave)
-13. Etc
+11. Shared cache in multiserver.
+12. Scalable architecture with modular concept
+13. Load Balancer with multiple database server (master to master or master to slave)
+14. Etc
 
 
 Extensions:
