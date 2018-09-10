@@ -21,8 +21,8 @@ Features:
 8. Pagination json response
 9. Support Multi Language
 10. Server Side Caching to handle high traffic
-11. Shared cache in multiserver.
-12. Scalable architecture with modular concept
+11. Scalable architecture with modular concept
+12. Easy horizontal scale because cache support multiserver
 13. Load Balancer with multiple database server (master to master or master to slave)
 14. Etc
 
