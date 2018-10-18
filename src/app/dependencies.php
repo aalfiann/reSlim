@@ -105,11 +105,11 @@ $container['db'] = function ($c) {
             $dbname = $db['dbname'][$numserver];
             $dbuser = $db['user'][$numserver];
             $dbpass = $db['pass'][$numserver];
-            $pdo = new PDO("mysql:host=" . $dbhost . ";dbname=" . $dbname, $dbuser, $dbpass);
+            $pdo = new \classes\LazyPDO("mysql:host=" . $dbhost . ";dbname=" . $dbname, $dbuser, $dbpass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } else {
-            $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
+            $pdo = new \classes\LazyPDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         }
@@ -129,11 +129,11 @@ $container['dbslave'] = function ($c) {
             $dbname = $db['dbname'][$numserver];
             $dbuser = $db['user'][$numserver];
             $dbpass = $db['pass'][$numserver];
-            $pdo = new PDO("mysql:host=" . $dbhost . ";dbname=" . $dbname, $dbuser, $dbpass);
+            $pdo = new \classes\LazyPDO("mysql:host=" . $dbhost . ";dbname=" . $dbname, $dbuser, $dbpass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } else {
-            $pdo = new PDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
+            $pdo = new \classes\LazyPDO("mysql:host=" . $db['host'] . ";dbname=" . $db['dbname'], $db['user'], $db['pass']);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         }
