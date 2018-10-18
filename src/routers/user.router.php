@@ -53,14 +53,14 @@ use \classes\SimpleCache as SimpleCache;
 
     // GET example api to show profile user (for public is need an api key)
     $app->map(['GET','OPTIONS'],'/user/profile/{username}/', function (Request $request, Response $response) {
-        $users = new classes\User($this->db);
-        $users->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $users->username = $request->getAttribute('username');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag30min.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(1800,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $users = new classes\User($this->db);
+            $users->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $users->username = $request->getAttribute('username');
             $datajson = SimpleCache::save($users->showUserPublic(),["apikey","lang"],null,1800);
         }
         $body->write($datajson);

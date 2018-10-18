@@ -109,14 +109,14 @@ use \classes\SimpleCache as SimpleCache;                        //SimpleCache cl
     
     // GET api to read single data for public user (include cache)
     $app->get('/flexibleconfig/read/{key}/', function (Request $request, Response $response) {
-        $fc = new FlexibleConfig($this->db);
-        $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $fc->key = $request->getAttribute('key');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(300,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $fc = new FlexibleConfig($this->db);
+            $fc->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $fc->key = $request->getAttribute('key');
             $datajson = SimpleCache::save($fc->readPublic(),["apikey","lang"],null,300);
         }
         $body->write($datajson);

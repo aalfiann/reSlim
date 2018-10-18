@@ -22,7 +22,7 @@ use PDO;
      */
     class ApiKey
     {
-        private $apikey,$pdo,$conf,$lang,$dbconfig;
+        private $apikey,$conf,$lang,$dbconfig;
 
         public function __construct(){
             require '../config.php';
@@ -39,6 +39,37 @@ use PDO;
             return $pdo;
         }
 
+        private function isValidAPIKey($apikey,$domain=null){
+            $r = false;
+            if (Auth::isKeyCached('api-'.$apikey)){
+                $r = true;
+            } else {
+                $db = $this->openDB($this->dbconfig);
+                $sql = "SELECT a.Domain
+			        FROM user_api a 
+                    INNER JOIN user_data b ON a.Username = b.Username
+        			WHERE a.StatusID = '1' AND b.StatusID = '1' AND a.ApiKey = BINARY :apikey LIMIT 1;";
+	        	$stmt = $db->prepare($sql);
+		        $stmt->bindParam(':apikey', $apikey, PDO::PARAM_STR);
+        		if ($stmt->execute()) {	
+                    if ($stmt->rowCount() > 0){
+                        if ($domain == null){
+                            $r = true;
+                            Auth::writeCache('api-'.$apikey);
+                        } else {
+                            $single = $stmt->fetch();
+					        if (strtolower($single['Domain']) == strtolower($domain)){
+                                $r = true;
+                                Auth::writeCache('api-'.$apikey,$domain);
+                            }
+                        }       
+                    }          	   	
+                }
+                $db = null;
+            }
+		    return $r;
+        }
+
         /**
          * ApiKey middleware invokable class
          * 
@@ -50,9 +81,8 @@ use PDO;
          */
         public function __invoke($request, $response, $next){
             if ($this->conf == true){
-                $this->pdo = $this->openDB($this->dbconfig);
                 if (!empty($this->apikey)){
-                    if (Auth::validAPIKey($this->pdo,$this->apikey)){
+                    if ($this->isValidAPIKey($this->apikey)){
                         $response = $next($request, $response);    
                         return $response;
                     } else {
@@ -66,7 +96,7 @@ use PDO;
                     }
                 } else {
                     if ($request->hasHeader('Authorization')){
-                        if (Auth::validAPIKey($this->pdo,$request->getHeaderLine('Authorization'))){
+                        if ($this->isValidAPIKey($request->getHeaderLine('Authorization'))){
                             $response = $next($request, $response);    
                             return $response;
                         } else {

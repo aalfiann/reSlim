@@ -17,6 +17,17 @@ namespace classes;
      */
 	class Validation {
 
+		/**
+		 * Sanitizer string and only accept alphabet
+		 *
+		 * @var $string
+		 *
+		 * @return string
+		 */
+        public static function alphabetOnly($string){
+		    return preg_replace("/[^a-zA-Z]/", "", $string );
+	    }
+
         /**
 		 * Sanitizer string and only accept integer
 		 *

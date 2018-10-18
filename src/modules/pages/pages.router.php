@@ -138,14 +138,14 @@ use \modules\pages\Pages as Pages;
 
     // GET api to show single data page public
     $app->map(['GET','OPTIONS'],'/page/data/public/read/{pageid}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->pageid = $request->getAttribute('pageid');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->pageid = $request->getAttribute('pageid');
             $datajson = SimpleCache::save($pages->showSinglePagePublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
@@ -155,16 +155,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to show all data page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/search/{page}/{itemsperpage}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
-        $pages->page = $request->getAttribute('page');
-        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","query","lang"])){
             $datajson = SimpleCache::load(["apikey","query","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
+            $pages->page = $request->getAttribute('page');
+            $pages->itemsPerPage = $request->getAttribute('itemsperpage');
             $datajson = SimpleCache::save($pages->searchPageAsPaginationPublic(),["apikey","query","lang"],null,3600);
         }
         $body->write($datajson);
@@ -175,15 +175,15 @@ use \modules\pages\Pages as Pages;
 
     // GET api to show all data published page pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->page = $request->getAttribute('page');
-        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->page = $request->getAttribute('page');
+            $pages->itemsPerPage = $request->getAttribute('itemsperpage');
             $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
@@ -192,16 +192,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to show all data published page asc or desc pagination public
     $app->map(['GET','OPTIONS'],'/page/data/public/published/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->page = $request->getAttribute('page');
-        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
-        $pages->sort = $request->getAttribute('sort');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->page = $request->getAttribute('page');
+            $pages->itemsPerPage = $request->getAttribute('itemsperpage');
+            $pages->sort = $request->getAttribute('sort');
             $datajson = SimpleCache::save($pages->showPublishPageAsPaginationPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
@@ -259,18 +259,18 @@ use \modules\pages\Pages as Pages;
     
     // GET api to show all data published page written by asc or desc pagination public
     $app->map(['GET','OPTIONS'],'/page/data/written/public/{user}/{page}/{itemsperpage}/{sort}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
-        $pages->user = $request->getAttribute('user');
-        $pages->page = $request->getAttribute('page');
-        $pages->itemsPerPage = $request->getAttribute('itemsperpage');
-        $pages->sort = $request->getAttribute('sort');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang","query"])){
             $datajson = SimpleCache::load(["apikey","lang","query"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->search = filter_var((empty($_GET['query'])?'':$_GET['query']),FILTER_SANITIZE_STRING);
+            $pages->user = $request->getAttribute('user');
+            $pages->page = $request->getAttribute('page');
+            $pages->itemsPerPage = $request->getAttribute('itemsperpage');
+            $pages->sort = $request->getAttribute('sort');
             $datajson = SimpleCache::save($pages->showPageWrittenByAsPaginationPublic(),["apikey","lang","query"],null,3600);
         }
         $body->write($datajson);
@@ -305,16 +305,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to get all data trending page for public
     $app->get('/page/taxonomy/page/all/{limit}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->token = $request->getAttribute('token');
-        $pages->username = $request->getAttribute('username');
-        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(21600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->token = $request->getAttribute('token');
+            $pages->username = $request->getAttribute('username');
+            $pages->limit = $request->getAttribute('limit');
             $datajson = SimpleCache::save($pages->showAllTrendingPagePublic(),["apikey","lang"],null,21600);
         }
         $body->write($datajson);
@@ -324,16 +324,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to get seasonal data trending page for public
     $app->get('/page/taxonomy/page/seasonal/{limit}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->token = $request->getAttribute('token');
-        $pages->username = $request->getAttribute('username');
-        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->token = $request->getAttribute('token');
+            $pages->username = $request->getAttribute('username');
+            $pages->limit = $request->getAttribute('limit');
             $datajson = SimpleCache::save($pages->showSeasonalTrendingPagePublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
@@ -367,16 +367,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to get all data trending tags page for public
     $app->get('/page/taxonomy/tags/all/{limit}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->token = $request->getAttribute('token');
-        $pages->username = $request->getAttribute('username');
-        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(21600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->token = $request->getAttribute('token');
+            $pages->username = $request->getAttribute('username');
+            $pages->limit = $request->getAttribute('limit');
             $datajson = SimpleCache::save($pages->showAllTrendingTagsPublic(),["apikey","lang"],null,21600);
         }
         $body->write($datajson);
@@ -386,16 +386,16 @@ use \modules\pages\Pages as Pages;
 
     // GET api to get seasonal data trending tags page for public
     $app->get('/page/taxonomy/tags/seasonal/{limit}/', function (Request $request, Response $response) {
-        $pages = new Pages($this->db);
-        $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
-        $pages->token = $request->getAttribute('token');
-        $pages->username = $request->getAttribute('username');
-        $pages->limit = $request->getAttribute('limit');
         $body = $response->getBody();
         $response = $this->cache->withEtag($response, $this->etag2hour.'-'.trim($_SERVER['REQUEST_URI'],'/'));
         if (SimpleCache::isCached(3600,["apikey","lang"])){
             $datajson = SimpleCache::load(["apikey","lang"]);
         } else {
+            $pages = new Pages($this->db);
+            $pages->lang = (empty($_GET['lang'])?$this->settings['language']:$_GET['lang']);
+            $pages->token = $request->getAttribute('token');
+            $pages->username = $request->getAttribute('username');
+            $pages->limit = $request->getAttribute('limit');
             $datajson = SimpleCache::save($pages->showSeasonalTrendingTagsPublic(),["apikey","lang"],null,3600);
         }
         $body->write($datajson);
