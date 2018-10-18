@@ -42,7 +42,7 @@ System Requirements
 1. PHP 5.5 or newer (last tested on PHP7.3)
 2. MySQL 5.6 or MariaDB
 3. Web server with URL rewriting
-4. Apache Server (Better to use Apache + Reverse Proxy NGINX)
+4. Apache or NGINX Server
 
 ---
 Getting Started
