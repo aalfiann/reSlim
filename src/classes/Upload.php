@@ -710,8 +710,8 @@ use PDO;
 
 		/** 
 		 * Force stream inline or attachment to protect from hotlinking
-		 * @var $stream = deliver content. Default true means inline
-		 * @var $age = this is the max age for cache control in header
+		 * @param $stream = deliver content. Default true means inline
+		 * @param $age = this is the max age for cache control in header
 		 * @return result stream data or process in json encoded data
 		 */
 		public function forceStream($stream=true,$age=86400){

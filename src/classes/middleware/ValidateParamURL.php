@@ -25,9 +25,9 @@ use \classes\JSON as JSON;
         /**
          * Constructor
          * 
-         * @var parameter is the url parameter of the request. Example http://xxx.com/?example=abcdef&count=123456 => "example" and "count" is the url parameter after the "?" letter.
-         * @var between is the min and max chars length of the parameter. Default is empty means unlimited chars and allow empty chars.
-         * @var regex is to validate the value of the parameter. See the validateRegex function for the shortcut regex. Default is empty.
+         * @param parameter is the url parameter of the request. Example http://xxx.com/?example=abcdef&count=123456 => "example" and "count" is the url parameter after the "?" letter.
+         * @param between is the min and max chars length of the parameter. Default is empty means unlimited chars and allow empty chars.
+         * @param regex is to validate the value of the parameter. See the validateRegex function for the shortcut regex. Default is empty.
          */
         public function __construct($parameter,$between='',$regex=''){
             $this->parameter = $parameter;

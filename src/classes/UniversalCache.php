@@ -79,7 +79,7 @@ use Predis\Client;
         /**
 		 * Convert string to valid UTF8 chars (slower but support ANSII)
 		 *
-		 * @var string is the array string or value
+		 * @param string is the array string or value
 		 *
 		 * @return string
 		 */

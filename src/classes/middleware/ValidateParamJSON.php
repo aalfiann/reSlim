@@ -25,9 +25,9 @@ use \classes\JSON as JSON;
         /**
          * Constructor
          * 
-         * @var parameter is the body of the request parameter
-         * @var between is the min and max chars length of the parameter. Default is empty means unlimited chars and allow empty chars.
-         * @var regex is to validate the value of the parameter. See the validateRegex function for the shortcut regex. Default is empty.
+         * @param parameter is the body of the request parameter
+         * @param between is the min and max chars length of the parameter. Default is empty means unlimited chars and allow empty chars.
+         * @param regex is to validate the value of the parameter. See the validateRegex function for the shortcut regex. Default is empty.
          */
         public function __construct($parameter,$between='',$regex=''){
             $this->parameter = $parameter;

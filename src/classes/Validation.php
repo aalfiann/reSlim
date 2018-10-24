@@ -20,7 +20,7 @@ namespace classes;
 		/**
 		 * Sanitizer string and only accept alphabet
 		 *
-		 * @var $string
+		 * @param $string
 		 *
 		 * @return string
 		 */
@@ -31,7 +31,7 @@ namespace classes;
         /**
 		 * Sanitizer string and only accept integer
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return string
 		 */
@@ -42,7 +42,7 @@ namespace classes;
 		/**
 		 * Sanitizer string and only accept numeric
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return string
 		 */
@@ -53,7 +53,7 @@ namespace classes;
 		/**
 		 * Sanitizer string and only accept numeric abs
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return string
 		 */
@@ -64,7 +64,7 @@ namespace classes;
 		/**
 		 * Determine if string is numeric
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return bool
 		 */
@@ -75,7 +75,7 @@ namespace classes;
 		/**
 		 * Determine if string is decimal
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return bool
 		 */
@@ -87,7 +87,7 @@ namespace classes;
 		/**
 		 * Determine if string is decimal only
 		 *
-		 * @var string is the value
+		 * @param string is the value
 		 *
 		 * @return bool
 		 */

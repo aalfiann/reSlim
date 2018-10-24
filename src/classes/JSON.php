@@ -25,7 +25,7 @@ namespace classes;
 		/**
 		 * Convert string to valid UTF8 chars (Faster but not support for ANSII)
 		 *
-		 * @var string is the array string or value
+		 * @param string is the array string or value
 		 *
 		 * @return string
 		 */
@@ -43,7 +43,7 @@ namespace classes;
 		/**
 		 * Convert string to valid UTF8 chars (slower but support ANSII)
 		 *
-		 * @var string is the array string or value
+		 * @param string is the array string or value
 		 *
 		 * @return string
 		 */
@@ -61,11 +61,11 @@ namespace classes;
         /**
 		 * Encode Array string or value to json (faster with no any conversion to utf8)
 		 *
-		 * @var data is the array string or value
-		 * @var withlog if set to true then will append logger data. Default is false.
-		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
-		 * @var options is to set the options of json_encode. Ex: JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_APOS
-		 * @var depth is to set the recursion depth. Default is 512.
+		 * @param data is the array string or value
+		 * @param withlog if set to true then will append logger data. Default is false.
+		 * @param pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
+		 * @param options is to set the options of json_encode. Ex: JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_APOS
+		 * @param depth is to set the recursion depth. Default is 512.
 		 *
 		 * @return string
 		 */
@@ -81,12 +81,12 @@ namespace classes;
 		 * Safest way to encode Array string or value to json (safe but slower because conversion)
 		 * When the time to use this function: If you want to display json data which is retrieve from database that maybe contains invalid utf8 chars.
 		 *
-		 * @var data is the array string or value
-		 * @var withlog if set to true then will append logger data. Default is false.
-		 * @var pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
-		 * @var ansii if set to true then conversion to utf8 is more reliable because will work for ANSII chars. Default is set to false for performance reason.
-		 * @var options is to set the options of json_encode. Ex: JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_APOS
-		 * @var depth is to set the recursion depth. Default is 512.
+		 * @param data is the array string or value
+		 * @param withlog if set to true then will append logger data. Default is false.
+		 * @param pretty is to make ouput json nice, clean and readable. Default is false for perfomance speed reason.
+		 * @param ansii if set to true then conversion to utf8 is more reliable because will work for ANSII chars. Default is set to false for performance reason.
+		 * @param options is to set the options of json_encode. Ex: JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE|JSON_HEX_TAG|JSON_HEX_APOS
+		 * @param depth is to set the recursion depth. Default is 512.
 		 *
 		 * @return string
 		 */
@@ -101,10 +101,10 @@ namespace classes;
 		/**
 		 * Decode json string (if fail will return null)
 		 *
-		 * @var json is the json string
-		 * @var assoc if set to true then will return as array()
-		 * @var depth is to set the recursion depth. Default is 512.
-		 * @var options is to set the options of json_decode. Ex: JSON_BIGINT_AS_STRING|JSON_OBJECT_AS_ARRAY
+		 * @param json is the json string
+		 * @param assoc if set to true then will return as array()
+		 * @param depth is to set the recursion depth. Default is 512.
+		 * @param options is to set the options of json_decode. Ex: JSON_BIGINT_AS_STRING|JSON_OBJECT_AS_ARRAY
 		 *
 		 * @return mixed stdClass/array
 		 */
@@ -120,9 +120,9 @@ namespace classes;
 		 * - So this function is make you easier to modify the json string to become nice json data structure automatically.
 		 * - This function is well tested at here >> https://3v4l.org/IWkjn
          * 
-         * @var data is the data array
-         * @var jsonfield is the field which is contains json string
-         * @var setnewfield is to put the result of modified json string in new field
+         * @param data is the data array
+         * @param jsonfield is the field which is contains json string
+         * @param setnewfield is to put the result of modified json string in new field
          * @return mixed array or string (if the $data is string then will return string)
          */
 		public static function modifyJsonStringInArray($data,$jsonfield,$setnewfield=""){
@@ -168,11 +168,33 @@ namespace classes;
 			return $data;
 		}
 
+		/**
+		 * Concatenate json data
+		 * Example: https://3v4l.org/fXjhd
+		 * 
+		 * @param data is the json string or array value
+		 * @param escape if set to false then json data will not escaped. Default is true.
+		 * @param options is to set the options of json_encode (for data array only). Ex: JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE
+		 * @param depth is to set the recursion depth. Default is 512.
+		 * @return string
+		 */
+		public static function concatenate($data,$escape=true,$options=0,$depth=512){
+			if(!empty($data)){
+				if(is_array($data)){
+					if($escape) return addcslashes(json_encode($data,$options,$depth),"\"'\n");
+					return json_encode($data,$options,$depth);
+				}
+				if($escape) return addcslashes($data,"\"'\n");
+				return $data;
+			}
+			if($escape) return '';
+			return '""';
+		}
 
 		/**
 		 * Determine is valid json or not
 		 *
-		 * @var data is the array string or value
+		 * @param data is the array string or value
 		 *
 		 * @return bool
 		 */
@@ -189,8 +211,8 @@ namespace classes;
 		 * - This is because if you do in php, json_encode function will auto giving backslash in your string if it contains invalid chars.
 		 * - You have to create regex to convert char to invalid utf-8 for test in array
 		 *
-		 * @var string is the array string or value
-		 * @var lite if set to true will hide the additional data about error in json. Default is false.
+		 * @param string is the array string or value
+		 * @param lite if set to true will hide the additional data about error in json. Default is false.
 		 *
 		 * @return string json output formatted
 		 */
@@ -203,8 +225,8 @@ namespace classes;
 		/**
 		 * Debugger to test json decode
 		 *
-		 * @var json is the json string
-		 * @var lite if set to true will hide the additional data about error in json. Default is false.
+		 * @param json is the json string
+		 * @param lite if set to true will hide the additional data about error in json. Default is false.
 		 *
 		 * @return string json output formatted
 		 */
@@ -220,9 +242,9 @@ namespace classes;
 		/**
 		 * Case error message about json
 		 * 
-		 * @var jsonlasterror is the json_last_error() function
-		 * @var content is the additional data about error in json
-		 * @var lite if set to true will hide the additional data about error in json. Default is false.
+		 * @param jsonlasterror is the json_last_error() function
+		 * @param content is the additional data about error in json
+		 * @param lite if set to true will hide the additional data about error in json. Default is false.
 		 * 
 		 * @return array
 		 */
