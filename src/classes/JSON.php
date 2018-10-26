@@ -29,7 +29,7 @@ namespace classes;
 		 *
 		 * @return string
 		 */
-		private static function convertToUTF8($string){
+		public static function convertToUTF8($string){
 			if (is_array($string)) {
 				foreach ($string as $k => $v) {
 					$string[$k] = self::convertToUTF8($v);
@@ -47,7 +47,7 @@ namespace classes;
 		 *
 		 * @return string
 		 */
-		private static function safeConvertToUTF8($string){
+		public static function safeConvertToUTF8($string){
 			if (is_array($string)) {
 				foreach ($string as $k => $v) {
 					$string[$k] = self::safeConvertToUTF8($v);
@@ -55,6 +55,33 @@ namespace classes;
 			} else if (is_string ($string)) {
 				return mb_convert_encoding($string, "UTF-8", "Windows-1252");
 			}
+			return $string;
+		}
+
+		/**
+		 * Most common fixed hidden control char in json string which made json decode fails.
+		 * 
+		 * @param string is the string or json string
+		 * @return string
+		 */
+		public static function fixControlChar($string){
+			//Sanitize hidden control chars
+			for ($i = 0; $i <= 9; ++$i) { 
+				$string = str_replace(chr($i), "", $string); 
+			}
+			for ($i = 11; $i <= 12; ++$i) { 
+				$string = str_replace(chr($i), "", $string); 
+			}
+			for ($i = 14; $i <= 31; ++$i) { 
+				$string = str_replace(chr($i), "", $string); 
+			}
+			$string = str_replace(chr(127), "", $string);
+			//Handle Byte Order Mark (BOM)
+			if (0 === strpos(bin2hex($string), 'efbbbf')) {
+				$string = substr($string, 3);
+			}
+			//Handle newline char
+			$string = preg_replace("/[\r\n]+/", "\\n", $string);
 			return $string;
 		}
 

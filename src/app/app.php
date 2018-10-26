@@ -13,7 +13,7 @@ require '../vendor/autoload.php';
 require '../config.php';
 
 // Declare reSlim Version
-define('RESLIM_VERSION','1.20.0');
+define('RESLIM_VERSION','1.21.0');
 // Declare reSlim built-in cache
 define('AUTH_CACHE',$config['reslim']['authcache']);
 define('SIMPLE_CACHE',$config['reslim']['simplecache']);
