@@ -57,7 +57,22 @@ use PDO;
 	        {
     	        $this->db = $db;
         	}
-		}
+        }
+        
+        /**
+         * Determine if string is contains matched text
+         * 
+         * @param match is the text to match
+         * @param string is the source text
+         * 
+         * @return bool
+         */
+        public function isContains($match,$string){
+            if(strpos($string,$match) !== false){
+                return true;
+            }
+            return false;
+        }
 
         /** 
 		 * Send Email
@@ -126,18 +141,26 @@ use PDO;
             $this->mailer->AltBody = filter_var($this->body, FILTER_SANITIZE_STRING);
             $this->mailer->isHTML($this->isHtml);
             
-            if(!$this->mailer->send()) {
+            if($this->isContains('localhost',$this->setFrom) || $this->isContains('localhost',$this->setFromName)){
                 $data = [
                     'status' => 'error',
-            		'code' => '0',
-            		'message' => $this->mailer->ErrorInfo
+                    'code' => 'RS801',
+                    'message' => CustomHandlers::getreSlimMessage('RS801',$this->lang)
                 ];
             } else {
-                $data = [
-                    'status' => 'success',
-            		'code' => 'RS105',
-            		'message' => CustomHandlers::getreSlimMessage('RS105',$this->lang)
-                ];
+                if(!$this->mailer->send()) {
+                    $data = [
+                        'status' => 'error',
+                        'code' => '0',
+                        'message' => $this->mailer->ErrorInfo
+                    ];
+                } else {
+                    $data = [
+                        'status' => 'success',
+                        'code' => 'RS105',
+                        'message' => CustomHandlers::getreSlimMessage('RS105',$this->lang)
+                    ];
+                }
             }
             return JSON::encode($data,true);
         }
