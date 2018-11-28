@@ -51,35 +51,14 @@ require __DIR__.'/dependencies.php';
 // Set up middleware
 require __DIR__.'/middleware.php';
 
-// Set up scanner files
-if (!function_exists('fileSearch')) {
-    function fileSearch($dir,$pattern="/\.router.php$/") {
-        $files = [];
-        $fh = opendir($dir);
-        while (($file = readdir($fh)) !== false) {
-            if($file == '.' || $file == '..')
-                continue;
-            $filepath = $dir . DIRECTORY_SEPARATOR . $file;
-            if (is_dir($filepath))
-                $files = array_merge($files, fileSearch($filepath, $pattern));
-            else {
-                if(preg_match($pattern, $file))
-                    array_push($files, $filepath);
-            }
-        }
-        closedir($fh);
-        return $files;
-    }  
-}
-
 // Load all router files before run
-$routers = fileSearch('../routers/');
+$routers = \classes\Scanner::fileSearch('../routers/','router.php');
 foreach ($routers as $router) {
     require $router;
 }
 
 // Load all modules router files before run
-$modrouters = fileSearch('../modules/');
+$modrouters = \classes\Scanner::fileSearch('../modules/','router.php');
 foreach ($modrouters as $modrouter) {
     require $modrouter;
 }
