@@ -13,7 +13,7 @@ require '../vendor/autoload.php';
 require '../config.php';
 
 // Declare reSlim Version
-define('RESLIM_VERSION','1.21.1');
+define('RESLIM_VERSION','1.22.0');
 // Declare reSlim built-in cache
 define('AUTH_CACHE',$config['reslim']['authcache']);
 define('SIMPLE_CACHE',$config['reslim']['simplecache']);
@@ -52,24 +52,34 @@ require __DIR__.'/dependencies.php';
 require __DIR__.'/middleware.php';
 
 // Set up scanner files
-if (!function_exists('glob_recursive')) {
-    function glob_recursive($pattern, $flags = 0){
-        $files = glob($pattern, $flags);
-        foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, glob_recursive($dir.'/'.basename($pattern), $flags));
+if (!function_exists('fileSearch')) {
+    function fileSearch($dir,$pattern="/\.router.php$/") {
+        $files = [];
+        $fh = opendir($dir);
+        while (($file = readdir($fh)) !== false) {
+            if($file == '.' || $file == '..')
+                continue;
+            $filepath = $dir . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($filepath))
+                $files = array_merge($files, fileSearch($filepath, $pattern));
+            else {
+                if(preg_match($pattern, $file))
+                    array_push($files, $filepath);
+            }
         }
+        closedir($fh);
         return $files;
-    }    
+    }  
 }
 
 // Load all router files before run
-$routers = glob('../routers/*.router.php',GLOB_NOSORT);
+$routers = fileSearch('../routers/');
 foreach ($routers as $router) {
     require $router;
 }
 
 // Load all modules router files before run
-$modrouters = glob_recursive('../modules/*.router.php',GLOB_NOSORT);
+$modrouters = fileSearch('../modules/');
 foreach ($modrouters as $modrouter) {
     require $modrouter;
 }
