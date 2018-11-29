@@ -71,11 +71,32 @@ use PDO;                                            //To connect with database
             return dirname($path);
         }
 
-        private function glob_recursive($pattern, $flags = 0){
-            $files = glob($pattern, $flags);
-            foreach (glob(dirname($pattern).'/*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-                $files = array_merge($files, $this->glob_recursive($dir.'/'.basename($pattern), $flags));
+        private function isMatchLast($match,$string){
+            if (substr($string, (-1 * abs(strlen($match)))) == $match) return true;
+            return false;
+        }
+
+        private function fileSearch($dir, $ext='php',$extIsRegex=false) {
+            $files = [];
+            $fh = opendir($dir);
+    
+            while (($file = readdir($fh)) !== false) {
+                if($file == '.' || $file == '..')
+                    continue;
+    
+                $filepath = $dir . DIRECTORY_SEPARATOR . $file;
+    
+                if (is_dir($filepath))
+                    $files = array_merge($files, $this->fileSearch($filepath, $ext));
+                else {
+                    if($extIsRegex){
+                        if(preg_match($ext, $file)) array_push($files, $filepath);
+                    } else {
+                        if($this->isMatchLast($ext,$file)) array_push($files, $filepath);
+                    }
+                }
             }
+            closedir($fh);
             return $files;
         }
 
@@ -149,7 +170,7 @@ use PDO;                                            //To connect with database
                 $role = Auth::getRoleID($this->db,$this->token);
                 if ($role == 1) {
                     // Scan all packages
-                    $packs = $this->glob_recursive('../modules/*/package.json',GLOB_NOSORT);
+                    $packs = $this->fileSearch('../modules/','package.json');
                     $listmodules = str_replace(['../modules/','/package.json'],'',$packs);
                     foreach ($packs as $pack) {
                         $mods = json_decode(file_get_contents($pack));

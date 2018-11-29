@@ -29,7 +29,7 @@ define('REDIS_OPTION',json_encode($config['redis']['option']));
 
 // Autoload all external classes
 spl_autoload_register(function ($classname) {
-    require (realpath(__DIR__ . '/..'). '/'.str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php');
+    require (realpath(__DIR__ . '/..').DIRECTORY_SEPARATOR.str_replace('\\', DIRECTORY_SEPARATOR, $classname) . '.php');
 });
 
 // Set time zone
@@ -38,10 +38,10 @@ date_default_timezone_set($config['reslim']['timezone']);
 // Set up router cache if enabled in config
 if ($config['router']['enableCache'] == true) {
     if (!is_dir($config['router']['folderCache'])) mkdir($config['router']['folderCache'],0775,true);
-    $config['routerCacheFile'] = $config['router']['folderCache'].'/'.$config['router']['fileCache'];
+    $config['routerCacheFile'] = $config['router']['folderCache'].DIRECTORY_SEPARATOR.$config['router']['fileCache'];
 } else {
-    if (file_exists($config['router']['folderCache'].'/'.$config['router']['fileCache'])) {
-        unlink($config['router']['folderCache'].'/'.$config['router']['fileCache']);
+    if (file_exists($config['router']['folderCache'].DIRECTORY_SEPARATOR.$config['router']['fileCache'])) {
+        unlink($config['router']['folderCache'].DIRECTORY_SEPARATOR.$config['router']['fileCache']);
     }
 }
 
@@ -52,13 +52,13 @@ require __DIR__.'/dependencies.php';
 require __DIR__.'/middleware.php';
 
 // Load all router files before run
-$routers = \classes\Scanner::fileSearch('../routers/','router.php');
+$routers = \classes\helper\Scanner::fileSearch('../routers/','router.php');
 foreach ($routers as $router) {
     require $router;
 }
 
 // Load all modules router files before run
-$modrouters = \classes\Scanner::fileSearch('../modules/','router.php');
+$modrouters = \classes\helper\Scanner::fileSearch('../modules/','router.php');
 foreach ($modrouters as $modrouter) {
     require $modrouter;
 }

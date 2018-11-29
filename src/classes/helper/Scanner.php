@@ -1,20 +1,8 @@
 <?php
-namespace classes;
+namespace classes\helper;
+use \classes\helper\StringUtils;
 
 class Scanner {
-
-    /**
-     * Last char checker (alternative to preg_match)
-     * 
-     * @param match = is the text to match
-     * @param string = is the source text
-     * 
-     * @return bool 
-     */
-    public static function isMatchLast($match,$string){
-        if (substr($string, (-1 * abs(strlen($match)))) == $match) return true;
-        return false;
-    }
 
     /**
      * fileSearch is using opendir (very fast)
@@ -41,7 +29,7 @@ class Scanner {
                 if($extIsRegex){
                     if(preg_match($ext, $file)) array_push($files, $filepath);
                 } else {
-                    if(self::isMatchLast($ext,$file)) array_push($files, $filepath);
+                    if(StringUtils::isMatchLast($ext,$file)) array_push($files, $filepath);
                 }
             }
         }
@@ -104,7 +92,7 @@ class Scanner {
             if($extIsRegex){
                 if($current->isFile() && preg_match($pattern, $current->getFilename())) return true;
             } else {
-                if($current->isFile() && self::isMatchLast($ext, $current->getFilename())) return true;
+                if($current->isFile() && StringUtils::isMatchLast($ext, $current->getFilename())) return true;
             }
         });
         return new \RecursiveIteratorIterator($filter);
@@ -121,7 +109,7 @@ class Scanner {
     public static function recursiveGlob($pattern, $flags = 0){
         $files = glob($pattern, $flags);
         foreach (glob(dirname($pattern).DIRECTORY_SEPARATOR.'*', GLOB_ONLYDIR|GLOB_NOSORT) as $dir){
-            $files = array_merge($files, self::recursiveGlob($dir.'/'.basename($pattern), $flags));
+            $files = array_merge($files, self::recursiveGlob($dir.DIRECTORY_SEPARATOR.basename($pattern), $flags));
         }
         return $files;
     }
