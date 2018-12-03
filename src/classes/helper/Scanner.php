@@ -10,26 +10,61 @@ class Scanner {
      * @param dir = is the full path of directory
      * @param ext = is the extension of file. Default is php extension. Example Regex: $pattern = "/\\.{$ext}$/"; or $pattern="/\.router.php$/";
      * @param extIsRegex = if set to true then the $ext variable will be executed as regex way. Default is false.
+     * @param excludedir = is to stop recursive into sub folder. Default is empty means will recursive all sub directories.
      * 
      * @return array
      */
-    public static function fileSearch($dir, $ext='php',$extIsRegex=false) {
+    public static function fileSearch($dir, $ext='php',$extIsRegex=false,$excludedir='') {
         $files = [];
         $fh = opendir($dir);
-
-        while (($file = readdir($fh)) !== false) {
-            if($file == '.' || $file == '..')
-                continue;
-
-            $filepath = $dir . DIRECTORY_SEPARATOR . $file;
-
-            if (is_dir($filepath))
-                $files = array_merge($files, self::fileSearch($filepath, $ext));
-            else {
-                if($extIsRegex){
-                    if(preg_match($ext, $file)) array_push($files, $filepath);
-                } else {
-                    if(StringUtils::isMatchLast($ext,$file)) array_push($files, $filepath);
+        if($excludedir !== ''){
+            if(is_string($excludedir)){
+                if (!StringUtils::isMatchAny($excludedir,$dir)){
+                    while (($file = readdir($fh)) !== false) {
+                        if($file == '.' || $file == '..') continue;
+                        $filepath = $dir . DIRECTORY_SEPARATOR . $file;
+                        if (is_dir($filepath))
+                            $files = array_merge($files, self::fileSearch($filepath, $ext, $extIsRegex, $excludedir));
+                        else {
+                            if($extIsRegex){
+                                if(preg_match($ext, $file)) array_push($files, $filepath);
+                            } else {
+                                if(StringUtils::isMatchLast($ext,$file)) array_push($files, $filepath);
+                            }
+                        }
+                    }
+                }
+            } else {
+                foreach($excludedir as $dirs){
+                    if (!StringUtils::isMatchAny($dirs,$dir)){
+                        while (($file = readdir($fh)) !== false) {
+                            if($file == '.' || $file == '..') continue;
+                            $filepath = $dirs . DIRECTORY_SEPARATOR . $file;
+                            if (is_dir($filepath))
+                                $files = array_merge($files, self::fileSearch($filepath, $ext, $extIsRegex, $excludedir));
+                            else {
+                                if($extIsRegex){
+                                    if(preg_match($ext, $file)) array_push($files, $filepath);
+                                } else {
+                                    if(StringUtils::isMatchLast($ext,$file)) array_push($files, $filepath);
+                                }
+                            }
+                        }   
+                    }
+                }
+            }
+        } else {
+            while (($file = readdir($fh)) !== false) {
+                if($file == '.' || $file == '..') continue;
+                $filepath = $dir . DIRECTORY_SEPARATOR . $file;
+                if (is_dir($filepath))
+                    $files = array_merge($files, self::fileSearch($filepath, $ext, $extIsRegex, $excludedir));
+                else {
+                    if($extIsRegex){
+                        if(preg_match($ext, $file)) array_push($files, $filepath);
+                    } else {
+                        if(StringUtils::isMatchLast($ext,$file)) array_push($files, $filepath);
+                    }
                 }
             }
         }
