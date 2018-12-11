@@ -8,7 +8,8 @@
  */
 namespace classes;
 use PDO;
-use \classes\BaseConverter as BaseConverter;
+use \classes\BaseConverter;
+use \classes\helper\Scanner;
 use Predis\Client;
     /**
      * A class for secure authentication user in rest api way
@@ -217,7 +218,8 @@ use Predis\Client;
          */
         public static function validToken($db, $token,$username=null){
             $r = false;
-            if (self::isKeyCached('token-'.$username.'-'.$token,600)){
+            $keycache = 'token-'.$token.'-'.$username.'-valid';
+            if (self::isKeyCached($keycache,600)){
                 $r = true;
             } else {
                 $sql = "SELECT a.Username
@@ -230,12 +232,12 @@ use Predis\Client;
                     if ($stmt->rowCount() > 0){
                         if ($username == null){
                             $r = true;
-                            self::writeCache('token-'.$username.'-'.$token);
+                            self::writeCache($keycache);
                         } else {
                             $single = $stmt->fetch();
 					        if ($single['Username'] == strtolower($username)){
                                 $r = true;
-                                self::writeCache('token-'.$username.'-'.$token,$username,600);
+                                self::writeCache($keycache,$username,600);
                             }
                         }                    
                     }          	   	
@@ -314,8 +316,8 @@ use Predis\Client;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCache('token-'.$username.'-'.$token,30);
-                self::deleteCache('token--'.$token,30);
+                self::deleteCache('token-'.$token.'-'.$username.'-valid',30);
+                self::deleteCache('token-'.$token.'--valid',30);
                 self::deleteCache('token-'.$token.'-group',30);
             } catch (PDOException $e){
                 $data = [
@@ -356,7 +358,7 @@ use Predis\Client;
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
                 // Tell server to refresh all keys above 10 minutes old
-                self::deleteCacheAll('token-'.'*',600);
+                self::deleteCacheAll('-valid.cache',600);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -401,9 +403,9 @@ use Predis\Client;
 			    	'code' => 'RS305',
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
-                self::deleteCache('token--'.$token,30);
-                self::deleteCacheAll('token-'.$username.'*',30);
-                self::deleteCacheAll('token-'.$token.'-group',30);
+                self::deleteCache('token-'.$token.'--valid',30);
+                self::deleteCacheAll('token-'.$token.'-'.$username.'-valid.cache',30);
+                self::deleteCacheAll('token-'.$token.'-group.cache',30);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -442,7 +444,7 @@ use Predis\Client;
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
                 // Tell server to refresh all keys above 10 minutes old
-                self::deleteCacheAll('token-'.'*',600);
+                self::deleteCacheAll($username.'-valid.cache',600);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -757,7 +759,24 @@ use Predis\Client;
 		 */
         public static function filePath($key){
             self::verifyFolderPath();
-            return self::$filefolder.'/'.$key.'.cache';
+            return self::$filefolder.'/'.self::virtualPath($key).$key.'.cache';
+        }
+
+        /**
+         * Virtual path to scale the cache storage
+         * 
+         * @param key = Filename (without .cache), token or api key value
+         * @param depth = The deep of sub directory cache. Default is 2.
+         * 
+         * @return string part of a path 
+         */
+        public static function virtualPath($key,$depth=2){
+            $vpath = '';
+            for ($i=0;$i<$depth;$i++){
+                if (!empty($key[$i])) $vpath .= $key[$i].'/';
+            }
+            if (!is_dir(self::$filefolder.'/'.$vpath)) mkdir(self::$filefolder.'/'.$vpath,0775,true);
+            return $vpath;
         }
 
         /**
@@ -851,6 +870,8 @@ use Predis\Client;
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
                     self::verifyFolderPath();
+                    $key = basename($filepath, ".cache");
+                    self::virtualPath($key);
                     file_put_contents($filepath, $content, LOCK_EX);
                     $data = [
                         'status' => 'success',
@@ -914,17 +935,17 @@ use Predis\Client;
          * Listen to delete the data cache from another server
          * 
          * @param secretkey is the data key to proctect from unknown request
-         * @param wildcard is the filename cache. You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param pattern is the filename cache. Default is all files which is ended with .cache
          * @param agecache is to specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
          * 
          * @return array
          */
-        public static function listenToDelete($secretkey,$wildcard="*",$agecache=300){
+        public static function listenToDelete($secretkey,$pattern=".cache",$agecache=300){
             $data = [];
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
                     self::verifyFolderPath();
-                    $data = self::deleteCacheAll($wildcard, $agecache, false);
+                    $data = self::deleteCacheAll($pattern, $agecache, false);
                 } else {
                     $data = [
                         'status' => 'error',
@@ -943,10 +964,10 @@ use Predis\Client;
         /**
          * Transfer request to delete the data cache to another server
          * 
-         * @param wildcard is the filename cache. You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param pattern is the filename cache. Default is all files which is ended with .cache
          * @param agecache is to specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
          */
-        public static function transferToDelete($wildcard="*",$agecache=300){
+        public static function transferToDelete($pattern=".cache",$agecache=300){
             if (CACHE_TRANSFER){
                 if (!empty(CACHE_LISTENFROM)){
                     $server = json_decode(CACHE_LISTENFROM,true);
@@ -956,7 +977,7 @@ use Predis\Client;
                             $request[] = [
                                 'url' => $value.'/maintenance/cache/apikey/listen/delete',
                                 'post' => [
-                                    'wildcard' => $wildcard,
+                                    'pattern' => $pattern,
                                     'agecache' => $agecache,
                                     'secretkey' => CACHE_SECRET_KEY
                                 ]
@@ -1084,13 +1105,13 @@ use Predis\Client;
         /**
          * Delete all static token / api key file cache
          * 
-         * @param wildcard = You can set whatever kind of pathname matching wildcard to be deleted. Default is *
+         * @param pattern = is the filename cache. Default is all files which is ended with .cache
          * @param agecache = Specify the age of cache file to be deleted. Default will delete cached files which is already have more 300 seconds old.
          */
-        public static function deleteCacheAll($wildcard="*",$agecache=300,$transfer=true) {
+        public static function deleteCacheAll($pattern=".cache",$agecache=300,$transfer=true) {
             if (file_exists(self::$filefolder)) {
                 //Build list cached files
-                $files = glob(self::$filefolder.'/'.$wildcard,GLOB_NOSORT);
+                $files = Scanner::fileSearch(self::$filefolder.'/', $pattern);
                 $now   = time();
 
                 $total = 0;
@@ -1104,7 +1125,7 @@ use Predis\Client;
                         }
                     }
                 }
-                if($transfer) self::transferToDelete($wildcard,$agecache);
+                if($transfer) self::transferToDelete($pattern,$agecache);
                 $datajson = '{"status":"success","age":'.$agecache.',"total_files":'.$total.',"total_deleted":'.$deleted.',"execution_time":"'.(microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"]).'","message":"To prevent any error occured on the server, only cached files that have age more than '.$agecache.' seconds old, will be deleted."}';
             } else {
                 $datajson = '{"status:"error","message":"Directory not found!"}';
@@ -1193,8 +1214,8 @@ use Predis\Client;
         public static function getCacheInfo() {
             if (!is_dir(self::$filefolder)) mkdir(self::$filefolder,0775,true);
             $size = 0;
-            $files = -2;
-            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder)) as $file){
+            $files = 0;
+            foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(self::$filefolder, \RecursiveDirectoryIterator::SKIP_DOTS)) as $file){
                 $size += $file->getSize();
                 $files++;
             }
