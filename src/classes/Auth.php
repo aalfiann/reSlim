@@ -404,8 +404,8 @@ use Predis\Client;
 				    'message' => CustomHandlers::getreSlimMessage('RS305')
                 ];
                 self::deleteCache('token-'.$token.'--valid',30);
-                self::deleteCacheAll('token-'.$token.'-'.$username.'-valid.cache',30);
-                self::deleteCacheAll('token-'.$token.'-group.cache',30);
+                self::deleteCache('token-'.$token.'-'.$username.'-valid',30);
+                self::deleteCache('token-'.$token.'-group',30);
             } catch (PDOException $e){
                 $data = [
 		    		'status' => 'error',
@@ -466,8 +466,9 @@ use Predis\Client;
          */
         public static function getRoleID($db, $token){
             $roles = 0;
-            if (self::isKeyCached('token-'.$token.'-group',600)){
-                $data = json_decode(self::loadCache('token-'.$token.'-group'));
+            $keycache = 'token-'.$token.'-group';
+            if (self::isKeyCached($keycache,600)){
+                $data = json_decode(self::loadCache($keycache));
                 if (!empty($data)){
                     $roles = $data->Role;
                 }
@@ -482,7 +483,7 @@ use Predis\Client;
 				    if ($stmt->rowCount() > 0){
     					$single = $stmt->fetch();
                         $roles = $single['RoleID'];
-                        self::writeCache('token-'.$token.'-group',$roles,600);
+                        self::writeCache($keycache,$roles,600);
 		    		}
 			    }
             }
@@ -554,7 +555,8 @@ use Predis\Client;
          */
         public static function validAPIKey($db, $apikey,$domain=null){
             $r = false;
-            if (self::isKeyCached('api-'.$apikey)){
+            $keycache = 'api-'.$apikey;
+            if (self::isKeyCached($keycache)){
                 $r = true;
             } else {
                 $sql = "SELECT a.Domain
@@ -567,12 +569,12 @@ use Predis\Client;
                     if ($stmt->rowCount() > 0){
                         if ($domain == null){
                             $r = true;
-                            self::writeCache('api-'.$apikey);
+                            self::writeCache($keycache);
                         } else {
                             $single = $stmt->fetch();
 					        if (strtolower($single['Domain']) == strtolower($domain)){
                                 $r = true;
-                                self::writeCache('api-'.$apikey,$domain);
+                                self::writeCache($keycache,$domain);
                             }
                         }       
                     }          	   	
@@ -772,6 +774,7 @@ use Predis\Client;
          */
         public static function virtualPath($key,$depth=2){
             $vpath = '';
+            $key = dechex(crc32($key));
             for ($i=0;$i<$depth;$i++){
                 if (!empty($key[$i])) $vpath .= $key[$i].'/';
             }
@@ -870,8 +873,8 @@ use Predis\Client;
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
                     self::verifyFolderPath();
-                    $key = basename($filepath, ".cache");
-                    self::virtualPath($key);
+                    $dirpath = dirname($filepath);
+                    if(!is_dir($dirpath)) mkdir($dirpath,0775,true);
                     file_put_contents($filepath, $content, LOCK_EX);
                     $data = [
                         'status' => 'success',
@@ -1105,7 +1108,7 @@ use Predis\Client;
         /**
          * Delete all static token / api key file cache
          * 
-         * @param pattern = is the filename cache. Default is all files which is ended with .cache
+         * @param pattern = The filename cache. Default is all files which is ended with .cache
          * @param agecache = Specify the age of cache file to be deleted. Default will delete cached files which is already have more 300 seconds old.
          */
         public static function deleteCacheAll($pattern=".cache",$agecache=300,$transfer=true) {

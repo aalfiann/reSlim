@@ -176,6 +176,7 @@ use Predis\Client;
          */
         public static function virtualPath($key,$depth=2){
             $vpath = '';
+            $key = dechex(crc32($key));
             for ($i=0;$i<$depth;$i++){
                 if (!empty($key[$i])) $vpath .= $key[$i].'/';
             }
@@ -297,8 +298,8 @@ use Predis\Client;
             if (CACHE_TRANSFER){
                 if ($secretkey == CACHE_SECRET_KEY){
                     self::verifyFolderPath();
-                    $key = basename($filepath, ".cache");
-                    self::virtualPath($key);
+                    $dirpath = dirname($filepath);
+                    if(!is_dir($dirpath)) mkdir($dirpath,0775,true);
                     file_put_contents($filepath, $content, LOCK_EX);
                     $data = [
                         'status' => 'success',
@@ -430,7 +431,7 @@ use Predis\Client;
         /**
          * Clear all cache files that have age more than 5 minutes old
          * 
-         * @param pattern is the filename cache. Default is all files which is ended with .cache
+         * @param pattern = The filename cache. Default is all files which is ended with .cache
          * @param agecache = Specify the age of cache file to be deleted. Default will delete file which is already have more 5 minutes old.
          * @param transfer = If set to true then will make request to delete the data cache on another server. Default is true.
          * 
