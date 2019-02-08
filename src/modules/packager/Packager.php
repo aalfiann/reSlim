@@ -251,6 +251,8 @@ use PDO;                                            //To connect with database
                     curl_setopt($ch, CURLOPT_URL, $source);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                     $data = curl_exec ($ch);
                     curl_close ($ch);
 
@@ -264,7 +266,7 @@ use PDO;                                            //To connect with database
                     $zip = new \ZipArchive;
                     $res = $zip->open($destination);
                     if ($res === TRUE) {
-                        $zip->extractTo(dirname($this->basemod,1).'/');
+                        $zip->extractTo($this->dirname_r($this->basemod,1).DIRECTORY_SEPARATOR);
                         $zip->close();
                         unlink($destination);
                         $data = [
@@ -277,7 +279,7 @@ use PDO;                                            //To connect with database
                             'status' => 'error',
                             'code' => 'PC201',
                             'message' => Dictionary::write('PC201',$this->lang),
-                            'path' => dirname($this->basemod,1),
+                            'path' => $this->dirname_r($this->basemod,1),
                             'base' => $this->basemod
                         ];
                     }
@@ -310,6 +312,8 @@ use PDO;                                            //To connect with database
                     curl_setopt($ch, CURLOPT_URL, $source);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
                     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
                     $data = curl_exec ($ch);
                     curl_close ($ch);
 
@@ -323,21 +327,21 @@ use PDO;                                            //To connect with database
                     $zip = new \ZipArchive;
                     $res = $zip->open($destination);
                     if ($res === TRUE) {
-                        $folderpath = dirname($this->basemod,1).'/tmp';
+                        $folderpath = $this->dirname_r($this->basemod,1).DIRECTORY_SEPARATOR.'tmp';
                         $zip->extractTo($folderpath);
                         $directories = scandir($folderpath);
                         if (count($directories) ==3){
                             foreach($directories as $directory){
                                 if($directory !='.' and $directory != '..'){
-                                    if(is_dir($folderpath.'/'.$directory)){
-                                        $this->rcopy($folderpath.'/'.$directory,dirname($this->basemod,1).'/'.$namespaces);
+                                    if(is_dir($folderpath.DIRECTORY_SEPARATOR.$directory)){
+                                        $this->rcopy($folderpath.DIRECTORY_SEPARATOR.$directory,$this->dirname_r($this->basemod,1).DIRECTORY_SEPARATOR.$namespaces);
                                     }
                                 }
                             }
                             $data = [
                                 'status' => 'success',
                                 'code' => 'PC101',
-                                'path' => dirname($this->basemod,1).'/'.$namespaces,
+                                'path' => $this->dirname_r($this->basemod,1).'/'.$namespaces,
                                 'message' => Dictionary::write('PC101',$this->lang)
                             ];
                         } else {
@@ -355,7 +359,7 @@ use PDO;                                            //To connect with database
                             'status' => 'error',
                             'code' => 'PC201',
                             'message' => Dictionary::write('PC201',$this->lang),
-                            'path' => dirname($this->basemod,1),
+                            'path' => $this->dirname_r($this->basemod,1),
                             'base' => $this->basemod
                         ];
                     }
@@ -382,7 +386,7 @@ use PDO;                                            //To connect with database
             if (Auth::validToken($this->db,$this->token,$this->username)){
                 $role = Auth::getRoleID($this->db,$this->token);
                 if ($role == 1) {
-                    $this->rrmdir(dirname($this->basemod,1).'/'.$namespaces);
+                    $this->rrmdir($this->dirname_r($this->basemod,1).DIRECTORY_SEPARATOR.$namespaces);
                     $data = [
                         'status' => 'success',
                         'code' => 'PC102',
